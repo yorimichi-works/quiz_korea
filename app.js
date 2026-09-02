@@ -11,7 +11,7 @@ const questions = [
   { category: '스포츠', text: '축구 경기에서 한 팀의 기본 출전 선수는 몇 명일까요?', answers: ['11', '열한', '열한명'] }
 ];
 let timer;
-const state = { phase: 'home', questionIndex: 0, score: 0, lives: 3, answerSeconds: 7 };
+const state = { phase: 'home', questionIndex: 0, score: 0, lives: 3, answerSeconds: 7, selectedChars: [], charIndex: 0, rating: 1248 };
 const clearTimer = () => { if (timer) { clearInterval(timer); timer = null; } };
 const normalize = value => value.toLowerCase().replace(/\s+/g, '').trim();
 
@@ -45,7 +45,7 @@ function countdown() {
 
 function battle() {
   const q = questions[state.questionIndex]; state.phase = 'reading';
-  app.innerHTML = `<div class="battle-page"><div class="battle-head"><button class="back" id="back">← 홈으로</button><span class="round">RANKED MATCH · ${String(state.questionIndex + 1).padStart(2, '0')}</span></div><div class="players"><div class="player me"><div class="player-top"><span>나</span><span class="hearts">${'♥ '.repeat(state.lives).trim()}</span></div><div class="player-name">민수</div><span class="points">${state.score}</span> <small>점</small></div><span class="vs">VS</span><div class="player"><div class="player-top"><span>상대</span><span class="hearts">♥ ♥ ♥</span></div><div class="player-name">별빛토끼</div><span class="points">${Math.min(state.questionIndex, 4)}</span> <small>점</small></div></div><div class="question-card"><div class="question-label">${q.category} · QUESTION ${String(state.questionIndex + 1).padStart(2, '0')}</div><div class="question">${q.text}</div><div class="progress"><span id="progress-fill"></span></div><button class="buzz" id="buzz">빠르게 누르기</button><div class="status" id="status">문제가 보이면 아는 순간 눌러주세요</div><div class="answer-panel" id="answer"><input id="answer-input" placeholder="정답을 입력하세요" autocomplete="off"><button id="submit">정답 제출 <span id="answer-clock">7</span>초</button></div></div></div>`;
+  app.innerHTML = `<div class="battle-page"><div class="battle-head"><button class="back" id="back">← 홈으로</button><span class="round">RANKED MATCH · ${String(state.questionIndex + 1).padStart(2, '0')}</span></div><div class="players"><div class="player me"><div class="player-top"><span>나</span><span class="hearts">${'♥ '.repeat(state.lives).trim()}</span></div><div class="player-name">민수</div><span class="points">${state.score}</span> <small>점</small></div><span class="vs">VS</span><div class="player"><div class="player-top"><span>상대</span><span class="hearts">♥ ♥ ♥</span></div><div class="player-name">별빛토끼</div><span class="points">${Math.min(state.questionIndex, 4)}</span> <small>점</small></div></div><div class="question-card"><div class="question-label">${q.category} · QUESTION ${String(state.questionIndex + 1).padStart(2, '0')}</div><div class="question">${q.text}</div><div class="progress"><span id="progress-fill"></span></div><button class="buzz" id="buzz">빠르게 누르기</button><div class="status" id="status">문제가 보이면 아는 순간 눌러주세요</div><div class="answer-panel" id="answer"><div class="answer-guide">정답の文字を順番に選択 <span id="answer-clock">7</span>秒</div><div class="selected-chars" id="selected-chars">—</div><div class="candidate-options" id="candidate-options"></div></div></div></div>`;
   document.querySelector('#back').onclick = home;
   document.querySelector('#buzz').onclick = claimAnswer;
   setTimeout(() => { if (state.phase === 'reading') document.querySelector('#status').textContent = '문제 전체가 공개되었습니다 · 아무도 누르지 않아 다음 문제로 이동'; }, 1800);
@@ -53,17 +53,31 @@ function battle() {
 
 function claimAnswer() {
   if (state.phase !== 'reading') return;
-  state.phase = 'answering'; clearTimer(); const buzzButton = document.querySelector('#buzz'); buzzButton.classList.add('is-pressed'); setTimeout(() => { buzzButton.style.display = 'none'; document.querySelector('#answer').classList.add('active'); }, 120);
-  document.querySelector('#status').textContent = '回答権を獲得しました · 7秒以内に入力';
-  const input = document.querySelector('#answer-input'); input.focus(); let left = state.answerSeconds;
-  timer = setInterval(() => { left -= 1; const clock = document.querySelector('#answer-clock'); if (clock) clock.textContent = left; if (left <= 0) { clearTimer(); judge(''); } }, 1000);
-  document.querySelector('#submit').onclick = () => judge(input.value);
-  input.onkeydown = event => { if (event.key === 'Enter') judge(input.value); };
+  state.phase = 'answering'; state.selectedChars = []; state.charIndex = 0; clearTimer(); const buzzButton = document.querySelector('#buzz'); buzzButton.classList.add('is-pressed'); setTimeout(() => { buzzButton.style.display = 'none'; document.querySelector('#answer').classList.add('active'); renderCandidates(); }, 120);
+  document.querySelector('#status').textContent = '回答権を獲得しました · 순서대로 문자를 선택하세요';
+  let left = state.answerSeconds; timer = setInterval(() => { left -= 1; const clock = document.querySelector('#answer-clock'); if (clock) clock.textContent = left; if (left <= 0) { clearTimer(); judge(false); } }, 1000);
 }
 
-function judge(value) {
-  if (state.phase !== 'answering') return; clearTimer(); const q = questions[state.questionIndex];
-  const correct = q.answers.map(normalize).includes(normalize(value)); state.phase = 'result'; if (correct) state.score += 1; else state.lives -= 1;
+function renderCandidates() {
+  const q = questions[state.questionIndex]; const answer = Array.from(q.answers[0]);
+  const candidateCount = state.rating >= 1600 ? 6 : state.rating >= 1400 ? 4 : 3;
+  const distractors = ['부', '산', '한', '국', '도', '리', '수', '궁', '빛'];
+  const correct = answer[state.charIndex]; const choices = [correct, ...distractors.filter(char => char !== correct && !answer.includes(char))].slice(0, candidateCount);
+  choices.sort((a, b) => a.localeCompare(b, 'ko'));
+  document.querySelector('#selected-chars').textContent = state.selectedChars.join(' ') || '—';
+  document.querySelector('#candidate-options').innerHTML = choices.map(char => `<button class="candidate" data-char="${char}">${char}</button>`).join('');
+  document.querySelectorAll('.candidate').forEach(button => { button.onclick = () => selectCharacter(button.dataset.char); });
+}
+
+function selectCharacter(char) {
+  if (state.phase !== 'answering') return; const answer = Array.from(questions[state.questionIndex].answers[0]);
+  if (char !== answer[state.charIndex]) { document.querySelector('#candidate-options').classList.add('wrong-pick'); setTimeout(() => judge(false), 260); return; }
+  state.selectedChars.push(char); state.charIndex += 1;
+  if (state.charIndex >= answer.length) judge(true); else renderCandidates();
+}
+
+function judge(correct) {
+  if (state.phase !== 'answering') return; clearTimer(); const q = questions[state.questionIndex]; state.phase = 'result'; if (correct) state.score += 1; else state.lives -= 1;
   const resultText = correct ? '정답입니다!' : value ? '오답입니다' : '시간이 끝났습니다';
   app.innerHTML = `<div class="battle-page centered"><div class="result-card"><div class="result-icon ${correct ? '' : 'wrong'}">${correct ? '✓' : '×'}</div><h2>${resultText}</h2><p>정답: <strong>${q.answers[0]}</strong></p><p class="explanation">빠르게 판단하고 정확하게 입력하는 것이 핵심입니다.</p><div class="result-stats"><span>내 점수 <b>${state.score}</b></span><span>남은 라이프 <b>${'♥ '.repeat(Math.max(0, state.lives)).trim() || '0'}</b></span></div><button class="primary" id="next">${state.score >= 5 || state.lives <= 0 ? '결과 보기' : '다음 문제'}</button></div></div>`;
   document.querySelector('#next').onclick = () => { if (state.score >= 5 || state.lives <= 0) matchResult(); else { state.questionIndex += 1; countdown(); } };
