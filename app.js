@@ -27,7 +27,7 @@ const JAPANESE_TEST_QUESTIONS = [
 const UI = {
   ko: {
     catchphrase: '알았다면, 먼저 눌러라.', titleCopy: '문제를 먼저 알아채고 누르는<br>1대1 실시간 버저 퀴즈', online: '온라인 매치', onlineSub: '랜덤 상대와 바로 대전', friend: '친구 매치', friendSub: '초대 코드로 친구와 대전', ranking: '랭킹', rankingSub: '현재 레이팅 순위 확인',
-    backTitle: '타이틀로', searching: '상대를 찾는 중...', searchingSub: '현재 대기열에서 가장 가까운 레이팅의<br>플레이어를 찾고 있습니다.', cancel: '취소', readyTitle: '대전 준비 완료', ready: '준비 완료', nextHint: '다음 문제를 준비하세요',
+    backTitle: '타이틀로', searching: '상대를 찾는 중...', searchingSub: '현재 대기열에서 가장 가까운 레이팅의<br>플레이어를 찾고 있습니다.', cancel: '취소', readyTitle: '대전 상대와 매칭되었습니다!', startingSoon: '잠시 후 대전을 시작합니다.', ready: '준비 완료', nextHint: '다음 문제를 준비하세요',
     leave: '← 나가기', me: '민수', opponent: '별빛토끼', answerGuide: '정답 문자를 순서대로 선택하세요', buzz: '버저 누르기', buzzSub: '먼저 누르면 답할 수 있어요!', revealStart: '문제가 한 글자씩 공개됩니다',
     answerRight: '답변권을 얻었습니다 · 문자를 순서대로 선택하세요', correct: '정답입니다!', wrong: '오답입니다', answerTimeout: '시간이 끝났습니다', bothTimeout: '양쪽 모두 시간 초과', answer: '정답',
     myScore: '내 점수', lives: '남은 라이프', showResult: '결과 보기', next: '다음 문제', matchResult: '경기 결과', settings: '설정', sound: '효과음', vibration: '진동', language: '언어',
@@ -35,7 +35,7 @@ const UI = {
   },
   ja: {
     catchphrase: '分かったなら、先に押せ。', titleCopy: '問題を先に見抜いて押す<br>1対1リアルタイム早押しクイズ', online: 'オンラインマッチング', onlineSub: 'ランダムな相手とすぐ対戦', friend: 'フレンドマッチング', friendSub: '招待コードで友達と対戦', ranking: 'ランキング', rankingSub: '現在のレート順位を確認',
-    backTitle: 'タイトルへ', searching: '対戦相手を探しています…', searchingSub: '近いレートのプレイヤーを<br>検索しています。', cancel: 'キャンセル', readyTitle: '対戦準備完了', ready: '準備OK', nextHint: '次の問題を準備してください',
+    backTitle: 'タイトルへ', searching: '対戦相手を探しています…', searchingSub: '近いレートのプレイヤーを<br>検索しています。', cancel: 'キャンセル', readyTitle: '対戦相手とマッチングしました！', startingSoon: 'まもなく対戦を開始します。', ready: '準備OK', nextHint: '次の問題を準備してください',
     leave: '← 終了', me: 'あなた', opponent: 'テスト相手', answerGuide: '正解の文字を順番に選んでください', buzz: '早押し', buzzSub: '先に押すと回答できます！', revealStart: '問題が1文字ずつ表示されます',
     answerRight: '回答権を獲得しました · 文字を順番に選んでください', correct: '正解です！', wrong: '不正解です', answerTimeout: '回答時間終了', bothTimeout: '両者とも時間切れ', answer: '答え',
     myScore: '自分の得点', lives: '残りライフ', showResult: '結果を見る', next: '次の問題', matchResult: '試合結果', settings: '設定', sound: '効果音', vibration: '振動', language: '言語',
@@ -403,11 +403,14 @@ function matching({ resume = false } = {}) {
   setTimeout(() => { if (state.phase === 'matching') battleReady(); }, remaining);
 }
 
-function battleReady() {
-  showSettingsButton(false);
-  state.phase = 'ready'; state.phaseStartedAt = Date.now(); state.phaseDeadline = null; persistSession();
-  app.innerHTML = `<div class="battle-page centered"><div class="eyebrow">MATCH FOUND · ${isJapaneseTest() ? 'TEST' : 'RANKED'}</div><h2>${ui('readyTitle')}</h2><div class="ready-versus"><div><span class="ready-avatar mine">${isJapaneseTest() ? '自' : '민'}</span><b>${ui('me')}</b><small>1,248 · GOLD</small></div><strong>VS</strong><div><span class="ready-avatar">${isJapaneseTest() ? '相' : '별'}</span><b>${ui('opponent')}</b><small>1,232 · GOLD</small></div></div><button class="primary" id="ready">${ui('ready')}</button></div>`;
-  document.querySelector('#ready').onclick = countdown;
+function battleReady({ resume = false } = {}) {
+  clearTimer(); showSettingsButton(false);
+  state.phase = 'ready';
+  if (!resume || !state.phaseDeadline) { state.phaseStartedAt = Date.now(); state.phaseDeadline = state.phaseStartedAt + 1800; }
+  persistSession();
+  app.innerHTML = `<div class="battle-page centered match-found-page"><div class="match-found-icon" aria-hidden="true">✓</div><div class="eyebrow">MATCH FOUND · ${isJapaneseTest() ? 'TEST' : 'RANKED'}</div><h2>${ui('readyTitle')}</h2><div class="ready-versus"><div><span class="ready-avatar mine">${isJapaneseTest() ? '自' : '민'}</span><b>${ui('me')}</b><small>1,248 · GOLD</small></div><strong>VS</strong><div><span class="ready-avatar">${isJapaneseTest() ? '相' : '별'}</span><b>${ui('opponent')}</b><small>1,232 · GOLD</small></div></div><p class="match-starting">${ui('startingSoon')}</p></div>`;
+  const remaining = Math.max(0, (state.phaseDeadline || Date.now()) - Date.now());
+  setTimeout(() => { if (state.phase === 'ready') countdown(); }, remaining);
 }
 
 function countdown({ resume = false } = {}) {
@@ -695,7 +698,7 @@ function resumeSavedMatch(snapshot) {
     if (deadlinePassed) battleReady(); else matching({ resume: true });
     return;
   }
-  if (state.phase === 'ready') { battleReady(); return; }
+  if (state.phase === 'ready') { battleReady({ resume: true }); return; }
   if (state.phase === 'result') {
     if (deadlinePassed) { advanceAfterRound(); }
     else { persistSession(); state.resultKind === 'both-timeout' ? renderTimedOutAnswer() : renderQuestionResult(); }
