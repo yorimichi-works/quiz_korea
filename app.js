@@ -193,13 +193,22 @@ async function loadActiveSeason() {
   seasonInfo = { seasonId: payload.seasonId, eligibleCount: payload.eligibleCount };
 }
 
+function showToast(message) {
+  let toast = document.querySelector('.status-toast');
+  if (!toast) { toast = document.createElement('div'); toast.className = 'status-toast'; document.body.appendChild(toast); }
+  toast.textContent = message;
+  toast.classList.add('show');
+  clearTimeout(showToast.timer);
+  showToast.timer = setTimeout(() => toast.classList.remove('show'), 1800);
+}
+
 function home() {
   clearTimer(); clearSavedSession(); state.phase = 'home'; state.matchId = null;
   document.documentElement.lang = state.locale;
   showSettingsButton(true);
   const sourceLabel = isJapaneseTest() ? `日本語テスト · ${JAPANESE_TEST_QUESTIONS.length}問` : `${seasonInfo.seasonId} · ${seasonInfo.eligibleCount.toLocaleString()}문제`;
-  app.innerHTML = `<div class="title-screen"><section class="title-intro"><div class="eyebrow">Think fast. Play fair.</div><h1>QUIZ<br><span>BATTLE</span></h1><p>${ui('titleCopy')}</p><div class="title-meta"><span>GOLD · 1,248</span><span>${sourceLabel}</span></div></section><nav class="main-menu" aria-label="main menu"><button class="menu-button primary-menu" id="online-match"><span class="menu-index">01</span><span><strong>${ui('online')}</strong><small>${ui('onlineSub')}</small></span><b>→</b></button><button class="menu-button" id="friend-match"><span class="menu-index">02</span><span><strong>${ui('friend')}</strong><small>${ui('friendSub')}</small></span><b>→</b></button><button class="menu-button" id="ranking"><span class="menu-index">03</span><span><strong>${ui('ranking')}</strong><small>${ui('rankingSub')}</small></span><b>→</b></button></nav><button class="test-locale-button" id="test-locale">${isJapaneseTest() ? '한국어로 돌아가기' : '日本語 TEST'}</button></div>`;
-  document.querySelector('#online-match').onclick = activeQuestions().length ? matching : () => { document.querySelector('#online-match small').textContent = '시즌 문제를 불러오지 못했습니다'; };
+  app.innerHTML = `<div class="title-screen centered"><div class="eyebrow">Think fast. Play fair.</div><h1>QUIZ<br><span>BATTLE</span></h1><p class="muted">${ui('titleCopy')}</p><div class="title-meta"><span>GOLD · 1,248</span><span>${sourceLabel}</span></div><button class="primary title-primary" id="online-match">${ui('online')}</button><button class="text-button title-secondary" id="friend-match">${ui('friend')}</button><button class="text-button title-secondary" id="ranking">${ui('ranking')}</button><button class="test-locale-button" id="test-locale">${isJapaneseTest() ? '한국어로 돌아가기' : '日本語 TEST'}</button></div>`;
+  document.querySelector('#online-match').onclick = activeQuestions().length ? matching : () => showToast(isJapaneseTest() ? 'テスト問題を読み込めませんでした' : '시즌 문제를 불러오지 못했습니다');
   document.querySelector('#friend-match').onclick = friendMatch;
   document.querySelector('#ranking').onclick = ranking;
   document.querySelector('#test-locale').onclick = () => {
