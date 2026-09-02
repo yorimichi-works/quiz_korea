@@ -78,7 +78,7 @@ function selectCharacter(char) {
 
 function judge(correct) {
   if (state.phase !== 'answering') return; clearTimer(); const q = questions[state.questionIndex]; state.phase = 'result'; if (correct) state.score += 1; else state.lives -= 1;
-  const resultText = correct ? '정답입니다!' : value ? '오답입니다' : '시간이 끝났습니다';
+  const resultText = correct ? '정답입니다!' : state.selectedChars.length ? '오답입니다' : '시간이 끝났습니다';
   app.innerHTML = `<div class="battle-page centered"><div class="result-card"><div class="result-icon ${correct ? '' : 'wrong'}">${correct ? '✓' : '×'}</div><h2>${resultText}</h2><p>정답: <strong>${q.answers[0]}</strong></p><p class="explanation">빠르게 판단하고 정확하게 입력하는 것이 핵심입니다.</p><div class="result-stats"><span>내 점수 <b>${state.score}</b></span><span>남은 라이프 <b>${'♥ '.repeat(Math.max(0, state.lives)).trim() || '0'}</b></span></div><button class="primary" id="next">${state.score >= 5 || state.lives <= 0 ? '결과 보기' : '다음 문제'}</button></div></div>`;
   document.querySelector('#next').onclick = () => { if (state.score >= 5 || state.lives <= 0) matchResult(); else { state.questionIndex += 1; countdown(); } };
 }
