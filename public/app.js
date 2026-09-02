@@ -9,10 +9,13 @@ let timer;
 let reconnectTimer;
 const SESSION_KEY = 'quiz-battle.active-session.v1';
 const TEST_LOCALE_KEY = 'quiz-battle.test-locale.v1';
+const HOME_INTRO_SESSION_KEY = 'meonjeo.home-intro.v1';
 const RECONNECT_GRACE_MS = 45000;
 const QUESTION_CHAR_MS = 130;
 const POST_REVEAL_WAIT_MS = 5000;
 const RESULT_DISPLAY_MS = 3000;
+const OPPONENT_CHAR_MS = 650;
+const OPPONENT_RESULT_HOLD_MS = 1200;
 const MAX_ROUNDS = 20;
 const WIN_SCORE = 5;
 // TEMP: 日本語UI確認用。テスト終了後にこの配列と切替ボタンを削除する。
@@ -23,7 +26,7 @@ const JAPANESE_TEST_QUESTIONS = [
 ];
 const UI = {
   ko: {
-    titleCopy: '문제를 먼저 알아채고 누르는<br>1vs1 실시간 퀴즈', online: '온라인 매칭', onlineSub: '랜덤 상대와 바로 대전', friend: '친구 매칭', friendSub: '초대 코드로 친구와 대전', ranking: '랭킹', rankingSub: '현재 레이팅 순위 확인',
+    catchphrase: '알았다면, 먼저 눌러라.', titleCopy: '문제를 먼저 알아채고 누르는<br>1대1 실시간 버저 퀴즈', online: '온라인 매치', onlineSub: '랜덤 상대와 바로 대전', friend: '친구 매치', friendSub: '초대 코드로 친구와 대전', ranking: '랭킹', rankingSub: '현재 레이팅 순위 확인',
     backTitle: '타이틀로', searching: '상대를 찾는 중...', searchingSub: '현재 대기열에서 가장 가까운 레이팅의<br>플레이어를 찾고 있습니다.', cancel: '취소', readyTitle: '대전 준비 완료', ready: '준비 완료', nextHint: '다음 문제를 준비하세요',
     leave: '← 나가기', me: '민수', opponent: '별빛토끼', answerGuide: '정답 문자를 순서대로 선택하세요', buzz: '버저 누르기', buzzSub: '먼저 누르면 답할 수 있어요!', revealStart: '문제가 한 글자씩 공개됩니다',
     answerRight: '답변권을 얻었습니다 · 문자를 순서대로 선택하세요', correct: '정답입니다!', wrong: '오답입니다', answerTimeout: '시간이 끝났습니다', bothTimeout: '양쪽 모두 시간 초과', answer: '정답',
@@ -31,7 +34,7 @@ const UI = {
     tied: '무효 경기입니다', won: '승리했습니다!', lost: '아쉽게 패배했습니다', ratingNoChange: '변동 없음', rematch: '다시 대전', home: '홈으로', rating: '레이팅',
   },
   ja: {
-    titleCopy: '問題を先に見抜いて押す<br>1対1リアルタイムクイズ', online: 'オンラインマッチング', onlineSub: 'ランダムな相手とすぐ対戦', friend: 'フレンドマッチング', friendSub: '招待コードで友達と対戦', ranking: 'ランキング', rankingSub: '現在のレート順位を確認',
+    catchphrase: '分かったなら、先に押せ。', titleCopy: '問題を先に見抜いて押す<br>1対1リアルタイム早押しクイズ', online: 'オンラインマッチング', onlineSub: 'ランダムな相手とすぐ対戦', friend: 'フレンドマッチング', friendSub: '招待コードで友達と対戦', ranking: 'ランキング', rankingSub: '現在のレート順位を確認',
     backTitle: 'タイトルへ', searching: '対戦相手を探しています…', searchingSub: '近いレートのプレイヤーを<br>検索しています。', cancel: 'キャンセル', readyTitle: '対戦準備完了', ready: '準備OK', nextHint: '次の問題を準備してください',
     leave: '← 終了', me: 'あなた', opponent: 'テスト相手', answerGuide: '正解の文字を順番に選んでください', buzz: '早押し', buzzSub: '先に押すと回答できます！', revealStart: '問題が1文字ずつ表示されます',
     answerRight: '回答権を獲得しました · 文字を順番に選んでください', correct: '正解です！', wrong: '不正解です', answerTimeout: '回答時間終了', bothTimeout: '両者とも時間切れ', answer: '答え',
@@ -44,12 +47,15 @@ const state = {
   phase: 'home', questionIndex: 0, score: 0, opponentScore: 0, lives: 5, answerSeconds: 7,
   answerRemaining: 7, selectedChars: [], charIndex: 0, rating: 1248,
   matchId: null, phaseStartedAt: null, phaseDeadline: null, answerRightLost: false,
-  lastResultCorrect: null, lastResultText: '', resultKind: null,
+  lastResultCorrect: null, lastResultText: '', resultKind: null, questionHistory: [],
+  opponentAnswerActive: false, opponentAnswerSequence: [], opponentTypedChars: [], opponentMarks: [],
+  opponentWillAnswerCorrect: false,
   locale: localStorage.getItem(TEST_LOCALE_KEY) === 'ja' ? 'ja' : 'ko'
 };
 const clearTimer = () => { if (timer) { clearInterval(timer); timer = null; } };
 const clearReconnectTimer = () => { if (reconnectTimer) { clearInterval(reconnectTimer); reconnectTimer = null; } };
 const normalize = value => value.toLowerCase().replace(/\s+/g, '').trim();
+const escapeHtml = value => String(value ?? '').replace(/[&<>"']/g, character => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[character]));
 const answerCharacters = question => Array.from(question.answers[0].normalize('NFKC').toUpperCase().replace(/[\s·.,!?！？'"“”‘’()（）\-_:：/]/g, ''));
 const settingsButton = document.querySelector('#settings');
 const countdownSound = new Audio('assets/audio/countdown.mp3');
@@ -128,6 +134,51 @@ function currentQuestion() {
   return source.length ? source[state.questionIndex % source.length] : null;
 }
 
+function recordCurrentQuestion(outcome) {
+  const question = currentQuestion();
+  if (!question) return;
+  const entry = { round: state.questionIndex + 1, questionId: question.id, category: question.category, questionText: question.text, answer: question.answers[0], explanation: question.explanation, outcome };
+  const existingIndex = state.questionHistory.findIndex(item => item.round === entry.round);
+  if (existingIndex >= 0) state.questionHistory[existingIndex] = entry;
+  else state.questionHistory.push(entry);
+}
+
+function historyOverlayMarkup() {
+  const historyLabel = isJapaneseTest() ? '問題履歴' : '문제 기록';
+  const emptyLabel = isJapaneseTest() ? 'プレイした問題がここに追加されます。' : '플레이한 문제가 여기에 추가됩니다.';
+  const answerLabel = isJapaneseTest() ? '答え' : '정답';
+  const explanationLabel = isJapaneseTest() ? '解説' : '해설';
+  const entries = state.questionHistory.map(item => {
+    const outcomeLabel = item.outcome === 'correct' ? (isJapaneseTest() ? '正解' : '정답') : item.outcome === 'opponent-correct' ? (isJapaneseTest() ? '相手正解' : '상대 정답') : item.outcome === 'timeout' ? (isJapaneseTest() ? '時間切れ' : '시간 초과') : (isJapaneseTest() ? '不正解' : '오답');
+    return `<article class="history-item"><button class="history-question" type="button" aria-expanded="false"><span><small>Q${item.round} · ${escapeHtml(item.category)} · ${outcomeLabel}</small><strong>${escapeHtml(item.questionText)}</strong></span><b aria-hidden="true">＋</b></button><div class="history-answer" hidden><p><span>${answerLabel}</span><strong>${escapeHtml(item.answer)}</strong></p><p><span>${explanationLabel}</span>${escapeHtml(item.explanation)}</p></div></article>`;
+  }).join('');
+  return `<button class="history-rail" id="history-toggle" type="button" aria-controls="history-drawer" aria-expanded="false"><span>${historyLabel}</span><b>${state.questionHistory.length}</b></button><div class="history-scrim" id="history-scrim"><aside class="history-drawer" id="history-drawer" aria-hidden="true" aria-label="${historyLabel}"><header><div><small>REVIEW</small><h2>${historyLabel}</h2></div><button id="history-close" type="button" aria-label="${isJapaneseTest() ? '閉じる' : '닫기'}">×</button></header><div class="history-list">${entries || `<p class="history-empty">${emptyLabel}</p>`}</div></aside></div>`;
+}
+
+function bindHistoryDrawer() {
+  const toggle = document.querySelector('#history-toggle');
+  const scrim = document.querySelector('#history-scrim');
+  const drawer = document.querySelector('#history-drawer');
+  if (!toggle || !scrim || !drawer) return;
+  const setOpen = open => {
+    scrim.classList.toggle('is-open', open);
+    toggle.classList.toggle('is-open', open);
+    toggle.setAttribute('aria-expanded', String(open));
+    drawer.setAttribute('aria-hidden', String(!open));
+  };
+  toggle.onclick = () => setOpen(toggle.getAttribute('aria-expanded') !== 'true');
+  document.querySelector('#history-close').onclick = () => setOpen(false);
+  scrim.onclick = event => { if (event.target === scrim) setOpen(false); };
+  document.querySelectorAll('.history-question').forEach(button => {
+    button.onclick = () => {
+      const open = button.getAttribute('aria-expanded') === 'true';
+      button.setAttribute('aria-expanded', String(!open));
+      button.querySelector('b').textContent = open ? '＋' : '−';
+      button.nextElementSibling.hidden = open;
+    };
+  });
+}
+
 function readSavedSession() {
   try { return JSON.parse(localStorage.getItem(SESSION_KEY) || 'null'); } catch { return null; }
 }
@@ -153,6 +204,10 @@ function clearSavedSession() {
 function hydrateSession(snapshot) {
   Object.assign(state, snapshot.state || {});
   if (!Number.isFinite(state.opponentScore)) state.opponentScore = 0;
+  if (!Array.isArray(state.questionHistory)) state.questionHistory = [];
+  if (!Array.isArray(state.opponentAnswerSequence)) state.opponentAnswerSequence = [];
+  if (!Array.isArray(state.opponentTypedChars)) state.opponentTypedChars = [];
+  if (!Array.isArray(state.opponentMarks)) state.opponentMarks = [];
   const source = activeQuestions();
   const savedQuestionIndex = source.findIndex(question => question.id === snapshot.activeQuestionId);
   const targetIndex = state.questionIndex % Math.max(source.length, 1);
@@ -202,15 +257,62 @@ function showToast(message) {
   showToast.timer = setTimeout(() => toast.classList.remove('show'), 1800);
 }
 
+function unlockHomeMenu() {
+  delete app.dataset.homeLocked;
+  app.querySelectorAll('.menu-card').forEach(button => {
+    button.disabled = false;
+    button.classList.remove('is-selected');
+  });
+}
+
+function bindHomeMenuAction(selector, action) {
+  const button = document.querySelector(selector);
+  button.onclick = () => {
+    if (app.dataset.homeLocked === 'true') return;
+    app.dataset.homeLocked = 'true';
+    app.querySelectorAll('.menu-card').forEach(menuButton => { menuButton.disabled = true; });
+    button.classList.add('is-selected');
+    setTimeout(action, 220);
+  };
+}
+
 function home() {
   clearTimer(); clearSavedSession(); state.phase = 'home'; state.matchId = null;
   document.documentElement.lang = state.locale;
+  document.title = isJapaneseTest() ? '먼저!（先に！）— テスト版' : '먼저! — 실시간 1대1 버저 퀴즈';
   showSettingsButton(true);
+  delete app.dataset.homeLocked;
+  const isFirstHome = sessionStorage.getItem(HOME_INTRO_SESSION_KEY) !== 'seen';
+  sessionStorage.setItem(HOME_INTRO_SESSION_KEY, 'seen');
+  const motionClass = isFirstHome ? 'home-intro' : 'home-return';
   const sourceLabel = isJapaneseTest() ? `日本語テスト · ${JAPANESE_TEST_QUESTIONS.length}問` : `${seasonInfo.seasonId} · ${seasonInfo.eligibleCount.toLocaleString()}문제`;
-  app.innerHTML = `<div class="title-screen centered"><div class="eyebrow">Think fast. Play fair.</div><h1>QUIZ<br><span>BATTLE</span></h1><p class="muted">${ui('titleCopy')}</p><div class="title-meta"><span>GOLD · 1,248</span><span>${sourceLabel}</span></div><button class="primary title-primary" id="online-match">${ui('online')}</button><button class="text-button title-secondary" id="friend-match">${ui('friend')}</button><button class="text-button title-secondary" id="ranking">${ui('ranking')}</button><button class="test-locale-button" id="test-locale">${isJapaneseTest() ? '한국어로 돌아가기' : '日本語 TEST'}</button></div>`;
-  document.querySelector('#online-match').onclick = activeQuestions().length ? matching : () => showToast(isJapaneseTest() ? 'テスト問題を読み込めませんでした' : '시즌 문제를 불러오지 못했습니다');
-  document.querySelector('#friend-match').onclick = friendMatch;
-  document.querySelector('#ranking').onclick = ranking;
+  const brandTranslation = isJapaneseTest() ? '<span class="brand-translation">（先に！）</span>' : '';
+  app.innerHTML = `<div class="title-screen ${motionClass}">
+    <section class="title-brand-panel" aria-labelledby="home-title">
+      <p class="title-catchphrase">${ui('catchphrase')}</p>
+      <h1 id="home-title" aria-label="${isJapaneseTest() ? '먼저!（先に！）' : '먼저!'}"><span class="logo-clip"><span class="logo-letter">먼</span></span><span class="logo-clip"><span class="logo-letter">저</span></span><span class="logo-clip logo-bang"><span class="logo-letter">!</span></span>${brandTranslation}</h1>
+      <div class="title-support">
+        <p class="brand-roman">MEONJEO!</p>
+        <p class="title-description">${ui('titleCopy')}</p>
+        <div class="title-meta"><span>GOLD</span><span>RATING 1,248</span><span>${sourceLabel}</span></div>
+      </div>
+    </section>
+    <nav class="home-menu" aria-label="${isJapaneseTest() ? 'メインメニュー' : '메인 메뉴'}">
+      <button class="menu-card menu-card-primary" id="online-match" type="button"><span class="menu-number">01</span><span class="menu-copy"><strong>${ui('online')}</strong><small>${ui('onlineSub')}</small></span><span class="menu-arrow" aria-hidden="true">→</span></button>
+      <button class="menu-card" id="friend-match" type="button"><span class="menu-number">02</span><span class="menu-copy"><strong>${ui('friend')}</strong><small>${ui('friendSub')}</small></span><span class="menu-arrow" aria-hidden="true">→</span></button>
+      <button class="menu-card" id="ranking" type="button"><span class="menu-number">03</span><span class="menu-copy"><strong>${ui('ranking')}</strong><small>${ui('rankingSub')}</small></span><span class="menu-arrow" aria-hidden="true">→</span></button>
+    </nav>
+    <button class="test-locale-button" id="test-locale" type="button">${isJapaneseTest() ? '한국어로 돌아가기' : '日本語 TEST'}</button>
+  </div>`;
+  bindHomeMenuAction('#online-match', () => {
+    if (activeQuestions().length) matching();
+    else {
+      showToast(isJapaneseTest() ? 'テスト問題を読み込めませんでした' : '시즌 문제를 불러오지 못했습니다');
+      unlockHomeMenu();
+    }
+  });
+  bindHomeMenuAction('#friend-match', friendMatch);
+  bindHomeMenuAction('#ranking', ranking);
   document.querySelector('#test-locale').onclick = () => {
     state.locale = isJapaneseTest() ? 'ko' : 'ja';
     localStorage.setItem(TEST_LOCALE_KEY, state.locale);
@@ -219,9 +321,48 @@ function home() {
   };
 }
 
+function generateRoomCode() {
+  const values = new Uint32Array(1);
+  globalThis.crypto.getRandomValues(values);
+  return String(1000 + (values[0] % 9000));
+}
+
+function startFriendMatch(roomCode) {
+  state.questionIndex = 0; state.score = 0; state.opponentScore = 0; state.lives = 5;
+  state.selectedChars = []; state.charIndex = 0; state.answerRemaining = state.answerSeconds;
+  state.lastResultCorrect = null; state.lastResultText = ''; state.resultKind = null; state.answerRightLost = false; state.questionHistory = []; state.opponentAnswerActive = false; state.opponentAnswerSequence = []; state.opponentTypedChars = []; state.opponentMarks = [];
+  state.matchId = `friend-${roomCode}-${Date.now()}`;
+  battleReady();
+}
+
 function friendMatch() {
   showSettingsButton(false);
-  app.innerHTML = `<div class="battle-page centered"><div class="result-card"><div class="eyebrow">FRIEND MATCH</div><h2>${ui('friend')}</h2><p class="muted">${isJapaneseTest() ? '招待コード機能は準備中です。' : '초대 코드를 만들거나 입력하는 기능을 준비하고 있습니다.'}</p><button class="primary" id="friend-back">${ui('backTitle')}</button></div></div>`;
+  const createLabel = isJapaneseTest() ? '部屋番号を作る' : '방 번호 만들기';
+  const joinLabel = isJapaneseTest() ? '部屋に入る' : '방에 들어가기';
+  app.innerHTML = `<div class="battle-page centered friend-room-page"><div class="friend-room-card"><div class="eyebrow">FRIEND MATCH</div><h2>${ui('friend')}</h2><div class="friend-room-actions">
+    <section class="friend-room-option"><span class="friend-step">01</span><h3>${createLabel}</h3><button class="friend-room-button" id="create-room" type="button">${createLabel}<span aria-hidden="true">→</span></button><div class="created-room" id="created-room" hidden aria-live="polite"><small>${isJapaneseTest() ? 'この番号を友人に伝えてください' : '이 번호를 친구에게 알려 주세요'}</small><strong id="created-room-code"></strong><span>${isJapaneseTest() ? '参加を待っています…' : '참가를 기다리는 중…'}</span></div></section>
+    <section class="friend-room-option"><span class="friend-step">02</span><h3>${joinLabel}</h3><form class="room-join-form" id="room-join-form"><label for="room-code-input">${isJapaneseTest() ? '4桁の部屋番号' : '4자리 방 번호'}</label><div><input id="room-code-input" name="roomCode" inputmode="numeric" autocomplete="one-time-code" pattern="[0-9]{4}" maxlength="4" placeholder="0000" aria-describedby="room-code-message" required><button type="submit" aria-label="${joinLabel}">→</button></div><p id="room-code-message" aria-live="polite"></p></form></section>
+  </div><button class="text-button friend-back" id="friend-back" type="button">${ui('backTitle')}</button></div></div>`;
+  document.querySelector('#create-room').onclick = () => {
+    const roomCode = generateRoomCode();
+    document.querySelector('#created-room-code').textContent = roomCode;
+    document.querySelector('#created-room').hidden = false;
+  };
+  const roomInput = document.querySelector('#room-code-input');
+  roomInput.addEventListener('input', () => { roomInput.value = roomInput.value.replace(/\D/g, '').slice(0, 4); });
+  document.querySelector('#room-join-form').onsubmit = event => {
+    event.preventDefault();
+    const roomCode = roomInput.value;
+    const message = document.querySelector('#room-code-message');
+    if (!/^\d{4}$/.test(roomCode)) {
+      message.textContent = isJapaneseTest() ? '4桁の数字を入力してください' : '4자리 숫자를 입력해 주세요';
+      roomInput.focus();
+      return;
+    }
+    message.textContent = isJapaneseTest() ? '部屋に入ります…' : '방에 입장합니다…';
+    document.querySelectorAll('.friend-room-card button,.friend-room-card input').forEach(control => { control.disabled = true; });
+    setTimeout(() => startFriendMatch(roomCode), 300);
+  };
   document.querySelector('#friend-back').onclick = home;
 }
 
@@ -251,7 +392,7 @@ function matching({ resume = false } = {}) {
   if (!resume) {
     state.questionIndex = 0; state.score = 0; state.opponentScore = 0; state.lives = 5;
     state.selectedChars = []; state.charIndex = 0; state.answerRemaining = state.answerSeconds;
-    state.lastResultCorrect = null; state.lastResultText = ''; state.resultKind = null; state.answerRightLost = false;
+    state.lastResultCorrect = null; state.lastResultText = ''; state.resultKind = null; state.answerRightLost = false; state.questionHistory = []; state.opponentAnswerActive = false; state.opponentAnswerSequence = []; state.opponentTypedChars = []; state.opponentMarks = [];
     state.matchId = globalThis.crypto?.randomUUID?.() || `match-${Date.now()}`;
     state.phaseStartedAt = Date.now(); state.phaseDeadline = state.phaseStartedAt + 1300;
   }
@@ -319,7 +460,8 @@ function battle({ resume = false } = {}) {
     </section>
     <div class="buzzer-zone" id="buzzer-zone"><button class="buzz" id="buzz"><span>⚡</span><strong>${ui('buzz')}</strong><small>${ui('buzzSub')}</small></button></div>
     <div class="status" id="status">${ui('revealStart')}</div>
-  </div>`;
+  </div>${historyOverlayMarkup()}`;
+  bindHistoryDrawer();
   document.querySelector('#back').onclick = home;
   const buzzButton = document.querySelector('#buzz');
   if (locked) {
@@ -393,13 +535,90 @@ function selectCharacter(char) {
   if (state.charIndex >= answer.length) judge(true); else renderCandidates();
 }
 
-function judge(correct) {
-  if (state.phase !== 'answering') return; clearTimer(); state.phase = 'result'; state.phaseStartedAt = Date.now(); state.phaseDeadline = state.phaseStartedAt + RESULT_DISPLAY_MS;
-  if (correct) playCorrectSound();
-  if (correct) state.score += 1; else state.lives -= 1;
+function opponentWrongCharacter(correct) {
+  const pool = /[0-9]/.test(correct) ? Array.from('0123456789') : /[A-Z]/.test(correct) ? Array.from('ABCDEFGHIJKLMNOPQRSTUVWXYZ') : isJapaneseTest() ? ['東', '京', '富', '士', '山', '日', '本', '大', '川', '海'] : ['가', '나', '다', '라', '마', '바', '사', '아', '자', '하'];
+  return pool.find(character => character !== correct) || '×';
+}
+
+function startOpponentAnswer() {
+  const answer = answerCharacters(currentQuestion());
+  const wrongIndex = Math.min(3, Math.max(0, answer.length - 1));
+  const randomValue = new Uint32Array(1);
+  globalThis.crypto.getRandomValues(randomValue);
+  state.opponentWillAnswerCorrect = randomValue[0] % 2 === 0;
+  state.opponentAnswerSequence = state.opponentWillAnswerCorrect ? [...answer] : [...answer.slice(0, wrongIndex), opponentWrongCharacter(answer[wrongIndex])];
+  state.opponentTypedChars = [];
+  state.opponentMarks = [];
+  state.opponentAnswerActive = true;
+  state.phase = 'rebound';
+  state.phaseStartedAt = Date.now();
+  state.phaseDeadline = state.phaseStartedAt + state.opponentAnswerSequence.length * OPPONENT_CHAR_MS + OPPONENT_RESULT_HOLD_MS;
+  persistSession();
+  renderOpponentAnswer();
+}
+
+function finishOpponentAnswer() {
+  clearTimer();
+  state.opponentAnswerActive = false;
+  state.phase = 'result';
   state.resultKind = 'answer';
-  state.lastResultCorrect = correct;
-  state.lastResultText = correct ? ui('correct') : state.selectedChars.length ? ui('wrong') : ui('answerTimeout');
+  state.phaseStartedAt = Date.now();
+  state.phaseDeadline = state.phaseStartedAt + RESULT_DISPLAY_MS;
+  state.lastResultCorrect = false;
+  if (state.opponentWillAnswerCorrect) {
+    state.opponentScore += 1;
+    state.lastResultText = isJapaneseTest() ? '対戦相手が正解しました' : '상대가 정답을 맞혔습니다';
+    recordCurrentQuestion('opponent-correct');
+  } else {
+    state.lastResultText = isJapaneseTest() ? '両者とも不正解です' : '양쪽 모두 오답입니다';
+    recordCurrentQuestion('wrong');
+  }
+  persistSession();
+  renderQuestionResult();
+}
+
+function renderOpponentAnswer() {
+  clearTimer(); showSettingsButton(false);
+  const question = currentQuestion();
+  const roundLimit = currentRoundLimit();
+  const typingLabel = isJapaneseTest() ? `${ui('opponent')}さんが入力中です...` : `${ui('opponent')}님이 입력 중입니다...`;
+  app.innerHTML = `<div class="battle-page battle-arena opponent-answer-page"><div class="battle-head"><button class="back" id="back">${ui('leave')}</button><span class="round">ROUND ${state.questionIndex + 1} / ${roundLimit}</span></div><section class="scoreboard" aria-label="score"><article class="combatant me"><div class="combat-avatar">${isJapaneseTest() ? '自' : '민'}</div><div class="combat-copy"><strong>${ui('me')}</strong><small>★ ${state.rating.toLocaleString()}</small><span class="combat-life">♥ ${state.lives}</span></div><b class="combat-score">${state.score}</b></article><div class="round-hub"><div><strong>${state.questionIndex + 1}</strong><span>/ ${roundLimit}</span></div><small>ROUND</small><i></i></div><article class="combatant opponent"><b class="combat-score">${state.opponentScore}</b><div class="combat-copy"><strong>${ui('opponent')}</strong><small>★ 1,232</small><span class="combat-life">♥ 5</span></div><div class="combat-avatar">${isJapaneseTest() ? '相' : '별'}</div></article></section><section class="opponent-input-card"><p class="opponent-typing-label"><span></span>${typingLabel}</p><div class="opponent-question">${escapeHtml(question.text)}</div><div class="opponent-entry" aria-live="polite"><div class="opponent-marks" id="opponent-marks"></div><div class="opponent-characters" id="opponent-characters"></div></div><p class="opponent-input-note" id="opponent-input-note">${isJapaneseTest() ? '入力した文字がリアルタイムで表示されます' : '입력한 글자가 실시간으로 표시됩니다'}</p></section></div>${historyOverlayMarkup()}`;
+  document.querySelector('#back').onclick = home;
+  bindHistoryDrawer();
+  const answer = answerCharacters(question);
+  const tick = () => {
+    if (state.phase !== 'rebound' || !state.opponentAnswerActive) { clearTimer(); return; }
+    const elapsed = Math.max(0, Date.now() - (state.phaseStartedAt || Date.now()));
+    const revealCount = Math.min(state.opponentAnswerSequence.length, Math.floor(elapsed / OPPONENT_CHAR_MS));
+    state.opponentTypedChars = state.opponentAnswerSequence.slice(0, revealCount);
+    state.opponentMarks = state.opponentTypedChars.map((character, index) => character === answer[index] ? '〇' : '×');
+    const marks = document.querySelector('#opponent-marks');
+    const characters = document.querySelector('#opponent-characters');
+    if (marks) marks.innerHTML = state.opponentMarks.map(mark => `<span class="${mark === '×' ? 'is-wrong' : 'is-right'}">${mark}</span>`).join('');
+    if (characters) characters.innerHTML = state.opponentTypedChars.map((character, index) => `<span class="${state.opponentMarks[index] === '×' ? 'is-wrong' : ''}">${escapeHtml(character)}</span>`).join('');
+    if (state.opponentMarks.includes('×')) document.querySelector('#opponent-input-note').textContent = isJapaneseTest() ? '入力を間違えました' : '입력을 틀렸습니다';
+    else if (revealCount === state.opponentAnswerSequence.length) document.querySelector('#opponent-input-note').textContent = isJapaneseTest() ? '回答が完成しました' : '답변을 완성했습니다';
+    persistSession();
+    if (Date.now() >= (state.phaseDeadline || 0)) finishOpponentAnswer();
+  };
+  tick(); timer = setInterval(tick, 80);
+}
+
+function judge(correct) {
+  if (state.phase !== 'answering') return; clearTimer();
+  if (correct) playCorrectSound();
+  if (!correct) {
+    state.lives -= 1;
+    state.lastResultText = state.selectedChars.length ? ui('wrong') : ui('answerTimeout');
+    startOpponentAnswer();
+    return;
+  }
+  state.phase = 'result'; state.phaseStartedAt = Date.now(); state.phaseDeadline = state.phaseStartedAt + RESULT_DISPLAY_MS;
+  state.score += 1;
+  state.resultKind = 'answer';
+  state.lastResultCorrect = true;
+  state.lastResultText = ui('correct');
+  recordCurrentQuestion('correct');
   persistSession(); renderQuestionResult();
 }
 
@@ -408,6 +627,7 @@ function showTimedOutAnswer() {
   clearTimer(); state.phase = 'result'; state.resultKind = 'both-timeout';
   state.phaseStartedAt = Date.now(); state.phaseDeadline = state.phaseStartedAt + RESULT_DISPLAY_MS;
   state.lastResultCorrect = null; state.lastResultText = ui('bothTimeout');
+  recordCurrentQuestion('timeout');
   persistSession(); renderTimedOutAnswer();
 }
 
@@ -456,6 +676,10 @@ function resumeSavedMatch(snapshot) {
     battle({ resume: true }); return;
   }
   if (state.phase === 'rebound') {
+    if (state.opponentAnswerActive) {
+      if (deadlinePassed) finishOpponentAnswer(); else renderOpponentAnswer();
+      return;
+    }
     if (deadlinePassed) { showTimedOutAnswer(); return; }
     battle({ resume: true }); return;
   }
@@ -514,13 +738,14 @@ function matchResult() {
   const icon = tied ? '—' : won ? '🏆' : '×';
   const rating = tied ? ui('ratingNoChange') : won ? '+18' : '-14';
   const ruleCopy = isJapaneseTest() ? `日本語テスト · 全${roundLimit}問` : `최대 ${roundLimit}라운드 · ${WIN_SCORE}문제 선취`;
-  app.innerHTML = `<div class="battle-page centered"><div class="result-card final"><div class="result-icon ${won || tied ? '' : 'wrong'}">${icon}</div><div class="eyebrow">MATCH COMPLETE · ${Math.min(state.questionIndex + 1, roundLimit)} ROUNDS</div><h2>${title}</h2><p>${ruleCopy}</p><div class="final-score"><b>${state.score}</b><span>—</span><b>${state.opponentScore}</b></div><div class="rating-change">${ui('rating')} <strong>${rating}</strong></div><button class="primary" id="rematch">${ui('rematch')}</button><button class="text-button" id="home">${ui('home')}</button></div></div>`;
-  document.querySelector('#rematch').onclick = () => { state.questionIndex = 0; state.score = 0; state.opponentScore = 0; state.lives = 5; matching(); }; document.querySelector('#home').onclick = home;
+  app.innerHTML = `<div class="battle-page centered"><div class="result-card final"><div class="result-icon ${won || tied ? '' : 'wrong'}">${icon}</div><div class="eyebrow">MATCH COMPLETE · ${Math.min(state.questionIndex + 1, roundLimit)} ROUNDS</div><h2>${title}</h2><p>${ruleCopy}</p><div class="final-score"><b>${state.score}</b><span>—</span><b>${state.opponentScore}</b></div><div class="rating-change">${ui('rating')} <strong>${rating}</strong></div><button class="primary" id="rematch">${ui('rematch')}</button><button class="text-button" id="home">${ui('home')}</button></div></div>${historyOverlayMarkup()}`;
+  bindHistoryDrawer();
+  document.querySelector('#rematch').onclick = () => { state.questionIndex = 0; state.score = 0; state.opponentScore = 0; state.lives = 5; state.questionHistory = []; matching(); }; document.querySelector('#home').onclick = home;
 }
 
 async function bootstrap() {
   document.documentElement.lang = state.locale;
-  app.innerHTML = `<div class="battle-page centered"><div class="match-orb"><span>QB</span></div><p class="muted">${isJapaneseTest() ? 'テスト問題を準備しています…' : '시즌 문제를 불러오는 중...'}</p></div>`;
+  app.innerHTML = `<div class="battle-page centered"><div class="match-orb"><span>먼</span></div><p class="muted">${isJapaneseTest() ? 'テスト問題を準備しています…' : '시즌 문제를 불러오는 중...'}</p></div>`;
   try { await loadActiveSeason(); } catch (error) { console.error(error); seasonInfo = { seasonId: '시즌 데이터 오류', eligibleCount: 0 }; }
   const snapshot = readSavedSession();
   if (snapshot?.state?.matchId && ACTIVE_PHASES.has(snapshot.state.phase)) {

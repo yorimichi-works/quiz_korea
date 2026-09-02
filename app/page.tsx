@@ -4,7 +4,7 @@ export default function Home() {
       <iframe
         className="game-frame"
         src="/game.html"
-        title="Quiz Battle 빠른 대전"
+        title="먼저! — 실시간 1대1 버저 퀴즈"
         allow="fullscreen"
       />
     </main>
