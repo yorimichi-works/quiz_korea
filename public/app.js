@@ -18,7 +18,7 @@ const state = {
   phase: 'home', questionIndex: 0, score: 0, opponentScore: 0, lives: 3, answerSeconds: 7,
   answerRemaining: 7, selectedChars: [], charIndex: 0, rating: 1248,
   matchId: null, phaseStartedAt: null, phaseDeadline: null, answerRightLost: false,
-  lastResultCorrect: null, lastResultText: ''
+  lastResultCorrect: null, lastResultText: '', resultKind: null
 };
 const clearTimer = () => { if (timer) { clearInterval(timer); timer = null; } };
 const clearReconnectTimer = () => { if (reconnectTimer) { clearInterval(reconnectTimer); reconnectTimer = null; } };
@@ -153,7 +153,7 @@ function matching({ resume = false } = {}) {
   if (!resume) {
     state.questionIndex = 0; state.score = 0; state.opponentScore = 0; state.lives = 3;
     state.selectedChars = []; state.charIndex = 0; state.answerRemaining = state.answerSeconds;
-    state.lastResultCorrect = null; state.lastResultText = ''; state.answerRightLost = false;
+    state.lastResultCorrect = null; state.lastResultText = ''; state.resultKind = null; state.answerRightLost = false;
     state.matchId = globalThis.crypto?.randomUUID?.() || `match-${Date.now()}`;
     state.phaseStartedAt = Date.now(); state.phaseDeadline = state.phaseStartedAt + 1300;
   }
@@ -194,7 +194,7 @@ function battle({ resume = false } = {}) {
   if (!resume) {
     state.phase = 'reading'; state.phaseStartedAt = Date.now();
     state.phaseDeadline = state.phaseStartedAt + roundDuration; state.answerRightLost = false;
-    state.selectedChars = []; state.charIndex = 0; state.answerRemaining = state.answerSeconds;
+    state.selectedChars = []; state.charIndex = 0; state.answerRemaining = state.answerSeconds; state.resultKind = null;
   } else if (!state.phaseStartedAt) {
     state.phaseStartedAt = (state.phaseDeadline || Date.now()) - roundDuration;
   }
@@ -245,7 +245,7 @@ function battle({ resume = false } = {}) {
         ? `문제 공개 중 · ${revealCount}/${questionChars.length}`
         : `문제 전체가 공개되었습니다 · ${Math.max(0, Math.ceil(remaining / 1000))}초 후 다음 문제`;
     }
-    if (remaining <= 0) advanceAfterRound();
+    if (remaining <= 0) showTimedOutAnswer();
   };
   tick(); timer = setInterval(tick, 40);
 }
@@ -289,9 +289,31 @@ function selectCharacter(char) {
 function judge(correct) {
   if (state.phase !== 'answering') return; clearTimer(); state.phase = 'result'; state.phaseStartedAt = Date.now(); state.phaseDeadline = state.phaseStartedAt + 2000;
   if (correct) state.score += 1; else state.lives -= 1;
+  state.resultKind = 'answer';
   state.lastResultCorrect = correct;
   state.lastResultText = correct ? '정답입니다!' : state.selectedChars.length ? '오답입니다' : '시간이 끝났습니다';
   persistSession(); renderQuestionResult();
+}
+
+function showTimedOutAnswer() {
+  if (state.phase !== 'reading' && state.phase !== 'rebound') return;
+  clearTimer(); state.phase = 'result'; state.resultKind = 'both-timeout';
+  state.phaseStartedAt = Date.now(); state.phaseDeadline = state.phaseStartedAt + 5000;
+  state.lastResultCorrect = null; state.lastResultText = '양쪽 모두 시간 초과';
+  persistSession(); renderTimedOutAnswer();
+}
+
+function renderTimedOutAnswer() {
+  const q = currentQuestion();
+  app.innerHTML = `<div class="battle-page centered timeout-answer-page"><div class="timeout-answer-card"><div class="eyebrow">ROUND ${state.questionIndex + 1} / ${MAX_ROUNDS}</div><p>양쪽 모두 시간 초과</p><div class="timeout-answer"><span>정답</span><strong>${q.answers[0]}</strong></div><small><b id="timeout-clock">5</b>초 후 ${matchShouldEnd() ? '경기 결과' : '다음 문제'}로 이동</small></div></div>`;
+  const tick = () => {
+    if (state.phase !== 'result' || state.resultKind !== 'both-timeout') { clearTimer(); return; }
+    const remaining = Math.max(0, (state.phaseDeadline || 0) - Date.now());
+    const clock = document.querySelector('#timeout-clock');
+    if (clock) clock.textContent = Math.max(0, Math.ceil(remaining / 1000));
+    if (remaining <= 0) advanceAfterRound();
+  };
+  tick(); timer = setInterval(tick, 100);
 }
 
 function renderQuestionResult() {
@@ -316,15 +338,15 @@ function resumeSavedMatch(snapshot) {
   const deadlinePassed = state.phaseDeadline && state.phaseDeadline <= now;
   if (state.phase === 'answering') {
     state.answerRightLost = true; state.phase = 'rebound';
-    if (deadlinePassed) { advanceAfterRound(); return; }
+    if (deadlinePassed) { showTimedOutAnswer(); return; }
     battle({ resume: true }); return;
   }
   if (state.phase === 'rebound') {
-    if (deadlinePassed) { advanceAfterRound(); return; }
+    if (deadlinePassed) { showTimedOutAnswer(); return; }
     battle({ resume: true }); return;
   }
   if (state.phase === 'reading') {
-    if (deadlinePassed) { advanceAfterRound(); return; }
+    if (deadlinePassed) { showTimedOutAnswer(); return; }
     battle({ resume: true }); return;
   }
   if (state.phase === 'countdown') {
@@ -338,7 +360,7 @@ function resumeSavedMatch(snapshot) {
   if (state.phase === 'ready') { battleReady(); return; }
   if (state.phase === 'result') {
     if (deadlinePassed) { advanceAfterRound(); }
-    else { persistSession(); renderQuestionResult(); }
+    else { persistSession(); state.resultKind === 'both-timeout' ? renderTimedOutAnswer() : renderQuestionResult(); }
     return;
   }
   home();
