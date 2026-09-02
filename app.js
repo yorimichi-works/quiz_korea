@@ -5,11 +5,16 @@ const categories = [
 ];
 let questions = [];
 let seasonInfo = { seasonId: 'loading', eligibleCount: 0 };
+let rankConfig = { version: 'rank-v1-fallback', winPoints: 100, tiers: [{ tier: 'D', requirement: 1000 }, { tier: 'C', requirement: 1500 }, { tier: 'B', requirement: 2500 }, { tier: 'A', requirement: 4000 }, { tier: 'AA', requirement: 6000 }], master: { requirement: 10000 } };
 let timer;
 let reconnectTimer;
 const SESSION_KEY = 'quiz-battle.active-session.v1';
 const TEST_LOCALE_KEY = 'quiz-battle.test-locale.v1';
 const HOME_INTRO_SESSION_KEY = 'meonjeo.home-intro.v1';
+const RANK_POINTS_KEY = 'meonjeo.rank-points.v1';
+const RANK_AWARDED_MATCH_KEY = 'meonjeo.rank-awarded-match.v1';
+const MATCH_HISTORY_KEY = 'meonjeo.match-history.v1';
+const REPORT_OUTBOX_KEY = 'meonjeo.report-outbox.v1';
 const RECONNECT_GRACE_MS = 45000;
 const QUESTION_CHAR_MS = 130;
 const POST_REVEAL_WAIT_MS = 5000;
@@ -27,29 +32,30 @@ const JAPANESE_TEST_QUESTIONS = [
 const UI = {
   ko: {
     catchphrase: '알았다면, 먼저 눌러라.', titleCopy: '문제를 먼저 알아채고 누르는<br>1대1 실시간 버저 퀴즈', online: '온라인 매치', onlineSub: '랜덤 상대와 바로 대전', friend: '친구 매치', friendSub: '초대 코드로 친구와 대전', ranking: '랭킹', rankingSub: '현재 레이팅 순위 확인',
-    backTitle: '타이틀로', searching: '상대를 찾는 중...', searchingSub: '현재 대기열에서 가장 가까운 레이팅의<br>플레이어를 찾고 있습니다.', cancel: '취소', readyTitle: '대전 상대와 매칭되었습니다!', startingSoon: '잠시 후 대전을 시작합니다.', ready: '준비 완료', nextHint: '다음 문제를 준비하세요',
+    backTitle: '타이틀로', searching: '상대를 찾는 중...', searchingSub: '현재 대기열에서 가장 가까운 레이팅의<br>플레이어를 찾고 있습니다.', cancel: '취소', readyTitle: '상대를 찾았습니다', startingSoon: '곧 시작합니다', ready: '준비하기', readySending: '준비 중…', readyDone: 'READY', waitingOpponent: '상대를 기다리는 중', nextHint: '다음 문제를 준비하세요',
     leave: '← 나가기', me: '민수', opponent: '별빛토끼', answerGuide: '정답 문자를 순서대로 선택하세요', buzz: '버저 누르기', buzzSub: '먼저 누르면 답할 수 있어요!', revealStart: '문제가 한 글자씩 공개됩니다',
     answerRight: '답변권을 얻었습니다 · 문자를 순서대로 선택하세요', correct: '정답입니다!', wrong: '오답입니다', answerTimeout: '시간이 끝났습니다', bothTimeout: '양쪽 모두 시간 초과', answer: '정답',
     myScore: '내 점수', lives: '남은 라이프', showResult: '결과 보기', next: '다음 문제', matchResult: '경기 결과', settings: '설정', sound: '효과음', vibration: '진동', language: '언어',
-    tied: '무효 경기입니다', won: '승리했습니다!', lost: '아쉽게 패배했습니다', ratingNoChange: '변동 없음', rematch: '다시 대전', home: '홈으로', rating: '레이팅',
+    tied: '무효 경기입니다', won: '승리했습니다!', lost: '아쉽게 패배했습니다', ratingNoChange: '변동 없음', rematch: '다시 대전', home: '홈으로', rating: '레이팅', rankPoint: '랭크 포인트', rankNoLoss: '패배해도 줄어들지 않습니다',
   },
   ja: {
     catchphrase: '分かったなら、先に押せ。', titleCopy: '問題を先に見抜いて押す<br>1対1リアルタイム早押しクイズ', online: 'オンラインマッチング', onlineSub: 'ランダムな相手とすぐ対戦', friend: 'フレンドマッチング', friendSub: '招待コードで友達と対戦', ranking: 'ランキング', rankingSub: '現在のレート順位を確認',
-    backTitle: 'タイトルへ', searching: '対戦相手を探しています…', searchingSub: '近いレートのプレイヤーを<br>検索しています。', cancel: 'キャンセル', readyTitle: '対戦相手とマッチングしました！', startingSoon: 'まもなく対戦を開始します。', ready: '準備OK', nextHint: '次の問題を準備してください',
+    backTitle: 'タイトルへ', searching: '対戦相手を探しています…', searchingSub: '近いレートのプレイヤーを<br>検索しています。', cancel: 'キャンセル', readyTitle: '対戦相手とマッチングしました！', startingSoon: 'まもなく対戦を開始します', ready: '準備する', readySending: '準備中…', readyDone: 'READY', waitingOpponent: '対戦相手を待っています', nextHint: '次の問題を準備してください',
     leave: '← 終了', me: 'あなた', opponent: 'テスト相手', answerGuide: '正解の文字を順番に選んでください', buzz: '早押し', buzzSub: '先に押すと回答できます！', revealStart: '問題が1文字ずつ表示されます',
     answerRight: '回答権を獲得しました · 文字を順番に選んでください', correct: '正解です！', wrong: '不正解です', answerTimeout: '回答時間終了', bothTimeout: '両者とも時間切れ', answer: '答え',
     myScore: '自分の得点', lives: '残りライフ', showResult: '結果を見る', next: '次の問題', matchResult: '試合結果', settings: '設定', sound: '効果音', vibration: '振動', language: '言語',
-    tied: '無効試合です', won: '勝利しました！', lost: '敗北しました', ratingNoChange: '変動なし', rematch: 'もう一度', home: 'ホームへ', rating: 'レート',
+    tied: '無効試合です', won: '勝利しました！', lost: '敗北しました', ratingNoChange: '変動なし', rematch: 'もう一度', home: 'ホームへ', rating: 'レート', rankPoint: 'ランクポイント', rankNoLoss: '負けても減りません',
   },
 };
-const ACTIVE_PHASES = new Set(['matching', 'ready', 'countdown', 'reading', 'answering', 'rebound', 'result']);
+const ACTIVE_PHASES = new Set(['matching', 'match-found', 'waiting-ready', 'ready', 'countdown', 'reading', 'answering', 'rebound', 'result']);
 const state = {
   phase: 'home', questionIndex: 0, score: 0, opponentScore: 0, lives: 5, answerSeconds: 7,
   answerRemaining: 7, selectedChars: [], charIndex: 0, rating: 1248,
   matchId: null, phaseStartedAt: null, phaseDeadline: null, answerRightLost: false,
   lastResultCorrect: null, lastResultText: '', resultKind: null, questionHistory: [],
   opponentAnswerActive: false, opponentAnswerSequence: [], opponentTypedChars: [], opponentMarks: [],
-  opponentWillAnswerCorrect: false,
+  opponentWillAnswerCorrect: false, rankPoints: Math.max(0, Number(localStorage.getItem(RANK_POINTS_KEY)) || 0), lastRankGain: 0, rankBeforeLabel: null,
+  answerInputUnlockedAt: 0,
   locale: localStorage.getItem(TEST_LOCALE_KEY) === 'ja' ? 'ja' : 'ko'
 };
 const clearTimer = () => { if (timer) { clearInterval(timer); timer = null; } };
@@ -80,6 +86,57 @@ const ui = key => UI[state.locale]?.[key] || UI.ko[key] || key;
 const isJapaneseTest = () => state.locale === 'ja';
 const activeQuestions = () => isJapaneseTest() ? JAPANESE_TEST_QUESTIONS : questions;
 const currentRoundLimit = () => isJapaneseTest() ? JAPANESE_TEST_QUESTIONS.length : MAX_ROUNDS;
+
+function rankFromPoints(totalPoints) {
+  let remaining = Math.max(0, Math.floor(Number(totalPoints) || 0));
+  const stageMarks = ['−', '', '＋'];
+  for (const entry of rankConfig.tiers) {
+    for (let stage = 0; stage < stageMarks.length; stage += 1) {
+      if (remaining < entry.requirement) {
+        const label = `${entry.tier}${stageMarks[stage]}`;
+        return { tier: entry.tier, label, baseLabel: entry.tier, stageMark: stageMarks[stage], current: remaining, required: entry.requirement, isMaster: false, masterLevel: null };
+      }
+      remaining -= entry.requirement;
+    }
+  }
+  const requirement = Math.max(1, Number(rankConfig.master.requirement) || 10000);
+  const masterLevel = Math.floor(remaining / requirement) + 1;
+  const current = remaining % requirement;
+  return { tier: 'MASTER', label: `Master ${masterLevel}`, baseLabel: 'M', stageMark: '', current, required: requirement, isMaster: true, masterLevel };
+}
+
+function rankEmblemMarkup(rank, extraClass = '') {
+  const tierClass = rank.tier.toLowerCase();
+  const stage = rank.stageMark ? `<small class="rank-stage">${escapeHtml(rank.stageMark)}</small>` : '';
+  const masterLevel = rank.isMaster ? `<small class="rank-master-level" style="--rank-digits:${String(rank.masterLevel).length}">${escapeHtml(rank.masterLevel)}</small>` : '';
+  return `<span class="rank-emblem rank-tier-${tierClass} ${extraClass}" role="img" aria-label="${escapeHtml(rank.label)}"><svg viewBox="0 0 48 56" aria-hidden="true"><path class="rank-shield" d="M24 3 42 10v15c0 12.5-7.2 22.5-18 28C13.2 47.5 6 37.5 6 25V10L24 3Z"/><path class="rank-cut" d="M24 8.5 37 14v11c0 8.2-4.4 15.2-13 20.2C15.4 40.2 11 33.2 11 25V14l13-5.5Z"/></svg><b>${escapeHtml(rank.baseLabel)}</b>${stage}${masterLevel}</span>`;
+}
+
+function renderRankPreview() {
+  showSettingsButton(false);
+  const samples = [0, 1000, 2000, 3000, 4500, 6000, 7500, 10000, 12500, 15000, 19000, 23000, 27000, 33000, 39000, 45000, 85000, 100025000];
+  const cards = samples.map(points => { const rank = rankFromPoints(points); return `<article class="rank-preview-item">${rankEmblemMarkup(rank, 'rank-emblem-preview')}<strong>${rank.label}</strong><small>${points.toLocaleString()} RP</small></article>`; }).join('');
+  app.innerHTML = `<div class="rank-preview-page"><div class="eyebrow">RANK BADGES · ${escapeHtml(rankConfig.version)}</div><h1>${isJapaneseTest() ? 'ランクアイコン' : '랭크 아이콘'}</h1><p>${isJapaneseTest() ? 'レートとは別の、減少しない累積ランク' : '레이팅과 별개로 감소하지 않는 누적 랭크'}</p><div class="rank-preview-grid">${cards}</div><button class="primary" id="rank-preview-back">${ui('home')}</button></div>`;
+  document.querySelector('#rank-preview-back').onclick = () => { globalThis.location.href = globalThis.location.pathname; };
+}
+
+function settleRankPoints({ won, tied }) {
+  const rankedMatch = state.matchId && !String(state.matchId).startsWith('friend-');
+  if (!rankedMatch || tied) return { gain: 0, before: rankFromPoints(state.rankPoints), after: rankFromPoints(state.rankPoints) };
+  const alreadySettled = localStorage.getItem(RANK_AWARDED_MATCH_KEY) === state.matchId;
+  if (alreadySettled) {
+    const after = rankFromPoints(state.rankPoints);
+    return { gain: state.lastRankGain || 0, before: rankFromPoints(Math.max(0, state.rankPoints - (state.lastRankGain || 0))), after };
+  }
+  const before = rankFromPoints(state.rankPoints);
+  const gain = won ? Number(rankConfig.winPoints) || 100 : 0;
+  state.rankPoints += gain;
+  state.lastRankGain = gain;
+  state.rankBeforeLabel = before.label;
+  localStorage.setItem(RANK_POINTS_KEY, String(state.rankPoints));
+  localStorage.setItem(RANK_AWARDED_MATCH_KEY, state.matchId);
+  return { gain, before, after: rankFromPoints(state.rankPoints) };
+}
 
 function showSettingsButton(visible) {
   settingsButton.hidden = !visible;
@@ -150,7 +207,7 @@ function historyOverlayMarkup() {
   const explanationLabel = isJapaneseTest() ? '解説' : '해설';
   const entries = state.questionHistory.map(item => {
     const outcomeLabel = item.outcome === 'correct' ? (isJapaneseTest() ? '正解' : '정답') : item.outcome === 'opponent-correct' ? (isJapaneseTest() ? '相手正解' : '상대 정답') : item.outcome === 'timeout' ? (isJapaneseTest() ? '時間切れ' : '시간 초과') : (isJapaneseTest() ? '不正解' : '오답');
-    return `<article class="history-item"><button class="history-question" type="button" aria-expanded="false"><span><small>Q${item.round} · ${escapeHtml(item.category)} · ${outcomeLabel}</small><strong>${escapeHtml(item.questionText)}</strong></span><b aria-hidden="true">＋</b></button><div class="history-answer" hidden><p><span>${answerLabel}</span><strong>${escapeHtml(item.answer)}</strong></p><p><span>${explanationLabel}</span>${escapeHtml(item.explanation)}</p></div></article>`;
+    return `<article class="history-item"><button class="history-question" type="button" aria-expanded="false"><span><small>Q${item.round} · ${escapeHtml(item.category)} · ${outcomeLabel}</small><strong>${escapeHtml(item.questionText)}</strong></span><b aria-hidden="true">＋</b></button><div class="history-answer" hidden><p><span>${answerLabel}</span><strong>${escapeHtml(item.answer)}</strong></p><p><span>${explanationLabel}</span>${escapeHtml(item.explanation)}</p><button class="history-report" type="button" data-question-id="${escapeHtml(item.questionId)}" data-question-label="${escapeHtml(item.questionText)}">${isJapaneseTest() ? 'この問題を報告' : '이 문제 신고'}</button></div></article>`;
   }).join('');
   return `<button class="history-rail" id="history-toggle" type="button" aria-controls="history-drawer" aria-expanded="false"><span>${historyLabel}</span><b>${state.questionHistory.length}</b></button><div class="history-scrim" id="history-scrim"><aside class="history-drawer" id="history-drawer" aria-hidden="true" aria-label="${historyLabel}"><header><div><small>REVIEW</small><h2>${historyLabel}</h2></div><button id="history-close" type="button" aria-label="${isJapaneseTest() ? '閉じる' : '닫기'}">×</button></header><div class="history-list">${entries || `<p class="history-empty">${emptyLabel}</p>`}</div></aside></div>`;
 }
@@ -177,6 +234,44 @@ function bindHistoryDrawer() {
       button.nextElementSibling.hidden = open;
     };
   });
+  document.querySelectorAll('.history-report').forEach(button => {
+    button.onclick = () => openReportDialog({ kind: 'question', targetId: button.dataset.questionId, targetLabel: button.dataset.questionLabel, matchId: state.matchId });
+  });
+}
+
+function readStoredList(key) {
+  try { const value = JSON.parse(localStorage.getItem(key) || '[]'); return Array.isArray(value) ? value : []; } catch { return []; }
+}
+
+function openReportDialog({ kind = 'feedback', targetId = null, targetLabel = '', matchId = null } = {}) {
+  document.querySelector('#report-dialog')?.remove();
+  const title = kind === 'player' ? (isJapaneseTest() ? '対戦相手を通報' : '상대 신고') : kind === 'question' ? (isJapaneseTest() ? '問題を報告' : '문제 신고') : (isJapaneseTest() ? '問題報告・要望' : '문제 신고 · 건의');
+  const dialog = document.createElement('dialog');
+  dialog.id = 'report-dialog'; dialog.className = 'report-dialog';
+  dialog.innerHTML = `<form method="dialog"><div class="eyebrow">REPORT</div><h2>${title}</h2>${targetLabel ? `<p class="report-target">${escapeHtml(targetLabel)}</p>` : ''}<label>${isJapaneseTest() ? '種類' : '유형'}<select id="report-category"><option value="incorrect">${isJapaneseTest() ? '内容が間違っている' : '내용이 틀림'}</option><option value="inappropriate">${isJapaneseTest() ? '不適切な内容・名前' : '부적절한 내용·이름'}</option><option value="bug">${isJapaneseTest() ? '不具合' : '오류'}</option><option value="request">${isJapaneseTest() ? '要望・その他' : '건의·기타'}</option></select></label><label>${isJapaneseTest() ? '詳細' : '상세 내용'}<textarea id="report-detail" rows="4" maxlength="500" placeholder="${isJapaneseTest() ? '気になった点を入力してください' : '확인이 필요한 내용을 입력해 주세요'}"></textarea></label><p class="report-error" id="report-error"></p><div class="report-actions"><button class="text-button" id="report-cancel" type="button">${isJapaneseTest() ? 'キャンセル' : '취소'}</button><button class="primary" id="report-submit" type="submit">${isJapaneseTest() ? '送信' : '보내기'}</button></div></form>`;
+  document.body.appendChild(dialog);
+  dialog.querySelector('#report-cancel').onclick = () => dialog.close();
+  dialog.addEventListener('close', () => dialog.remove(), { once: true });
+  dialog.querySelector('form').onsubmit = event => {
+    event.preventDefault();
+    const detail = dialog.querySelector('#report-detail').value.trim();
+    if (detail.length < 2) { dialog.querySelector('#report-error').textContent = isJapaneseTest() ? '詳細を2文字以上入力してください' : '상세 내용을 2자 이상 입력해 주세요'; return; }
+    const outbox = readStoredList(REPORT_OUTBOX_KEY);
+    outbox.unshift({ reportId: globalThis.crypto?.randomUUID?.() || `report-${Date.now()}`, kind, category: dialog.querySelector('#report-category').value, targetId, targetLabel, matchId, detail, locale: state.locale, createdAt: new Date().toISOString(), status: 'queued' });
+    localStorage.setItem(REPORT_OUTBOX_KEY, JSON.stringify(outbox.slice(0, 100)));
+    dialog.close();
+    showToast(isJapaneseTest() ? '報告を受け付けました' : '신고가 접수되었습니다');
+  };
+  dialog.showModal();
+  dialog.querySelector('#report-detail').focus();
+}
+
+function recordMatchHistory({ won, tied }) {
+  if (!state.matchId) return;
+  const history = readStoredList(MATCH_HISTORY_KEY);
+  if (history.some(item => item.matchId === state.matchId)) return;
+  history.unshift({ matchId: state.matchId, opponentName: ui('opponent'), opponentIcon: isJapaneseTest() ? '相' : '별', opponentRating: 1232, playedAt: new Date().toISOString(), result: tied ? 'draw' : won ? 'win' : 'loss' });
+  localStorage.setItem(MATCH_HISTORY_KEY, JSON.stringify(history.slice(0, 30)));
 }
 
 function readSavedSession() {
@@ -248,6 +343,15 @@ async function loadActiveSeason() {
   seasonInfo = { seasonId: payload.seasonId, eligibleCount: payload.eligibleCount };
 }
 
+async function loadRankConfig() {
+  const payload = await fetch('data/rank-config.json').then(response => {
+    if (!response.ok) throw new Error('rank config unavailable');
+    return response.json();
+  });
+  if (!Array.isArray(payload.tiers) || !payload.tiers.length || !payload.master?.requirement) throw new Error('rank config invalid');
+  rankConfig = payload;
+}
+
 function showToast(message) {
   let toast = document.querySelector('.status-toast');
   if (!toast) { toast = document.createElement('div'); toast.className = 'status-toast'; document.body.appendChild(toast); }
@@ -278,6 +382,7 @@ function bindHomeMenuAction(selector, action) {
 
 function home() {
   clearTimer(); clearSavedSession(); state.phase = 'home'; state.matchId = null;
+  state.rankPoints = Math.max(0, Number(localStorage.getItem(RANK_POINTS_KEY)) || state.rankPoints || 0);
   document.documentElement.lang = state.locale;
   document.title = isJapaneseTest() ? '먼저!（先に！）— テスト版' : '먼저! — 실시간 1대1 버저 퀴즈';
   showSettingsButton(true);
@@ -287,6 +392,8 @@ function home() {
   const motionClass = isFirstHome ? 'home-intro' : 'home-return';
   const sourceLabel = isJapaneseTest() ? `日本語テスト · ${JAPANESE_TEST_QUESTIONS.length}問` : `${seasonInfo.seasonId} · ${seasonInfo.eligibleCount.toLocaleString()}문제`;
   const brandTranslation = isJapaneseTest() ? '<span class="brand-translation">（先に！）</span>' : '';
+  const playerRank = rankFromPoints(state.rankPoints);
+  const rankProgress = Math.min(100, Math.round((playerRank.current / playerRank.required) * 100));
   app.innerHTML = `<div class="title-screen ${motionClass}">
     <section class="title-brand-panel" aria-labelledby="home-title">
       <p class="title-catchphrase">${ui('catchphrase')}</p>
@@ -294,7 +401,7 @@ function home() {
       <div class="title-support">
         <p class="brand-roman">MEONJEO!</p>
         <p class="title-description">${ui('titleCopy')}</p>
-        <div class="title-meta"><span>GOLD</span><span>RATING 1,248</span><span>${sourceLabel}</span></div>
+        <div class="title-meta"><div class="home-rank-pill">${rankEmblemMarkup(playerRank, 'rank-emblem-home')}<div><b>${playerRank.label}</b><small>${playerRank.current.toLocaleString()} / ${playerRank.required.toLocaleString()} RP</small><i><span style="width:${rankProgress}%"></span></i></div></div><span>RATING 1,248</span><span>${sourceLabel}</span></div>
       </div>
     </section>
     <nav class="home-menu" aria-label="${isJapaneseTest() ? 'メインメニュー' : '메인 메뉴'}">
@@ -375,7 +482,7 @@ function ranking() {
 function settings() {
   clearTimer();
   showSettingsButton(false);
-  app.innerHTML = `<div class="battle-page centered"><div class="settings-card"><div class="eyebrow">SETTINGS</div><h2>${ui('settings')}</h2><div class="settings-list"><button class="setting-row" aria-pressed="true"><span><strong>${ui('sound')}</strong><small>${isJapaneseTest() ? 'ボタンと正解の効果音' : '버튼과 정답 효과음'}</small></span><b>ON</b></button><button class="setting-row" aria-pressed="true"><span><strong>${ui('vibration')}</strong><small>${isJapaneseTest() ? '早押し時のフィードバック' : '빠른 누르기 피드백'}</small></span><b>ON</b></button><div class="setting-row static"><span><strong>${ui('language')}</strong><small>${isJapaneseTest() ? '一時テストモード' : '앱 표시 언어'}</small></span><b>${isJapaneseTest() ? '日本語 TEST' : '한국어'}</b></div></div><button class="primary" id="settings-back">${ui('backTitle')}</button></div></div>`;
+  app.innerHTML = `<div class="battle-page centered"><div class="settings-card"><div class="eyebrow">SETTINGS</div><h2>${ui('settings')}</h2><div class="settings-list"><button class="setting-row" aria-pressed="true"><span><strong>${ui('sound')}</strong><small>${isJapaneseTest() ? 'ボタンと正解の効果音' : '버튼과 정답 효과음'}</small></span><b>ON</b></button><button class="setting-row" aria-pressed="true"><span><strong>${ui('vibration')}</strong><small>${isJapaneseTest() ? '早押し時のフィードバック' : '빠른 누르기 피드백'}</small></span><b>ON</b></button><div class="setting-row static"><span><strong>${ui('language')}</strong><small>${isJapaneseTest() ? '一時テストモード' : '앱 표시 언어'}</small></span><b>${isJapaneseTest() ? '日本語 TEST' : '한국어'}</b></div><button class="setting-row setting-link" id="feedback-report"><span><strong>${isJapaneseTest() ? '問題報告・要望' : '문제 신고 · 건의'}</strong><small>${isJapaneseTest() ? '問題、動作、改善案を送る' : '문제·오류·개선 의견 보내기'}</small></span><b>→</b></button><button class="setting-row setting-link" id="match-history"><span><strong>${isJapaneseTest() ? 'マッチング履歴' : '매칭 기록'}</strong><small>${isJapaneseTest() ? '対戦相手の確認・通報' : '상대 확인 및 신고'}</small></span><b>→</b></button></div><button class="primary" id="settings-back">${ui('backTitle')}</button></div></div>`;
   document.querySelectorAll('.setting-row[aria-pressed]').forEach(button => {
     button.onclick = () => {
       const enabled = button.getAttribute('aria-pressed') === 'true';
@@ -383,7 +490,23 @@ function settings() {
       button.querySelector('b').textContent = enabled ? 'OFF' : 'ON';
     };
   });
+  document.querySelector('#feedback-report').onclick = () => openReportDialog({ kind: 'feedback' });
+  document.querySelector('#match-history').onclick = matchHistory;
   document.querySelector('#settings-back').onclick = home;
+}
+
+function matchHistory() {
+  clearTimer(); showSettingsButton(false);
+  const history = readStoredList(MATCH_HISTORY_KEY);
+  const empty = isJapaneseTest() ? '対戦履歴はまだありません' : '아직 매칭 기록이 없습니다';
+  const rows = history.map(item => {
+    const resultLabel = item.result === 'win' ? (isJapaneseTest() ? '勝利' : '승리') : item.result === 'loss' ? (isJapaneseTest() ? '敗北' : '패배') : (isJapaneseTest() ? '無効' : '무효');
+    const date = new Date(item.playedAt).toLocaleString(isJapaneseTest() ? 'ja-JP' : 'ko-KR', { month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit' });
+    return `<article class="match-history-row"><span class="match-history-avatar">${escapeHtml(item.opponentIcon)}</span><div><strong>${escapeHtml(item.opponentName)}</strong><small>RATING ${Number(item.opponentRating).toLocaleString()} · ${date}</small></div><b class="match-history-result ${item.result}">${resultLabel}</b><button class="match-report" type="button" data-match-id="${escapeHtml(item.matchId)}" data-player-name="${escapeHtml(item.opponentName)}">${isJapaneseTest() ? '通報' : '신고'}</button></article>`;
+  }).join('');
+  app.innerHTML = `<div class="battle-page centered"><div class="settings-card match-history-card"><div class="eyebrow">MATCH HISTORY</div><h2>${isJapaneseTest() ? 'マッチング履歴' : '매칭 기록'}</h2><div class="match-history-list">${rows || `<p class="history-empty">${empty}</p>`}</div><button class="primary" id="history-back">${isJapaneseTest() ? '設定へ戻る' : '설정으로'}</button></div></div>`;
+  document.querySelectorAll('.match-report').forEach(button => { button.onclick = () => openReportDialog({ kind: 'player', targetId: button.dataset.playerName, targetLabel: button.dataset.playerName, matchId: button.dataset.matchId }); });
+  document.querySelector('#history-back').onclick = settings;
 }
 
 function matching({ resume = false } = {}) {
@@ -403,27 +526,42 @@ function matching({ resume = false } = {}) {
   setTimeout(() => { if (state.phase === 'matching') battleReady(); }, remaining);
 }
 
-function battleReady({ resume = false } = {}) {
+function renderMatchFoundScreen({ waiting = false, animate = false } = {}) {
+  const playerRank = rankFromPoints(state.rankPoints);
+  const opponentRank = rankFromPoints(4500);
+  app.innerHTML = `<div class="battle-page centered match-found-page ${animate ? 'match-found-animate' : ''}"><div class="eyebrow">MATCH FOUND · ${isJapaneseTest() ? 'TEST' : 'RANKED'}</div><h2>${ui('readyTitle')}</h2><div class="ready-versus"><div class="ready-player ready-player-me"><span class="ready-avatar mine">${isJapaneseTest() ? '自' : '민'}</span><b>${ui('me')}</b><small>${rankEmblemMarkup(playerRank, 'rank-emblem-inline')}<span>RATING 1,248</span></small></div><strong class="ready-vs">VS</strong><div class="ready-player ready-player-opponent"><span class="ready-avatar">${isJapaneseTest() ? '相' : '별'}</span><b>${ui('opponent')}</b><small>${rankEmblemMarkup(opponentRank, 'rank-emblem-inline')}<span>RATING 1,232</span></small></div></div><button class="primary ready-action ${waiting ? 'is-ready' : ''}" id="ready" type="button" ${waiting ? 'disabled' : ''}>${waiting ? ui('readyDone') : ui('ready')}</button><p class="match-starting" id="ready-status">${waiting ? `${ui('waitingOpponent')}<span class="waiting-dots"><i></i><i></i><i></i></span>` : '&nbsp;'}</p></div>`;
+  if (!waiting) document.querySelector('#ready').onclick = () => waitForOpponentReady();
+}
+
+function battleReady() {
   clearTimer(); showSettingsButton(false);
-  state.phase = 'ready';
-  if (!resume || !state.phaseDeadline) { state.phaseStartedAt = Date.now(); state.phaseDeadline = state.phaseStartedAt + 1800; }
-  persistSession();
-  app.innerHTML = `<div class="battle-page centered match-found-page"><div class="match-found-icon" aria-hidden="true">✓</div><div class="eyebrow">MATCH FOUND · ${isJapaneseTest() ? 'TEST' : 'RANKED'}</div><h2>${ui('readyTitle')}</h2><div class="ready-versus"><div><span class="ready-avatar mine">${isJapaneseTest() ? '自' : '민'}</span><b>${ui('me')}</b><small>1,248 · GOLD</small></div><strong>VS</strong><div><span class="ready-avatar">${isJapaneseTest() ? '相' : '별'}</span><b>${ui('opponent')}</b><small>1,232 · GOLD</small></div></div><p class="match-starting">${ui('startingSoon')}</p></div>`;
+  state.phase = 'match-found'; state.phaseStartedAt = Date.now(); state.phaseDeadline = null; persistSession();
+  const animationKey = `meonjeo.match-found.${state.matchId}`;
+  const animate = sessionStorage.getItem(animationKey) !== 'seen';
+  sessionStorage.setItem(animationKey, 'seen');
+  renderMatchFoundScreen({ animate });
+}
+
+function waitForOpponentReady({ resume = false } = {}) {
+  clearTimer(); showSettingsButton(false);
+  if (!resume || !state.phaseDeadline) { state.phaseStartedAt = Date.now(); state.phaseDeadline = state.phaseStartedAt + 1050; }
+  state.phase = 'waiting-ready'; persistSession();
+  renderMatchFoundScreen({ waiting: true });
   const remaining = Math.max(0, (state.phaseDeadline || Date.now()) - Date.now());
-  setTimeout(() => { if (state.phase === 'ready') countdown(); }, remaining);
+  setTimeout(() => { if (state.phase === 'waiting-ready') countdown(); }, remaining);
 }
 
 function countdown({ resume = false } = {}) {
   clearTimer(); showSettingsButton(false); state.phase = 'countdown';
-  if (!resume || !state.phaseDeadline) { state.phaseStartedAt = Date.now(); state.phaseDeadline = state.phaseStartedAt + 2550; }
+  if (!resume || !state.phaseDeadline) { state.phaseStartedAt = Date.now(); state.phaseDeadline = state.phaseStartedAt + 1600; }
   persistSession();
-  app.innerHTML = `<div class="battle-page centered countdown-page"><div class="eyebrow">GET READY</div><div class="count-number" id="count">3</div><p class="muted">${ui('nextHint')}</p></div>`;
+  app.innerHTML = `<div class="battle-page centered countdown-page"><div class="eyebrow">GET READY</div><p class="countdown-title">${ui('startingSoon')}</p><div class="count-clip"><div class="count-number" id="count">3</div></div><div class="countdown-sweep"><span></span></div></div>`;
   let lastCount = null;
   const tick = () => {
     const remaining = (state.phaseDeadline || 0) - Date.now();
     const el = document.querySelector('#count');
-    const countValue = remaining <= 450 ? 'GO' : String(Math.max(1, Math.ceil((remaining - 450) / 700)));
-    if (el) el.textContent = countValue;
+    const countValue = remaining <= 400 ? 'GO' : String(Math.max(1, Math.ceil((remaining - 400) / 400)));
+    if (el && countValue !== lastCount) { el.textContent = countValue; el.classList.remove('count-enter'); void el.offsetWidth; el.classList.add('count-enter'); }
     if (countValue !== lastCount && ['3', '2', '1'].includes(countValue)) playCountdownSound();
     if (countValue !== lastCount && countValue === 'GO') playCountdownGoSound();
     lastCount = countValue;
@@ -503,8 +641,9 @@ function battle({ resume = false } = {}) {
 function claimAnswer() {
   if (state.phase !== 'reading') return;
   state.phase = 'answering'; state.selectedChars = []; state.charIndex = 0; state.answerRemaining = state.answerSeconds;
-  state.phaseStartedAt = Date.now(); state.phaseDeadline = state.phaseStartedAt + state.answerSeconds * 1000; state.answerRightLost = false; clearTimer(); persistSession();
-  const buzzButton = document.querySelector('#buzz'); buzzButton.classList.add('is-pressed'); setTimeout(() => { document.querySelector('#buzzer-zone').style.display = 'none'; document.querySelector('#answer').classList.add('active'); renderCandidates(); }, 120);
+  state.phaseStartedAt = Date.now(); state.phaseDeadline = state.phaseStartedAt + state.answerSeconds * 1000; state.answerInputUnlockedAt = state.phaseStartedAt + 500; state.answerRightLost = false; clearTimer(); persistSession();
+  const buzzButton = document.querySelector('#buzz'); buzzButton.disabled = true; buzzButton.classList.add('is-pressed'); setTimeout(() => { document.querySelector('#buzzer-zone').style.display = 'none'; document.querySelector('#answer').classList.add('active','is-input-locked'); renderCandidates(); }, 120);
+  setTimeout(() => { if (state.phase !== 'answering') return; document.querySelector('#answer')?.classList.remove('is-input-locked'); renderCandidates(); }, 500);
   document.querySelector('#status').textContent = ui('answerRight');
   timer = setInterval(() => {
     state.answerRemaining = Math.max(0, Math.ceil(((state.phaseDeadline || 0) - Date.now()) / 1000));
@@ -526,12 +665,13 @@ function renderCandidates() {
   const choices = [correct, ...distractors.filter(char => char !== correct && !answer.includes(char))].slice(0, candidateCount);
   choices.sort((a, b) => a.localeCompare(b, state.locale));
   document.querySelector('#selected-chars').textContent = state.selectedChars.join(' ') || '—';
-  document.querySelector('#candidate-options').innerHTML = choices.map(char => `<button class="candidate" data-char="${char}">${char}</button>`).join('');
+  const inputLocked = Date.now() < (state.answerInputUnlockedAt || 0);
+  document.querySelector('#candidate-options').innerHTML = choices.map(char => `<button class="candidate" data-char="${char}" ${inputLocked ? 'disabled' : ''}>${char}</button>`).join('');
   document.querySelectorAll('.candidate').forEach(button => { button.onclick = () => selectCharacter(button.dataset.char); });
 }
 
 function selectCharacter(char) {
-  if (state.phase !== 'answering') return; const answer = answerCharacters(currentQuestion());
+  if (state.phase !== 'answering' || Date.now() < (state.answerInputUnlockedAt || 0)) return; const answer = answerCharacters(currentQuestion());
   if (char !== answer[state.charIndex]) { playWrongSound(); document.querySelector('#candidate-options').classList.add('wrong-pick'); setTimeout(() => judge(false), 260); return; }
   playChoiceSound();
   state.selectedChars.push(char); state.charIndex += 1; persistSession();
@@ -589,12 +729,17 @@ function renderOpponentAnswer() {
   document.querySelector('#back').onclick = home;
   bindHistoryDrawer();
   const answer = answerCharacters(question);
+  let lastSoundCount = state.opponentTypedChars.length;
   const tick = () => {
     if (state.phase !== 'rebound' || !state.opponentAnswerActive) { clearTimer(); return; }
     const elapsed = Math.max(0, Date.now() - (state.phaseStartedAt || Date.now()));
     const revealCount = Math.min(state.opponentAnswerSequence.length, Math.floor(elapsed / OPPONENT_CHAR_MS));
     state.opponentTypedChars = state.opponentAnswerSequence.slice(0, revealCount);
     state.opponentMarks = state.opponentTypedChars.map((character, index) => character === answer[index] ? '〇' : '×');
+    if (revealCount > lastSoundCount) {
+      state.opponentMarks[revealCount - 1] === '×' ? playWrongSound() : playChoiceSound();
+      lastSoundCount = revealCount;
+    }
     const marks = document.querySelector('#opponent-marks');
     const characters = document.querySelector('#opponent-characters');
     if (marks) marks.innerHTML = state.opponentMarks.map(mark => `<span class="${mark === '×' ? 'is-wrong' : 'is-right'}">${mark}</span>`).join('');
@@ -698,7 +843,8 @@ function resumeSavedMatch(snapshot) {
     if (deadlinePassed) battleReady(); else matching({ resume: true });
     return;
   }
-  if (state.phase === 'ready') { battleReady({ resume: true }); return; }
+  if (state.phase === 'match-found' || state.phase === 'ready') { battleReady(); return; }
+  if (state.phase === 'waiting-ready') { if (deadlinePassed) countdown(); else waitForOpponentReady({ resume: true }); return; }
   if (state.phase === 'result') {
     if (deadlinePassed) { advanceAfterRound(); }
     else { persistSession(); state.resultKind === 'both-timeout' ? renderTimedOutAnswer() : renderQuestionResult(); }
@@ -737,11 +883,20 @@ function matchResult() {
   const roundLimit = currentRoundLimit();
   const tied = state.questionIndex + 1 >= roundLimit && state.score === state.opponentScore && state.lives > 0;
   const won = !tied && (state.score >= WIN_SCORE || (state.lives > 0 && state.score > state.opponentScore));
+  recordMatchHistory({ won, tied });
   const title = tied ? ui('tied') : won ? ui('won') : ui('lost');
   const icon = tied ? '—' : won ? '🏆' : '×';
-  const rating = tied ? ui('ratingNoChange') : won ? '+18' : '-14';
+  const ratingDelta = tied ? 0 : won ? 18 : -14;
+  const ratingAfter = state.rating + ratingDelta;
+  const ratingDeltaLabel = ratingDelta > 0 ? `+${ratingDelta}` : ratingDelta === 0 ? '±0' : String(ratingDelta);
+  const rankResult = settleRankPoints({ won, tied });
+  const rankPointsBefore = Math.max(0, state.rankPoints - rankResult.gain);
+  const rankProgress = Math.min(100, Math.round((rankResult.after.current / rankResult.after.required) * 100));
+  const rankProgressBefore = Math.min(100, Math.round((rankResult.before.current / rankResult.before.required) * 100));
+  const rankUp = rankResult.before.label !== rankResult.after.label;
+  const rankGainLabel = rankResult.gain > 0 ? `+${rankResult.gain} RP` : '+0 RP';
   const ruleCopy = isJapaneseTest() ? `日本語テスト · 全${roundLimit}問` : `최대 ${roundLimit}라운드 · ${WIN_SCORE}문제 선취`;
-  app.innerHTML = `<div class="battle-page centered"><div class="result-card final"><div class="result-icon ${won || tied ? '' : 'wrong'}">${icon}</div><div class="eyebrow">MATCH COMPLETE · ${Math.min(state.questionIndex + 1, roundLimit)} ROUNDS</div><h2>${title}</h2><p>${ruleCopy}</p><div class="final-score"><b>${state.score}</b><span>—</span><b>${state.opponentScore}</b></div><div class="rating-change">${ui('rating')} <strong>${rating}</strong></div><button class="primary" id="rematch">${ui('rematch')}</button><button class="text-button" id="home">${ui('home')}</button></div></div>${historyOverlayMarkup()}`;
+  app.innerHTML = `<div class="battle-page centered"><div class="result-card final"><div class="result-icon ${won || tied ? '' : 'wrong'}">${icon}</div><div class="eyebrow">MATCH COMPLETE · ${Math.min(state.questionIndex + 1, roundLimit)} ROUNDS</div><h2>${title}</h2><p>${ruleCopy}</p><div class="final-score"><b>${state.score}</b><span>—</span><b>${state.opponentScore}</b></div><div class="result-progression"><div class="rating-change"><span>RATING</span><b>${state.rating.toLocaleString()} → ${ratingAfter.toLocaleString()}</b><strong>${ratingDeltaLabel}</strong></div><div class="rank-result ${rankUp ? 'is-promoted' : ''}">${rankEmblemMarkup(rankResult.after, 'rank-emblem-result')}<div><small>${rankUp ? 'RANK UP!' : ui('rankPoint')}</small><strong>${rankResult.after.label}<em>${rankGainLabel}</em></strong><div class="rank-progress" style="--rank-from:${rankUp ? 0 : rankProgressBefore}%;--rank-to:${rankProgress}%"><span></span></div><p>${rankPointsBefore.toLocaleString()} → ${state.rankPoints.toLocaleString()} RP · ${ui('rankNoLoss')}</p></div></div></div><button class="primary" id="rematch">${ui('rematch')}</button><button class="text-button" id="home">${ui('home')}</button></div></div>${historyOverlayMarkup()}`;
   bindHistoryDrawer();
   document.querySelector('#rematch').onclick = () => { state.questionIndex = 0; state.score = 0; state.opponentScore = 0; state.lives = 5; state.questionHistory = []; matching(); }; document.querySelector('#home').onclick = home;
 }
@@ -749,7 +904,10 @@ function matchResult() {
 async function bootstrap() {
   document.documentElement.lang = state.locale;
   app.innerHTML = `<div class="battle-page centered"><div class="match-orb"><span>먼</span></div><p class="muted">${isJapaneseTest() ? 'テスト問題を準備しています…' : '시즌 문제를 불러오는 중...'}</p></div>`;
-  try { await loadActiveSeason(); } catch (error) { console.error(error); seasonInfo = { seasonId: '시즌 데이터 오류', eligibleCount: 0 }; }
+  const [seasonLoad, rankLoad] = await Promise.allSettled([loadActiveSeason(), loadRankConfig()]);
+  if (seasonLoad.status === 'rejected') { console.error(seasonLoad.reason); seasonInfo = { seasonId: '시즌 데이터 오류', eligibleCount: 0 }; }
+  if (rankLoad.status === 'rejected') console.error(rankLoad.reason);
+  if (new URLSearchParams(globalThis.location.search).has('rank-preview')) { renderRankPreview(); return; }
   const snapshot = readSavedSession();
   if (snapshot?.state?.matchId && ACTIVE_PHASES.has(snapshot.state.phase)) {
     hydrateSession(snapshot);

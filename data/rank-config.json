@@ -1,0 +1,12 @@
+{
+  "version": "rank-v1",
+  "winPoints": 100,
+  "tiers": [
+    { "tier": "D", "requirement": 1000 },
+    { "tier": "C", "requirement": 1500 },
+    { "tier": "B", "requirement": 2500 },
+    { "tier": "A", "requirement": 4000 },
+    { "tier": "AA", "requirement": 6000 }
+  ],
+  "master": { "requirement": 10000 }
+}
