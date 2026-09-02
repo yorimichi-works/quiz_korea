@@ -10,7 +10,7 @@ let reconnectTimer;
 const SESSION_KEY = 'quiz-battle.active-session.v1';
 const TEST_LOCALE_KEY = 'quiz-battle.test-locale.v1';
 const RECONNECT_GRACE_MS = 45000;
-const QUESTION_CHAR_MS = 80;
+const QUESTION_CHAR_MS = 130;
 const POST_REVEAL_WAIT_MS = 5000;
 const RESULT_DISPLAY_MS = 3000;
 const MAX_ROUNDS = 20;
