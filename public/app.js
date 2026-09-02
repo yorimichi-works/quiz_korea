@@ -112,11 +112,20 @@ async function loadActiveSeason() {
   seasonInfo = { seasonId: payload.seasonId, eligibleCount: payload.eligibleCount };
 }
 
+function showToast(message) {
+  let toast = document.querySelector('.status-toast');
+  if (!toast) { toast = document.createElement('div'); toast.className = 'status-toast'; document.body.appendChild(toast); }
+  toast.textContent = message;
+  toast.classList.add('show');
+  clearTimeout(showToast._timer);
+  showToast._timer = setTimeout(() => toast.classList.remove('show'), 1800);
+}
+
 function home() {
   clearTimer(); clearSavedSession(); state.phase = 'home'; state.matchId = null;
   showSettingsButton(true);
-  app.innerHTML = `<div class="title-screen"><section class="title-intro"><div class="eyebrow">Think fast. Play fair.</div><h1>QUIZ<br><span>BATTLE</span></h1><p>문제를 먼저 알아채고 누르는<br>1vs1 실시간 퀴즈</p><div class="title-meta"><span>GOLD · 1,248</span><span>${seasonInfo.seasonId} · ${seasonInfo.eligibleCount.toLocaleString()}문제</span></div></section><nav class="main-menu" aria-label="메인 메뉴"><button class="menu-button primary-menu" id="online-match"><span class="menu-index">01</span><span><strong>온라인 매칭</strong><small>랜덤 상대와 바로 대전</small></span><b>→</b></button><button class="menu-button" id="friend-match"><span class="menu-index">02</span><span><strong>친구 매칭</strong><small>초대 코드로 친구와 대전</small></span><b>→</b></button><button class="menu-button" id="ranking"><span class="menu-index">03</span><span><strong>랭킹</strong><small>현재 레이팅 순위 확인</small></span><b>→</b></button></nav></div>`;
-  document.querySelector('#online-match').onclick = questions.length ? matching : () => { document.querySelector('#online-match small').textContent = '시즌 문제를 불러오지 못했습니다'; };
+  app.innerHTML = `<div class="title-screen centered"><div class="eyebrow">Think fast. Play fair.</div><h1>QUIZ<br><span style="color:var(--cobalt)">BATTLE</span></h1><p class="muted">문제를 먼저 알아채고 누르는<br>1vs1 실시간 퀴즈</p><div class="title-meta"><span>GOLD · 1,248</span><span>${seasonInfo.seasonId} · ${seasonInfo.eligibleCount.toLocaleString()}문제</span></div><button class="primary" id="online-match">온라인 매칭</button><button class="text-button" id="friend-match">친구 매칭</button><button class="text-button" id="ranking">랭킹 보기</button></div>`;
+  document.querySelector('#online-match').onclick = questions.length ? matching : () => showToast('시즌 문제를 불러오지 못했습니다');
   document.querySelector('#friend-match').onclick = friendMatch;
   document.querySelector('#ranking').onclick = ranking;
 }
