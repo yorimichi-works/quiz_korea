@@ -1,0 +1,14 @@
+{
+  "schemaVersion": 1,
+  "activeSeasonId": "S1-2026",
+  "seasons": [
+    {
+      "seasonId": "S1-2026",
+      "locale": "ko",
+      "status": "draft",
+      "questionFile": "S1-2026/questions.ko.json",
+      "startsAt": null,
+      "endsAt": null
+    }
+  ]
+}
