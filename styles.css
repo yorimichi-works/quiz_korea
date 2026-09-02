@@ -102,3 +102,131 @@ html, body { width:100%; height:100%; overflow:hidden; }
   .dashboard > .card:not(.stat-card), .section { display:none; }
   .stat-card { height:100%; max-height:150px; }
 }
+
+/* Quiz Battle title and match surfaces */
+.settings-button {
+  width:36px; height:36px; display:grid; place-items:center; border:1px solid var(--line);
+  border-radius:12px; color:var(--navy); background:#fff; font-size:17px;
+  box-shadow:0 5px 14px rgba(17,45,92,.08); transition:transform .12s, background .12s;
+}
+.settings-button:hover { background:var(--soft); }
+.settings-button:active { transform:translateY(2px); }
+.settings-button[hidden] { display:none; }
+
+.title-screen {
+  height:100%; min-height:0; padding:clamp(26px,6vh,72px) clamp(24px,8vw,100px);
+  display:grid; grid-template-columns:minmax(0,1fr) minmax(320px,.85fr); align-items:center;
+  gap:clamp(36px,8vw,110px); overflow:hidden; background:
+    radial-gradient(circle at 12% 12%, rgba(36,107,219,.11), transparent 31%),
+    linear-gradient(145deg,#fff 0%,#f7faff 58%,#eef4ff 100%);
+}
+.title-intro h1 { margin:clamp(10px,2vh,20px) 0; color:var(--navy); font:800 clamp(52px,9vw,104px)/.83 'DM Sans',sans-serif; letter-spacing:-.08em; }
+.title-intro h1 span { color:var(--cobalt); }
+.title-intro p { margin:0; color:var(--muted); font-size:clamp(14px,1.6vw,18px); line-height:1.7; }
+.title-meta { display:flex; flex-wrap:wrap; gap:8px; margin-top:clamp(18px,4vh,38px); }
+.title-meta span { padding:8px 12px; border:1px solid #dce7f8; border-radius:999px; color:var(--navy); background:rgba(255,255,255,.78); font:700 11px 'DM Sans',sans-serif; }
+.main-menu { display:grid; gap:12px; }
+.menu-button {
+  width:100%; min-height:88px; padding:16px 18px; display:grid; grid-template-columns:38px 1fr auto;
+  gap:14px; align-items:center; border:1px solid #dfe7f2; border-radius:20px; color:var(--navy);
+  background:rgba(255,255,255,.9); text-align:left; box-shadow:0 12px 32px rgba(17,45,92,.07);
+  transition:transform .14s, border-color .14s, box-shadow .14s;
+}
+.menu-button:hover { transform:translateY(-2px); border-color:#aac6ef; box-shadow:0 16px 36px rgba(17,45,92,.11); }
+.menu-button:active { transform:translateY(3px); box-shadow:0 6px 16px rgba(17,45,92,.08); }
+.menu-button strong,.menu-button small { display:block; }
+.menu-button strong { font-size:17px; }
+.menu-button small { margin-top:4px; color:var(--muted); font-size:11px; }
+.menu-button > b { font-size:22px; }
+.menu-index { color:#90a0b8; font:700 11px 'DM Sans',sans-serif; }
+.menu-button.primary-menu { border-color:var(--cobalt); color:#fff; background:linear-gradient(135deg,#2875e7,#1557c2); box-shadow:0 16px 32px rgba(36,107,219,.25); }
+.menu-button.primary-menu small,.menu-button.primary-menu .menu-index { color:#cfdefa; }
+
+.ranking-card,.settings-card { width:min(520px,100%); padding:38px; border:1px solid var(--line); border-radius:24px; background:#fff; box-shadow:0 24px 60px rgba(17,45,92,.09); }
+.ranking-list,.settings-list { margin:25px 0 8px; padding:0; display:grid; gap:10px; }
+.ranking-list { list-style:none; }
+.ranking-list li,.setting-row { min-height:62px; padding:13px 16px; display:grid; grid-template-columns:38px 1fr auto; gap:12px; align-items:center; border:1px solid var(--line); border-radius:14px; background:var(--soft); }
+.ranking-list li > b { width:28px; height:28px; display:grid; place-items:center; border-radius:9px; color:var(--cobalt); background:#e7f0ff; }
+.ranking-list li strong { font:700 16px 'DM Sans',sans-serif; }
+.setting-row { width:100%; grid-template-columns:1fr auto; color:var(--navy); text-align:left; }
+.setting-row span strong,.setting-row span small { display:block; }
+.setting-row span small { margin-top:3px; color:var(--muted); font-size:10px; }
+.setting-row b { color:var(--cobalt); }
+.setting-row.static { cursor:default; }
+
+.battle-arena { max-width:960px; padding-top:22px; }
+.battle-arena .battle-head { margin-bottom:14px; }
+.scoreboard { display:grid; grid-template-columns:minmax(0,1fr) 120px minmax(0,1fr); align-items:stretch; gap:10px; }
+.combatant { min-width:0; min-height:126px; padding:15px 17px; display:flex; align-items:center; gap:13px; border:1px solid #dfe6f0; background:#fff; box-shadow:0 9px 24px rgba(17,45,92,.07); }
+.combatant.me { border-left:6px solid var(--cobalt); border-radius:20px 8px 8px 20px; }
+.combatant.opponent { border-right:6px solid #f3c900; border-radius:8px 20px 20px 8px; text-align:right; }
+.combat-avatar { flex:0 0 auto; width:68px; height:68px; display:grid; place-items:center; border:4px solid var(--cobalt); border-radius:50%; color:#fff; background:linear-gradient(145deg,#173a70,#2b77e2); font-weight:800; box-shadow:0 0 0 4px #e9f1ff; }
+.opponent .combat-avatar { border-color:#f3c900; background:linear-gradient(145deg,#6550a6,#a287df); box-shadow:0 0 0 4px #fff8cf; }
+.combat-copy { min-width:0; flex:1; }
+.combat-copy strong,.combat-copy small,.combat-copy span { display:block; }
+.combat-copy strong { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; font-size:16px; }
+.combat-copy small { margin:4px 0 8px; color:var(--muted); font:600 11px 'DM Sans',sans-serif; }
+.combat-life { width:max-content; padding:4px 9px; border:1px solid #e5eaf1; border-radius:999px; color:var(--cobalt); background:#fff; font-size:12px; }
+.opponent .combat-life { margin-left:auto; color:#e0ad00; }
+.combat-score { color:var(--navy); font:800 30px 'DM Sans',sans-serif; }
+.round-hub { padding:13px 9px; display:grid; place-items:center; align-content:center; border:1px solid #dfe6f0; border-radius:16px; background:#fff; text-align:center; box-shadow:0 9px 24px rgba(17,45,92,.07); }
+.round-hub div { display:flex; justify-content:center; align-items:baseline; gap:4px; }
+.round-hub strong { color:var(--cobalt); font:800 40px 'DM Sans',sans-serif; }
+.round-hub span { color:var(--muted); font:600 14px 'DM Sans',sans-serif; }
+.round-hub small { color:var(--muted); font:700 10px 'DM Sans',sans-serif; letter-spacing:.08em; }
+.round-hub i { width:8px; height:8px; margin-top:10px; border-radius:50%; background:var(--cobalt); box-shadow:15px 0 0 #dbe3ef; }
+.question-timer-row { margin:24px 4px 16px; display:grid; grid-template-columns:auto auto 1fr; align-items:center; gap:10px; }
+.timer-icon { color:var(--cobalt); font-size:25px; }
+.question-timer-row b { min-width:50px; color:var(--navy); font:700 16px 'DM Sans',sans-serif; }
+.question-progress { height:12px; border-radius:999px; background:#e4e8ee; overflow:hidden; }
+.question-progress span { display:block; width:100%; height:100%; border-radius:inherit; background:linear-gradient(90deg,#2776e8,#175bc9); transition:width .08s linear; }
+.live-question-card { margin:0; min-height:250px; padding:25px 30px 28px; border:1px solid #dfe5ee; border-radius:20px; background:#fff; text-align:left; box-shadow:0 12px 28px rgba(17,45,92,.08); }
+.question-meta { display:flex; align-items:center; gap:8px; }
+.q-badge { width:45px; height:45px; display:grid; place-items:center; border-radius:50%; color:#fff; background:var(--cobalt); font:800 20px 'DM Sans',sans-serif; }
+.category-pill,.difficulty-pill { padding:6px 10px; border-radius:999px; color:var(--cobalt); background:#eaf2ff; font-size:11px; font-weight:700; }
+.difficulty-pill { color:#7b6b14; background:#fff7cf; }
+.round-caption { margin-left:auto; color:var(--muted); font:700 11px 'DM Sans',sans-serif; }
+.live-question-card .question { max-width:none; min-height:116px; margin:18px 8px 8px; place-items:center start; font-size:clamp(21px,3vw,30px); }
+.buzzer-zone { display:flex; justify-content:center; margin:26px auto 0; }
+.buzzer-zone .buzz { width:220px; height:220px; aspect-ratio:1; margin:0; display:flex; flex-direction:column; align-items:center; justify-content:center; border:9px solid #fff; border-radius:50%; color:#fff; background:linear-gradient(160deg,#3d84f0 0%,#1760cf 65%,#0d3f9e 100%); box-shadow:0 0 0 10px #ffd34a,0 13px 0 14px #dfe5ed,0 24px 32px rgba(17,69,155,.28); }
+.buzzer-zone .buzz span { font-size:34px; line-height:1; }
+.buzzer-zone .buzz strong { margin-top:10px; font-size:22px; }
+.buzzer-zone .buzz small { margin-top:5px; color:#dbe8ff; font-size:10px; font-weight:500; }
+.buzzer-zone .buzz:active,.buzzer-zone .buzz.is-pressed { transform:translateY(10px) scale(.985); box-shadow:0 0 0 10px #ffd34a,0 4px 0 14px #dfe5ed,0 11px 19px rgba(17,69,155,.2); }
+.battle-arena > .status { margin-top:22px; text-align:center; }
+.live-question-card .answer-panel { max-width:620px; margin:8px auto 0; text-align:center; }
+
+@media (max-width:700px) {
+  .title-screen { grid-template-columns:1fr; align-content:center; gap:24px; padding:22px 18px; }
+  .title-intro h1 { font-size:clamp(45px,15vw,70px); }
+  .title-intro p { font-size:13px; }
+  .title-meta { margin-top:14px; }
+  .main-menu { gap:9px; }
+  .menu-button { min-height:70px; padding:11px 14px; border-radius:16px; }
+  .menu-button strong { font-size:15px; }
+  .battle-arena { padding:14px 12px 40px; }
+  .scoreboard { grid-template-columns:minmax(0,1fr) 66px minmax(0,1fr); gap:5px; }
+  .combatant { min-height:91px; padding:9px; gap:7px; }
+  .combat-avatar { width:42px; height:42px; border-width:3px; font-size:12px; }
+  .combat-copy strong { font-size:12px; }
+  .combat-copy small { margin:2px 0 5px; font-size:9px; }
+  .combat-life { padding:2px 6px; font-size:10px; }
+  .combat-score { font-size:20px; }
+  .round-hub { padding:8px 4px; border-radius:12px; }
+  .round-hub strong { font-size:27px; }
+  .round-hub span { font-size:10px; }
+  .question-timer-row { margin:18px 2px 12px; }
+  .live-question-card { min-height:220px; padding:18px 17px 20px; }
+  .q-badge { width:37px; height:37px; font-size:17px; }
+  .live-question-card .question { min-height:115px; margin:14px 3px 5px; font-size:20px; }
+  .buzzer-zone .buzz { width:180px; height:180px; }
+  .buzzer-zone .buzz strong { font-size:19px; }
+}
+
+@media (max-height:680px) {
+  .title-screen { padding-top:14px; padding-bottom:14px; gap:14px; }
+  .title-intro h1 { margin:6px 0; font-size:clamp(40px,10vh,64px); }
+  .title-intro p { line-height:1.45; }
+  .title-meta { margin-top:8px; }
+  .menu-button { min-height:62px; }
+}

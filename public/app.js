@@ -11,9 +11,11 @@ const SESSION_KEY = 'quiz-battle.active-session.v1';
 const RECONNECT_GRACE_MS = 45000;
 const QUESTION_CHAR_MS = 80;
 const POST_REVEAL_WAIT_MS = 5000;
+const MAX_ROUNDS = 20;
+const WIN_SCORE = 5;
 const ACTIVE_PHASES = new Set(['matching', 'ready', 'countdown', 'reading', 'answering', 'rebound', 'result']);
 const state = {
-  phase: 'home', questionIndex: 0, score: 0, lives: 3, answerSeconds: 7,
+  phase: 'home', questionIndex: 0, score: 0, opponentScore: 0, lives: 3, answerSeconds: 7,
   answerRemaining: 7, selectedChars: [], charIndex: 0, rating: 1248,
   matchId: null, phaseStartedAt: null, phaseDeadline: null, answerRightLost: false,
   lastResultCorrect: null, lastResultText: ''
@@ -22,6 +24,25 @@ const clearTimer = () => { if (timer) { clearInterval(timer); timer = null; } };
 const clearReconnectTimer = () => { if (reconnectTimer) { clearInterval(reconnectTimer); reconnectTimer = null; } };
 const normalize = value => value.toLowerCase().replace(/\s+/g, '').trim();
 const answerCharacters = question => Array.from(question.answers[0].normalize('NFKC').toUpperCase().replace(/[\s·.,!?！？'"“”‘’()（）\-_:：/]/g, ''));
+const settingsButton = document.querySelector('#settings');
+
+function showSettingsButton(visible) {
+  settingsButton.hidden = !visible;
+}
+
+function matchShouldEnd() {
+  return state.score >= WIN_SCORE
+    || state.opponentScore >= WIN_SCORE
+    || state.lives <= 0
+    || state.questionIndex + 1 >= MAX_ROUNDS;
+}
+
+function advanceAfterRound() {
+  clearTimer();
+  if (matchShouldEnd()) { matchResult(); return; }
+  state.questionIndex += 1;
+  countdown();
+}
 
 function currentQuestion() {
   return questions.length ? questions[state.questionIndex % questions.length] : null;
@@ -51,6 +72,7 @@ function clearSavedSession() {
 
 function hydrateSession(snapshot) {
   Object.assign(state, snapshot.state || {});
+  if (!Number.isFinite(state.opponentScore)) state.opponentScore = 0;
   const savedQuestionIndex = questions.findIndex(question => question.id === snapshot.activeQuestionId);
   const targetIndex = state.questionIndex % Math.max(questions.length, 1);
   if (savedQuestionIndex >= 0 && savedQuestionIndex !== targetIndex) {
@@ -92,17 +114,44 @@ async function loadActiveSeason() {
 
 function home() {
   clearTimer(); clearSavedSession(); state.phase = 'home'; state.matchId = null;
-  app.innerHTML = `<div class="page"><section class="hero"><div class="hero-copy"><div class="eyebrow">Think fast. Play fair.</div><h1>문제를 먼저 맞히는<br><span style="color:var(--cobalt)">1vs1 퀴즈 배틀</span></h1><p class="lede">지금 바로 상대를 찾아보세요.<br>짧고 강렬한 한 판이 시작됩니다.</p><span class="season-badge">${seasonInfo.seasonId} · ${seasonInfo.eligibleCount.toLocaleString()}문제</span></div><button class="quick-match" id="match"><span class="arrow">↗</span><strong>빠른 대전</strong><span>랜덤 매칭으로 바로 시작</span></button></section>
-    <section class="dashboard"><div class="card stat-card"><div class="stat-label">현재 레이팅</div><div class="rating">1,248 <small>▲ 24</small></div><div class="rank-row"><span>최고 랭크 · 골드</span><span class="rank-badge">GOLD</span></div></div><div class="card"><div class="card-title">최근 전적 <a href="#">전체보기</a></div><div class="recent-list"><div class="recent-item"><span class="result win">W</span><span>김민준</span><span class="recent-meta">+16<br>2분 전</span></div><div class="recent-item"><span class="result loss">L</span><span>별빛토끼</span><span class="recent-meta">-12<br>어제</span></div><div class="recent-item"><span class="result win">W</span><span>QuizMaster</span><span class="recent-meta">+18<br>어제</span></div></div></div></section>
-    <section class="card section"><div class="card-title">카테고리 <a href="#">준비 중인 모드</a></div><div class="category-grid">${categories.map(c => `<button class="category"><b>${c[0]}</b><span>${c[1]}</span></button>`).join('')}</div></section>
-  </div>`;
-  document.querySelector('#match').onclick = questions.length ? matching : () => { document.querySelector('#match span:last-child').textContent = '시즌 문제를 불러오지 못했습니다'; };
+  showSettingsButton(true);
+  app.innerHTML = `<div class="title-screen"><section class="title-intro"><div class="eyebrow">Think fast. Play fair.</div><h1>QUIZ<br><span>BATTLE</span></h1><p>문제를 먼저 알아채고 누르는<br>1vs1 실시간 퀴즈</p><div class="title-meta"><span>GOLD · 1,248</span><span>${seasonInfo.seasonId} · ${seasonInfo.eligibleCount.toLocaleString()}문제</span></div></section><nav class="main-menu" aria-label="메인 메뉴"><button class="menu-button primary-menu" id="online-match"><span class="menu-index">01</span><span><strong>온라인 매칭</strong><small>랜덤 상대와 바로 대전</small></span><b>→</b></button><button class="menu-button" id="friend-match"><span class="menu-index">02</span><span><strong>친구 매칭</strong><small>초대 코드로 친구와 대전</small></span><b>→</b></button><button class="menu-button" id="ranking"><span class="menu-index">03</span><span><strong>랭킹</strong><small>현재 레이팅 순위 확인</small></span><b>→</b></button></nav></div>`;
+  document.querySelector('#online-match').onclick = questions.length ? matching : () => { document.querySelector('#online-match small').textContent = '시즌 문제를 불러오지 못했습니다'; };
+  document.querySelector('#friend-match').onclick = friendMatch;
+  document.querySelector('#ranking').onclick = ranking;
+}
+
+function friendMatch() {
+  showSettingsButton(false);
+  app.innerHTML = `<div class="battle-page centered"><div class="result-card"><div class="eyebrow">FRIEND MATCH</div><h2>친구 매칭</h2><p class="muted">초대 코드를 만들거나 입력하는 기능을 준비하고 있습니다.</p><button class="primary" id="friend-back">타이틀로</button></div></div>`;
+  document.querySelector('#friend-back').onclick = home;
+}
+
+function ranking() {
+  showSettingsButton(false);
+  app.innerHTML = `<div class="battle-page centered"><div class="ranking-card"><div class="eyebrow">RANKING</div><h2>현재 랭킹</h2><ol class="ranking-list"><li><b>1</b><span>QuizMaster</span><strong>2,184</strong></li><li><b>2</b><span>별빛토끼</span><strong>2,096</strong></li><li><b>3</b><span>민수</span><strong>1,248</strong></li></ol><button class="primary" id="ranking-back">타이틀로</button></div></div>`;
+  document.querySelector('#ranking-back').onclick = home;
+}
+
+function settings() {
+  clearTimer();
+  showSettingsButton(false);
+  app.innerHTML = `<div class="battle-page centered"><div class="settings-card"><div class="eyebrow">SETTINGS</div><h2>설정</h2><div class="settings-list"><button class="setting-row" aria-pressed="true"><span><strong>효과음</strong><small>버튼과 정답 효과음</small></span><b>ON</b></button><button class="setting-row" aria-pressed="true"><span><strong>진동</strong><small>빠른 누르기 피드백</small></span><b>ON</b></button><div class="setting-row static"><span><strong>언어</strong><small>앱 표시 언어</small></span><b>한국어</b></div></div><button class="primary" id="settings-back">타이틀로</button></div></div>`;
+  document.querySelectorAll('.setting-row[aria-pressed]').forEach(button => {
+    button.onclick = () => {
+      const enabled = button.getAttribute('aria-pressed') === 'true';
+      button.setAttribute('aria-pressed', String(!enabled));
+      button.querySelector('b').textContent = enabled ? 'OFF' : 'ON';
+    };
+  });
+  document.querySelector('#settings-back').onclick = home;
 }
 
 function matching({ resume = false } = {}) {
   clearTimer();
+  showSettingsButton(false);
   if (!resume) {
-    state.questionIndex = 0; state.score = 0; state.lives = 3;
+    state.questionIndex = 0; state.score = 0; state.opponentScore = 0; state.lives = 3;
     state.selectedChars = []; state.charIndex = 0; state.answerRemaining = state.answerSeconds;
     state.lastResultCorrect = null; state.lastResultText = ''; state.answerRightLost = false;
     state.matchId = globalThis.crypto?.randomUUID?.() || `match-${Date.now()}`;
@@ -116,13 +165,14 @@ function matching({ resume = false } = {}) {
 }
 
 function battleReady() {
+  showSettingsButton(false);
   state.phase = 'ready'; state.phaseStartedAt = Date.now(); state.phaseDeadline = null; persistSession();
   app.innerHTML = `<div class="battle-page centered"><div class="eyebrow">MATCH FOUND · RANKED</div><h2>대전 준비 완료</h2><div class="ready-versus"><div><span class="ready-avatar mine">민</span><b>민수</b><small>1,248 · GOLD</small></div><strong>VS</strong><div><span class="ready-avatar">별</span><b>별빛토끼</b><small>1,232 · GOLD</small></div></div><button class="primary" id="ready">준비 완료</button></div>`;
   document.querySelector('#ready').onclick = countdown;
 }
 
 function countdown({ resume = false } = {}) {
-  clearTimer(); state.phase = 'countdown';
+  clearTimer(); showSettingsButton(false); state.phase = 'countdown';
   if (!resume || !state.phaseDeadline) { state.phaseStartedAt = Date.now(); state.phaseDeadline = state.phaseStartedAt + 2550; }
   persistSession();
   app.innerHTML = `<div class="battle-page centered countdown-page"><div class="eyebrow">GET READY</div><div class="count-number" id="count">3</div><p class="muted">다음 문제를 준비하세요</p></div>`;
@@ -136,23 +186,39 @@ function countdown({ resume = false } = {}) {
 }
 
 function battle({ resume = false } = {}) {
-  clearTimer();
+  clearTimer(); showSettingsButton(false);
   const q = currentQuestion();
   const questionChars = Array.from(q.text);
   const revealDuration = questionChars.length * QUESTION_CHAR_MS;
+  const roundDuration = revealDuration + POST_REVEAL_WAIT_MS;
   if (!resume) {
     state.phase = 'reading'; state.phaseStartedAt = Date.now();
-    state.phaseDeadline = state.phaseStartedAt + revealDuration + POST_REVEAL_WAIT_MS; state.answerRightLost = false;
+    state.phaseDeadline = state.phaseStartedAt + roundDuration; state.answerRightLost = false;
     state.selectedChars = []; state.charIndex = 0; state.answerRemaining = state.answerSeconds;
   } else if (!state.phaseStartedAt) {
-    state.phaseStartedAt = (state.phaseDeadline || Date.now()) - revealDuration - POST_REVEAL_WAIT_MS;
+    state.phaseStartedAt = (state.phaseDeadline || Date.now()) - roundDuration;
   }
   const locked = state.phase === 'rebound' || state.answerRightLost;
-  app.innerHTML = `<div class="battle-page"><div class="battle-head"><button class="back" id="back">← 홈으로</button><span class="round">${seasonInfo.seasonId} · MATCH ${String(state.questionIndex + 1).padStart(2, '0')}</span></div><div class="players"><div class="player me"><div class="player-top"><span>나</span><span class="hearts">${'♥ '.repeat(state.lives).trim()}</span></div><div class="player-name">민수</div><span class="points">${state.score}</span> <small>점</small></div><span class="vs">VS</span><div class="player"><div class="player-top"><span>상대</span><span class="hearts">♥ ♥ ♥</span></div><div class="player-name">별빛토끼</div><span class="points">${Math.min(state.questionIndex, 4)}</span> <small>점</small></div></div><div class="question-card"><div class="question-label">${q.category} · ${q.difficulty.toUpperCase()} · QUESTION ${String(state.questionIndex + 1).padStart(2, '0')}</div><div class="question" id="question-text">${locked ? q.text : ''}</div><div class="progress"><span id="progress-fill"></span></div><button class="buzz" id="buzz">빠르게 누르기</button><div class="status" id="status">문제가 한 글자씩 공개됩니다</div><div class="answer-panel" id="answer"><div class="answer-guide">정답 문자를 순서대로 선택하세요 · <span id="answer-clock">7</span>초</div><div class="selected-chars" id="selected-chars">—</div><div class="candidate-options" id="candidate-options"></div></div></div></div>`;
+  app.innerHTML = `<div class="battle-page battle-arena">
+    <div class="battle-head"><button class="back" id="back">← 나가기</button><span class="round">${seasonInfo.seasonId}</span></div>
+    <section class="scoreboard" aria-label="대전 점수">
+      <article class="combatant me"><div class="combat-avatar">민</div><div class="combat-copy"><strong>민수</strong><small>★ ${state.rating.toLocaleString()}</small><span class="combat-life">♥ ${state.lives}</span></div><b class="combat-score">${state.score}</b></article>
+      <div class="round-hub"><div><strong>${state.questionIndex + 1}</strong><span>/ ${MAX_ROUNDS}</span></div><small>ROUND</small><i></i></div>
+      <article class="combatant opponent"><b class="combat-score">${state.opponentScore}</b><div class="combat-copy"><strong>별빛토끼</strong><small>★ 1,232</small><span class="combat-life">♥ 3</span></div><div class="combat-avatar">별</div></article>
+    </section>
+    <div class="question-timer-row"><span class="timer-icon">◷</span><b id="question-clock">00:00</b><div class="question-progress"><span id="progress-fill"></span></div></div>
+    <section class="question-card live-question-card">
+      <div class="question-meta"><span class="q-badge">Q.</span><span class="category-pill">${q.category}</span><span class="difficulty-pill">${q.difficulty.toUpperCase()}</span><span class="round-caption">${state.questionIndex + 1} / ${MAX_ROUNDS}</span></div>
+      <div class="question" id="question-text">${locked ? q.text : ''}</div>
+      <div class="answer-panel" id="answer"><div class="answer-guide">정답 문자를 순서대로 선택하세요 · <span id="answer-clock">7</span>초</div><div class="selected-chars" id="selected-chars">—</div><div class="candidate-options" id="candidate-options"></div></div>
+    </section>
+    <div class="buzzer-zone" id="buzzer-zone"><button class="buzz" id="buzz"><span>⚡</span><strong>버저 누르기</strong><small>먼저 누르면 답할 수 있어요!</small></button></div>
+    <div class="status" id="status">문제가 한 글자씩 공개됩니다</div>
+  </div>`;
   document.querySelector('#back').onclick = home;
   const buzzButton = document.querySelector('#buzz');
   if (locked) {
-    buzzButton.style.display = 'none';
+    document.querySelector('#buzzer-zone').style.display = 'none';
     document.querySelector('#status').textContent = '연결이 끊겨 이 문제의 답변권을 잃었습니다 · 상대 진행을 기다리는 중';
   } else {
     buzzButton.onclick = claimAnswer;
@@ -163,19 +229,23 @@ function battle({ resume = false } = {}) {
     const remaining = Math.max(0, (state.phaseDeadline || 0) - now);
     const fill = document.querySelector('#progress-fill');
     const status = document.querySelector('#status');
+    const clock = document.querySelector('#question-clock');
+    const seconds = Math.max(0, Math.ceil(remaining / 1000));
+    if (clock) clock.textContent = `00:${String(seconds).padStart(2, '0')}`;
     if (locked) {
-      if (fill) fill.style.width = `${Math.min(100, remaining / (state.answerSeconds * 10))}%`;
+      const lockedDuration = Math.max(1, (state.phaseDeadline || now) - (state.phaseStartedAt || now));
+      if (fill) fill.style.width = `${Math.min(100, remaining / lockedDuration * 100)}%`;
     } else {
       const elapsed = Math.max(0, now - state.phaseStartedAt);
       const revealCount = Math.min(questionChars.length, Math.floor(elapsed / QUESTION_CHAR_MS));
       const questionText = document.querySelector('#question-text');
       if (questionText) questionText.textContent = questionChars.slice(0, revealCount).join('');
-      if (fill) fill.style.width = `${Math.min(100, elapsed / (revealDuration + POST_REVEAL_WAIT_MS) * 100)}%`;
+      if (fill) fill.style.width = `${Math.min(100, remaining / roundDuration * 100)}%`;
       if (status) status.textContent = revealCount < questionChars.length
         ? `문제 공개 중 · ${revealCount}/${questionChars.length}`
         : `문제 전체가 공개되었습니다 · ${Math.max(0, Math.ceil(remaining / 1000))}초 후 다음 문제`;
     }
-    if (remaining <= 0) { clearTimer(); state.questionIndex += 1; countdown(); }
+    if (remaining <= 0) advanceAfterRound();
   };
   tick(); timer = setInterval(tick, 40);
 }
@@ -184,7 +254,7 @@ function claimAnswer() {
   if (state.phase !== 'reading') return;
   state.phase = 'answering'; state.selectedChars = []; state.charIndex = 0; state.answerRemaining = state.answerSeconds;
   state.phaseStartedAt = Date.now(); state.phaseDeadline = state.phaseStartedAt + state.answerSeconds * 1000; state.answerRightLost = false; clearTimer(); persistSession();
-  const buzzButton = document.querySelector('#buzz'); buzzButton.classList.add('is-pressed'); setTimeout(() => { buzzButton.style.display = 'none'; document.querySelector('#answer').classList.add('active'); renderCandidates(); }, 120);
+  const buzzButton = document.querySelector('#buzz'); buzzButton.classList.add('is-pressed'); setTimeout(() => { document.querySelector('#buzzer-zone').style.display = 'none'; document.querySelector('#answer').classList.add('active'); renderCandidates(); }, 120);
   document.querySelector('#status').textContent = '답변권을 얻었습니다 · 문자를 순서대로 선택하세요';
   timer = setInterval(() => {
     state.answerRemaining = Math.max(0, Math.ceil(((state.phaseDeadline || 0) - Date.now()) / 1000));
@@ -226,8 +296,8 @@ function judge(correct) {
 
 function renderQuestionResult() {
   const q = currentQuestion(); const correct = state.lastResultCorrect; const resultText = state.lastResultText;
-  app.innerHTML = `<div class="battle-page centered"><div class="result-card"><div class="result-icon ${correct ? '' : 'wrong'}">${correct ? '✓' : '×'}</div><h2>${resultText}</h2><p>정답: <strong>${q.answers[0]}</strong></p><p class="explanation">${q.explanation}</p><div class="result-stats"><span>내 점수 <b>${state.score}</b></span><span>남은 라이프 <b>${'♥ '.repeat(Math.max(0, state.lives)).trim() || '0'}</b></span></div><button class="primary" id="next">${state.score >= 5 || state.lives <= 0 ? '결과 보기' : '다음 문제'}</button></div></div>`;
-  const advance = () => { if (state.phase !== 'result') return; if (state.score >= 5 || state.lives <= 0) matchResult(); else { state.questionIndex += 1; countdown(); } };
+  app.innerHTML = `<div class="battle-page centered"><div class="result-card"><div class="result-icon ${correct ? '' : 'wrong'}">${correct ? '✓' : '×'}</div><div class="eyebrow">ROUND ${state.questionIndex + 1} / ${MAX_ROUNDS}</div><h2>${resultText}</h2><p>정답: <strong>${q.answers[0]}</strong></p><p class="explanation">${q.explanation}</p><div class="result-stats"><span>내 점수 <b>${state.score}</b></span><span>남은 라이프 <b>${'♥ '.repeat(Math.max(0, state.lives)).trim() || '0'}</b></span></div><button class="primary" id="next">${matchShouldEnd() ? '결과 보기' : '다음 문제'}</button></div></div>`;
+  const advance = () => { if (state.phase !== 'result') return; advanceAfterRound(); };
   document.querySelector('#next').onclick = advance;
   setTimeout(advance, Math.max(0, (state.phaseDeadline || Date.now()) - Date.now()));
 }
@@ -246,15 +316,15 @@ function resumeSavedMatch(snapshot) {
   const deadlinePassed = state.phaseDeadline && state.phaseDeadline <= now;
   if (state.phase === 'answering') {
     state.answerRightLost = true; state.phase = 'rebound';
-    if (deadlinePassed) { state.questionIndex += 1; countdown(); return; }
+    if (deadlinePassed) { advanceAfterRound(); return; }
     battle({ resume: true }); return;
   }
   if (state.phase === 'rebound') {
-    if (deadlinePassed) { state.questionIndex += 1; countdown(); return; }
+    if (deadlinePassed) { advanceAfterRound(); return; }
     battle({ resume: true }); return;
   }
   if (state.phase === 'reading') {
-    if (deadlinePassed) { state.questionIndex += 1; countdown(); return; }
+    if (deadlinePassed) { advanceAfterRound(); return; }
     battle({ resume: true }); return;
   }
   if (state.phase === 'countdown') {
@@ -267,7 +337,7 @@ function resumeSavedMatch(snapshot) {
   }
   if (state.phase === 'ready') { battleReady(); return; }
   if (state.phase === 'result') {
-    if (deadlinePassed) { if (state.score >= 5 || state.lives <= 0) matchResult(); else { state.questionIndex += 1; countdown(); } }
+    if (deadlinePassed) { advanceAfterRound(); }
     else { persistSession(); renderQuestionResult(); }
     return;
   }
@@ -300,9 +370,14 @@ function showReconnectExpired() {
 }
 
 function matchResult() {
-  clearSavedSession(); state.phase = 'match-result'; state.phaseStartedAt = Date.now(); state.phaseDeadline = null; const won = state.score >= 5 || state.lives > 0;
-  app.innerHTML = `<div class="battle-page centered"><div class="result-card final"><div class="result-icon">🏆</div><div class="eyebrow">MATCH COMPLETE</div><h2>${won ? '승리했습니다!' : '아쉽게 패배했습니다'}</h2><p>5문제 선취를 향한 첫 경기</p><div class="final-score"><b>${state.score}</b><span>—</span><b>${Math.min(state.questionIndex, 4)}</b></div><div class="rating-change">레이팅 <strong>${won ? '+18' : '-14'}</strong></div><button class="primary" id="rematch">다시 대전</button><button class="text-button" id="home">홈으로</button></div></div>`;
-  document.querySelector('#rematch').onclick = () => { state.questionIndex = 0; state.score = 0; state.lives = 3; matching(); }; document.querySelector('#home').onclick = home;
+  clearSavedSession(); showSettingsButton(false); state.phase = 'match-result'; state.phaseStartedAt = Date.now(); state.phaseDeadline = null;
+  const tied = state.questionIndex + 1 >= MAX_ROUNDS && state.score === state.opponentScore && state.lives > 0;
+  const won = !tied && (state.score >= WIN_SCORE || (state.lives > 0 && state.score > state.opponentScore));
+  const title = tied ? '무효 경기입니다' : won ? '승리했습니다!' : '아쉽게 패배했습니다';
+  const icon = tied ? '—' : won ? '🏆' : '×';
+  const rating = tied ? '변동 없음' : won ? '+18' : '-14';
+  app.innerHTML = `<div class="battle-page centered"><div class="result-card final"><div class="result-icon ${won || tied ? '' : 'wrong'}">${icon}</div><div class="eyebrow">MATCH COMPLETE · ${Math.min(state.questionIndex + 1, MAX_ROUNDS)} ROUNDS</div><h2>${title}</h2><p>최대 ${MAX_ROUNDS}라운드 · ${WIN_SCORE}문제 선취</p><div class="final-score"><b>${state.score}</b><span>—</span><b>${state.opponentScore}</b></div><div class="rating-change">레이팅 <strong>${rating}</strong></div><button class="primary" id="rematch">다시 대전</button><button class="text-button" id="home">홈으로</button></div></div>`;
+  document.querySelector('#rematch').onclick = () => { state.questionIndex = 0; state.score = 0; state.opponentScore = 0; state.lives = 3; matching(); }; document.querySelector('#home').onclick = home;
 }
 
 async function bootstrap() {
@@ -323,5 +398,6 @@ document.addEventListener('visibilitychange', () => {
   if (document.hidden) { clearTimer(); persistSession({ disconnected: true }); }
   else if (readSavedSession()?.disconnectedAt) attemptReconnect();
 });
+document.querySelector('#settings').onclick = settings;
 
 bootstrap();
