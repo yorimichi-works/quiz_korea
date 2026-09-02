@@ -18,7 +18,7 @@ const REPORT_OUTBOX_KEY = 'meonjeo.report-outbox.v1';
 const RECONNECT_GRACE_MS = 45000;
 const QUESTION_CHAR_MS = 130;
 const POST_REVEAL_WAIT_MS = 5000;
-const RESULT_DISPLAY_MS = 3000;
+const RESULT_DISPLAY_MS = 5000;
 const OPPONENT_CHAR_MS = 650;
 const OPPONENT_RESULT_HOLD_MS = 1200;
 const MAX_ROUNDS = 20;
@@ -737,7 +737,11 @@ function renderOpponentAnswer() {
     state.opponentTypedChars = state.opponentAnswerSequence.slice(0, revealCount);
     state.opponentMarks = state.opponentTypedChars.map((character, index) => character === answer[index] ? '〇' : '×');
     if (revealCount > lastSoundCount) {
-      state.opponentMarks[revealCount - 1] === '×' ? playWrongSound() : playChoiceSound();
+      const latestMark = state.opponentMarks[revealCount - 1];
+      const answerCompleted = revealCount === state.opponentAnswerSequence.length;
+      if (latestMark === '×') playWrongSound();
+      else if (answerCompleted && state.opponentWillAnswerCorrect) playCorrectSound();
+      else playChoiceSound();
       lastSoundCount = revealCount;
     }
     const marks = document.querySelector('#opponent-marks');
@@ -795,7 +799,7 @@ function renderTimedOutAnswer() {
 
 function renderQuestionResult() {
   const q = currentQuestion(); const correct = state.lastResultCorrect; const resultText = state.lastResultText;
-  app.innerHTML = `<div class="battle-page centered"><div class="result-card"><div class="result-icon ${correct ? '' : 'wrong'}">${correct ? '✓' : '×'}</div><div class="eyebrow">ROUND ${state.questionIndex + 1} / ${currentRoundLimit()}</div><h2>${resultText}</h2><p>${ui('answer')}: <strong>${q.answers[0]}</strong></p><p class="explanation">${q.explanation}</p><div class="result-stats"><span>${ui('myScore')} <b>${state.score}</b></span><span>${ui('lives')} <b>${'♥ '.repeat(Math.max(0, state.lives)).trim() || '0'}</b></span></div><p class="result-auto-next"><b id="result-clock">${Math.ceil(RESULT_DISPLAY_MS / 1000)}</b>${isJapaneseTest() ? '秒後に' : '초 후'} ${matchShouldEnd() ? ui('matchResult') : ui('next')}</p></div></div>`;
+  app.innerHTML = `<div class="battle-page centered"><div class="result-card answer-result-card"><div class="result-icon ${correct ? '' : 'wrong'}">${correct ? '✓' : '×'}</div><div class="eyebrow">ROUND ${state.questionIndex + 1} / ${currentRoundLimit()}</div><h2>${resultText}</h2><div class="result-revealed-answer"><span>${ui('answer')}</span><strong>${q.answers[0]}</strong></div><p class="explanation">${q.explanation}</p><div class="result-stats"><span>${ui('myScore')} <b>${state.score}</b></span><span>${ui('lives')} <b>${'♥ '.repeat(Math.max(0, state.lives)).trim() || '0'}</b></span></div><p class="result-auto-next"><b id="result-clock">${Math.ceil(RESULT_DISPLAY_MS / 1000)}</b>${isJapaneseTest() ? '秒後に' : '초 후'} ${matchShouldEnd() ? ui('matchResult') : ui('next')}</p></div></div>`;
   const tick = () => {
     if (state.phase !== 'result' || state.resultKind !== 'answer') { clearTimer(); return; }
     const remaining = Math.max(0, (state.phaseDeadline || 0) - Date.now());
