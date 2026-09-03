@@ -47,9 +47,9 @@ async function firebaseUserIdFromRequest(request: Request) {
     method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ idToken: token }),
   });
   if (!lookup.ok) return null;
-  const payload = await lookup.json() as { users?: Array<{ localId?: string; providerUserInfo?: Array<{ providerId?: string }> }> };
+  const payload = await lookup.json() as { users?: Array<{ localId?: string }> };
   const user = payload.users?.[0];
-  if (!user?.localId || !user.providerUserInfo?.some(provider => provider.providerId === 'google.com')) return null;
+  if (!user?.localId) return null;
   try {
     const encoded = token.split('.')[1].replace(/-/g, '+').replace(/_/g, '/');
     const claims = JSON.parse(atob(encoded.padEnd(Math.ceil(encoded.length / 4) * 4, '='))) as { aud?: string };

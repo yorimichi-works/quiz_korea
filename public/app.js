@@ -400,11 +400,7 @@ function home() {
   </div>`;
   bindHomeMenuAction('#online-match', () => {
     if (isJapaneseTest()) { matching(); return; }
-    if (state.authSession?.isAnonymous !== false) {
-      settings();
-      showToast('온라인 대전은 Google 로그인이 필요합니다');
-      return;
-    }
+    if (state.authSession?.status !== 'ready') { showToast('게스트 계정을 준비하고 있습니다…'); return; }
     onlineMatching();
   });
   bindHomeMenuAction('#friend-match', friendMatch);
@@ -636,7 +632,7 @@ function localProgressSnapshot() {
 
 let cloudSyncPromise = null;
 async function syncCloudProgress({ refreshUi = false } = {}) {
-  if (state.authSession?.isAnonymous !== false || !globalThis.meonjeoAuth?.syncGameData) return;
+  if (state.authSession?.status !== 'ready' || !globalThis.meonjeoAuth?.syncGameData) return;
   if (cloudSyncPromise) return cloudSyncPromise;
   state.cloudSyncStatus = 'syncing';
   refreshAccountPanel();
@@ -684,7 +680,7 @@ function accountPanelMarkup() {
   const syncLabel = state.cloudSyncStatus === 'syncing' ? (isJapaneseTest() ? '同期中…' : '동기화 중…') : state.cloudSyncStatus === 'synced' ? (isJapaneseTest() ? '戦績同期済み' : '전적 동기화됨') : state.cloudSyncStatus === 'error' ? (isJapaneseTest() ? '同期を再試行します' : '동기화를 다시 시도합니다') : '';
   const detail = linked
     ? [session.email || (isJapaneseTest() ? 'Googleアカウント連携済み' : 'Google 계정 연결됨'), syncLabel].filter(Boolean).join(' · ')
-    : (isJapaneseTest() ? 'Google連携で今後の戦績保存に備えられます' : 'Google 연결로 향후 전적 저장을 준비할 수 있어요');
+    : (isJapaneseTest() ? 'このまま遊べます · Google連携後も戦績を引き継ぎます' : '바로 플레이 가능 · Google 연결 후에도 전적이 이어집니다');
   const avatar = linked ? escapeHtml((session.displayName || session.email || 'G').trim().charAt(0).toUpperCase()) : 'G';
   const action = linked ? (isJapaneseTest() ? 'ログアウト' : '로그아웃') : (isJapaneseTest() ? 'Googleで続ける' : 'Google로 계속하기');
   const error = session.status === 'error' ? `<p class="account-error">${escapeHtml(authErrorMessage(session.errorCode))}</p>` : '';
@@ -1161,18 +1157,19 @@ async function bootstrap() {
     if (reconnectAge(snapshot) <= RECONNECT_GRACE_MS) showReconnect(snapshot); else showReconnectExpired();
   } else home();
   state.bootstrapped = true;
-  if (state.authSession?.isAnonymous === false && localStorage.getItem(ONLINE_MATCH_KEY) && state.phase === 'home') void onlineMatching();
+  if (state.authSession?.status === 'ready' && localStorage.getItem(ONLINE_MATCH_KEY) && state.phase === 'home') void onlineMatching();
 }
 
 window.addEventListener('offline', () => { if (ACTIVE_PHASES.has(state.phase)) showDisconnected(); });
 window.addEventListener('online', () => { if (readSavedSession()?.disconnectedAt) attemptReconnect(); });
 window.addEventListener('pagehide', () => persistSession({ disconnected: true }));
 window.addEventListener('meonjeo-auth-change', event => {
+  const previousUid = state.authSession?.uid;
   state.authSession = event.detail || { status: 'error', isAnonymous: true };
+  if (previousUid && state.authSession.uid && previousUid !== state.authSession.uid) globalThis.meonjeoRealtime?.resetSession?.();
   refreshAccountPanel();
-  if (state.authSession.status === 'ready' && state.authSession.isAnonymous === false) void syncCloudProgress({ refreshUi: true });
-  if (state.authSession.status === 'ready' && state.authSession.isAnonymous === false && state.bootstrapped && localStorage.getItem(ONLINE_MATCH_KEY) && state.phase === 'home') void onlineMatching();
-  if (state.authSession.isAnonymous !== false) globalThis.meonjeoRealtime?.resetSession?.();
+  if (state.authSession.status === 'ready') void syncCloudProgress({ refreshUi: true });
+  if (state.authSession.status === 'ready' && state.bootstrapped && localStorage.getItem(ONLINE_MATCH_KEY) && state.phase === 'home') void onlineMatching();
 });
 document.addEventListener('visibilitychange', () => {
   if (!ACTIVE_PHASES.has(state.phase)) return;

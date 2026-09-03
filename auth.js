@@ -63,12 +63,26 @@ async function signInWithGoogle() {
   try {
     const current = auth.currentUser;
     if (current?.isAnonymous) {
+      const guestToken = await getIdToken(current);
       try {
         await linkWithPopup(current, provider);
       } catch (error) {
         const credential = GoogleAuthProvider.credentialFromError(error);
         if (error?.code !== 'auth/credential-already-in-use' || !credential) throw error;
         await signInWithCredential(auth, credential);
+        const googleToken = await getIdToken(auth.currentUser);
+        const mergeOptions = {
+          method: 'POST',
+          headers: { Authorization: `Bearer ${googleToken}`, 'Content-Type': 'application/json' },
+          body: JSON.stringify({ guestToken }),
+          cache: 'no-store',
+        };
+        let mergeResponse = await fetch('/api/progress?action=merge-guest', mergeOptions);
+        if (!mergeResponse.ok) {
+          await new Promise(resolve => setTimeout(resolve, 400));
+          mergeResponse = await fetch('/api/progress?action=merge-guest', mergeOptions);
+        }
+        if (!mergeResponse.ok) throw new Error(`Guest merge failed (${mergeResponse.status})`);
       }
     } else {
       await signInWithPopup(auth, provider);
@@ -115,7 +129,7 @@ function mergeProgress(localProgress, cloudProgress) {
 
 async function authenticatedRequest(path, options = {}) {
   const user = auth.currentUser;
-  if (!user || user.isAnonymous) throw new Error('Google account is required');
+  if (!user) throw new Error('Player session is required');
   const token = await getIdToken(user);
   const response = await fetch(path, {
     ...options,
@@ -138,7 +152,7 @@ async function syncGameData(localProgress) {
 
 async function getAuthToken() {
   const user = auth.currentUser;
-  if (!user || user.isAnonymous) throw new Error('Google account is required');
+  if (!user) throw new Error('Player session is required');
   return getIdToken(user);
 }
 

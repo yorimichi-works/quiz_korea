@@ -1,4 +1,4 @@
-import { readPlayerProgress, writePlayerProgress, type MatchHistoryItem, type PlayerProgress } from '@/db/progress';
+import { mergePlayerProgress, readPlayerProgress, writePlayerProgress, type MatchHistoryItem, type PlayerProgress } from '@/db/progress';
 
 const FIREBASE_API_KEY = 'AIzaSyAFNxcPTqD8LK6IWXlygncDoaUFRAdb6sQ';
 const FIREBASE_PROJECT_ID = 'tier-online';
@@ -7,31 +7,30 @@ function json(body: unknown, status = 200) {
   return Response.json(body, { status, headers: { 'Cache-Control': 'no-store' } });
 }
 
-async function requireGoogleUser(request: Request): Promise<string | null> {
-  const authorization = request.headers.get('authorization') || '';
-  const token = authorization.startsWith('Bearer ') ? authorization.slice(7).trim() : '';
+type VerifiedUser = { userId: string; googleLinked: boolean };
+
+async function verifyFirebaseToken(token: string): Promise<VerifiedUser | null> {
   if (!token || token.length > 4096) return null;
   const response = await fetch(`https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=${FIREBASE_API_KEY}`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ idToken: token }),
+    method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ idToken: token }),
   });
   if (!response.ok) return null;
-  const payload = await response.json() as {
-    users?: Array<{ localId?: string; providerUserInfo?: Array<{ providerId?: string }> }>;
-  };
+  const payload = await response.json() as { users?: Array<{ localId?: string; providerUserInfo?: Array<{ providerId?: string }> }> };
   const user = payload.users?.[0];
-  const googleLinked = user?.providerUserInfo?.some(provider => provider.providerId === 'google.com');
-  if (!user?.localId || !googleLinked) return null;
-
+  if (!user?.localId) return null;
   try {
     const encodedPayload = token.split('.')[1]?.replace(/-/g, '+').replace(/_/g, '/') || '';
     const paddedPayload = encodedPayload.padEnd(Math.ceil(encodedPayload.length / 4) * 4, '=');
     const tokenPayload = JSON.parse(atob(paddedPayload)) as { aud?: string };
-    return tokenPayload.aud === FIREBASE_PROJECT_ID ? user.localId : null;
-  } catch {
-    return null;
-  }
+    if (tokenPayload.aud !== FIREBASE_PROJECT_ID) return null;
+    return { userId: user.localId, googleLinked: Boolean(user.providerUserInfo?.some(provider => provider.providerId === 'google.com')) };
+  } catch { return null; }
+}
+
+async function requireFirebaseUser(request: Request): Promise<VerifiedUser | null> {
+  const authorization = request.headers.get('authorization') || '';
+  const token = authorization.startsWith('Bearer ') ? authorization.slice(7).trim() : '';
+  return verifyFirebaseToken(token);
 }
 
 function cleanMatch(item: unknown): MatchHistoryItem | null {
@@ -71,9 +70,9 @@ function cleanProgress(input: unknown): PlayerProgress | null {
 
 export async function GET(request: Request) {
   try {
-    const userId = await requireGoogleUser(request);
-    if (!userId) return json({ error: 'unauthorized' }, 401);
-    return json({ progress: await readPlayerProgress(userId) });
+    const user = await requireFirebaseUser(request);
+    if (!user) return json({ error: 'unauthorized' }, 401);
+    return json({ progress: await readPlayerProgress(user.userId) });
   } catch (error) {
     console.error('progress GET failed', error);
     return json({ error: 'unavailable' }, 503);
@@ -82,14 +81,29 @@ export async function GET(request: Request) {
 
 export async function PUT(request: Request) {
   try {
-    const userId = await requireGoogleUser(request);
-    if (!userId) return json({ error: 'unauthorized' }, 401);
+    const user = await requireFirebaseUser(request);
+    if (!user) return json({ error: 'unauthorized' }, 401);
     const progress = cleanProgress(await request.json());
     if (!progress) return json({ error: 'invalid-progress' }, 400);
-    await writePlayerProgress(userId, progress);
+    await writePlayerProgress(user.userId, progress);
     return json({ progress });
   } catch (error) {
     console.error('progress PUT failed', error);
+    return json({ error: 'unavailable' }, 503);
+  }
+}
+
+export async function POST(request: Request) {
+  try {
+    if (new URL(request.url).searchParams.get('action') !== 'merge-guest') return json({ error: 'unknown-action' }, 404);
+    const target = await requireFirebaseUser(request);
+    if (!target?.googleLinked) return json({ error: 'google-account-required' }, 401);
+    const body = await request.json().catch(() => ({})) as { guestToken?: unknown };
+    const source = await verifyFirebaseToken(String(body.guestToken || ''));
+    if (!source || source.googleLinked || source.userId === target.userId) return json({ error: 'invalid-guest' }, 400);
+    return json({ progress: await mergePlayerProgress(source.userId, target.userId) });
+  } catch (error) {
+    console.error('progress merge failed', error);
     return json({ error: 'unavailable' }, 503);
   }
 }
