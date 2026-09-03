@@ -3,7 +3,7 @@ export default function Home() {
     <main className="game-frame-shell">
       <iframe
         className="game-frame"
-        src="/game.html"
+        src="/game.html?v=2"
         title="먼저! — 실시간 1대1 버저 퀴즈"
         allow="fullscreen"
       />
