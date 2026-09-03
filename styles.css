@@ -354,6 +354,43 @@ html, body { width:100%; height:100%; overflow:hidden; }
 .answer-deadline b { color:var(--cobalt); font:900 22px 'DM Sans',sans-serif; }
 .background-sync-note { display:block; margin-top:9px; color:#8795a9; font-size:9px; }
 
+/* Achievement titles: compact angular badges inspired by the supplied blue-line references. */
+.title-badge { --title-accent:#246bdb; min-width:0; height:28px; padding:0 11px 0 7px; display:inline-flex; align-items:center; gap:6px; color:var(--navy); background:#fff; border:1.5px solid var(--title-accent); clip-path:polygon(7px 0,calc(100% - 7px) 0,100% 50%,calc(100% - 7px) 100%,7px 100%,0 50%); white-space:nowrap; }
+.title-badge i { min-width:17px; color:var(--title-accent); font:900 10px/1 'DM Sans',sans-serif; font-style:normal; text-align:center; }
+.title-badge b { overflow:hidden; text-overflow:ellipsis; font-size:10px; font-weight:900; letter-spacing:-.02em; }
+.title-style-speed { clip-path:polygon(10px 0,100% 0,calc(100% - 10px) 50%,100% 100%,10px 100%,0 50%); }
+.title-style-icon { background:linear-gradient(90deg,#edf4ff 0 30px,#fff 30px); }
+.title-style-beta { border-width:0 0 2px; clip-path:none; color:#102b58; }
+.title-style-beta i,.title-style-beta b { color:#246bdb; }
+.title-style-master { --title-accent:#0b244f; border-width:2px; box-shadow:inset 0 -4px 0 #cbd1dc; }
+.title-badge-top { max-width:150px; height:24px; }
+.title-badge-battle { max-width:150px; height:23px; margin:7px 0 2px; }
+.title-badge-battle b { font-size:9px; }
+.home-actions { width:100%; max-width:480px; justify-self:end; display:grid; gap:10px; }
+.home-actions .home-menu { justify-self:stretch; }
+.quiz-time-slot:empty { display:none; }
+.quiz-time-banner { width:100%; min-height:66px; padding:11px 13px; display:grid; grid-template-columns:36px minmax(0,1fr) auto; gap:10px; align-items:center; border:1px solid #bed3f3; border-radius:16px; color:var(--navy); background:#fff; text-align:left; box-shadow:0 8px 22px rgba(17,45,92,.07); transition:background 180ms,border-color 180ms; }
+.quiz-time-mark { width:36px; height:36px; display:grid; place-items:center; border-radius:12px; color:#fff; background:var(--cobalt); font:900 15px 'DM Sans',sans-serif; }
+.quiz-time-banner strong,.quiz-time-banner small { display:block; }
+.quiz-time-banner strong { font-size:13px; }
+.quiz-time-banner small { margin-top:3px; color:var(--muted); font-size:9px; }
+.quiz-time-banner em { color:var(--cobalt); font-size:10px; font-weight:900; font-style:normal; white-space:nowrap; }
+.quiz-time-banner.phase-live { border-color:var(--cobalt); color:#fff; background:var(--cobalt); cursor:pointer; }
+.quiz-time-banner.phase-live:hover,.quiz-time-banner.phase-live:focus-visible { background:#174fae; outline:none; }
+.quiz-time-banner.phase-live .quiz-time-mark { color:var(--navy); background:var(--lime); }
+.quiz-time-banner.phase-live small,.quiz-time-banner.phase-live em { color:#fff; }
+.quiz-time-banner.phase-endedToday { min-height:52px; opacity:.78; }
+.title-settings { margin:14px 0; padding:14px; border:1px solid #d8e3f1; border-radius:16px; background:#f8fbff; }
+.title-settings > header { display:flex; justify-content:space-between; align-items:baseline; margin-bottom:10px; text-align:left; }
+.title-settings > header strong { color:var(--navy); font-size:13px; }
+.title-settings > header small { color:var(--muted); font-size:9px; }
+.title-choice-grid { display:grid; grid-template-columns:1fr 1fr; gap:7px; }
+.title-choice { min-width:0; padding:8px; display:grid; gap:5px; border:1px solid #dce5f1; border-radius:12px; background:#fff; text-align:left; }
+.title-choice .title-badge { width:100%; }
+.title-choice > small { overflow:hidden; color:var(--muted); font-size:8px; text-overflow:ellipsis; white-space:nowrap; }
+.title-choice.is-selected { border-color:var(--cobalt); box-shadow:0 0 0 2px rgba(36,107,219,.12); }
+.title-choice:disabled { cursor:not-allowed; filter:grayscale(.8); opacity:.5; }
+
 .ranking-card,.settings-card { width:min(520px,100%); padding:38px; border:1px solid var(--line); border-radius:24px; background:#fff; box-shadow:0 24px 60px rgba(17,45,92,.09); }
 .account-panel { margin:20px 0 14px; padding:14px; border:1px solid #cadbf4; border-radius:16px; background:linear-gradient(135deg,#f7faff,#edf4ff); }
 .account-summary { display:grid; grid-template-columns:42px minmax(0,1fr) auto; gap:11px; align-items:center; text-align:left; }
@@ -374,6 +411,11 @@ html, body { width:100%; height:100%; overflow:hidden; }
 .ranking-list li,.setting-row { min-height:62px; padding:13px 16px; display:grid; grid-template-columns:38px 1fr auto; gap:12px; align-items:center; border:1px solid var(--line); border-radius:14px; background:var(--soft); }
 .ranking-list li > b { width:28px; height:28px; display:grid; place-items:center; border-radius:9px; color:var(--cobalt); background:#e7f0ff; }
 .ranking-list li strong { font:700 16px 'DM Sans',sans-serif; }
+.ranking-list li.is-me { border-color:var(--cobalt); background:#eef5ff; box-shadow:0 0 0 2px rgba(13,91,215,.08); }
+.ranking-list li > span { min-width:0; display:flex; align-items:center; gap:8px; overflow:hidden; white-space:nowrap; }
+.title-badge-ranking { max-width:150px; }
+.ranking-loading,.ranking-empty { margin:26px 0; color:var(--muted); text-align:center; }
+.settings-card { max-height:calc(100dvh - 36px); overflow:auto; }
 .setting-row { width:100%; grid-template-columns:1fr auto; color:var(--navy); text-align:left; }
 .setting-row span strong,.setting-row span small { display:block; }
 .setting-row span small { margin-top:3px; color:var(--muted); font-size:10px; }
@@ -574,4 +616,13 @@ html, body { width:100%; height:100%; overflow:hidden; }
   .history-scrim,.history-drawer { transition:none!important; }
   .opponent-typing-label > span { animation:none!important; }
   .match-found-animate .eyebrow,.match-found-animate h2,.match-found-animate .ready-player,.match-found-animate .ready-vs,.match-found-animate .ready-action,.count-number.count-enter,.countdown-sweep span,.waiting-dots i { animation:none!important; }
+}
+
+@media (max-width:700px) {
+  .title-badge-top { display:none; }
+  .title-screen { grid-template-columns:1fr; align-content:center; gap:18px; padding-top:20px; }
+  .title-brand-panel,.home-actions { max-width:none; }
+  .title-screen h1 { min-height:60px; font-size:62px; }
+  .home-actions { gap:8px; }
+  .quiz-time-banner { min-height:58px; }
 }

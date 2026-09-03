@@ -1,4 +1,4 @@
-import { mergePlayerProgress, readPlayerProgress, writePlayerProgress, type MatchHistoryItem, type PlayerProgress } from '@/db/progress';
+import { mergePlayerProgress, readLeaderboard, readPlayerProgress, writePlayerProgress, type MatchHistoryItem, type PlayerProgress } from '@/db/progress';
 
 const FIREBASE_API_KEY = 'AIzaSyAFNxcPTqD8LK6IWXlygncDoaUFRAdb6sQ';
 const FIREBASE_PROJECT_ID = 'tier-online';
@@ -72,6 +72,9 @@ export async function GET(request: Request) {
   try {
     const user = await requireFirebaseUser(request);
     if (!user) return json({ error: 'unauthorized' }, 401);
+    if (new URL(request.url).searchParams.get('action') === 'leaderboard') {
+      return json({ leaderboard: await readLeaderboard(user.userId) });
+    }
     return json({ progress: await readPlayerProgress(user.userId) });
   } catch (error) {
     console.error('progress GET failed', error);

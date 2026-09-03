@@ -156,12 +156,27 @@ async function getAuthToken() {
   return getIdToken(user);
 }
 
+async function playerApi(path, options = {}) {
+  const user = auth.currentUser;
+  if (!user) throw new Error('Player session is required');
+  const token = await getIdToken(user);
+  const response = await fetch(path, { ...options, headers: { ...options.headers, Authorization: `Bearer ${token}` }, cache: 'no-store' });
+  const payload = await response.json().catch(() => ({ error: 'invalid-response' }));
+  if (!response.ok) throw Object.assign(new Error(payload.error || `Request failed (${response.status})`), { status: response.status });
+  return payload;
+}
+
 globalThis.meonjeoAuth = {
   getSession: () => lastSession,
   signInWithGoogle,
   signOut: signOutToGuest,
   syncGameData,
   getAuthToken,
+  getTitles: () => playerApi('/api/titles'),
+  selectTitle: titleId => playerApi('/api/titles', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ titleId }) }),
+  getQuizTime: () => playerApi('/api/quiz-time'),
+  trackQuizTime: (eventType, eventId) => playerApi('/api/quiz-time', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ eventType, eventId }) }),
+  getLeaderboard: () => playerApi('/api/progress?action=leaderboard'),
 };
 
 onAuthStateChanged(auth, user => {

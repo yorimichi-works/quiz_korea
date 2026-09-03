@@ -47,7 +47,7 @@ async function syncClock(samples = 5) {
 
 globalThis.meonjeoRealtime = {
   syncClock,
-  join: () => request('join', {}),
+  join: source => request('join', { source: source === 'quiz_time_banner' ? 'quiz_time_banner' : 'rated' }),
   snapshot: matchId => request('snapshot', { matchId }),
   buzz: payload => request('buzz', payload),
   answer: payload => request('answer', payload),

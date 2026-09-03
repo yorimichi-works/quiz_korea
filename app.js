@@ -1,8 +1,4 @@
 const app = document.querySelector('#app');
-const categories = [
-  ['상식', '일반상식'], ['한국사', '韓国史'], ['세계사·지리', '世界史・地理'], ['과학·수학', '科学・数学'],
-  ['K-POP', 'K-POP全般'], ['연예·방송', '芸能・ドラマ'], ['게임', 'ゲーム'], ['스포츠', 'スポーツ']
-];
 let questions = [];
 let seasonInfo = { seasonId: 'loading', eligibleCount: 0 };
 let rankConfig = { version: 'rank-v1-fallback', winPoints: 100, tiers: [{ tier: 'D', requirement: 1000 }, { tier: 'C', requirement: 1500 }, { tier: 'B', requirement: 2500 }, { tier: 'A', requirement: 4000 }, { tier: 'AA', requirement: 6000 }], master: { requirement: 10000 } };
@@ -10,6 +6,7 @@ let timer;
 let reconnectTimer;
 let onlinePollTimer;
 let onlineTimelineTimer;
+let quizTimeTimer;
 const SESSION_KEY = 'quiz-battle.active-session.v1';
 const TEST_LOCALE_KEY = 'quiz-battle.test-locale.v1';
 const HOME_INTRO_SESSION_KEY = 'meonjeo.home-intro.v1';
@@ -28,6 +25,16 @@ const OPPONENT_CHAR_MS = 650;
 const OPPONENT_RESULT_HOLD_MS = 1200;
 const MAX_ROUNDS = 20;
 const WIN_SCORE = 5;
+const TITLE_DEFS = [
+  { id:'rookie_winner', ko:'첫 승리', ja:'初勝利', icon:'1', style:'frame', requirement:'첫 승리 달성', requirementJa:'初勝利を達成' },
+  { id:'ten_wins', ko:'열 번의 승리', ja:'10勝達成', icon:'10', style:'frame', requirement:'누적 10승', requirementJa:'累計10勝' },
+  { id:'quiz_time_regular', ko:'퀴즈 타임 단골', ja:'クイズタイム常連', icon:'Q', style:'chevron', requirement:'퀴즈 타임 10경기', requirementJa:'クイズタイムで10試合' },
+  { id:'fast_hand', ko:'빠른 손', ja:'早業', icon:'≡', style:'speed', requirement:'2초 이내 선착 20회', requirementJa:'2秒以内の早押しを20回' },
+  { id:'history_doctor', ko:'역사 박사', ja:'歴史博士', icon:'▥', style:'icon', requirement:'한국사 정답 20개', requirementJa:'韓国史で20問正解' },
+  { id:'veteran', ko:'백전연마', ja:'百戦錬磨', icon:'100', style:'icon', requirement:'대전 100회 완료', requirementJa:'対戦を100回完了' },
+  { id:'beta_tester', ko:'BETA TESTER', ja:'BETA TESTER', icon:'β', style:'beta', requirement:'베타 기간 대전 완료', requirementJa:'ベータ期間中に対戦' },
+  { id:'master_arrival', ko:'MASTER 입성', ja:'MASTER到達', icon:'M', style:'master', requirement:'MASTER 랭크 도달', requirementJa:'MASTERランクに到達' },
+];
 // TEMP: 日本語UI確認用。テスト終了後にこの配列と切替ボタンを削除する。
 const JAPANESE_TEST_QUESTIONS = [
   { id: 'ja-test-001', category: '一般常識', text: '日本の首都はどこですか？', answers: ['東京'], explanation: '日本の首都は東京です。', difficulty: 'easy' },
@@ -62,7 +69,8 @@ const state = {
   opponentWillAnswerCorrect: false, rankPoints: Math.max(0, Number(localStorage.getItem(RANK_POINTS_KEY)) || 0), lastRankGain: 0, rankBeforeLabel: null,
   answerInputUnlockedAt: 0,
   locale: localStorage.getItem(TEST_LOCALE_KEY) === 'ja' ? 'ja' : 'ko',
-  authSession: { status: 'loading', isAnonymous: true }, cloudSyncStatus: 'idle'
+  authSession: { status: 'loading', isAnonymous: true }, cloudSyncStatus: 'idle',
+  titles: { selectedTitleId:null, unlockedTitleIds:[], stats:null }, quizTime:null, onlineSource:'rated'
 };
 const clearTimer = () => { if (timer) { clearInterval(timer); timer = null; } };
 const clearReconnectTimer = () => { if (reconnectTimer) { clearInterval(reconnectTimer); reconnectTimer = null; } };
@@ -70,7 +78,7 @@ const clearOnlineTimers = () => {
   if (onlinePollTimer) { clearTimeout(onlinePollTimer); onlinePollTimer = null; }
   if (onlineTimelineTimer) { clearInterval(onlineTimelineTimer); onlineTimelineTimer = null; }
 };
-const normalize = value => value.toLowerCase().replace(/\s+/g, '').trim();
+const clearQuizTimeTimer = () => { if (quizTimeTimer) { clearTimeout(quizTimeTimer); quizTimeTimer = null; } };
 const escapeHtml = value => String(value ?? '').replace(/[&<>"']/g, character => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[character]));
 const answerCharacters = question => Array.from(question.answers[0].normalize('NFKC').toUpperCase().replace(/[\s·.,!?！？'"“”‘’()（）\-_:：/]/g, ''));
 const settingsButton = document.querySelector('#settings');
@@ -355,19 +363,12 @@ function showToast(message) {
   showToast.timer = setTimeout(() => toast.classList.remove('show'), 1800);
 }
 
-function unlockHomeMenu() {
-  delete app.dataset.homeLocked;
-  app.querySelectorAll('.menu-card').forEach(button => {
-    button.disabled = false;
-    button.classList.remove('is-selected');
-  });
-}
-
 function bindHomeMenuAction(selector, action) {
   const button = document.querySelector(selector);
   button.onclick = () => {
     if (app.dataset.homeLocked === 'true') return;
     app.dataset.homeLocked = 'true';
+    clearQuizTimeTimer();
     app.querySelectorAll('.menu-card').forEach(menuButton => { menuButton.disabled = true; });
     button.classList.add('is-selected');
     setTimeout(action, 220);
@@ -375,7 +376,7 @@ function bindHomeMenuAction(selector, action) {
 }
 
 function home() {
-  clearTimer(); clearOnlineTimers(); clearSavedSession(); state.phase = 'home'; state.matchId = null;
+  clearTimer(); clearOnlineTimers(); clearQuizTimeTimer(); clearSavedSession(); state.phase = 'home'; state.matchId = null;
   state.rankPoints = Math.max(0, Number(localStorage.getItem(RANK_POINTS_KEY)) || state.rankPoints || 0);
   document.documentElement.lang = state.locale;
   document.title = isJapaneseTest() ? '먼저!（先に！）— テスト版' : '먼저! — 실시간 1대1 버저 퀴즈';
@@ -386,16 +387,16 @@ function home() {
   const motionClass = isFirstHome ? 'home-intro' : 'home-return';
   const brandTranslation = isJapaneseTest() ? '<span class="brand-translation">（先に！）</span>' : '';
   const playerRank = rankFromPoints(state.rankPoints);
-  document.querySelector('#top-profile').innerHTML = `<div class="top-profile-rank">${rankEmblemMarkup(playerRank, 'rank-emblem-top')}<div><b>${playerRank.label}</b><small>${playerRank.current.toLocaleString()} RP</small></div></div><div class="top-profile-rating"><span>RATING</span><strong>${state.rating.toLocaleString()}</strong></div>`;
+  document.querySelector('#top-profile').innerHTML = `<div class="top-profile-rank">${rankEmblemMarkup(playerRank, 'rank-emblem-top')}<div><b>${playerRank.label}</b><small>${playerRank.current.toLocaleString()} RP</small></div></div>${titleBadgeMarkup(state.titles?.selectedTitleId, 'title-badge-top')}<div class="top-profile-rating"><span>RATING</span><strong>${state.rating.toLocaleString()}</strong></div>`;
   app.innerHTML = `<div class="title-screen ${motionClass}">
     <section class="title-brand-panel" aria-labelledby="home-title">
       <h1 id="home-title" aria-label="${isJapaneseTest() ? '먼저!（先に！）' : '먼저!'}"><span class="logo-clip"><span class="logo-letter">먼</span></span><span class="logo-clip"><span class="logo-letter">저</span></span><span class="logo-clip logo-bang"><span class="logo-letter">!</span></span>${brandTranslation}</h1>
     </section>
-    <nav class="home-menu" aria-label="${isJapaneseTest() ? 'メインメニュー' : '메인 메뉴'}">
+    <div class="home-actions"><div id="quiz-time-slot" class="quiz-time-slot" aria-live="polite"></div><nav class="home-menu" aria-label="${isJapaneseTest() ? 'メインメニュー' : '메인 메뉴'}">
       <button class="menu-card menu-card-primary" id="online-match" type="button"><span class="menu-number">01</span><span class="menu-copy"><strong>${ui('online')}</strong><small>${ui('onlineSub')}</small></span><span class="menu-arrow" aria-hidden="true">→</span></button>
       <button class="menu-card" id="friend-match" type="button"><span class="menu-number">02</span><span class="menu-copy"><strong>${ui('friend')}</strong><small>${ui('friendSub')}</small></span><span class="menu-arrow" aria-hidden="true">→</span></button>
       <button class="menu-card" id="ranking" type="button"><span class="menu-number">03</span><span class="menu-copy"><strong>${ui('ranking')}</strong><small>${ui('rankingSub')}</small></span><span class="menu-arrow" aria-hidden="true">→</span></button>
-    </nav>
+    </nav></div>
     <button class="test-locale-button" id="test-locale" type="button">${isJapaneseTest() ? '한국어로 돌아가기' : '日本語 TEST'}</button>
   </div>`;
   bindHomeMenuAction('#online-match', () => {
@@ -411,7 +412,64 @@ function home() {
     state.questionIndex = 0; state.score = 0; state.opponentScore = 0; state.lives = 5;
     home();
   };
+  void loadHomeEnhancements();
 }
+
+function formatRemaining(ms) {
+  const total = Math.max(0, Math.ceil(ms / 1000));
+  const hours = Math.floor(total / 3600); const minutes = Math.floor((total % 3600) / 60); const seconds = total % 60;
+  return hours > 0 ? `${hours}:${String(minutes).padStart(2,'0')}:${String(seconds).padStart(2,'0')}` : `${String(minutes).padStart(2,'0')}:${String(seconds).padStart(2,'0')}`;
+}
+
+function renderQuizTimeBanner() {
+  const slot = document.querySelector('#quiz-time-slot'); const data = state.quizTime;
+  if (!slot || !data || ['hidden','disabled'].includes(data.state.phase)) { if (slot) slot.innerHTML = ''; return; }
+  const phase = data.state.phase; const live = phase === 'live'; const soon = phase === 'startingSoon';
+  const title = live ? (isJapaneseTest() ? 'ただいまクイズタイム！' : '지금 퀴즈 타임!') : phase === 'endedToday' ? (isJapaneseTest() ? '本日のクイズタイムは終了' : '오늘의 퀴즈 타임 종료') : (isJapaneseTest() ? '今日も21時、クイズタイム！' : '오늘도 21시, 퀴즈 타임!');
+  const detail = live ? (isJapaneseTest() ? '今すぐレーティング対戦へ' : '지금 바로 레이팅 매치에 참가하세요') : phase === 'endedToday' ? (isJapaneseTest() ? '明日21時にまた会いましょう' : '내일 21시에 다시 만나요') : soon ? `${isJapaneseTest() ? '開始まで' : '시작까지'} <b id="quiz-time-countdown">${formatRemaining(data.state.remainingMs)}</b>` : (isJapaneseTest() ? 'レーティングを上げて1位を目指そう' : '레이팅을 올리고 1위에 도전하세요');
+  slot.innerHTML = `<button class="quiz-time-banner phase-${phase}" id="quiz-time-banner" type="button" ${live ? '' : 'aria-disabled="true"'}><span class="quiz-time-mark">Q</span><span><strong>${title}</strong><small>${detail}</small></span>${live ? `<em>${isJapaneseTest() ? '今すぐ参加' : '지금 참가'} →</em>` : '<em>21:00</em>'}</button>`;
+  const button = document.querySelector('#quiz-time-banner');
+  if (live) button.onclick = async () => {
+    if (app.dataset.homeLocked === 'true') return; app.dataset.homeLocked = 'true'; button.disabled = true;
+    void globalThis.meonjeoAuth?.trackQuizTime?.('quiz_time_banner_click', globalThis.crypto.randomUUID()).catch(() => {});
+    clearQuizTimeTimer(); await onlineMatching('quiz_time_banner');
+  };
+  const elapsed = Date.now() - data.receivedAt; const remaining = Math.max(0, data.state.remainingMs - elapsed);
+  const countdown = document.querySelector('#quiz-time-countdown'); if (countdown) countdown.textContent = formatRemaining(remaining);
+  const delay = soon || live ? 1000 : 60000;
+  clearQuizTimeTimer(); quizTimeTimer = setTimeout(() => { if (state.phase === 'home') void loadQuizTime(); }, delay);
+}
+
+async function loadQuizTime() {
+  if (state.authSession?.status !== 'ready' || !globalThis.meonjeoAuth?.getQuizTime) return;
+  try {
+    const payload = await globalThis.meonjeoAuth.getQuizTime(); state.quizTime = { ...payload, receivedAt:Date.now() }; renderQuizTimeBanner();
+    const impressionKey = `meonjeo.quiz-time-impression.${payload.state.dateKey}.${payload.state.phase}`;
+    if (!sessionStorage.getItem(impressionKey) && !['hidden','disabled'].includes(payload.state.phase)) {
+      sessionStorage.setItem(impressionKey,'1'); void globalThis.meonjeoAuth.trackQuizTime('quiz_time_banner_impression', globalThis.crypto.randomUUID()).catch(() => {});
+    }
+  } catch (error) { console.error(error); }
+}
+
+async function loadTitles({ notifyUnlock = false } = {}) {
+  if (state.authSession?.status !== 'ready' || !globalThis.meonjeoAuth?.getTitles) return;
+  try {
+    const previous = new Set(state.titles?.unlockedTitleIds || []);
+    state.titles = await globalThis.meonjeoAuth.getTitles();
+    if (notifyUnlock && previous.size) {
+      const unlocked = state.titles.unlockedTitleIds.find(id => !previous.has(id));
+      const title = titleDefinition(unlocked);
+      if (title) showToast(`${isJapaneseTest() ? '称号獲得' : '칭호 획득'} · ${isJapaneseTest() ? title.ja : title.ko}`);
+    }
+    if (state.phase === 'home') {
+      const profile = document.querySelector('#top-profile'); const current = profile?.querySelector('.title-badge-top');
+      if (current) current.outerHTML = titleBadgeMarkup(state.titles.selectedTitleId,'title-badge-top');
+      else if (state.titles.selectedTitleId && profile) profile.querySelector('.top-profile-rating')?.insertAdjacentHTML('beforebegin', titleBadgeMarkup(state.titles.selectedTitleId,'title-badge-top'));
+    }
+  } catch (error) { console.error(error); }
+}
+
+async function loadHomeEnhancements() { await Promise.allSettled([loadQuizTime(), loadTitles()]); }
 
 function generateRoomCode() {
   const values = new Uint32Array(1);
@@ -463,10 +521,31 @@ function friendMatch() {
   document.querySelector('#friend-back').onclick = home;
 }
 
-function ranking() {
+async function ranking() {
   showSettingsButton(false);
-  app.innerHTML = `<div class="battle-page centered"><div class="ranking-card"><div class="eyebrow">RANKING</div><h2>${isJapaneseTest() ? '現在のランキング' : '현재 랭킹'}</h2><ol class="ranking-list"><li><b>1</b><span>QuizMaster</span><strong>2,184</strong></li><li><b>2</b><span>${ui('opponent')}</span><strong>2,096</strong></li><li><b>3</b><span>${ui('me')}</span><strong>1,248</strong></li></ol><button class="primary" id="ranking-back">${ui('backTitle')}</button></div></div>`;
+  app.innerHTML = `<div class="battle-page centered"><div class="ranking-card"><div class="eyebrow">RANKING</div><h2>${isJapaneseTest() ? '現在のランキング' : '현재 랭킹'}</h2><div class="ranking-loading">${isJapaneseTest() ? 'ランキングを取得中…' : '랭킹을 불러오는 중…'}</div><button class="primary" id="ranking-back">${ui('backTitle')}</button></div></div>`;
   document.querySelector('#ranking-back').onclick = home;
+  try {
+    const payload = await globalThis.meonjeoAuth?.getLeaderboard?.();
+    if (document.querySelector('.ranking-card')) {
+      const rows = Array.isArray(payload?.leaderboard) ? payload.leaderboard.slice(0, 50) : [];
+      const empty = isJapaneseTest() ? 'まだランキングデータがありません' : '아직 랭킹 데이터가 없습니다';
+      document.querySelector('.ranking-loading').outerHTML = rows.length
+        ? `<ol class="ranking-list">${rows.map(row => `<li class="${row.isMe ? 'is-me' : ''}"><b>${row.position}</b><span>${row.isMe ? ui('me') : `PLAYER ${String(row.position).padStart(2, '0')}`}${titleBadgeMarkup(row.titleId, 'title-badge-ranking')}</span><strong>${Number(row.rating).toLocaleString()}</strong></li>`).join('')}</ol>`
+        : `<p class="ranking-empty">${empty}</p>`;
+    }
+  } catch {
+    const loading = document.querySelector('.ranking-loading');
+    if (loading) loading.textContent = isJapaneseTest() ? 'ランキングを取得できませんでした' : '랭킹을 불러오지 못했습니다';
+  }
+}
+
+function titleDefinition(id) { return TITLE_DEFS.find(title => title.id === id) || null; }
+function titleRequirement(title) { return isJapaneseTest() ? title.requirementJa : title.requirement; }
+function titleBadgeMarkup(id, extraClass = '') {
+  const title = titleDefinition(id); if (!title) return '';
+  const label = isJapaneseTest() ? title.ja : title.ko;
+  return `<span class="title-badge title-style-${title.style} ${extraClass}" data-title-id="${title.id}" title="${escapeHtml(titleRequirement(title))}"><i>${escapeHtml(title.icon)}</i><b>${escapeHtml(label)}</b></span>`;
 }
 
 function onlineNow() { return Date.now() + (state.onlineClockOffset || 0); }
@@ -485,8 +564,9 @@ function onlineErrorHome(message = '연결을 확인한 뒤 다시 시도해 주
   clearOnlineTimers(); showToast(message); setTimeout(home, 700);
 }
 
-async function onlineMatching() {
+async function onlineMatching(source = 'rated') {
   clearTimer(); clearOnlineTimers(); showSettingsButton(false);
+  state.onlineSource = source;
   state.phase = 'online-matching'; state.onlineMatchId = null; state.onlineRenderKey = null;
   app.innerHTML = `<div class="battle-page centered"><div class="match-orb"><span>VS</span></div><div class="eyebrow">LIVE MATCHMAKING</div><h2>실시간 상대를 찾는 중...</h2><p class="muted" id="online-network-status">서버 시계를 맞추고 있습니다</p><div class="searching-dots"><i></i><i></i><i></i></div><button class="cancel" id="online-cancel">취소</button></div>`;
   document.querySelector('#online-cancel').onclick = async () => { clearOnlineTimers(); await globalThis.meonjeoRealtime?.leave?.(null).catch(() => {}); home(); };
@@ -506,7 +586,7 @@ async function onlineMatching() {
 async function pollMatchmaking() {
   if (state.phase !== 'online-matching') return;
   try {
-    const result = await globalThis.meonjeoRealtime.join();
+    const result = await globalThis.meonjeoRealtime.join(state.onlineSource || 'rated');
     if (result.state === 'matched' && result.matchId) {
       state.onlineMatchId = result.matchId; state.phase = 'online-match'; localStorage.setItem(ONLINE_MATCH_KEY, result.matchId); await pollOnlineSnapshot(); return;
     }
@@ -517,6 +597,7 @@ async function pollMatchmaking() {
 function updateOnlineTimeline(snapshot) {
   const question = document.querySelector('#online-question');
   const clock = document.querySelector('#online-clock');
+  const buzz = document.querySelector('#online-buzz');
   if (question) {
     const count = Math.min(snapshot.question.text.length, Math.floor(Math.max(0, onlineNow() - snapshot.startAt) / QUESTION_CHAR_MS));
     question.textContent = snapshot.question.text.slice(0, count);
@@ -525,11 +606,17 @@ function updateOnlineTimeline(snapshot) {
     const target = snapshot.phase === 'answering' ? snapshot.answerDeadlineAt : snapshot.phase === 'result' ? snapshot.nextQuestionAt : snapshot.startAt;
     clock.textContent = String(Math.max(0, Math.ceil((target - onlineNow()) / 1000)));
   }
+  if (buzz && snapshot.phase === 'scheduled' && onlineNow() >= snapshot.buzzOpenAt && buzz.dataset.localOpen !== 'true') {
+    buzz.dataset.localOpen = 'true'; buzz.disabled = false; buzz.classList.remove('is-locked');
+    buzz.querySelector('strong').textContent = '먼저!';
+    buzz.querySelector('small').textContent = '누르면 서버에서 판정합니다';
+    buzz.addEventListener('pointerdown', submitOnlineBuzz, { once:true });
+  }
 }
 
 function renderOnlineQuestion(snapshot) {
   const open = snapshot.phase === 'open';
-  app.innerHTML = `<div class="battle-page online-battle-page"><div class="battle-head"><button class="back" id="online-leave">← 나가기</button><span class="round">ROUND ${snapshot.questionIndex + 1} / ${snapshot.roundLimit} · RTT ${state.onlineRtt || 0}ms</span></div><div class="players"><div class="player me"><div class="player-top"><span>나</span><span class="hearts">${'♥'.repeat(snapshot.myLives)}</span></div><div class="points">${snapshot.myScore}</div></div><div class="vs">VS</div><div class="player"><div class="player-top"><span>상대</span><span class="hearts">${'♥'.repeat(snapshot.opponentLives)}</span></div><div class="points">${snapshot.opponentScore}</div></div></div><section class="question-card"><div class="question-label">${escapeHtml(snapshot.question.category)} · SERVER SYNC</div><div class="question" id="online-question"></div><button class="buzz ${open ? '' : 'is-locked'}" id="online-buzz" type="button" ${open ? '' : 'disabled'}><strong>${open ? '먼저!' : 'READY'}</strong><small id="online-buzz-status">${open ? '누르면 서버에서 판정합니다' : `<b id="online-clock">${Math.max(0, Math.ceil((snapshot.startAt - onlineNow()) / 1000))}</b>초 후 시작`}</small></button></section></div>`;
+  app.innerHTML = `<div class="battle-page online-battle-page"><div class="battle-head"><button class="back" id="online-leave">← 나가기</button><span class="round">ROUND ${snapshot.questionIndex + 1} / ${snapshot.roundLimit} · RTT ${state.onlineRtt || 0}ms</span></div><div class="players"><div class="player me"><div class="player-top"><span>나</span><span class="hearts">${'♥'.repeat(snapshot.myLives)}</span></div>${titleBadgeMarkup(snapshot.myTitleId,'title-badge-battle')}<div class="points">${snapshot.myScore}</div></div><div class="vs">VS</div><div class="player"><div class="player-top"><span>상대</span><span class="hearts">${'♥'.repeat(snapshot.opponentLives)}</span></div>${titleBadgeMarkup(snapshot.opponentTitleId,'title-badge-battle')}<div class="points">${snapshot.opponentScore}</div></div></div><section class="question-card"><div class="question-label">${escapeHtml(snapshot.question.category)} · SERVER SYNC</div><div class="question" id="online-question"></div><button class="buzz ${open ? '' : 'is-locked'}" id="online-buzz" type="button" ${open ? '' : 'disabled'}><strong>${open ? '먼저!' : 'READY'}</strong><small id="online-buzz-status">${open ? '누르면 서버에서 판정합니다' : `<b id="online-clock">${Math.max(0, Math.ceil((snapshot.startAt - onlineNow()) / 1000))}</b>초 후 시작`}</small></button></section></div>`;
   document.querySelector('#online-leave').onclick = leaveOnlineMatch;
   const buzz = document.querySelector('#online-buzz'); if (open) buzz.addEventListener('pointerdown', submitOnlineBuzz, { once: true });
   updateOnlineTimeline(snapshot); clearInterval(onlineTimelineTimer); onlineTimelineTimer = setInterval(() => updateOnlineTimeline(snapshot), 50);
@@ -585,10 +672,12 @@ function renderOnlineResult(snapshot) {
 }
 
 function renderOnlineComplete(snapshot) {
-  clearOnlineTimers(); localStorage.removeItem(ONLINE_MATCH_KEY); const won = snapshot.myScore > snapshot.opponentScore || snapshot.opponentLives <= 0;
-  app.innerHTML = `<div class="battle-page centered"><div class="result-card final"><div class="result-icon ${won ? '' : 'wrong'}">${won ? '🏆' : '×'}</div><div class="eyebrow">LIVE MATCH COMPLETE</div><h2>${won ? '승리했습니다!' : '아쉽게 패배했습니다'}</h2><div class="final-score"><b>${snapshot.myScore}</b><span>—</span><b>${snapshot.opponentScore}</b></div><button class="primary" id="online-home">홈으로</button></div></div>`;
+  clearOnlineTimers(); localStorage.removeItem(ONLINE_MATCH_KEY); const tied = snapshot.myScore === snapshot.opponentScore && snapshot.myLives === snapshot.opponentLives; const won = !tied && (snapshot.myScore > snapshot.opponentScore || snapshot.opponentLives <= 0);
+  const reward = snapshot.reward || { ratingBefore:state.rating, ratingAfter:state.rating, ratingDelta:0, rankPointsBefore:state.rankPoints, rankPointsAfter:state.rankPoints, rankGain:0 };
+  const rankPointsBefore = Number.isFinite(Number(reward.rankPointsBefore)) ? Number(reward.rankPointsBefore) : state.rankPoints; const rankPointsAfter = Number.isFinite(Number(reward.rankPointsAfter)) ? Number(reward.rankPointsAfter) : rankPointsBefore + Number(reward.rankGain || 0);
+  app.innerHTML = `<div class="battle-page centered"><div class="result-card final"><div class="result-icon ${won || tied ? '' : 'wrong'}">${won ? '🏆' : tied ? '—' : '×'}</div><div class="eyebrow">LIVE MATCH COMPLETE</div><h2>${won ? '승리했습니다!' : tied ? '무승부입니다' : '아쉽게 패배했습니다'}</h2><div class="final-score"><b>${snapshot.myScore}</b><span>—</span><b>${snapshot.opponentScore}</b></div><div class="result-progression"><div class="rating-change"><span>RATING</span><b>${Number(reward.ratingBefore).toLocaleString()} → ${Number(reward.ratingAfter).toLocaleString()}</b><strong>${reward.ratingDelta > 0 ? '+' : ''}${reward.ratingDelta}</strong></div><div class="rating-change"><span>RANK POINT</span><b>${rankPointsBefore.toLocaleString()} → ${rankPointsAfter.toLocaleString()}</b><strong>+${reward.rankGain}</strong></div></div><button class="primary" id="online-home">홈으로</button></div></div>`;
   document.querySelector('#online-home').onclick = home;
-  setTimeout(() => void syncCloudProgress(), 350);
+  setTimeout(() => { void syncCloudProgress(); void loadTitles({ notifyUnlock:true }); }, 350);
 }
 
 function applyOnlineSnapshot(snapshot, force = false) {
@@ -607,7 +696,7 @@ async function pollOnlineSnapshot() {
   if (state.phase !== 'online-match' || !state.onlineMatchId) return;
   try {
     const result = await globalThis.meonjeoRealtime.snapshot(state.onlineMatchId); applyOnlineSnapshot(result.snapshot);
-    const delay = result.snapshot?.phase === 'result' ? 250 : result.snapshot?.phase === 'answering' ? 300 : 450;
+    const delay = result.snapshot?.phase === 'result' ? 250 : result.snapshot?.phase === 'answering' ? 150 : 200;
     onlinePollTimer = setTimeout(pollOnlineSnapshot, delay);
   } catch (error) {
     console.error(error);
@@ -716,7 +805,8 @@ function settings() {
   clearTimer();
   state.phase = 'settings';
   showSettingsButton(false);
-  app.innerHTML = `<div class="battle-page centered"><div class="settings-card"><div class="eyebrow">SETTINGS</div><h2>${ui('settings')}</h2>${accountPanelMarkup()}<div class="settings-list"><button class="setting-row" aria-pressed="true"><span><strong>${ui('sound')}</strong><small>${isJapaneseTest() ? 'ボタンと正解の効果音' : '버튼과 정답 효과음'}</small></span><b>ON</b></button><button class="setting-row" aria-pressed="true"><span><strong>${ui('vibration')}</strong><small>${isJapaneseTest() ? '早押し時のフィードバック' : '빠른 누르기 피드백'}</small></span><b>ON</b></button><div class="setting-row static"><span><strong>${ui('language')}</strong><small>${isJapaneseTest() ? '一時テストモード' : '앱 표시 언어'}</small></span><b>${isJapaneseTest() ? '日本語 TEST' : '한국어'}</b></div><button class="setting-row setting-link" id="feedback-report"><span><strong>${isJapaneseTest() ? '問題報告・要望' : '문제 신고 · 건의'}</strong><small>${isJapaneseTest() ? '問題、動作、改善案を送る' : '문제·오류·개선 의견 보내기'}</small></span><b>→</b></button><button class="setting-row setting-link" id="match-history"><span><strong>${isJapaneseTest() ? 'マッチング履歴' : '매칭 기록'}</strong><small>${isJapaneseTest() ? '対戦相手の確認・通報' : '상대 확인 및 신고'}</small></span><b>→</b></button></div><button class="primary" id="settings-back">${ui('backTitle')}</button></div></div>`;
+  const titleCards = TITLE_DEFS.map(title => { const unlocked = state.titles?.unlockedTitleIds?.includes(title.id); const selected = state.titles?.selectedTitleId === title.id; const requirement = titleRequirement(title); return `<button class="title-choice ${selected ? 'is-selected' : ''}" data-title-id="${title.id}" type="button" ${unlocked ? '' : 'disabled'}>${titleBadgeMarkup(title.id,'title-badge-choice')}<small>${unlocked ? (selected ? (isJapaneseTest() ? '選択中' : '사용 중') : requirement) : `🔒 ${requirement}`}</small></button>`; }).join('');
+  app.innerHTML = `<div class="battle-page centered"><div class="settings-card"><div class="eyebrow">SETTINGS</div><h2>${ui('settings')}</h2>${accountPanelMarkup()}<section class="title-settings"><header><strong>${isJapaneseTest() ? '称号' : '칭호'}</strong><small>${isJapaneseTest() ? '対戦画面に表示されます' : '대전 화면에 표시됩니다'}</small></header><div class="title-choice-grid">${titleCards}</div></section><div class="settings-list"><button class="setting-row" aria-pressed="true"><span><strong>${ui('sound')}</strong><small>${isJapaneseTest() ? 'ボタンと正解の効果音' : '버튼과 정답 효과음'}</small></span><b>ON</b></button><button class="setting-row" aria-pressed="true"><span><strong>${ui('vibration')}</strong><small>${isJapaneseTest() ? '早押し時のフィードバック' : '빠른 누르기 피드백'}</small></span><b>ON</b></button><div class="setting-row static"><span><strong>${ui('language')}</strong><small>${isJapaneseTest() ? '一時テストモード' : '앱 표시 언어'}</small></span><b>${isJapaneseTest() ? '日本語 TEST' : '한국어'}</b></div><button class="setting-row setting-link" id="feedback-report"><span><strong>${isJapaneseTest() ? '問題報告・要望' : '문제 신고 · 건의'}</strong><small>${isJapaneseTest() ? '問題、動作、改善案を送る' : '문제·오류·개선 의견 보내기'}</small></span><b>→</b></button><button class="setting-row setting-link" id="match-history"><span><strong>${isJapaneseTest() ? 'マッチング履歴' : '매칭 기록'}</strong><small>${isJapaneseTest() ? '対戦相手の確認・通報' : '상대 확인 및 신고'}</small></span><b>→</b></button></div><button class="primary" id="settings-back">${ui('backTitle')}</button></div></div>`;
   bindAccountPanel();
   document.querySelectorAll('.setting-row[aria-pressed]').forEach(button => {
     button.onclick = () => {
@@ -727,6 +817,7 @@ function settings() {
   });
   document.querySelector('#feedback-report').onclick = () => openReportDialog({ kind: 'feedback' });
   document.querySelector('#match-history').onclick = matchHistory;
+  document.querySelectorAll('.title-choice:not(:disabled)').forEach(button => { button.onclick = async () => { try { state.titles = await globalThis.meonjeoAuth.selectTitle(button.dataset.titleId); settings(); } catch (error) { console.error(error); showToast(isJapaneseTest() ? '称号を変更できませんでした' : '칭호를 변경하지 못했습니다'); } }; });
   document.querySelector('#settings-back').onclick = home;
 }
 
@@ -1086,7 +1177,7 @@ function resumeSavedMatch(snapshot) {
   if (state.phase === 'waiting-ready') { if (deadlinePassed) countdown(); else waitForOpponentReady({ resume: true }); return; }
   if (state.phase === 'result') {
     if (deadlinePassed) { advanceAfterRound(); }
-    else { persistSession(); state.resultKind === 'both-timeout' ? renderTimedOutAnswer() : renderQuestionResult(); }
+    else { persistSession(); if (state.resultKind === 'both-timeout') renderTimedOutAnswer(); else renderQuestionResult(); }
     return;
   }
   home();
@@ -1169,9 +1260,11 @@ window.addEventListener('meonjeo-auth-change', event => {
   if (previousUid && state.authSession.uid && previousUid !== state.authSession.uid) globalThis.meonjeoRealtime?.resetSession?.();
   refreshAccountPanel();
   if (state.authSession.status === 'ready') void syncCloudProgress({ refreshUi: true });
+  if (state.authSession.status === 'ready' && state.phase === 'home') void loadHomeEnhancements();
   if (state.authSession.status === 'ready' && state.bootstrapped && localStorage.getItem(ONLINE_MATCH_KEY) && state.phase === 'home') void onlineMatching();
 });
 document.addEventListener('visibilitychange', () => {
+  if (!document.hidden && state.phase === 'home') void loadQuizTime();
   if (!ACTIVE_PHASES.has(state.phase)) return;
   if (document.hidden) { clearTimer(); persistSession({ disconnected: true }); }
   else if (readSavedSession()?.disconnectedAt) attemptReconnect();

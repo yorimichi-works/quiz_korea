@@ -1,4 +1,4 @@
-const CACHE_NAME = 'meonjeo-shell-v7';
+const CACHE_NAME = 'meonjeo-shell-v8';
 const SHELL = ['./', './index.html', './game.html', './styles.css', './app.js', './auth.js', './realtime.js', './manifest.webmanifest'];
 
 self.addEventListener('install', event => {

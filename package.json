@@ -10,7 +10,10 @@
     "build": "vinext build",
     "start": "vinext start",
     "test:realtime": "node --test scripts/realtime-invariants.test.mjs",
-    "lint": "eslint . --ignore-pattern dist --ignore-pattern .next"
+    "test:product": "node --test scripts/product-simulation.test.ts",
+    "simulate:matches": "node scripts/simulate-200-matches.ts",
+    "test:live-200": "node scripts/run-200-live-matches.ts",
+    "lint": "eslint . --ignore-pattern dist --ignore-pattern .next --ignore-pattern tmp"
   },
   "dependencies": {
     "next": "16.2.6",
