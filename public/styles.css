@@ -341,6 +341,20 @@ html, body { width:100%; height:100%; overflow:hidden; }
 @keyframes opponent-typing-pulse { to { transform:scale(.72); opacity:.5; } }
 
 .ranking-card,.settings-card { width:min(520px,100%); padding:38px; border:1px solid var(--line); border-radius:24px; background:#fff; box-shadow:0 24px 60px rgba(17,45,92,.09); }
+.account-panel { margin:20px 0 14px; padding:14px; border:1px solid #cadbf4; border-radius:16px; background:linear-gradient(135deg,#f7faff,#edf4ff); }
+.account-summary { display:grid; grid-template-columns:42px minmax(0,1fr) auto; gap:11px; align-items:center; text-align:left; }
+.account-avatar { width:42px; height:42px; display:grid; place-items:center; border-radius:13px; color:#fff; background:#97a9c2; font:900 18px 'DM Sans',sans-serif; }
+.account-avatar.is-linked { background:var(--cobalt); }
+.account-summary > span:nth-child(2) { min-width:0; }
+.account-summary strong,.account-summary small { display:block; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.account-summary strong { color:var(--navy); font-size:13px; }
+.account-summary small { margin-top:3px; color:var(--muted); font-size:9px; }
+.account-summary em { padding:4px 7px; border-radius:999px; color:var(--cobalt); background:#fff; font:800 8px 'DM Sans','Noto Sans KR',sans-serif; letter-spacing:.05em; }
+.account-action { width:100%; min-height:42px; margin-top:12px; border:1px solid #aac7ef; border-radius:11px; color:var(--cobalt); background:#fff; font-weight:850; }
+.account-action:hover { background:#f7faff; }
+.account-action.is-signout { color:var(--muted); border-color:#d5deea; }
+.account-action:disabled { cursor:wait; opacity:.62; }
+.account-error { margin:9px 2px 0; color:#b7525f; font-size:9px; font-weight:750; }
 .ranking-list,.settings-list { margin:25px 0 8px; padding:0; display:grid; gap:10px; }
 .ranking-list { list-style:none; }
 .ranking-list li,.setting-row { min-height:62px; padding:13px 16px; display:grid; grid-template-columns:38px 1fr auto; gap:12px; align-items:center; border:1px solid var(--line); border-radius:14px; background:var(--soft); }

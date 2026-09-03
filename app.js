@@ -56,7 +56,8 @@ const state = {
   opponentAnswerActive: false, opponentAnswerSequence: [], opponentTypedChars: [], opponentMarks: [],
   opponentWillAnswerCorrect: false, rankPoints: Math.max(0, Number(localStorage.getItem(RANK_POINTS_KEY)) || 0), lastRankGain: 0, rankBeforeLabel: null,
   answerInputUnlockedAt: 0,
-  locale: localStorage.getItem(TEST_LOCALE_KEY) === 'ja' ? 'ja' : 'ko'
+  locale: localStorage.getItem(TEST_LOCALE_KEY) === 'ja' ? 'ja' : 'ko',
+  authSession: { status: 'loading', isAnonymous: true }
 };
 const clearTimer = () => { if (timer) { clearInterval(timer); timer = null; } };
 const clearReconnectTimer = () => { if (reconnectTimer) { clearInterval(reconnectTimer); reconnectTimer = null; } };
@@ -472,10 +473,64 @@ function ranking() {
   document.querySelector('#ranking-back').onclick = home;
 }
 
+function authErrorMessage(errorCode) {
+  if (errorCode === 'auth/popup-closed-by-user' || errorCode === 'auth/cancelled-popup-request') {
+    return isJapaneseTest() ? 'Googleログインをキャンセルしました' : 'Google 로그인을 취소했습니다';
+  }
+  if (errorCode === 'auth/popup-blocked') {
+    return isJapaneseTest() ? 'ポップアップを許可して、もう一度お試しください' : '팝업을 허용한 뒤 다시 시도해 주세요';
+  }
+  if (errorCode === 'auth/unauthorized-domain') {
+    return isJapaneseTest() ? 'この公開URLはGoogleログインの許可設定が必要です' : '이 공개 URL은 Google 로그인 허용 설정이 필요합니다';
+  }
+  return isJapaneseTest() ? 'Googleアカウントに接続できませんでした' : 'Google 계정에 연결하지 못했습니다';
+}
+
+function accountPanelMarkup() {
+  const session = state.authSession || { status: 'loading', isAnonymous: true };
+  const loading = session.status === 'loading' || session.status === 'working';
+  const linked = !session.isAnonymous && session.provider === 'google';
+  const title = linked ? (session.displayName || session.email || 'Google') : (isJapaneseTest() ? 'ゲストでプレイ中' : '게스트로 플레이 중');
+  const detail = linked
+    ? (session.email || (isJapaneseTest() ? 'Googleアカウント連携済み' : 'Google 계정 연결됨'))
+    : (isJapaneseTest() ? 'Google連携で今後の戦績保存に備えられます' : 'Google 연결로 향후 전적 저장을 준비할 수 있어요');
+  const avatar = linked ? escapeHtml((session.displayName || session.email || 'G').trim().charAt(0).toUpperCase()) : 'G';
+  const action = linked ? (isJapaneseTest() ? 'ログアウト' : '로그아웃') : (isJapaneseTest() ? 'Googleで続ける' : 'Google로 계속하기');
+  const error = session.status === 'error' ? `<p class="account-error">${escapeHtml(authErrorMessage(session.errorCode))}</p>` : '';
+  return `<section class="account-panel" id="account-panel"><div class="account-summary"><span class="account-avatar ${linked ? 'is-linked' : ''}">${avatar}</span><span><strong>${escapeHtml(title)}</strong><small>${escapeHtml(detail)}</small></span><em>${linked ? (isJapaneseTest() ? '連携済み' : '연결됨') : 'GUEST'}</em></div><button class="account-action ${linked ? 'is-signout' : ''}" id="account-action" type="button" ${loading ? 'disabled' : ''}>${loading ? (isJapaneseTest() ? '確認中…' : '확인 중…') : action}</button>${error}</section>`;
+}
+
+function bindAccountPanel() {
+  const action = document.querySelector('#account-action');
+  if (!action) return;
+  action.onclick = async () => {
+    if (!globalThis.meonjeoAuth) {
+      showToast(isJapaneseTest() ? 'アカウント機能を準備しています…' : '계정 기능을 준비하고 있습니다…');
+      return;
+    }
+    action.disabled = true;
+    try {
+      if (state.authSession?.isAnonymous !== false) await globalThis.meonjeoAuth.signInWithGoogle();
+      else await globalThis.meonjeoAuth.signOut();
+    } catch (error) {
+      showToast(authErrorMessage(error?.code));
+    }
+  };
+}
+
+function refreshAccountPanel() {
+  const panel = document.querySelector('#account-panel');
+  if (!panel) return;
+  panel.outerHTML = accountPanelMarkup();
+  bindAccountPanel();
+}
+
 function settings() {
   clearTimer();
+  state.phase = 'settings';
   showSettingsButton(false);
-  app.innerHTML = `<div class="battle-page centered"><div class="settings-card"><div class="eyebrow">SETTINGS</div><h2>${ui('settings')}</h2><div class="settings-list"><button class="setting-row" aria-pressed="true"><span><strong>${ui('sound')}</strong><small>${isJapaneseTest() ? 'ボタンと正解の効果音' : '버튼과 정답 효과음'}</small></span><b>ON</b></button><button class="setting-row" aria-pressed="true"><span><strong>${ui('vibration')}</strong><small>${isJapaneseTest() ? '早押し時のフィードバック' : '빠른 누르기 피드백'}</small></span><b>ON</b></button><div class="setting-row static"><span><strong>${ui('language')}</strong><small>${isJapaneseTest() ? '一時テストモード' : '앱 표시 언어'}</small></span><b>${isJapaneseTest() ? '日本語 TEST' : '한국어'}</b></div><button class="setting-row setting-link" id="feedback-report"><span><strong>${isJapaneseTest() ? '問題報告・要望' : '문제 신고 · 건의'}</strong><small>${isJapaneseTest() ? '問題、動作、改善案を送る' : '문제·오류·개선 의견 보내기'}</small></span><b>→</b></button><button class="setting-row setting-link" id="match-history"><span><strong>${isJapaneseTest() ? 'マッチング履歴' : '매칭 기록'}</strong><small>${isJapaneseTest() ? '対戦相手の確認・通報' : '상대 확인 및 신고'}</small></span><b>→</b></button></div><button class="primary" id="settings-back">${ui('backTitle')}</button></div></div>`;
+  app.innerHTML = `<div class="battle-page centered"><div class="settings-card"><div class="eyebrow">SETTINGS</div><h2>${ui('settings')}</h2>${accountPanelMarkup()}<div class="settings-list"><button class="setting-row" aria-pressed="true"><span><strong>${ui('sound')}</strong><small>${isJapaneseTest() ? 'ボタンと正解の効果音' : '버튼과 정답 효과음'}</small></span><b>ON</b></button><button class="setting-row" aria-pressed="true"><span><strong>${ui('vibration')}</strong><small>${isJapaneseTest() ? '早押し時のフィードバック' : '빠른 누르기 피드백'}</small></span><b>ON</b></button><div class="setting-row static"><span><strong>${ui('language')}</strong><small>${isJapaneseTest() ? '一時テストモード' : '앱 표시 언어'}</small></span><b>${isJapaneseTest() ? '日本語 TEST' : '한국어'}</b></div><button class="setting-row setting-link" id="feedback-report"><span><strong>${isJapaneseTest() ? '問題報告・要望' : '문제 신고 · 건의'}</strong><small>${isJapaneseTest() ? '問題、動作、改善案を送る' : '문제·오류·개선 의견 보내기'}</small></span><b>→</b></button><button class="setting-row setting-link" id="match-history"><span><strong>${isJapaneseTest() ? 'マッチング履歴' : '매칭 기록'}</strong><small>${isJapaneseTest() ? '対戦相手の確認・通報' : '상대 확인 및 신고'}</small></span><b>→</b></button></div><button class="primary" id="settings-back">${ui('backTitle')}</button></div></div>`;
+  bindAccountPanel();
   document.querySelectorAll('.setting-row[aria-pressed]').forEach(button => {
     button.onclick = () => {
       const enabled = button.getAttribute('aria-pressed') === 'true';
@@ -915,6 +970,10 @@ async function bootstrap() {
 window.addEventListener('offline', () => { if (ACTIVE_PHASES.has(state.phase)) showDisconnected(); });
 window.addEventListener('online', () => { if (readSavedSession()?.disconnectedAt) attemptReconnect(); });
 window.addEventListener('pagehide', () => persistSession({ disconnected: true }));
+window.addEventListener('meonjeo-auth-change', event => {
+  state.authSession = event.detail || { status: 'error', isAnonymous: true };
+  refreshAccountPanel();
+});
 document.addEventListener('visibilitychange', () => {
   if (!ACTIVE_PHASES.has(state.phase)) return;
   if (document.hidden) { clearTimer(); persistSession({ disconnected: true }); }
