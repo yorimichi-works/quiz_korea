@@ -6,6 +6,7 @@
       "seasonId": "S1-2026",
       "locale": "ko",
       "status": "draft",
+      "eligibleCount": 946,
       "questionFile": "S1-2026/questions.ko.json",
       "startsAt": null,
       "endsAt": null

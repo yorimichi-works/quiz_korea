@@ -8,13 +8,18 @@ let seasonInfo = { seasonId: 'loading', eligibleCount: 0 };
 let rankConfig = { version: 'rank-v1-fallback', winPoints: 100, tiers: [{ tier: 'D', requirement: 1000 }, { tier: 'C', requirement: 1500 }, { tier: 'B', requirement: 2500 }, { tier: 'A', requirement: 4000 }, { tier: 'AA', requirement: 6000 }], master: { requirement: 10000 } };
 let timer;
 let reconnectTimer;
+let onlinePollTimer;
+let onlineTimelineTimer;
 const SESSION_KEY = 'quiz-battle.active-session.v1';
 const TEST_LOCALE_KEY = 'quiz-battle.test-locale.v1';
 const HOME_INTRO_SESSION_KEY = 'meonjeo.home-intro.v1';
 const RANK_POINTS_KEY = 'meonjeo.rank-points.v1';
+const RATING_KEY = 'meonjeo.rating.v1';
+const PROFILE_UPDATED_AT_KEY = 'meonjeo.profile-updated-at.v1';
 const RANK_AWARDED_MATCH_KEY = 'meonjeo.rank-awarded-match.v1';
 const MATCH_HISTORY_KEY = 'meonjeo.match-history.v1';
 const REPORT_OUTBOX_KEY = 'meonjeo.report-outbox.v1';
+const ONLINE_MATCH_KEY = 'meonjeo.online-match.v1';
 const RECONNECT_GRACE_MS = 45000;
 const QUESTION_CHAR_MS = 130;
 const POST_REVEAL_WAIT_MS = 5000;
@@ -50,17 +55,21 @@ const UI = {
 const ACTIVE_PHASES = new Set(['matching', 'match-found', 'waiting-ready', 'ready', 'countdown', 'reading', 'answering', 'rebound', 'result']);
 const state = {
   phase: 'home', questionIndex: 0, score: 0, opponentScore: 0, lives: 5, answerSeconds: 7,
-  answerRemaining: 7, selectedChars: [], charIndex: 0, rating: 1248,
+  answerRemaining: 7, selectedChars: [], charIndex: 0, rating: Math.max(0, Number(localStorage.getItem(RATING_KEY)) || 1248),
   matchId: null, phaseStartedAt: null, phaseDeadline: null, answerRightLost: false,
   lastResultCorrect: null, lastResultText: '', resultKind: null, questionHistory: [],
   opponentAnswerActive: false, opponentAnswerSequence: [], opponentTypedChars: [], opponentMarks: [],
   opponentWillAnswerCorrect: false, rankPoints: Math.max(0, Number(localStorage.getItem(RANK_POINTS_KEY)) || 0), lastRankGain: 0, rankBeforeLabel: null,
   answerInputUnlockedAt: 0,
   locale: localStorage.getItem(TEST_LOCALE_KEY) === 'ja' ? 'ja' : 'ko',
-  authSession: { status: 'loading', isAnonymous: true }
+  authSession: { status: 'loading', isAnonymous: true }, cloudSyncStatus: 'idle'
 };
 const clearTimer = () => { if (timer) { clearInterval(timer); timer = null; } };
 const clearReconnectTimer = () => { if (reconnectTimer) { clearInterval(reconnectTimer); reconnectTimer = null; } };
+const clearOnlineTimers = () => {
+  if (onlinePollTimer) { clearTimeout(onlinePollTimer); onlinePollTimer = null; }
+  if (onlineTimelineTimer) { clearInterval(onlineTimelineTimer); onlineTimelineTimer = null; }
+};
 const normalize = value => value.toLowerCase().replace(/\s+/g, '').trim();
 const escapeHtml = value => String(value ?? '').replace(/[&<>"']/g, character => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[character]));
 const answerCharacters = question => Array.from(question.answers[0].normalize('NFKC').toUpperCase().replace(/[\s·.,!?！？'"“”‘’()（）\-_:：/]/g, ''));
@@ -108,7 +117,8 @@ function rankFromPoints(totalPoints) {
 
 function rankEmblemMarkup(rank, extraClass = '') {
   const tierClass = rank.tier.toLowerCase();
-  const stage = rank.stageMark ? `<small class="rank-stage">${escapeHtml(rank.stageMark)}</small>` : '';
+  const stageClass = rank.stageMark === '−' ? ' rank-stage-minus' : '';
+  const stage = rank.stageMark ? `<small class="rank-stage${stageClass}">${escapeHtml(rank.stageMark)}</small>` : '';
   const masterLevel = rank.isMaster ? `<small class="rank-master-level" style="--rank-digits:${String(rank.masterLevel).length}">${escapeHtml(rank.masterLevel)}</small>` : '';
   return `<span class="rank-emblem rank-tier-${tierClass} ${extraClass}" role="img" aria-label="${escapeHtml(rank.label)}"><svg viewBox="0 0 48 56" aria-hidden="true"><path class="rank-shield" d="M24 3 42 10v15c0 12.5-7.2 22.5-18 28C13.2 47.5 6 37.5 6 25V10L24 3Z"/><path class="rank-cut" d="M24 8.5 37 14v11c0 8.2-4.4 15.2-13 20.2C15.4 40.2 11 33.2 11 25V14l13-5.5Z"/></svg><b>${escapeHtml(rank.baseLabel)}</b>${stage}${masterLevel}</span>`;
 }
@@ -323,25 +333,8 @@ async function loadActiveSeason() {
   });
   const active = manifest.seasons.find(season => season.seasonId === manifest.activeSeasonId);
   if (!active) throw new Error('active season not found');
-  const payload = await fetch(`data/seasons/${active.questionFile}`).then(response => {
-    if (!response.ok) throw new Error('season question package unavailable');
-    return response.json();
-  });
-  const seenFactGroups = new Set();
-  const eligible = payload.questions.filter(question => question.enabledInSeason).filter(question => {
-    if (!question.factGroupId || !seenFactGroups.has(question.factGroupId)) { seenFactGroups.add(question.factGroupId); return true; }
-    return false;
-  });
-  questions = eligible.sort(() => Math.random() - 0.5).map(question => ({
-    id: question.questionId,
-    category: question.categoryKo,
-    text: question.questionText,
-    answers: [question.canonicalAnswer, ...(question.acceptedAliases || [])],
-    explanation: question.explanation,
-    difficulty: question.difficulty,
-    factGroupId: question.factGroupId,
-  }));
-  seasonInfo = { seasonId: payload.seasonId, eligibleCount: payload.eligibleCount };
+  questions = [];
+  seasonInfo = { seasonId: active.seasonId, eligibleCount: Number(active.eligibleCount) || 0 };
 }
 
 async function loadRankConfig() {
@@ -382,7 +375,7 @@ function bindHomeMenuAction(selector, action) {
 }
 
 function home() {
-  clearTimer(); clearSavedSession(); state.phase = 'home'; state.matchId = null;
+  clearTimer(); clearOnlineTimers(); clearSavedSession(); state.phase = 'home'; state.matchId = null;
   state.rankPoints = Math.max(0, Number(localStorage.getItem(RANK_POINTS_KEY)) || state.rankPoints || 0);
   document.documentElement.lang = state.locale;
   document.title = isJapaneseTest() ? '먼저!（先に！）— テスト版' : '먼저! — 실시간 1대1 버저 퀴즈';
@@ -406,11 +399,13 @@ function home() {
     <button class="test-locale-button" id="test-locale" type="button">${isJapaneseTest() ? '한국어로 돌아가기' : '日本語 TEST'}</button>
   </div>`;
   bindHomeMenuAction('#online-match', () => {
-    if (activeQuestions().length) matching();
-    else {
-      showToast(isJapaneseTest() ? 'テスト問題を読み込めませんでした' : '시즌 문제를 불러오지 못했습니다');
-      unlockHomeMenu();
+    if (isJapaneseTest()) { matching(); return; }
+    if (state.authSession?.isAnonymous !== false) {
+      settings();
+      showToast('온라인 대전은 Google 로그인이 필요합니다');
+      return;
     }
+    onlineMatching();
   });
   bindHomeMenuAction('#friend-match', friendMatch);
   bindHomeMenuAction('#ranking', ranking);
@@ -437,6 +432,11 @@ function startFriendMatch(roomCode) {
 }
 
 function friendMatch() {
+  if (!isJapaneseTest()) {
+    showToast('실시간 친구 대전은 다음 업데이트에서 열립니다');
+    home();
+    return;
+  }
   showSettingsButton(false);
   const createLabel = isJapaneseTest() ? '部屋番号を作る' : '방 번호 만들기';
   const joinLabel = isJapaneseTest() ? '部屋に入る' : '방에 들어가기';
@@ -473,6 +473,196 @@ function ranking() {
   document.querySelector('#ranking-back').onclick = home;
 }
 
+function onlineNow() { return Date.now() + (state.onlineClockOffset || 0); }
+
+async function prepareRealtimeConnection(samples = 5) {
+  if (!globalThis.meonjeoRealtime) {
+    await new Promise(resolve => globalThis.addEventListener('meonjeo-realtime-ready', resolve, { once: true }));
+  }
+  const clock = await globalThis.meonjeoRealtime.syncClock(samples);
+  state.onlineClockOffset = clock.offsetMs;
+  state.onlineRtt = clock.medianRttMs;
+  return clock;
+}
+
+function onlineErrorHome(message = '연결을 확인한 뒤 다시 시도해 주세요') {
+  clearOnlineTimers(); showToast(message); setTimeout(home, 700);
+}
+
+async function onlineMatching() {
+  clearTimer(); clearOnlineTimers(); showSettingsButton(false);
+  state.phase = 'online-matching'; state.onlineMatchId = null; state.onlineRenderKey = null;
+  app.innerHTML = `<div class="battle-page centered"><div class="match-orb"><span>VS</span></div><div class="eyebrow">LIVE MATCHMAKING</div><h2>실시간 상대를 찾는 중...</h2><p class="muted" id="online-network-status">서버 시계를 맞추고 있습니다</p><div class="searching-dots"><i></i><i></i><i></i></div><button class="cancel" id="online-cancel">취소</button></div>`;
+  document.querySelector('#online-cancel').onclick = async () => { clearOnlineTimers(); await globalThis.meonjeoRealtime?.leave?.(null).catch(() => {}); home(); };
+  try {
+    const clock = await prepareRealtimeConnection(5);
+    const status = document.querySelector('#online-network-status'); if (status) status.textContent = `서버 연결됨 · RTT ${clock.medianRttMs}ms`;
+    const resumableMatchId = localStorage.getItem(ONLINE_MATCH_KEY);
+    if (resumableMatchId) {
+      state.phase = 'online-match'; state.onlineMatchId = resumableMatchId; state.onlineRenderKey = null;
+      await pollOnlineSnapshot();
+      return;
+    }
+    await pollMatchmaking();
+  } catch (error) { console.error(error); onlineErrorHome('매칭 서버에 연결하지 못했습니다'); }
+}
+
+async function pollMatchmaking() {
+  if (state.phase !== 'online-matching') return;
+  try {
+    const result = await globalThis.meonjeoRealtime.join();
+    if (result.state === 'matched' && result.matchId) {
+      state.onlineMatchId = result.matchId; state.phase = 'online-match'; localStorage.setItem(ONLINE_MATCH_KEY, result.matchId); await pollOnlineSnapshot(); return;
+    }
+    onlinePollTimer = setTimeout(pollMatchmaking, 850);
+  } catch (error) { console.error(error); onlinePollTimer = setTimeout(pollMatchmaking, 1400); }
+}
+
+function updateOnlineTimeline(snapshot) {
+  const question = document.querySelector('#online-question');
+  const clock = document.querySelector('#online-clock');
+  if (question) {
+    const count = Math.min(snapshot.question.text.length, Math.floor(Math.max(0, onlineNow() - snapshot.startAt) / QUESTION_CHAR_MS));
+    question.textContent = snapshot.question.text.slice(0, count);
+  }
+  if (clock) {
+    const target = snapshot.phase === 'answering' ? snapshot.answerDeadlineAt : snapshot.phase === 'result' ? snapshot.nextQuestionAt : snapshot.startAt;
+    clock.textContent = String(Math.max(0, Math.ceil((target - onlineNow()) / 1000)));
+  }
+}
+
+function renderOnlineQuestion(snapshot) {
+  const open = snapshot.phase === 'open';
+  app.innerHTML = `<div class="battle-page online-battle-page"><div class="battle-head"><button class="back" id="online-leave">← 나가기</button><span class="round">ROUND ${snapshot.questionIndex + 1} / ${snapshot.roundLimit} · RTT ${state.onlineRtt || 0}ms</span></div><div class="players"><div class="player me"><div class="player-top"><span>나</span><span class="hearts">${'♥'.repeat(snapshot.myLives)}</span></div><div class="points">${snapshot.myScore}</div></div><div class="vs">VS</div><div class="player"><div class="player-top"><span>상대</span><span class="hearts">${'♥'.repeat(snapshot.opponentLives)}</span></div><div class="points">${snapshot.opponentScore}</div></div></div><section class="question-card"><div class="question-label">${escapeHtml(snapshot.question.category)} · SERVER SYNC</div><div class="question" id="online-question"></div><button class="buzz ${open ? '' : 'is-locked'}" id="online-buzz" type="button" ${open ? '' : 'disabled'}><strong>${open ? '먼저!' : 'READY'}</strong><small id="online-buzz-status">${open ? '누르면 서버에서 판정합니다' : `<b id="online-clock">${Math.max(0, Math.ceil((snapshot.startAt - onlineNow()) / 1000))}</b>초 후 시작`}</small></button></section></div>`;
+  document.querySelector('#online-leave').onclick = leaveOnlineMatch;
+  const buzz = document.querySelector('#online-buzz'); if (open) buzz.addEventListener('pointerdown', submitOnlineBuzz, { once: true });
+  updateOnlineTimeline(snapshot); clearInterval(onlineTimelineTimer); onlineTimelineTimer = setInterval(() => updateOnlineTimeline(snapshot), 50);
+}
+
+async function submitOnlineBuzz(event) {
+  event.preventDefault();
+  const button = document.querySelector('#online-buzz'); if (!button || button.disabled) return;
+  button.disabled = true; button.classList.add('is-pending');
+  const status = document.querySelector('#online-buzz-status'); if (status) status.textContent = '확인 중…';
+  const snapshot = state.onlineSnapshot;
+  try {
+    const result = await globalThis.meonjeoRealtime.buzz({ matchId: snapshot.matchId, questionToken: snapshot.questionToken, buzzId: globalThis.crypto.randomUUID(), clientSequence: (state.onlineSequence = (state.onlineSequence || 0) + 1), lastKnownRttMs: state.onlineRtt || 0 });
+    if (result.snapshot) applyOnlineSnapshot(result.snapshot, true);
+  } catch (error) { console.error(error); if (status) status.textContent = '재연결 중…'; }
+}
+
+function renderOnlineAnswer(snapshot) {
+  if (snapshot.buzzWinner !== 'me') {
+    app.innerHTML = `<div class="battle-page centered"><div class="eyebrow">BUZZ AWARDED</div><h2>상대가 먼저 눌렀습니다</h2><p class="muted">상대의 답변을 기다리는 중…</p><div class="answer-deadline"><b id="online-clock"></b>초</div></div>`;
+    updateOnlineTimeline(snapshot); return;
+  }
+  const candidates = (snapshot.answerCharacters || []).map((char, index) => `<button class="candidate" type="button" data-index="${index}" data-char="${escapeHtml(char)}" disabled>${escapeHtml(char)}</button>`).join('');
+  app.innerHTML = `<div class="battle-page centered online-answer-page"><div class="eyebrow">ANSWER RIGHT</div><h2>정답 문자를 순서대로 선택하세요</h2><div class="online-selected" id="online-selected"></div><div class="candidates">${candidates}</div><div class="answer-deadline"><b id="online-clock"></b>초</div><button class="text-button" id="online-undo" type="button">한 글자 지우기</button></div>`;
+  const selected = []; const selectedBox = document.querySelector('#online-selected'); const buttons = [...document.querySelectorAll('.candidate')];
+  const renderSelected = () => { selectedBox.innerHTML = selected.map(item => `<span>${escapeHtml(item.char)}</span>`).join(''); };
+  buttons.forEach(button => { button.onclick = async () => {
+    if (button.disabled) return; button.disabled = true; selected.push({ char: button.dataset.char, button }); renderSelected();
+    if (selected.length >= snapshot.answerLength) {
+      buttons.forEach(candidate => { candidate.disabled = true; });
+      try { const result = await globalThis.meonjeoRealtime.answer({ matchId: snapshot.matchId, answerId: globalThis.crypto.randomUUID(), answer: selected.map(item => item.char).join('') }); if (result.snapshot) applyOnlineSnapshot(result.snapshot, true); } catch (error) { console.error(error); }
+    }
+  }; });
+  const undo = document.querySelector('#online-undo');
+  undo.disabled = true;
+  undo.onclick = () => { const last = selected.pop(); if (last) last.button.disabled = false; renderSelected(); };
+  setTimeout(() => {
+    if (state.onlineSnapshot?.matchId !== snapshot.matchId || state.onlineSnapshot?.questionToken !== snapshot.questionToken || state.onlineSnapshot?.phase !== 'answering') return;
+    buttons.forEach(button => { button.disabled = false; });
+    undo.disabled = false;
+  }, 500);
+  updateOnlineTimeline(snapshot);
+}
+
+function renderOnlineResult(snapshot) {
+  const result = snapshot.result || {}; const mine = result.answerUid === 'me'; const correct = result.kind === 'correct';
+  const title = result.kind === 'no_buzz' ? '양쪽 모두 시간 초과' : result.kind === 'answer_timeout' ? (mine ? '답변 시간이 끝났습니다' : '상대의 답변 시간이 끝났습니다') : correct ? (mine ? '정답입니다!' : '상대가 정답을 맞혔습니다') : (mine ? '오답입니다' : '상대가 틀렸습니다');
+  app.innerHTML = `<div class="battle-page centered"><div class="result-card answer-result-card"><div class="result-icon ${correct ? '' : 'wrong'}">${correct ? '✓' : '×'}</div><div class="eyebrow">SERVER RESULT · ROUND ${snapshot.questionIndex + 1}</div><h2>${title}</h2><div class="result-revealed-answer"><span>정답</span><strong>${escapeHtml(result.answer || '')}</strong></div><p class="explanation">${escapeHtml(result.explanation || '')}</p><div class="result-stats"><span>내 점수 <b>${snapshot.myScore}</b></span><span>상대 점수 <b>${snapshot.opponentScore}</b></span></div><p class="result-auto-next"><b id="online-clock"></b>초 후 다음 문제 · 동기화 중</p><small class="background-sync-note">시계 보정 · 최신 스냅샷 · 연결 상태를 확인하고 있습니다</small></div></div>`;
+  updateOnlineTimeline(snapshot);
+  if (!state.onlineLastClockSync || Date.now() - state.onlineLastClockSync > 1500) {
+    state.onlineLastClockSync = Date.now(); globalThis.meonjeoRealtime.syncClock(3).then(clock => { state.onlineClockOffset = clock.offsetMs; state.onlineRtt = clock.medianRttMs; }).catch(() => {});
+  }
+}
+
+function renderOnlineComplete(snapshot) {
+  clearOnlineTimers(); localStorage.removeItem(ONLINE_MATCH_KEY); const won = snapshot.myScore > snapshot.opponentScore || snapshot.opponentLives <= 0;
+  app.innerHTML = `<div class="battle-page centered"><div class="result-card final"><div class="result-icon ${won ? '' : 'wrong'}">${won ? '🏆' : '×'}</div><div class="eyebrow">LIVE MATCH COMPLETE</div><h2>${won ? '승리했습니다!' : '아쉽게 패배했습니다'}</h2><div class="final-score"><b>${snapshot.myScore}</b><span>—</span><b>${snapshot.opponentScore}</b></div><button class="primary" id="online-home">홈으로</button></div></div>`;
+  document.querySelector('#online-home').onclick = home;
+  setTimeout(() => void syncCloudProgress(), 350);
+}
+
+function applyOnlineSnapshot(snapshot, force = false) {
+  if (!snapshot || snapshot.matchId !== state.onlineMatchId) return;
+  state.onlineSnapshot = snapshot; const renderKey = `${snapshot.phase}:${snapshot.version}`;
+  if (!force && state.onlineRenderKey === renderKey) { updateOnlineTimeline(snapshot); return; }
+  state.onlineRenderKey = renderKey;
+  if (snapshot.phase === 'scheduled' || snapshot.phase === 'open') renderOnlineQuestion(snapshot);
+  else if (snapshot.phase === 'answering') renderOnlineAnswer(snapshot);
+  else if (snapshot.phase === 'result') renderOnlineResult(snapshot);
+  else if (snapshot.phase === 'complete') renderOnlineComplete(snapshot);
+  else if (snapshot.phase === 'cancelled') { localStorage.removeItem(ONLINE_MATCH_KEY); onlineErrorHome('상대가 대전을 종료했습니다'); }
+}
+
+async function pollOnlineSnapshot() {
+  if (state.phase !== 'online-match' || !state.onlineMatchId) return;
+  try {
+    const result = await globalThis.meonjeoRealtime.snapshot(state.onlineMatchId); applyOnlineSnapshot(result.snapshot);
+    const delay = result.snapshot?.phase === 'result' ? 250 : result.snapshot?.phase === 'answering' ? 300 : 450;
+    onlinePollTimer = setTimeout(pollOnlineSnapshot, delay);
+  } catch (error) {
+    console.error(error);
+    if (error?.status === 404) { localStorage.removeItem(ONLINE_MATCH_KEY); onlineErrorHome('종료된 대전입니다'); return; }
+    onlinePollTimer = setTimeout(pollOnlineSnapshot, 1000);
+  }
+}
+
+async function leaveOnlineMatch() {
+  const matchId = state.onlineMatchId; clearOnlineTimers(); localStorage.removeItem(ONLINE_MATCH_KEY); state.phase = 'leaving';
+  await globalThis.meonjeoRealtime?.leave?.(matchId).catch(() => {}); home();
+}
+
+function localProgressSnapshot() {
+  return {
+    rating: state.rating,
+    rankPoints: state.rankPoints,
+    profileUpdatedAt: Math.max(0, Number(localStorage.getItem(PROFILE_UPDATED_AT_KEY)) || 0),
+    matchHistory: readStoredList(MATCH_HISTORY_KEY),
+  };
+}
+
+let cloudSyncPromise = null;
+async function syncCloudProgress({ refreshUi = false } = {}) {
+  if (state.authSession?.isAnonymous !== false || !globalThis.meonjeoAuth?.syncGameData) return;
+  if (cloudSyncPromise) return cloudSyncPromise;
+  state.cloudSyncStatus = 'syncing';
+  refreshAccountPanel();
+  cloudSyncPromise = globalThis.meonjeoAuth.syncGameData(localProgressSnapshot())
+    .then(progress => {
+      state.rating = Math.max(0, Number(progress.rating) || 1248);
+      state.rankPoints = Math.max(0, Number(progress.rankPoints) || 0);
+      localStorage.setItem(RATING_KEY, String(state.rating));
+      localStorage.setItem(RANK_POINTS_KEY, String(state.rankPoints));
+      localStorage.setItem(PROFILE_UPDATED_AT_KEY, String(Math.max(0, Number(progress.profileUpdatedAt) || 0)));
+      localStorage.setItem(MATCH_HISTORY_KEY, JSON.stringify(Array.isArray(progress.matchHistory) ? progress.matchHistory.slice(0, 30) : []));
+      state.cloudSyncStatus = 'synced';
+      if (refreshUi && state.phase === 'home') home();
+      refreshAccountPanel();
+      return progress;
+    })
+    .catch(error => {
+      console.error(error);
+      state.cloudSyncStatus = 'error';
+      refreshAccountPanel();
+      return null;
+    })
+    .finally(() => { cloudSyncPromise = null; });
+  return cloudSyncPromise;
+}
+
 function authErrorMessage(errorCode) {
   if (errorCode === 'auth/popup-closed-by-user' || errorCode === 'auth/cancelled-popup-request') {
     return isJapaneseTest() ? 'Googleログインをキャンセルしました' : 'Google 로그인을 취소했습니다';
@@ -491,8 +681,9 @@ function accountPanelMarkup() {
   const loading = session.status === 'loading' || session.status === 'working';
   const linked = !session.isAnonymous && session.provider === 'google';
   const title = linked ? (session.displayName || session.email || 'Google') : (isJapaneseTest() ? 'ゲストでプレイ中' : '게스트로 플레이 중');
+  const syncLabel = state.cloudSyncStatus === 'syncing' ? (isJapaneseTest() ? '同期中…' : '동기화 중…') : state.cloudSyncStatus === 'synced' ? (isJapaneseTest() ? '戦績同期済み' : '전적 동기화됨') : state.cloudSyncStatus === 'error' ? (isJapaneseTest() ? '同期を再試行します' : '동기화를 다시 시도합니다') : '';
   const detail = linked
-    ? (session.email || (isJapaneseTest() ? 'Googleアカウント連携済み' : 'Google 계정 연결됨'))
+    ? [session.email || (isJapaneseTest() ? 'Googleアカウント連携済み' : 'Google 계정 연결됨'), syncLabel].filter(Boolean).join(' · ')
     : (isJapaneseTest() ? 'Google連携で今後の戦績保存に備えられます' : 'Google 연결로 향후 전적 저장을 준비할 수 있어요');
   const avatar = linked ? escapeHtml((session.displayName || session.email || 'G').trim().charAt(0).toUpperCase()) : 'G';
   const action = linked ? (isJapaneseTest() ? 'ログアウト' : '로그아웃') : (isJapaneseTest() ? 'Googleで続ける' : 'Google로 계속하기');
@@ -949,6 +1140,10 @@ function matchResult() {
   const rankGainLabel = rankResult.gain > 0 ? `+${rankResult.gain} RP` : '+0 RP';
   const ruleCopy = isJapaneseTest() ? `日本語テスト · 全${roundLimit}問` : `최대 ${roundLimit}라운드 · ${WIN_SCORE}문제 선취`;
   app.innerHTML = `<div class="battle-page centered"><div class="result-card final"><div class="result-icon ${won || tied ? '' : 'wrong'}">${icon}</div><div class="eyebrow">MATCH COMPLETE · ${Math.min(state.questionIndex + 1, roundLimit)} ROUNDS</div><h2>${title}</h2><p>${ruleCopy}</p><div class="final-score"><b>${state.score}</b><span>—</span><b>${state.opponentScore}</b></div><div class="result-progression"><div class="rating-change"><span>RATING</span><b>${state.rating.toLocaleString()} → ${ratingAfter.toLocaleString()}</b><strong>${ratingDeltaLabel}</strong></div><div class="rank-result ${rankUp ? 'is-promoted' : ''}">${rankEmblemMarkup(rankResult.after, 'rank-emblem-result')}<div><small>${rankUp ? 'RANK UP!' : ui('rankPoint')}</small><strong>${rankResult.after.label}<em>${rankGainLabel}</em></strong><div class="rank-progress" style="--rank-from:${rankUp ? 0 : rankProgressBefore}%;--rank-to:${rankProgress}%"><span></span></div><p>${rankPointsBefore.toLocaleString()} → ${state.rankPoints.toLocaleString()} RP · ${ui('rankNoLoss')}</p></div></div></div><button class="primary" id="rematch">${ui('rematch')}</button><button class="text-button" id="home">${ui('home')}</button></div></div>${historyOverlayMarkup()}`;
+  state.rating = Math.max(0, ratingAfter);
+  localStorage.setItem(RATING_KEY, String(state.rating));
+  localStorage.setItem(PROFILE_UPDATED_AT_KEY, String(Date.now()));
+  void syncCloudProgress();
   bindHistoryDrawer();
   document.querySelector('#rematch').onclick = () => { state.questionIndex = 0; state.score = 0; state.opponentScore = 0; state.lives = 5; state.questionHistory = []; matching(); }; document.querySelector('#home').onclick = home;
 }
@@ -965,6 +1160,8 @@ async function bootstrap() {
     hydrateSession(snapshot);
     if (reconnectAge(snapshot) <= RECONNECT_GRACE_MS) showReconnect(snapshot); else showReconnectExpired();
   } else home();
+  state.bootstrapped = true;
+  if (state.authSession?.isAnonymous === false && localStorage.getItem(ONLINE_MATCH_KEY) && state.phase === 'home') void onlineMatching();
 }
 
 window.addEventListener('offline', () => { if (ACTIVE_PHASES.has(state.phase)) showDisconnected(); });
@@ -973,6 +1170,9 @@ window.addEventListener('pagehide', () => persistSession({ disconnected: true })
 window.addEventListener('meonjeo-auth-change', event => {
   state.authSession = event.detail || { status: 'error', isAnonymous: true };
   refreshAccountPanel();
+  if (state.authSession.status === 'ready' && state.authSession.isAnonymous === false) void syncCloudProgress({ refreshUi: true });
+  if (state.authSession.status === 'ready' && state.authSession.isAnonymous === false && state.bootstrapped && localStorage.getItem(ONLINE_MATCH_KEY) && state.phase === 'home') void onlineMatching();
+  if (state.authSession.isAnonymous !== false) globalThis.meonjeoRealtime?.resetSession?.();
 });
 document.addEventListener('visibilitychange', () => {
   if (!ACTIVE_PHASES.has(state.phase)) return;

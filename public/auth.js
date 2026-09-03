@@ -3,6 +3,7 @@ import {
   GoogleAuthProvider,
   browserLocalPersistence,
   getAuth,
+  getIdToken,
   linkWithPopup,
   onAuthStateChanged,
   setPersistence,
@@ -93,10 +94,60 @@ async function signOutToGuest() {
   }
 }
 
+function mergeProgress(localProgress, cloudProgress) {
+  const localUpdatedAt = Number(localProgress.profileUpdatedAt) || 0;
+  const cloudUpdatedAt = Number(cloudProgress?.profileUpdatedAt) || 0;
+  const newer = cloudProgress && cloudUpdatedAt > localUpdatedAt ? cloudProgress : localProgress;
+  const historyById = new Map();
+  for (const item of [...(cloudProgress?.matchHistory || []), ...(localProgress.matchHistory || [])]) {
+    if (item?.matchId) historyById.set(item.matchId, item);
+  }
+  const matchHistory = [...historyById.values()]
+    .sort((a, b) => Date.parse(b.playedAt) - Date.parse(a.playedAt))
+    .slice(0, 30);
+  return {
+    rating: Math.max(0, Math.floor(Number(newer.rating) || 0)),
+    rankPoints: Math.max(Number(localProgress.rankPoints) || 0, Number(cloudProgress?.rankPoints) || 0),
+    profileUpdatedAt: Math.max(localUpdatedAt, cloudUpdatedAt),
+    matchHistory,
+  };
+}
+
+async function authenticatedRequest(path, options = {}) {
+  const user = auth.currentUser;
+  if (!user || user.isAnonymous) throw new Error('Google account is required');
+  const token = await getIdToken(user);
+  const response = await fetch(path, {
+    ...options,
+    headers: { ...options.headers, Authorization: `Bearer ${token}` },
+  });
+  if (!response.ok) throw new Error(`Progress sync failed (${response.status})`);
+  return response.json();
+}
+
+async function syncGameData(localProgress) {
+  const cloudResult = await authenticatedRequest('/api/progress', { method: 'GET' });
+  const merged = mergeProgress(localProgress, cloudResult.progress);
+  const saved = await authenticatedRequest('/api/progress', {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(merged),
+  });
+  return saved.progress;
+}
+
+async function getAuthToken() {
+  const user = auth.currentUser;
+  if (!user || user.isAnonymous) throw new Error('Google account is required');
+  return getIdToken(user);
+}
+
 globalThis.meonjeoAuth = {
   getSession: () => lastSession,
   signInWithGoogle,
   signOut: signOutToGuest,
+  syncGameData,
+  getAuthToken,
 };
 
 onAuthStateChanged(auth, user => {
