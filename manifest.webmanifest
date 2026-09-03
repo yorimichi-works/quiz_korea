@@ -1,0 +1,12 @@
+{
+  "name": "먼저! — 실시간 1대1 버저 퀴즈",
+  "short_name": "먼저!",
+  "lang": "ko",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#f7faff",
+  "theme_color": "#112d5c",
+  "description": "문제를 먼저 알아채고 누르는 한국어 1대1 실시간 버저 퀴즈."
+}
