@@ -1,5 +1,5 @@
-const CACHE_NAME = 'meonjeo-shell-v8';
-const SHELL = ['./', './index.html', './game.html', './styles.css', './app.js', './auth.js', './realtime.js', './manifest.webmanifest'];
+const CACHE_NAME = 'meonjeo-shell-v9';
+const SHELL = ['./', './game.html', './styles.css?v=4', './app.js?v=9', './auth.js?v=4', './realtime.js?v=3', './manifest.webmanifest'];
 
 self.addEventListener('install', event => {
   event.waitUntil(caches.open(CACHE_NAME).then(cache => cache.addAll(SHELL)));
@@ -19,5 +19,5 @@ self.addEventListener('fetch', event => {
     const copy = response.clone();
     caches.open(CACHE_NAME).then(cache => cache.put(event.request, copy));
     return response;
-  }).catch(() => caches.match(event.request).then(response => response || caches.match('./index.html').then(index => index || caches.match('./game.html')))));
+  }).catch(() => caches.match(event.request).then(response => response || caches.match('./game.html'))));
 });
