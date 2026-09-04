@@ -375,6 +375,13 @@ function bindHomeMenuAction(selector, action) {
   };
 }
 
+function refreshTopProfile() {
+  const playerRank = rankFromPoints(state.rankPoints);
+  const topProfile = document.querySelector('#top-profile');
+  if (!topProfile) return;
+  topProfile.innerHTML = `<div class="top-profile-rank">${rankEmblemMarkup(playerRank, 'rank-emblem-top')}<div><b>${playerRank.label}</b><small>${playerRank.current.toLocaleString()} RP</small></div></div>${titleBadgeMarkup(state.titles?.selectedTitleId, 'title-badge-top')}<div class="top-profile-rating"><span>RATING</span><strong>${state.rating.toLocaleString()}</strong></div>`;
+}
+
 function home() {
   clearTimer(); clearOnlineTimers(); clearQuizTimeTimer(); clearSavedSession(); state.phase = 'home'; state.matchId = null;
   state.rankPoints = Math.max(0, Number(localStorage.getItem(RANK_POINTS_KEY)) || state.rankPoints || 0);
@@ -386,8 +393,7 @@ function home() {
   sessionStorage.setItem(HOME_INTRO_SESSION_KEY, 'seen');
   const motionClass = isFirstHome ? 'home-intro' : 'home-return';
   const brandTranslation = isJapaneseTest() ? '<span class="brand-translation">（先に！）</span>' : '';
-  const playerRank = rankFromPoints(state.rankPoints);
-  document.querySelector('#top-profile').innerHTML = `<div class="top-profile-rank">${rankEmblemMarkup(playerRank, 'rank-emblem-top')}<div><b>${playerRank.label}</b><small>${playerRank.current.toLocaleString()} RP</small></div></div>${titleBadgeMarkup(state.titles?.selectedTitleId, 'title-badge-top')}<div class="top-profile-rating"><span>RATING</span><strong>${state.rating.toLocaleString()}</strong></div>`;
+  refreshTopProfile();
   app.innerHTML = `<div class="title-screen ${motionClass}">
     <section class="title-brand-panel" aria-labelledby="home-title">
       <h1 id="home-title" aria-label="${isJapaneseTest() ? '먼저!（先に！）' : '먼저!'}"><span class="logo-clip"><span class="logo-letter">먼</span></span><span class="logo-clip"><span class="logo-letter">저</span></span><span class="logo-clip logo-bang"><span class="logo-letter">!</span></span>${brandTranslation}</h1>
@@ -604,7 +610,9 @@ function updateOnlineTimeline(snapshot) {
   }
   if (clock) {
     const target = snapshot.phase === 'answering' ? snapshot.answerDeadlineAt : snapshot.phase === 'result' ? snapshot.nextQuestionAt : snapshot.startAt;
-    clock.textContent = String(Math.max(0, Math.ceil((target - onlineNow()) / 1000)));
+    const remaining = Math.max(0, Math.ceil((target - onlineNow()) / 1000));
+    if (snapshot.phase === 'result' && remaining === 0) clock.parentElement.textContent = '다음 문제를 동기화하고 있습니다…';
+    else clock.textContent = String(remaining);
   }
   if (buzz && snapshot.phase === 'scheduled' && onlineNow() >= snapshot.buzzOpenAt && buzz.dataset.localOpen !== 'true') {
     buzz.dataset.localOpen = 'true'; buzz.disabled = false; buzz.classList.remove('is-locked');
@@ -673,9 +681,16 @@ function renderOnlineResult(snapshot) {
 
 function renderOnlineComplete(snapshot) {
   clearOnlineTimers(); localStorage.removeItem(ONLINE_MATCH_KEY); const tied = snapshot.myScore === snapshot.opponentScore && snapshot.myLives === snapshot.opponentLives; const won = !tied && (snapshot.myScore > snapshot.opponentScore || snapshot.opponentLives <= 0);
+  const forfeit = snapshot.result?.kind === 'forfeit';
+  const resultTitle = forfeit ? (snapshot.result.answerUid === 'opponent' ? '상대가 나가 승리했습니다' : '경기를 나가 패배했습니다') : won ? '승리했습니다!' : tied ? '무승부입니다' : '아쉽게 패배했습니다';
   const reward = snapshot.reward || { ratingBefore:state.rating, ratingAfter:state.rating, ratingDelta:0, rankPointsBefore:state.rankPoints, rankPointsAfter:state.rankPoints, rankGain:0 };
   const rankPointsBefore = Number.isFinite(Number(reward.rankPointsBefore)) ? Number(reward.rankPointsBefore) : state.rankPoints; const rankPointsAfter = Number.isFinite(Number(reward.rankPointsAfter)) ? Number(reward.rankPointsAfter) : rankPointsBefore + Number(reward.rankGain || 0);
-  app.innerHTML = `<div class="battle-page centered"><div class="result-card final"><div class="result-icon ${won || tied ? '' : 'wrong'}">${won ? '🏆' : tied ? '—' : '×'}</div><div class="eyebrow">LIVE MATCH COMPLETE</div><h2>${won ? '승리했습니다!' : tied ? '무승부입니다' : '아쉽게 패배했습니다'}</h2><div class="final-score"><b>${snapshot.myScore}</b><span>—</span><b>${snapshot.opponentScore}</b></div><div class="result-progression"><div class="rating-change"><span>RATING</span><b>${Number(reward.ratingBefore).toLocaleString()} → ${Number(reward.ratingAfter).toLocaleString()}</b><strong>${reward.ratingDelta > 0 ? '+' : ''}${reward.ratingDelta}</strong></div><div class="rating-change"><span>RANK POINT</span><b>${rankPointsBefore.toLocaleString()} → ${rankPointsAfter.toLocaleString()}</b><strong>+${reward.rankGain}</strong></div></div><button class="primary" id="online-home">홈으로</button></div></div>`;
+  state.rating = Math.max(0, Number(reward.ratingAfter) || state.rating);
+  state.rankPoints = Math.max(0, rankPointsAfter);
+  localStorage.setItem(RATING_KEY, String(state.rating));
+  localStorage.setItem(RANK_POINTS_KEY, String(state.rankPoints));
+  refreshTopProfile();
+  app.innerHTML = `<div class="battle-page centered"><div class="result-card final"><div class="result-icon ${won || tied ? '' : 'wrong'}">${won ? '🏆' : tied ? '—' : '×'}</div><div class="eyebrow">LIVE MATCH COMPLETE</div><h2>${resultTitle}</h2>${forfeit ? '<p class="muted">기권으로 대전 결과가 확정되었습니다.</p>' : ''}<div class="final-score"><b>${snapshot.myScore}</b><span>—</span><b>${snapshot.opponentScore}</b></div><div class="result-progression"><div class="rating-change"><span>RATING</span><b>${Number(reward.ratingBefore).toLocaleString()} → ${Number(reward.ratingAfter).toLocaleString()}</b><strong>${reward.ratingDelta > 0 ? '+' : ''}${reward.ratingDelta}</strong></div><div class="rating-change"><span>RANK POINT</span><b>${rankPointsBefore.toLocaleString()} → ${rankPointsAfter.toLocaleString()}</b><strong>+${reward.rankGain}</strong></div></div><button class="primary" id="online-home">홈으로</button></div></div>`;
   document.querySelector('#online-home').onclick = home;
   setTimeout(() => { void syncCloudProgress(); void loadTitles({ notifyUnlock:true }); }, 350);
 }

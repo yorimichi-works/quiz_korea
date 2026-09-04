@@ -4,7 +4,9 @@ import { readFile } from 'node:fs/promises';
 const baseUrl = process.env.MEONJEO_TEST_URL || 'http://localhost:3001';
 const apiKey = 'AIzaSyAFNxcPTqD8LK6IWXlygncDoaUFRAdb6sQ';
 const season = JSON.parse(await readFile(new URL('../data/seasons/S1-2026/questions.ko.json', import.meta.url), 'utf8'));
-const answers = new Map(season.questions.map((question: { questionText:string; canonicalAnswer:string }) => [question.questionText, question.canonicalAnswer]));
+const answers = new Map(season.questions
+  .filter((question: { enabledInSeason:boolean; qaStatus:string }) => question.enabledInSeason && question.qaStatus !== 'REJECT')
+  .map((question: { questionText:string; canonicalAnswer:string }) => [question.questionText, question.canonicalAnswer]));
 const sleep = (ms:number) => new Promise(resolve => setTimeout(resolve,ms));
 
 async function jsonFetch(url:string, options:RequestInit = {}): Promise<{ payload:any; elapsed:number }> {
@@ -28,7 +30,7 @@ async function anonymousUser() {
 }
 
 const users: Array<{ idToken:string; sessionToken:string }> = [];
-const requestTimes:number[] = []; let retries = 0; let completed = 0; let aWins = 0; let bWins = 0;
+const requestTimes:number[] = []; let retries = 0; let completed = 0; let aWins = 0; let bWins = 0; let forfeitVerified = false;
 async function realtime(userIndex:number, action:string, body:Record<string,unknown>) {
   const result = await jsonFetch(`${baseUrl}/api/realtime?action=${action}`, { method:'POST', headers:{ Authorization:`Meonjeo ${users[userIndex].sessionToken}`, 'Content-Type':'application/json', 'X-Meonjeo-QA':'local-200' }, body:JSON.stringify(body) });
   requestTimes.push(result.elapsed); return result.payload;
@@ -54,19 +56,29 @@ try {
     const winner = winnerBuzz.winner === 'me' ? preferred : other;
     const questionText = snapshots[winner].question.text; const answer = answers.get(questionText); if (!answer) throw new Error(`Answer missing for ${questionText}`);
     const answerId = crypto.randomUUID(); const answerResult = await realtime(winner,'answer',{ matchId, answerId, answer });
+    if (answerResult.snapshot?.result?.kind !== 'correct') throw new Error(`Expected correct answer for ${questionText}; sent ${answer}`);
     if (matchNumber % 20 === 0) { await realtime(winner,'answer',{ matchId, answerId, answer }); retries += 1; }
     let complete:any = answerResult.snapshot;
     for (let attempt=0; attempt<20 && complete.phase !== 'complete'; attempt+=1) { await sleep(8); complete = (await realtime(winner,'snapshot',{matchId})).snapshot; }
     if (complete.phase !== 'complete') throw new Error(`Match ${matchNumber} did not complete`);
     completed += 1; if (winner === 0) aWins += 1; else bWins += 1;
+    if (completed % 20 === 0) console.log(`QA progress: ${completed}/200 matches complete`);
   }
+  const forfeitFirst = await realtime(0,'join',{ source:'rated' });
+  const forfeitSecond = await realtime(1,'join',{ source:'rated' });
+  const forfeitMatchId = forfeitSecond.matchId || forfeitFirst.matchId;
+  if (!forfeitMatchId) throw new Error('Forfeit verification match did not form');
+  await realtime(0,'leave',{ matchId:forfeitMatchId });
+  const forfeitSnapshot = (await realtime(1,'snapshot',{ matchId:forfeitMatchId })).snapshot;
+  forfeitVerified = forfeitSnapshot.phase === 'complete' && forfeitSnapshot.result?.kind === 'forfeit' && forfeitSnapshot.opponentLives === 0 && forfeitSnapshot.reward?.ratingDelta > 0;
+  if (!forfeitVerified) throw new Error(`Forfeit did not award the remaining player: ${JSON.stringify(forfeitSnapshot)}`);
   const authHeaders = (index:number) => ({ Authorization:`Bearer ${users[index].idToken}` });
   const [progressA,progressB,titlesA,titlesB] = await Promise.all([
     jsonFetch(`${baseUrl}/api/progress`,{headers:authHeaders(0)}), jsonFetch(`${baseUrl}/api/progress`,{headers:authHeaders(1)}),
     jsonFetch(`${baseUrl}/api/titles`,{headers:authHeaders(0)}), jsonFetch(`${baseUrl}/api/titles`,{headers:authHeaders(1)}),
   ]);
   const ordered=[...requestTimes].sort((a,b)=>a-b); const percentile=(ratio:number)=>Math.round(ordered[Math.floor((ordered.length-1)*ratio)]);
-  console.log(JSON.stringify({ completed, wins:{a:aWins,b:bWins}, idempotentAnswerRetries:retries, apiLatencyMs:{p50:percentile(.5),p95:percentile(.95),max:Math.round(ordered.at(-1) || 0)}, progress:{a:progressA.payload.progress,b:progressB.payload.progress}, titles:{a:titlesA.payload,b:titlesB.payload} },null,2));
+  console.log(JSON.stringify({ completed, wins:{a:aWins,b:bWins}, forfeitVerified, idempotentAnswerRetries:retries, apiLatencyMs:{p50:percentile(.5),p95:percentile(.95),max:Math.round(ordered.at(-1) || 0)}, progress:{a:progressA.payload.progress,b:progressB.payload.progress}, titles:{a:titlesA.payload,b:titlesB.payload} },null,2));
 } finally {
   await Promise.allSettled(users.map(user => jsonFetch(`https://identitytoolkit.googleapis.com/v1/accounts:delete?key=${apiKey}`, { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({idToken:user.idToken}) })));
 }

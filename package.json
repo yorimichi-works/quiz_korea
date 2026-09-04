@@ -11,6 +11,7 @@
     "start": "vinext start",
     "test:realtime": "node --test scripts/realtime-invariants.test.mjs",
     "test:product": "node --test scripts/product-simulation.test.ts",
+    "test:language": "node --test scripts/question-language.test.mjs",
     "simulate:matches": "node scripts/simulate-200-matches.ts",
     "test:live-200": "node scripts/run-200-live-matches.ts",
     "lint": "eslint . --ignore-pattern dist --ignore-pattern .next --ignore-pattern tmp"

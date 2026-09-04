@@ -32,9 +32,9 @@ function response(body: unknown, status = 200) {
   return Response.json(body, { status, headers: { 'Cache-Control': 'no-store' } });
 }
 
-async function database() {
-  const db = (env as unknown as { DB?: D1Database }).DB;
-  if (!db) throw new Error('Realtime database unavailable');
+let databaseReady: Promise<D1Database> | null = null;
+
+async function initializeDatabase(db: D1Database) {
   await db.batch([
     db.prepare(`CREATE TABLE IF NOT EXISTS meonjeo_player_progress (user_id TEXT PRIMARY KEY, rating INTEGER NOT NULL, rank_points INTEGER NOT NULL, profile_updated_at INTEGER NOT NULL, match_history_json TEXT NOT NULL, updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP)`),
     db.prepare(`CREATE TABLE IF NOT EXISTS meonjeo_match_queue (user_id TEXT PRIMARY KEY, joined_at INTEGER NOT NULL, source TEXT NOT NULL DEFAULT 'rated')`),
@@ -47,6 +47,18 @@ async function database() {
   ]);
   await db.prepare(`INSERT OR IGNORE INTO meonjeo_quiz_time_config (id) VALUES ('default')`).run();
   return db;
+}
+
+function database() {
+  const db = (env as unknown as { DB?: D1Database }).DB;
+  if (!db) throw new Error('Realtime database unavailable');
+  if (!databaseReady) {
+    databaseReady = initializeDatabase(db).catch(error => {
+      databaseReady = null;
+      throw error;
+    });
+  }
+  return databaseReady;
 }
 
 async function firebaseUserIdFromRequest(request: Request) {
@@ -184,13 +196,27 @@ async function applyMatchRewards(db: D1Database, match: MatchRow) {
   await Promise.all(players.map(player => recordQuizTimeEvent(db, { eventId:`match-complete:${match.id}:${player.uid}`, uid:player.uid, type:'quiz_time_match_complete', source:player.source, result:tied ? 'draw' : winner === player.uid ? 'win' : 'loss' })));
 }
 
+async function completeForfeit(db: D1Database, match: MatchRow, loserUid: string) {
+  const now = Date.now();
+  const result = { kind:'forfeit', answer:'', explanation:'상대가 대전을 떠나 기권 처리되었습니다.', answerUid:loserUid };
+  const completed = await db.prepare(`UPDATE meonjeo_matches SET status = 'complete', phase = 'complete', lives_a = CASE WHEN player_a = ?1 THEN 0 ELSE lives_a END, lives_b = CASE WHEN player_b = ?1 THEN 0 ELSE lives_b END, result_json = ?2, next_question_at = NULL, decision_version = decision_version + 1, updated_at = ?3 WHERE id = ?4 AND status = 'active'`)
+    .bind(loserUid, JSON.stringify(result), now, match.id).run();
+  const completedMatch = (await loadMatch(db, match.id, match.player_a)) || match;
+  if (completed.meta.changes === 1) await applyMatchRewards(db, completedMatch);
+  return (await loadMatch(db, match.id, match.player_a)) || completedMatch;
+}
+
 async function advance(db: D1Database, match: MatchRow) {
   const now = Date.now();
   const qaMode = match.id.startsWith('qa-');
-  const otherLastSeen = match.last_seen_a > match.last_seen_b ? match.last_seen_b : match.last_seen_a;
-  if (match.status === 'active' && now - match.created_at > 15000 && (otherLastSeen === 0 || now - otherLastSeen > 15000)) {
-    await db.prepare(`UPDATE meonjeo_matches SET status = 'cancelled', phase = 'cancelled', decision_version = decision_version + 1, updated_at = ?1 WHERE id = ?2 AND status = 'active'`).bind(now, match.id).run();
-    return (await loadMatch(db, match.id, match.player_a)) || match;
+  const staleA = match.last_seen_a === 0 || now - match.last_seen_a > 15000;
+  const staleB = match.last_seen_b === 0 || now - match.last_seen_b > 15000;
+  if (match.status === 'active' && now - match.created_at > 15000 && (staleA || staleB)) {
+    if (staleA && staleB) {
+      await db.prepare(`UPDATE meonjeo_matches SET status = 'cancelled', phase = 'cancelled', decision_version = decision_version + 1, updated_at = ?1 WHERE id = ?2 AND status = 'active'`).bind(now, match.id).run();
+      return (await loadMatch(db, match.id, match.player_a)) || match;
+    }
+    return completeForfeit(db, match, staleA ? match.player_a : match.player_b);
   }
   if (match.phase === 'scheduled' && now > match.buzz_deadline_at) {
     const question = currentQuestion(match);
@@ -356,7 +382,10 @@ export async function POST(request: Request) {
       await db.prepare(`DELETE FROM meonjeo_match_queue WHERE user_id = ?1`).bind(uid).run();
       if (queued) await recordQuizTimeEvent(db, { eventId:`queue-cancel:${queued.joined_at}:${uid}`, uid, type:'quiz_time_queue_cancel', source:queued.source });
       const matchId = String(body.matchId || '');
-      if (matchId) await db.prepare(`UPDATE meonjeo_matches SET status = 'cancelled', phase = 'cancelled', updated_at = ?1 WHERE id = ?2 AND status = 'active' AND (player_a = ?3 OR player_b = ?3)`).bind(Date.now(), matchId, uid).run();
+      if (matchId) {
+        const match = await loadMatch(db, matchId, uid);
+        if (match?.status === 'active') await completeForfeit(db, match, uid);
+      }
       return response({ ok: true });
     }
     return response({ error: 'unknown-action' }, 404);
