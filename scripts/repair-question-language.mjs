@@ -65,10 +65,11 @@ function repair(data) {
     } else if (q1.categoryId === 'entertainment_broadcast') {
       const work = q1.canonicalAnswer;
       const creator = q2.canonicalAnswer;
-      q1.explanation = q2.explanation = `작품: ${work}. 관련 제작자·원작자: ${creator}.`;
       // Drama pairs mix directors, screenwriters, and original authors. Movie
       // director questions state one precise role and can safely stay live.
-      q2.enabledInSeason = q2.questionText.startsWith('영화 ') && q2.questionText.includes('감독은 누구일까요?');
+      const isMovieDirector = q2.questionText.startsWith('영화 ') && q2.questionText.includes('감독은 누구일까요?');
+      q1.explanation = q2.explanation = isMovieDirector ? `영화: ${work}. 감독: ${creator}.` : `작품: ${work}. 관련 제작자·원작자: ${creator}.`;
+      q2.enabledInSeason = isMovieDirector;
     }
   }
   return data;
