@@ -1,5 +1,5 @@
-const CACHE_NAME = 'meonjeo-shell-v9';
-const SHELL = ['./', './game.html', './styles.css?v=4', './app.js?v=9', './auth.js?v=4', './realtime.js?v=3', './manifest.webmanifest'];
+const CACHE_NAME = 'meonjeo-shell-v11';
+const SHELL = ['./', './game.html', './styles.css?v=6', './app.js?v=11', './auth.js?v=4', './realtime.js?v=3', './manifest.webmanifest'];
 
 self.addEventListener('install', event => {
   event.waitUntil(caches.open(CACHE_NAME).then(cache => cache.addAll(SHELL)));

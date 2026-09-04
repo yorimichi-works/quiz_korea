@@ -1,13 +1,22 @@
 {
   "schemaVersion": 1,
-  "activeSeasonId": "S1-2026",
+  "activeSeasonId": "S2-2026",
   "seasons": [
     {
       "seasonId": "S1-2026",
       "locale": "ko",
-      "status": "draft",
-      "eligibleCount": 946,
+      "status": "archived",
+      "eligibleCount": 918,
       "questionFile": "S1-2026/questions.ko.json",
+      "startsAt": null,
+      "endsAt": null
+    },
+    {
+      "seasonId": "S2-2026",
+      "locale": "ko",
+      "status": "active",
+      "eligibleCount": 2000,
+      "questionFile": "S2-2026/questions.ko.json",
       "startsAt": null,
       "endsAt": null
     }

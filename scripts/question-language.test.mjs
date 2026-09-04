@@ -2,9 +2,14 @@ import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import test from 'node:test';
 
-const season = JSON.parse(await readFile(new URL('../data/seasons/S1-2026/questions.ko.json', import.meta.url), 'utf8'));
-const live = season.questions.filter(question => question.enabledInSeason && question.qaStatus !== 'REJECT');
+const manifest = JSON.parse(await readFile(new URL('../data/seasons/manifest.json', import.meta.url), 'utf8'));
+const activeSeason = manifest.seasons.find(item => item.seasonId === manifest.activeSeasonId);
+if (!activeSeason) throw new Error(`Active season not found: ${manifest.activeSeasonId}`);
+const activeSeasonUrl = new URL(`../data/seasons/${activeSeason.questionFile}`, import.meta.url);
+const activeSeasonData = JSON.parse(await readFile(activeSeasonUrl, 'utf8'));
+const live = activeSeasonData.questions.filter(question => question.enabledInSeason && question.qaStatus !== 'REJECT');
 const placeholderPattern = /은\(는\)|이\(가\)|말는|기록는|종목는|영법는|게임 또는 대표 시리즈/;
+const entertainmentContextPattern = /(?:영화|드라마|방송|예능|작품|제목|감독|연출|프로그램|시리즈|다큐멘터리|애니메이션|뮤지컬|연극|가수|노래|앨범|배우|출연)/;
 const normalize = value => value.normalize('NFKC').toLowerCase().replace(/[\s·.,!?！？'"“”‘’()（）\-_:：/「」]/g, '');
 
 test('live Korean questions contain no unresolved grammar templates', () => {
@@ -12,13 +17,16 @@ test('live Korean questions contain no unresolved grammar templates', () => {
   assert.deepEqual(invalid.map(question => question.questionId), []);
 });
 
-test('live pool remains large and varied after language quality filtering', () => {
-  assert.ok(live.length >= 900, `expected at least 900 live questions, got ${live.length}`);
+test('active season exposes the complete 2,000-question pool', () => {
+  assert.equal(live.length, 2000, `expected exactly 2,000 live questions, got ${live.length}`);
   assert.ok(new Set(live.map(question => question.categoryId)).size >= 10);
 });
 
-test('ambiguous drama role variants are excluded from live matches', () => {
-  const ambiguous = live.filter(question => question.categoryId === 'entertainment_broadcast' && question.variantId === 'q2' && !question.questionText.startsWith('영화 '));
+test('entertainment questions identify the work, medium, or requested role', () => {
+  const ambiguous = live.filter(
+    question => question.categoryId === 'entertainment_broadcast'
+      && !entertainmentContextPattern.test(question.questionText),
+  );
   assert.deepEqual(ambiguous.map(question => question.questionId), []);
 });
 

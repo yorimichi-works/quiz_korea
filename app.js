@@ -18,13 +18,30 @@ const MATCH_HISTORY_KEY = 'meonjeo.match-history.v1';
 const REPORT_OUTBOX_KEY = 'meonjeo.report-outbox.v1';
 const ONLINE_MATCH_KEY = 'meonjeo.online-match.v1';
 const RECONNECT_GRACE_MS = 45000;
-const QUESTION_CHAR_MS = 130;
 const POST_REVEAL_WAIT_MS = 5000;
 const RESULT_DISPLAY_MS = 5000;
 const OPPONENT_CHAR_MS = 650;
 const OPPONENT_RESULT_HOLD_MS = 1200;
+const ANSWER_INPUT_GUARD_MS = 250;
 const MAX_ROUNDS = 20;
 const WIN_SCORE = 5;
+const BASE_CHARACTER_MS = 115;
+const SPACE_MS = 40;
+const CLAUSE_PAUSE_MS = 210;
+const SENTENCE_PAUSE_MS = 360;
+const questionCharacters = value => Array.isArray(value) ? value : Array.from(String(value || ''));
+const questionCharacterDelayMs = character => /\s/u.test(character) ? SPACE_MS : /[.!?！？…]/u.test(character) ? SENTENCE_PAUSE_MS : /[,，、:：;；]/u.test(character) ? CLAUSE_PAUSE_MS : BASE_CHARACTER_MS;
+const questionRevealDurationMs = value => questionCharacters(value).reduce((total, character) => total + questionCharacterDelayMs(character), 0);
+const revealedQuestionLength = (value, elapsedMs) => {
+  if (elapsedMs <= 0) return 0;
+  const characters = questionCharacters(value); let nextRevealAt = BASE_CHARACTER_MS;
+  for (let index = 0; index < characters.length; index += 1) {
+    if (nextRevealAt > elapsedMs) return index;
+    // The character is now visible; its delay is the pause before the next one.
+    nextRevealAt += questionCharacterDelayMs(characters[index]);
+  }
+  return characters.length;
+};
 const TITLE_DEFS = [
   { id:'rookie_winner', ko:'첫 승리', ja:'初勝利', icon:'1', style:'frame', requirement:'첫 승리 달성', requirementJa:'初勝利を達成' },
   { id:'ten_wins', ko:'열 번의 승리', ja:'10勝達成', icon:'10', style:'frame', requirement:'누적 10승', requirementJa:'累計10勝' },
@@ -70,7 +87,8 @@ const state = {
   answerInputUnlockedAt: 0,
   locale: localStorage.getItem(TEST_LOCALE_KEY) === 'ja' ? 'ja' : 'ko',
   authSession: { status: 'loading', isAnonymous: true }, cloudSyncStatus: 'idle',
-  titles: { selectedTitleId:null, unlockedTitleIds:[], stats:null }, quizTime:null, onlineSource:'rated'
+  titles: { selectedTitleId:null, unlockedTitleIds:[], stats:null }, quizTime:null, onlineSource:'rated',
+  onlinePendingBuzz:null, onlinePendingAnswer:null
 };
 const clearTimer = () => { if (timer) { clearInterval(timer); timer = null; } };
 const clearReconnectTimer = () => { if (reconnectTimer) { clearInterval(reconnectTimer); reconnectTimer = null; } };
@@ -125,10 +143,11 @@ function rankFromPoints(totalPoints) {
 
 function rankEmblemMarkup(rank, extraClass = '') {
   const tierClass = rank.tier.toLowerCase();
-  const stageClass = rank.stageMark === '−' ? ' rank-stage-minus' : '';
-  const stage = rank.stageMark ? `<small class="rank-stage${stageClass}">${escapeHtml(rank.stageMark)}</small>` : '';
+  const isMinusStage = rank.stageMark === '−';
+  const label = `${escapeHtml(rank.baseLabel)}${isMinusStage ? '<i class="rank-grade-minus" aria-hidden="true">−</i>' : ''}`;
+  const stage = rank.stageMark && !isMinusStage ? `<small class="rank-stage">${escapeHtml(rank.stageMark)}</small>` : '';
   const masterLevel = rank.isMaster ? `<small class="rank-master-level" style="--rank-digits:${String(rank.masterLevel).length}">${escapeHtml(rank.masterLevel)}</small>` : '';
-  return `<span class="rank-emblem rank-tier-${tierClass} ${extraClass}" role="img" aria-label="${escapeHtml(rank.label)}"><svg viewBox="0 0 48 56" aria-hidden="true"><path class="rank-shield" d="M24 3 42 10v15c0 12.5-7.2 22.5-18 28C13.2 47.5 6 37.5 6 25V10L24 3Z"/><path class="rank-cut" d="M24 8.5 37 14v11c0 8.2-4.4 15.2-13 20.2C15.4 40.2 11 33.2 11 25V14l13-5.5Z"/></svg><b>${escapeHtml(rank.baseLabel)}</b>${stage}${masterLevel}</span>`;
+  return `<span class="rank-emblem rank-tier-${tierClass} ${extraClass}" role="img" aria-label="${escapeHtml(rank.label)}"><svg viewBox="0 0 48 56" aria-hidden="true"><path class="rank-shield" d="M24 3 42 10v15c0 12.5-7.2 22.5-18 28C13.2 47.5 6 37.5 6 25V10L24 3Z"/><path class="rank-cut" d="M24 8.5 37 14v11c0 8.2-4.4 15.2-13 20.2C15.4 40.2 11 33.2 11 25V14l13-5.5Z"/></svg><b>${label}</b>${stage}${masterLevel}</span>`;
 }
 
 function renderRankPreview() {
@@ -600,13 +619,19 @@ async function pollMatchmaking() {
   } catch (error) { console.error(error); onlinePollTimer = setTimeout(pollMatchmaking, 1400); }
 }
 
-function updateOnlineTimeline(snapshot) {
+function updateOnlineTimeline(snapshot = state.onlineSnapshot) {
+  const latest = state.onlineSnapshot;
+  if (latest?.matchId === snapshot?.matchId && latest?.questionToken === snapshot?.questionToken) snapshot = latest;
+  if (!snapshot) return;
   const question = document.querySelector('#online-question');
   const clock = document.querySelector('#online-clock');
   const buzz = document.querySelector('#online-buzz');
   if (question) {
-    const count = Math.min(snapshot.question.text.length, Math.floor(Math.max(0, onlineNow() - snapshot.startAt) / QUESTION_CHAR_MS));
-    question.textContent = snapshot.question.text.slice(0, count);
+    // The server supplies only the currently authorized prefix. Local timing
+    // may lag that prefix, but must never reveal characters beyond it.
+    const characters = questionCharacters(snapshot.question.text);
+    const count = revealedQuestionLength(characters, Math.max(0, onlineNow() - snapshot.startAt));
+    question.textContent = characters.slice(0, count).join('');
   }
   if (clock) {
     const target = snapshot.phase === 'answering' ? snapshot.answerDeadlineAt : snapshot.phase === 'result' ? snapshot.nextQuestionAt : snapshot.startAt;
@@ -627,7 +652,7 @@ function renderOnlineQuestion(snapshot) {
   app.innerHTML = `<div class="battle-page online-battle-page"><div class="battle-head"><button class="back" id="online-leave">← 나가기</button><span class="round">ROUND ${snapshot.questionIndex + 1} / ${snapshot.roundLimit} · RTT ${state.onlineRtt || 0}ms</span></div><div class="players"><div class="player me"><div class="player-top"><span>나</span><span class="hearts">${'♥'.repeat(snapshot.myLives)}</span></div>${titleBadgeMarkup(snapshot.myTitleId,'title-badge-battle')}<div class="points">${snapshot.myScore}</div></div><div class="vs">VS</div><div class="player"><div class="player-top"><span>상대</span><span class="hearts">${'♥'.repeat(snapshot.opponentLives)}</span></div>${titleBadgeMarkup(snapshot.opponentTitleId,'title-badge-battle')}<div class="points">${snapshot.opponentScore}</div></div></div><section class="question-card"><div class="question-label">${escapeHtml(snapshot.question.category)} · SERVER SYNC</div><div class="question" id="online-question"></div><button class="buzz ${open ? '' : 'is-locked'}" id="online-buzz" type="button" ${open ? '' : 'disabled'}><strong>${open ? '먼저!' : 'READY'}</strong><small id="online-buzz-status">${open ? '누르면 서버에서 판정합니다' : `<b id="online-clock">${Math.max(0, Math.ceil((snapshot.startAt - onlineNow()) / 1000))}</b>초 후 시작`}</small></button></section></div>`;
   document.querySelector('#online-leave').onclick = leaveOnlineMatch;
   const buzz = document.querySelector('#online-buzz'); if (open) buzz.addEventListener('pointerdown', submitOnlineBuzz, { once: true });
-  updateOnlineTimeline(snapshot); clearInterval(onlineTimelineTimer); onlineTimelineTimer = setInterval(() => updateOnlineTimeline(snapshot), 50);
+  updateOnlineTimeline(snapshot); clearInterval(onlineTimelineTimer); onlineTimelineTimer = setInterval(() => updateOnlineTimeline(), 50);
 }
 
 async function submitOnlineBuzz(event) {
@@ -636,10 +661,28 @@ async function submitOnlineBuzz(event) {
   button.disabled = true; button.classList.add('is-pending');
   const status = document.querySelector('#online-buzz-status'); if (status) status.textContent = '확인 중…';
   const snapshot = state.onlineSnapshot;
+  const pending = state.onlinePendingBuzz?.matchId === snapshot.matchId && state.onlinePendingBuzz?.questionToken === snapshot.questionToken
+    ? state.onlinePendingBuzz
+    : { matchId:snapshot.matchId, questionToken:snapshot.questionToken, buzzId:globalThis.crypto.randomUUID() };
+  state.onlinePendingBuzz = pending;
   try {
-    const result = await globalThis.meonjeoRealtime.buzz({ matchId: snapshot.matchId, questionToken: snapshot.questionToken, buzzId: globalThis.crypto.randomUUID(), clientSequence: (state.onlineSequence = (state.onlineSequence || 0) + 1), lastKnownRttMs: state.onlineRtt || 0 });
+    const result = await globalThis.meonjeoRealtime.buzz({ ...pending, clientSequence: (state.onlineSequence = (state.onlineSequence || 0) + 1), lastKnownRttMs: state.onlineRtt || 0 });
+    state.onlinePendingBuzz = null;
     if (result.snapshot) applyOnlineSnapshot(result.snapshot, true);
-  } catch (error) { console.error(error); if (status) status.textContent = '재연결 중…'; }
+  } catch (error) {
+    console.error(error);
+    const latest = state.onlineSnapshot;
+    const retryable = !Number.isFinite(error?.status) || error.status === 401 || error.status === 408 || error.status === 425 || error.status === 429 || error.status >= 500;
+    const canRetry = retryable && state.phase === 'online-match' && latest?.matchId === pending.matchId
+      && latest?.questionToken === pending.questionToken && ['scheduled','open'].includes(latest.phase)
+      && onlineNow() <= latest.buzzDeadlineAt;
+    button.classList.remove('is-pending');
+    if (canRetry) {
+      button.disabled = false;
+      if (status) status.textContent = '전송하지 못했습니다 · 다시 눌러 재시도';
+      button.addEventListener('pointerdown', submitOnlineBuzz, { once:true });
+    } else if (status) status.textContent = '최신 판정을 확인하는 중…';
+  }
 }
 
 function renderOnlineAnswer(snapshot) {
@@ -648,24 +691,51 @@ function renderOnlineAnswer(snapshot) {
     updateOnlineTimeline(snapshot); return;
   }
   const candidates = (snapshot.answerCharacters || []).map((char, index) => `<button class="candidate" type="button" data-index="${index}" data-char="${escapeHtml(char)}" disabled>${escapeHtml(char)}</button>`).join('');
-  app.innerHTML = `<div class="battle-page centered online-answer-page"><div class="eyebrow">ANSWER RIGHT</div><h2>정답 문자를 순서대로 선택하세요</h2><div class="online-selected" id="online-selected"></div><div class="candidates">${candidates}</div><div class="answer-deadline"><b id="online-clock"></b>초</div><button class="text-button" id="online-undo" type="button">한 글자 지우기</button></div>`;
+  app.innerHTML = `<div class="battle-page centered online-answer-page"><div class="eyebrow">ANSWER RIGHT</div><h2>정답 조각을 순서대로 선택하세요</h2><div class="online-selected" id="online-selected"></div><div class="candidates">${candidates}</div><div class="answer-deadline"><b id="online-clock"></b>초</div><button class="text-button" id="online-undo" type="button">한 조각 지우기</button><button class="primary" id="online-answer-retry" type="button" hidden>답변 다시 보내기</button></div>`;
   const selected = []; const selectedBox = document.querySelector('#online-selected'); const buttons = [...document.querySelectorAll('.candidate')];
+  const undo = document.querySelector('#online-undo'); const retry = document.querySelector('#online-answer-retry');
+  let submitting = false;
   const renderSelected = () => { selectedBox.innerHTML = selected.map(item => `<span>${escapeHtml(item.char)}</span>`).join(''); };
+  const sendSelectedAnswer = async event => {
+    event?.preventDefault();
+    if (submitting || selected.length !== snapshot.answerLength) return;
+    const answer = selected.map(item => item.char).join('');
+    const pending = state.onlinePendingAnswer?.matchId === snapshot.matchId
+      && state.onlinePendingAnswer?.questionToken === snapshot.questionToken
+      && state.onlinePendingAnswer?.answer === answer
+      ? state.onlinePendingAnswer
+      : { matchId:snapshot.matchId, questionToken:snapshot.questionToken, answerId:globalThis.crypto.randomUUID(), answer };
+    state.onlinePendingAnswer = pending;
+    submitting = true; buttons.forEach(candidate => { candidate.disabled = true; }); undo.disabled = true; retry.hidden = true; retry.disabled = true;
+    try {
+      const result = await globalThis.meonjeoRealtime.answer(pending);
+      state.onlinePendingAnswer = null;
+      if (result.snapshot) applyOnlineSnapshot(result.snapshot, true);
+    } catch (error) {
+      console.error(error); submitting = false;
+      const latest = state.onlineSnapshot;
+      const retryable = !Number.isFinite(error?.status) || error.status === 401 || error.status === 408 || error.status === 425 || error.status === 429 || error.status >= 500;
+      const canRetry = retryable && state.phase === 'online-match' && latest?.matchId === pending.matchId
+        && latest?.questionToken === pending.questionToken && latest.phase === 'answering'
+        && latest.buzzWinner === 'me' && onlineNow() <= latest.answerDeadlineAt;
+      if (canRetry) { retry.hidden = false; retry.disabled = false; retry.textContent = '전송 실패 · 같은 답변 다시 보내기'; }
+    }
+  };
   buttons.forEach(button => { button.onclick = async () => {
     if (button.disabled) return; button.disabled = true; selected.push({ char: button.dataset.char, button }); renderSelected();
     if (selected.length >= snapshot.answerLength) {
-      buttons.forEach(candidate => { candidate.disabled = true; });
-      try { const result = await globalThis.meonjeoRealtime.answer({ matchId: snapshot.matchId, answerId: globalThis.crypto.randomUUID(), answer: selected.map(item => item.char).join('') }); if (result.snapshot) applyOnlineSnapshot(result.snapshot, true); } catch (error) { console.error(error); }
+      await sendSelectedAnswer();
     }
   }; });
-  const undo = document.querySelector('#online-undo');
   undo.disabled = true;
-  undo.onclick = () => { const last = selected.pop(); if (last) last.button.disabled = false; renderSelected(); };
+  undo.onclick = () => { if (submitting) return; const last = selected.pop(); if (last) last.button.disabled = false; renderSelected(); };
+  retry.onclick = sendSelectedAnswer;
   setTimeout(() => {
     if (state.onlineSnapshot?.matchId !== snapshot.matchId || state.onlineSnapshot?.questionToken !== snapshot.questionToken || state.onlineSnapshot?.phase !== 'answering') return;
+    if (submitting) return;
     buttons.forEach(button => { button.disabled = false; });
     undo.disabled = false;
-  }, 500);
+  }, ANSWER_INPUT_GUARD_MS);
   updateOnlineTimeline(snapshot);
 }
 
@@ -679,10 +749,20 @@ function renderOnlineResult(snapshot) {
   }
 }
 
+function fallbackOnlineOutcome(snapshot) {
+  if (snapshot.myLives <= 0 && snapshot.opponentLives > 0) return 'loss';
+  if (snapshot.opponentLives <= 0 && snapshot.myLives > 0) return 'win';
+  if (snapshot.myScore !== snapshot.opponentScore) return snapshot.myScore > snapshot.opponentScore ? 'win' : 'loss';
+  if (snapshot.myLives !== snapshot.opponentLives) return snapshot.myLives > snapshot.opponentLives ? 'win' : 'loss';
+  return 'draw';
+}
+
 function renderOnlineComplete(snapshot) {
-  clearOnlineTimers(); localStorage.removeItem(ONLINE_MATCH_KEY); const tied = snapshot.myScore === snapshot.opponentScore && snapshot.myLives === snapshot.opponentLives; const won = !tied && (snapshot.myScore > snapshot.opponentScore || snapshot.opponentLives <= 0);
+  clearOnlineTimers(); localStorage.removeItem(ONLINE_MATCH_KEY);
+  const outcome = ['win','loss','draw'].includes(snapshot.outcome) ? snapshot.outcome : fallbackOnlineOutcome(snapshot);
+  const tied = outcome === 'draw'; const won = outcome === 'win';
   const forfeit = snapshot.result?.kind === 'forfeit';
-  const resultTitle = forfeit ? (snapshot.result.answerUid === 'opponent' ? '상대가 나가 승리했습니다' : '경기를 나가 패배했습니다') : won ? '승리했습니다!' : tied ? '무승부입니다' : '아쉽게 패배했습니다';
+  const resultTitle = forfeit ? (won ? '상대가 나가 승리했습니다' : tied ? '무승부입니다' : '경기를 나가 패배했습니다') : won ? '승리했습니다!' : tied ? '무승부입니다' : '아쉽게 패배했습니다';
   const reward = snapshot.reward || { ratingBefore:state.rating, ratingAfter:state.rating, ratingDelta:0, rankPointsBefore:state.rankPoints, rankPointsAfter:state.rankPoints, rankGain:0 };
   const rankPointsBefore = Number.isFinite(Number(reward.rankPointsBefore)) ? Number(reward.rankPointsBefore) : state.rankPoints; const rankPointsAfter = Number.isFinite(Number(reward.rankPointsAfter)) ? Number(reward.rankPointsAfter) : rankPointsBefore + Number(reward.rankGain || 0);
   state.rating = Math.max(0, Number(reward.ratingAfter) || state.rating);
@@ -697,6 +777,16 @@ function renderOnlineComplete(snapshot) {
 
 function applyOnlineSnapshot(snapshot, force = false) {
   if (!snapshot || snapshot.matchId !== state.onlineMatchId) return;
+  if (state.onlinePendingBuzz && (
+    state.onlinePendingBuzz.matchId !== snapshot.matchId
+    || state.onlinePendingBuzz.questionToken !== snapshot.questionToken
+    || !['scheduled','open'].includes(snapshot.phase)
+  )) state.onlinePendingBuzz = null;
+  if (state.onlinePendingAnswer && (
+    state.onlinePendingAnswer.matchId !== snapshot.matchId
+    || state.onlinePendingAnswer.questionToken !== snapshot.questionToken
+    || snapshot.phase !== 'answering'
+  )) state.onlinePendingAnswer = null;
   state.onlineSnapshot = snapshot; const renderKey = `${snapshot.phase}:${snapshot.version}`;
   if (!force && state.onlineRenderKey === renderKey) { updateOnlineTimeline(snapshot); return; }
   state.onlineRenderKey = renderKey;
@@ -915,7 +1005,7 @@ function battle({ resume = false } = {}) {
   clearTimer(); showSettingsButton(false);
   const q = currentQuestion();
   const questionChars = Array.from(q.text);
-  const revealDuration = questionChars.length * QUESTION_CHAR_MS;
+  const revealDuration = questionRevealDurationMs(questionChars);
   const roundDuration = revealDuration + POST_REVEAL_WAIT_MS;
   if (!resume) {
     state.phase = 'reading'; state.phaseStartedAt = Date.now();
@@ -966,7 +1056,7 @@ function battle({ resume = false } = {}) {
       if (fill) fill.style.width = `${Math.min(100, remaining / lockedDuration * 100)}%`;
     } else {
       const elapsed = Math.max(0, now - state.phaseStartedAt);
-      const revealCount = Math.min(questionChars.length, Math.floor(elapsed / QUESTION_CHAR_MS));
+      const revealCount = revealedQuestionLength(questionChars, elapsed);
       const questionText = document.querySelector('#question-text');
       if (questionText) questionText.textContent = questionChars.slice(0, revealCount).join('');
       if (fill) fill.style.width = `${Math.min(100, remaining / roundDuration * 100)}%`;
@@ -982,9 +1072,9 @@ function battle({ resume = false } = {}) {
 function claimAnswer() {
   if (state.phase !== 'reading') return;
   state.phase = 'answering'; state.selectedChars = []; state.charIndex = 0; state.answerRemaining = state.answerSeconds;
-  state.phaseStartedAt = Date.now(); state.phaseDeadline = state.phaseStartedAt + state.answerSeconds * 1000; state.answerInputUnlockedAt = state.phaseStartedAt + 500; state.answerRightLost = false; clearTimer(); persistSession();
+  state.phaseStartedAt = Date.now(); state.phaseDeadline = state.phaseStartedAt + state.answerSeconds * 1000; state.answerInputUnlockedAt = state.phaseStartedAt + ANSWER_INPUT_GUARD_MS; state.answerRightLost = false; clearTimer(); persistSession();
   const buzzButton = document.querySelector('#buzz'); buzzButton.disabled = true; buzzButton.classList.add('is-pressed'); setTimeout(() => { document.querySelector('#buzzer-zone').style.display = 'none'; document.querySelector('#answer').classList.add('active','is-input-locked'); renderCandidates(); }, 120);
-  setTimeout(() => { if (state.phase !== 'answering') return; document.querySelector('#answer')?.classList.remove('is-input-locked'); renderCandidates(); }, 500);
+  setTimeout(() => { if (state.phase !== 'answering') return; document.querySelector('#answer')?.classList.remove('is-input-locked'); renderCandidates(); }, ANSWER_INPUT_GUARD_MS);
   document.querySelector('#status').textContent = ui('answerRight');
   timer = setInterval(() => {
     state.answerRemaining = Math.max(0, Math.ceil(((state.phaseDeadline || 0) - Date.now()) / 1000));

@@ -3,7 +3,7 @@ import { readFile } from 'node:fs/promises';
 
 const baseUrl = process.env.MEONJEO_TEST_URL || 'http://localhost:3001';
 const apiKey = 'AIzaSyAFNxcPTqD8LK6IWXlygncDoaUFRAdb6sQ';
-const season = JSON.parse(await readFile(new URL('../data/seasons/S1-2026/questions.ko.json', import.meta.url), 'utf8'));
+const season = JSON.parse(await readFile(new URL('../data/seasons/S2-2026/questions.ko.json', import.meta.url), 'utf8'));
 const answers = new Map(season.questions
   .filter((question: { enabledInSeason:boolean; qaStatus:string }) => question.enabledInSeason && question.qaStatus !== 'REJECT')
   .map((question: { questionText:string; canonicalAnswer:string }) => [question.questionText, question.canonicalAnswer]));
@@ -55,9 +55,10 @@ try {
     await realtime(other,'buzz',{ matchId, questionToken:snapshots[other].questionToken, buzzId:crypto.randomUUID(), clientSequence:matchNumber+1 });
     const winner = winnerBuzz.winner === 'me' ? preferred : other;
     const questionText = snapshots[winner].question.text; const answer = answers.get(questionText); if (!answer) throw new Error(`Answer missing for ${questionText}`);
-    const answerId = crypto.randomUUID(); const answerResult = await realtime(winner,'answer',{ matchId, answerId, answer });
+    const questionToken = snapshots[winner].questionToken;
+    const answerId = crypto.randomUUID(); const answerResult = await realtime(winner,'answer',{ matchId, questionToken, answerId, answer });
     if (answerResult.snapshot?.result?.kind !== 'correct') throw new Error(`Expected correct answer for ${questionText}; sent ${answer}`);
-    if (matchNumber % 20 === 0) { await realtime(winner,'answer',{ matchId, answerId, answer }); retries += 1; }
+    if (matchNumber % 20 === 0) { await realtime(winner,'answer',{ matchId, questionToken, answerId, answer }); retries += 1; }
     let complete:any = answerResult.snapshot;
     for (let attempt=0; attempt<20 && complete.phase !== 'complete'; attempt+=1) { await sleep(8); complete = (await realtime(winner,'snapshot',{matchId})).snapshot; }
     if (complete.phase !== 'complete') throw new Error(`Match ${matchNumber} did not complete`);

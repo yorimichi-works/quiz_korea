@@ -1,0 +1,4091 @@
+[
+  {
+    "key": "batch_c_kpop_001",
+    "categoryId": "kpop",
+    "categoryKo": "K-pop",
+    "difficulty": "easy",
+    "difficultyScore": 34,
+    "q1": {
+      "questionText": "BTS의 공식 팬덤 이름은 무엇일까요?",
+      "canonicalAnswer": "ARMY",
+      "acceptedAliases": []
+    },
+    "q2": {
+      "questionText": "팬덤명 ARMY에서 군대를 떠올렸다면, 이 팬들이 지키는 ‘방탄’ 그룹은 누구일까요?",
+      "canonicalAnswer": "BTS",
+      "acceptedAliases": [],
+      "questionStyle": "lateral"
+    },
+    "explanation": "ARMY는 BTS의 공식 팬덤 이름이다.",
+    "sourceUrls": [
+      "https://weverse.io/bts/notice/474"
+    ],
+    "misdirectionVariant": null
+  },
+  {
+    "key": "batch_c_kpop_002",
+    "categoryId": "kpop",
+    "categoryKo": "K-pop",
+    "difficulty": "easy",
+    "difficultyScore": 35,
+    "q1": {
+      "questionText": "BLACKPINK의 공식 팬덤 이름은 무엇일까요?",
+      "canonicalAnswer": "BLINK",
+      "acceptedAliases": []
+    },
+    "q2": {
+      "questionText": "팬덤명 BLINK는 BLACK의 앞부분과 PINK의 뒷부분을 합친 말입니다. 이 두 색을 이름에 쓴 그룹은 누구일까요?",
+      "canonicalAnswer": "BLACKPINK",
+      "acceptedAliases": [],
+      "questionStyle": "lateral"
+    },
+    "explanation": "BLINK는 BLACKPINK의 공식 팬덤 이름이다.",
+    "sourceUrls": [
+      "https://ygfamily.com/en/news/notice/5619"
+    ],
+    "misdirectionVariant": null
+  },
+  {
+    "key": "batch_c_kpop_003",
+    "categoryId": "kpop",
+    "categoryKo": "K-pop",
+    "difficulty": "easy",
+    "difficultyScore": 36,
+    "q1": {
+      "questionText": "TWICE의 공식 팬덤 이름은 무엇일까요?",
+      "canonicalAnswer": "ONCE",
+      "acceptedAliases": []
+    },
+    "q2": {
+      "questionText": "‘한 번’을 뜻하는 ONCE가 공식 팬덤명이라면, ‘두 번’을 뜻하는 이름의 그룹은 누구일까요?",
+      "canonicalAnswer": "TWICE",
+      "acceptedAliases": [],
+      "questionStyle": "lateral"
+    },
+    "explanation": "ONCE는 TWICE의 공식 팬덤 이름이다.",
+    "sourceUrls": [
+      "https://twice.jype.com/Default/NoticeView?AnSeq=1391&PgIndex=109"
+    ],
+    "misdirectionVariant": null
+  },
+  {
+    "key": "batch_c_kpop_004",
+    "categoryId": "kpop",
+    "categoryKo": "K-pop",
+    "difficulty": "easy",
+    "difficultyScore": 38,
+    "q1": {
+      "questionText": "EXO의 공식 팬덤 이름은 무엇일까요?",
+      "canonicalAnswer": "EXO-L",
+      "acceptedAliases": []
+    },
+    "q2": {
+      "questionText": "그룹명 뒤에 K와 M 사이의 알파벳이자 Love의 머리글자를 붙여 팬덤명을 만든 그룹은 무엇일까요?",
+      "canonicalAnswer": "EXO",
+      "acceptedAliases": [],
+      "questionStyle": "lateral"
+    },
+    "explanation": "EXO-L은 EXO의 공식 팬덤 이름이다.",
+    "sourceUrls": [
+      "https://weverse.io/exo/notice/29918"
+    ],
+    "misdirectionVariant": null
+  },
+  {
+    "key": "batch_c_kpop_005",
+    "categoryId": "kpop",
+    "categoryKo": "K-pop",
+    "difficulty": "easy",
+    "difficultyScore": 39,
+    "q1": {
+      "questionText": "SEVENTEEN의 공식 팬덤 이름은 무엇일까요?",
+      "canonicalAnswer": "CARAT",
+      "acceptedAliases": []
+    },
+    "q2": {
+      "questionText": "다이아몬드의 무게 단위인 CARAT을 팬덤명으로 삼아, 팬들이 자신들을 빛내 준다고 표현한 그룹은 누구일까요?",
+      "canonicalAnswer": "SEVENTEEN",
+      "acceptedAliases": [],
+      "questionStyle": "lateral"
+    },
+    "explanation": "CARAT은 SEVENTEEN의 공식 팬덤 이름이다.",
+    "sourceUrls": [
+      "https://weverse.io/seventeen/notice/1645"
+    ],
+    "misdirectionVariant": null
+  },
+  {
+    "key": "batch_c_kpop_006",
+    "categoryId": "kpop",
+    "categoryKo": "K-pop",
+    "difficulty": "easy",
+    "difficultyScore": 39,
+    "q1": {
+      "questionText": "Stray Kids의 공식 팬덤 이름은 무엇일까요?",
+      "canonicalAnswer": "STAY",
+      "acceptedAliases": []
+    },
+    "q2": {
+      "questionText": "팬덤명 STAY에 방황을 뜻하게 하는 R을 더하면 STRAY가 됩니다. 이 단어와 Kids를 이름에 쓴 그룹은 누구일까요?",
+      "canonicalAnswer": "Stray Kids",
+      "acceptedAliases": [],
+      "questionStyle": "lateral"
+    },
+    "explanation": "STAY는 Stray Kids의 공식 팬덤 이름이다.",
+    "sourceUrls": [
+      "https://www.youtube.com/watch?v=hVsG4XhKbYw"
+    ],
+    "misdirectionVariant": null
+  },
+  {
+    "key": "batch_c_kpop_007",
+    "categoryId": "kpop",
+    "categoryKo": "K-pop",
+    "difficulty": "standard",
+    "difficultyScore": 44,
+    "q1": {
+      "questionText": "Red Velvet의 공식 팬덤 이름은 무엇일까요?",
+      "canonicalAnswer": "ReVeluv",
+      "acceptedAliases": []
+    },
+    "q2": {
+      "questionText": "공식 팬덤 이름이 ReVeluv인 그룹은 누구일까요?",
+      "canonicalAnswer": "Red Velvet",
+      "acceptedAliases": []
+    },
+    "explanation": "ReVeluv는 Red Velvet의 공식 팬덤 이름이다.",
+    "sourceUrls": [
+      "https://weverse.io/redvelvet/notice/35179"
+    ],
+    "misdirectionVariant": null
+  },
+  {
+    "key": "batch_c_kpop_008",
+    "categoryId": "kpop",
+    "categoryKo": "K-pop",
+    "difficulty": "standard",
+    "difficultyScore": 45,
+    "q1": {
+      "questionText": "MAMAMOO의 공식 팬덤 이름은 무엇일까요?",
+      "canonicalAnswer": "MOOMOO",
+      "acceptedAliases": []
+    },
+    "q2": {
+      "questionText": "팬덤명 MOOMOO는 어느 그룹 이름의 마지막 음절 MOO를 두 번 이어 만든 말일까요?",
+      "canonicalAnswer": "MAMAMOO",
+      "acceptedAliases": [],
+      "questionStyle": "lateral"
+    },
+    "explanation": "MOOMOO는 MAMAMOO의 공식 팬덤 이름이다.",
+    "sourceUrls": [
+      "https://mamamoo.jp/about/fanclub.php"
+    ],
+    "misdirectionVariant": null
+  },
+  {
+    "key": "batch_c_kpop_009",
+    "categoryId": "kpop",
+    "categoryKo": "K-pop",
+    "difficulty": "standard",
+    "difficultyScore": 45,
+    "q1": {
+      "questionText": "SHINee의 공식 팬덤 이름은 무엇일까요?",
+      "canonicalAnswer": "SHINee WORLD",
+      "acceptedAliases": []
+    },
+    "q2": {
+      "questionText": "공식 팬클럽명의 뜻이 ‘빛나는 세계’인 SM 그룹은 무엇일까요?",
+      "canonicalAnswer": "SHINee",
+      "acceptedAliases": []
+    },
+    "explanation": "SHINee WORLD는 SHINee의 공식 팬덤 이름이다.",
+    "sourceUrls": [
+      "https://weverse.io/shinee/notice/34481"
+    ],
+    "misdirectionVariant": null
+  },
+  {
+    "key": "batch_c_kpop_010",
+    "categoryId": "kpop",
+    "categoryKo": "K-pop",
+    "difficulty": "standard",
+    "difficultyScore": 46,
+    "q1": {
+      "questionText": "Super Junior의 공식 팬덤 이름은 무엇일까요?",
+      "canonicalAnswer": "E.L.F.",
+      "acceptedAliases": []
+    },
+    "q2": {
+      "questionText": "공식 팬덤 이름이 E.L.F.인 그룹은 누구일까요?",
+      "canonicalAnswer": "Super Junior",
+      "acceptedAliases": []
+    },
+    "explanation": "E.L.F.는 Super Junior의 공식 팬덤 이름이다.",
+    "sourceUrls": [
+      "https://weverse.io/superjunior/notice/29914"
+    ],
+    "misdirectionVariant": null
+  },
+  {
+    "key": "batch_c_kpop_011",
+    "categoryId": "kpop",
+    "categoryKo": "K-pop",
+    "difficulty": "standard",
+    "difficultyScore": 44,
+    "q1": {
+      "questionText": "NCT 127의 공식 팬클럽 이름은 무엇일까요?",
+      "canonicalAnswer": "NCTzen 127",
+      "acceptedAliases": []
+    },
+    "q2": {
+      "questionText": "팬클럽 이름이 ‘시민’을 뜻하는 영어 단어를 변형한 NCTzen 127인 SM 보이그룹 유닛은 무엇일까요?",
+      "canonicalAnswer": "NCT 127",
+      "acceptedAliases": []
+    },
+    "explanation": "NCTzen 127은 NCT 127의 공식 팬클럽 이름이다.",
+    "sourceUrls": [
+      "https://weverse.io/nct127/notice/15067"
+    ],
+    "misdirectionVariant": null
+  },
+  {
+    "key": "batch_c_kpop_012",
+    "categoryId": "kpop",
+    "categoryKo": "K-pop",
+    "difficulty": "easy",
+    "difficultyScore": 40,
+    "q1": {
+      "questionText": "TOMORROW X TOGETHER의 공식 팬덤 이름은 무엇일까요?",
+      "canonicalAnswer": "MOA",
+      "acceptedAliases": []
+    },
+    "q2": {
+      "questionText": "공식 팬덤 이름이 MOA인 그룹은 누구일까요?",
+      "canonicalAnswer": "TXT",
+      "acceptedAliases": []
+    },
+    "explanation": "MOA는 TOMORROW X TOGETHER(TXT)의 공식 팬덤 이름이다.",
+    "sourceUrls": [
+      "https://weverse.io/txt/notice/563"
+    ],
+    "misdirectionVariant": null
+  },
+  {
+    "key": "batch_c_kpop_013",
+    "categoryId": "kpop",
+    "categoryKo": "K-pop",
+    "difficulty": "easy",
+    "difficultyScore": 41,
+    "q1": {
+      "questionText": "ENHYPEN의 공식 팬덤 이름은 무엇일까요?",
+      "canonicalAnswer": "ENGENE",
+      "acceptedAliases": []
+    },
+    "q2": {
+      "questionText": "공식 팬덤 이름이 ENGENE인 그룹은 누구일까요?",
+      "canonicalAnswer": "ENHYPEN",
+      "acceptedAliases": []
+    },
+    "explanation": "ENGENE은 ENHYPEN의 공식 팬덤 이름이다.",
+    "sourceUrls": [
+      "https://weverse.io/enhypen/notice/709"
+    ],
+    "misdirectionVariant": null
+  },
+  {
+    "key": "batch_c_kpop_014",
+    "categoryId": "kpop",
+    "categoryKo": "K-pop",
+    "difficulty": "standard",
+    "difficultyScore": 45,
+    "q1": {
+      "questionText": "ATEEZ의 공식 팬덤 이름은 무엇일까요?",
+      "canonicalAnswer": "ATINY",
+      "acceptedAliases": []
+    },
+    "q2": {
+      "questionText": "공식 팬덤 이름이 ATINY인 그룹은 누구일까요?",
+      "canonicalAnswer": "ATEEZ",
+      "acceptedAliases": []
+    },
+    "explanation": "ATINY는 ATEEZ의 공식 팬덤 이름이다.",
+    "sourceUrls": [
+      "https://ateez.kqent.com/community/board/6409e36d8125892dac2820a7/post/64507d1fae0f1c20dccc4f8d"
+    ],
+    "misdirectionVariant": null
+  },
+  {
+    "key": "batch_c_kpop_015",
+    "categoryId": "kpop",
+    "categoryKo": "K-pop",
+    "difficulty": "easy",
+    "difficultyScore": 39,
+    "q1": {
+      "questionText": "aespa의 공식 팬덤 이름은 무엇일까요?",
+      "canonicalAnswer": "MY",
+      "acceptedAliases": []
+    },
+    "q2": {
+      "questionText": "2020년 데뷔해 카리나·지젤·윈터·닝닝과 가상 아바타 세계관을 내세운 SM 걸그룹입니다. 광야를 무대로 한 노래도 이어졌습니다. 마지막 단서: 공식 팬덤 이름은 MY입니다. 이 그룹은 누구일까요?",
+      "canonicalAnswer": "aespa",
+      "acceptedAliases": []
+    },
+    "explanation": "MY는 aespa의 공식 팬덤 이름이다.",
+    "sourceUrls": [
+      "https://weverse.io/aespa/notice/15192"
+    ],
+    "misdirectionVariant": "q2",
+    "misdirectionType": "late_easy_clue"
+  },
+  {
+    "key": "batch_c_kpop_016",
+    "categoryId": "kpop",
+    "categoryKo": "K-pop",
+    "difficulty": "easy",
+    "difficultyScore": 39,
+    "q1": {
+      "questionText": "IVE의 공식 팬덤 이름은 무엇일까요?",
+      "canonicalAnswer": "DIVE",
+      "acceptedAliases": []
+    },
+    "q2": {
+      "questionText": "ARMY가 방탄소년단의 팬덤명이라면, 한글로 ‘다이브’라고 읽는 팬덤명이 응원하는 걸그룹은 무엇일까요?",
+      "canonicalAnswer": "IVE",
+      "acceptedAliases": []
+    },
+    "explanation": "DIVE는 IVE의 공식 팬덤 이름이다.",
+    "sourceUrls": [
+      "https://www.youtube.com/watch?v=PwUJT24XC4Q"
+    ],
+    "misdirectionVariant": "q2",
+    "misdirectionType": "relation_twist"
+  },
+  {
+    "key": "batch_c_kpop_017",
+    "categoryId": "kpop",
+    "categoryKo": "K-pop",
+    "difficulty": "easy",
+    "difficultyScore": 40,
+    "q1": {
+      "questionText": "LE SSERAFIM의 공식 팬덤 이름은 무엇일까요?",
+      "canonicalAnswer": "FEARNOT",
+      "acceptedAliases": []
+    },
+    "q2": {
+      "questionText": "공식 팬덤 이름이 FEARNOT인 그룹은 누구일까요?",
+      "canonicalAnswer": "LE SSERAFIM",
+      "acceptedAliases": []
+    },
+    "explanation": "FEARNOT은 LE SSERAFIM의 공식 팬덤 이름이다.",
+    "sourceUrls": [
+      "https://weverse.io/lesserafim/notice/3267"
+    ],
+    "misdirectionVariant": null
+  },
+  {
+    "key": "batch_c_kpop_018",
+    "categoryId": "kpop",
+    "categoryKo": "K-pop",
+    "difficulty": "standard",
+    "difficultyScore": 43,
+    "q1": {
+      "questionText": "ITZY의 공식 팬덤 이름은 무엇일까요?",
+      "canonicalAnswer": "MIDZY",
+      "acceptedAliases": []
+    },
+    "q2": {
+      "questionText": "공식 팬덤 이름이 MIDZY인 그룹은 누구일까요?",
+      "canonicalAnswer": "ITZY",
+      "acceptedAliases": []
+    },
+    "explanation": "MIDZY는 ITZY의 공식 팬덤 이름이다.",
+    "sourceUrls": [
+      "https://www.jypfans.com/community/itzy/notice/3404"
+    ],
+    "misdirectionVariant": null
+  },
+  {
+    "key": "batch_c_kpop_019",
+    "categoryId": "kpop",
+    "categoryKo": "K-pop",
+    "difficulty": "standard",
+    "difficultyScore": 46,
+    "q1": {
+      "questionText": "NMIXX의 공식 팬덤 이름은 무엇일까요?",
+      "canonicalAnswer": "NSWER",
+      "acceptedAliases": []
+    },
+    "q2": {
+      "questionText": "공식 팬덤 이름이 NSWER인 그룹은 누구일까요?",
+      "canonicalAnswer": "NMIXX",
+      "acceptedAliases": []
+    },
+    "explanation": "NSWER는 NMIXX의 공식 팬덤 이름이다.",
+    "sourceUrls": [
+      "https://www.jypfans.com/community/nmixx/notice/3555"
+    ],
+    "misdirectionVariant": null
+  },
+  {
+    "key": "batch_c_kpop_020",
+    "categoryId": "kpop",
+    "categoryKo": "K-pop",
+    "difficulty": "standard",
+    "difficultyScore": 48,
+    "q1": {
+      "questionText": "MONSTA X의 공식 팬덤 이름은 무엇일까요?",
+      "canonicalAnswer": "MONBEBE",
+      "acceptedAliases": []
+    },
+    "q2": {
+      "questionText": "공식 팬덤 이름이 MONBEBE인 그룹은 누구일까요?",
+      "canonicalAnswer": "MONSTA X",
+      "acceptedAliases": []
+    },
+    "explanation": "MONBEBE는 MONSTA X의 공식 팬덤 이름이다.",
+    "sourceUrls": [
+      "https://www.youtube.com/watch?v=SMs3ytkixP4"
+    ],
+    "misdirectionVariant": null
+  },
+  {
+    "key": "batch_c_kpop_021",
+    "categoryId": "kpop",
+    "categoryKo": "K-pop",
+    "difficulty": "standard",
+    "difficultyScore": 47,
+    "q1": {
+      "questionText": "GOT7의 공식 팬덤 이름은 무엇일까요?",
+      "canonicalAnswer": "I GOT7",
+      "acceptedAliases": []
+    },
+    "q2": {
+      "questionText": "팬덤명이 그룹명 앞에 영어 1인칭 주어 I를 붙인 형태인 JYP 출신 7인조 보이그룹은 무엇일까요?",
+      "canonicalAnswer": "GOT7",
+      "acceptedAliases": [],
+      "questionStyle": "lateral"
+    },
+    "explanation": "I GOT7은 GOT7의 공식 팬덤 이름이다.",
+    "sourceUrls": [
+      "https://www.youtube.com/watch?v=BaxvVKEVhPA"
+    ],
+    "misdirectionVariant": null
+  },
+  {
+    "key": "batch_c_kpop_022",
+    "categoryId": "kpop",
+    "categoryKo": "K-pop",
+    "difficulty": "standard",
+    "difficultyScore": 48,
+    "q1": {
+      "questionText": "DAY6의 공식 팬덤 이름은 무엇일까요?",
+      "canonicalAnswer": "My Day",
+      "acceptedAliases": []
+    },
+    "q2": {
+      "questionText": "공식 팬덤 이름이 My Day인 밴드는 누구일까요?",
+      "canonicalAnswer": "DAY6",
+      "acceptedAliases": []
+    },
+    "explanation": "My Day는 DAY6의 공식 팬덤 이름이다.",
+    "sourceUrls": [
+      "https://www.jypfans.com/community/day6/notice/3377"
+    ],
+    "misdirectionVariant": null
+  },
+  {
+    "key": "batch_c_kpop_023",
+    "categoryId": "kpop",
+    "categoryKo": "K-pop",
+    "difficulty": "standard",
+    "difficultyScore": 49,
+    "q1": {
+      "questionText": "ZEROBASEONE의 공식 팬덤 이름은 무엇일까요?",
+      "canonicalAnswer": "ZEROSE",
+      "acceptedAliases": []
+    },
+    "q2": {
+      "questionText": "공식 팬덤 이름이 ZEROSE인 그룹은 누구일까요?",
+      "canonicalAnswer": "ZEROBASEONE",
+      "acceptedAliases": []
+    },
+    "explanation": "ZEROSE는 ZEROBASEONE의 공식 팬덤 이름이다.",
+    "sourceUrls": [
+      "https://artist.mnetplus.world/main/stg/zerobaseone/contents/69d790b0a9514d60342fda59"
+    ],
+    "misdirectionVariant": null
+  },
+  {
+    "key": "batch_c_kpop_024",
+    "categoryId": "kpop",
+    "categoryKo": "K-pop",
+    "difficulty": "standard",
+    "difficultyScore": 48,
+    "q1": {
+      "questionText": "RIIZE의 공식 팬덤 이름은 무엇일까요?",
+      "canonicalAnswer": "BRIIZE",
+      "acceptedAliases": []
+    },
+    "q2": {
+      "questionText": "그룹이 날아오르도록 돕는 산들바람 같은 팬을 뜻하는 공식 팬덤명을 둔 SM 보이그룹은 무엇일까요?",
+      "canonicalAnswer": "RIIZE",
+      "acceptedAliases": []
+    },
+    "explanation": "BRIIZE는 RIIZE의 공식 팬덤 이름이다.",
+    "sourceUrls": [
+      "https://weverse.io/riize/notice/15081"
+    ],
+    "misdirectionVariant": null
+  },
+  {
+    "key": "batch_c_kpop_025",
+    "categoryId": "kpop",
+    "categoryKo": "K-pop",
+    "difficulty": "standard",
+    "difficultyScore": 52,
+    "q1": {
+      "questionText": "TWS의 공식 팬덤 이름은 무엇일까요?",
+      "canonicalAnswer": "42",
+      "acceptedAliases": []
+    },
+    "q2": {
+      "questionText": "플레디스가 2024년에 선보인 보이그룹입니다. 팬들은 이들과 하루 24시간, 일주일 7일 모든 순간을 함께하는 특별한 관계라는 뜻을 담았습니다. 마지막 단서: 공식 팬덤 이름은 42(사이)입니다. 이 그룹은 누구일까요?",
+      "canonicalAnswer": "TWS",
+      "acceptedAliases": []
+    },
+    "explanation": "42(사이)는 TWS의 공식 팬덤 이름이다.",
+    "sourceUrls": [
+      "https://weverse.io/tws/notice/18538"
+    ],
+    "misdirectionVariant": "q2",
+    "misdirectionType": "late_easy_clue"
+  },
+  {
+    "key": "batch_c_kpop_026",
+    "categoryId": "kpop",
+    "categoryKo": "K-pop",
+    "difficulty": "standard",
+    "difficultyScore": 49,
+    "q1": {
+      "questionText": "BOYNEXTDOOR의 공식 팬덤 이름은 무엇일까요?",
+      "canonicalAnswer": "ONEDOOR",
+      "acceptedAliases": []
+    },
+    "q2": {
+      "questionText": "공식 팬덤 이름이 ONEDOOR인 그룹은 누구일까요?",
+      "canonicalAnswer": "BOYNEXTDOOR",
+      "acceptedAliases": []
+    },
+    "explanation": "ONEDOOR는 BOYNEXTDOOR의 공식 팬덤 이름이다.",
+    "sourceUrls": [
+      "https://weverse.io/boynextdoor/notice/16018"
+    ],
+    "misdirectionVariant": null
+  },
+  {
+    "key": "batch_c_kpop_027",
+    "categoryId": "kpop",
+    "categoryKo": "K-pop",
+    "difficulty": "standard",
+    "difficultyScore": 50,
+    "q1": {
+      "questionText": "BABYMONSTER의 공식 팬덤 이름은 무엇일까요?",
+      "canonicalAnswer": "MONSTIEZ",
+      "acceptedAliases": []
+    },
+    "q2": {
+      "questionText": "공식 팬덤 이름이 MONSTIEZ인 그룹은 누구일까요?",
+      "canonicalAnswer": "BABYMONSTER",
+      "acceptedAliases": []
+    },
+    "explanation": "MONSTIEZ는 BABYMONSTER의 공식 팬덤 이름이다.",
+    "sourceUrls": [
+      "https://www.ygfamily.com/en/news/report/6314"
+    ],
+    "misdirectionVariant": null
+  },
+  {
+    "key": "batch_c_kpop_028",
+    "categoryId": "kpop",
+    "categoryKo": "K-pop",
+    "difficulty": "standard",
+    "difficultyScore": 48,
+    "q1": {
+      "questionText": "STAYC의 공식 팬덤 이름은 무엇일까요?",
+      "canonicalAnswer": "SWITH",
+      "acceptedAliases": []
+    },
+    "q2": {
+      "questionText": "공식 팬덤 이름이 SWITH인 그룹은 누구일까요?",
+      "canonicalAnswer": "STAYC",
+      "acceptedAliases": []
+    },
+    "explanation": "SWITH는 STAYC의 공식 팬덤 이름이다.",
+    "sourceUrls": [
+      "https://weverse.io/stayc/notice/27684"
+    ],
+    "misdirectionVariant": null
+  },
+  {
+    "key": "batch_c_kpop_029",
+    "categoryId": "kpop",
+    "categoryKo": "K-pop",
+    "difficulty": "hard",
+    "difficultyScore": 61,
+    "q1": {
+      "questionText": "Dreamcatcher의 공식 팬덤 이름은 무엇일까요?",
+      "canonicalAnswer": "InSomnia",
+      "acceptedAliases": []
+    },
+    "q2": {
+      "questionText": "공식 팬덤 이름이 InSomnia인 그룹은 누구일까요?",
+      "canonicalAnswer": "Dreamcatcher",
+      "acceptedAliases": []
+    },
+    "explanation": "InSomnia는 Dreamcatcher의 공식 팬덤 이름이다.",
+    "sourceUrls": [
+      "https://www.youtube.com/watch?v=2KXFvi6r3EY"
+    ],
+    "misdirectionVariant": null
+  },
+  {
+    "key": "batch_c_kpop_030",
+    "categoryId": "kpop",
+    "categoryKo": "K-pop",
+    "difficulty": "standard",
+    "difficultyScore": 49,
+    "q1": {
+      "questionText": "iKON의 공식 팬덤 이름은 무엇일까요?",
+      "canonicalAnswer": "iKONIC",
+      "acceptedAliases": []
+    },
+    "q2": {
+      "questionText": "그룹명 뒤에 ‘~와 같은’을 뜻하는 영어 접미사 -ic를 붙인 형태의 공식 팬덤명을 사용하는 보이그룹은 무엇일까요?",
+      "canonicalAnswer": "iKON",
+      "acceptedAliases": []
+    },
+    "explanation": "iKONIC은 iKON의 공식 팬덤 이름이다.",
+    "sourceUrls": [
+      "https://ikonic.jp/"
+    ],
+    "misdirectionVariant": null
+  },
+  {
+    "key": "batch_c_entertainment_001",
+    "categoryId": "entertainment_broadcast",
+    "categoryKo": "연예·방송",
+    "difficulty": "standard",
+    "difficultyScore": 48,
+    "q1": {
+      "questionText": "「올드보이」를 연출한 감독은 앞서 「공동경비구역 JSA」도 연출했습니다. 두 작품을 잇는 감독은 누구일까요?",
+      "canonicalAnswer": "박찬욱",
+      "acceptedAliases": []
+    },
+    "q2": {
+      "questionText": "비무장지대에서 벌어진 총격 사건을 남북한 병사들의 관계를 통해 추적하는 한국 영화의 제목은 무엇일까요?",
+      "canonicalAnswer": "공동경비구역 JSA",
+      "acceptedAliases": []
+    },
+    "explanation": "영화 「공동경비구역 JSA」의 연출은 박찬욱 감독이 맡았다.",
+    "sourceUrls": [
+      "https://en.wikipedia.org/wiki/Joint_Security_Area_(film)",
+      "https://en.wikipedia.org/wiki/Oldboy_(2003_film)"
+    ],
+    "misdirectionVariant": "q1",
+    "misdirectionType": "relation_twist"
+  },
+  {
+    "key": "batch_c_entertainment_002",
+    "categoryId": "entertainment_broadcast",
+    "categoryKo": "연예·방송",
+    "difficulty": "hard",
+    "difficultyScore": 63,
+    "q1": {
+      "questionText": "청각장애인 노동자의 유괴 계획이 연쇄적인 비극으로 번지는 2002년 한국 범죄극입니다. 복수를 다룬 세 작품 가운데 첫 편으로 꼽힙니다. 마지막 힌트: 제목은 「복수는 나의 것」입니다. 감독은 누구일까요?",
+      "canonicalAnswer": "박찬욱",
+      "acceptedAliases": [],
+      "questionStyle": "wait_for_clue"
+    },
+    "q2": {
+      "questionText": "청각장애인 노동자의 유괴 계획이 연쇄적인 비극으로 번지는 한국 영화의 제목은 무엇일까요?",
+      "canonicalAnswer": "복수는 나의 것",
+      "acceptedAliases": []
+    },
+    "explanation": "영화 「복수는 나의 것」의 연출은 박찬욱 감독이 맡았다.",
+    "sourceUrls": [
+      "https://en.wikipedia.org/wiki/Sympathy_for_Mr._Vengeance"
+    ],
+    "misdirectionVariant": null
+  },
+  {
+    "key": "batch_c_entertainment_003",
+    "categoryId": "entertainment_broadcast",
+    "categoryKo": "연예·방송",
+    "difficulty": "standard",
+    "difficultyScore": 55,
+    "q1": {
+      "questionText": "누명을 쓰고 13년 넘게 복역한 여성이 출소 뒤 치밀한 복수를 준비하는 영화입니다. 한 감독의 복수 연작을 마무리한 작품이기도 합니다. 마지막 단서: 제목은 「친절한 금자씨」입니다. 감독은 누구일까요?",
+      "canonicalAnswer": "박찬욱",
+      "acceptedAliases": [],
+      "questionStyle": "wait_for_clue"
+    },
+    "q2": {
+      "questionText": "누명을 쓰고 복역한 여성이 출소 뒤 복수를 준비하는 한국 영화의 제목은 무엇일까요?",
+      "canonicalAnswer": "친절한 금자씨",
+      "acceptedAliases": []
+    },
+    "explanation": "영화 「친절한 금자씨」의 연출은 박찬욱 감독이 맡았다.",
+    "sourceUrls": [
+      "https://en.wikipedia.org/wiki/Lady_Vengeance"
+    ],
+    "misdirectionVariant": null
+  },
+  {
+    "key": "batch_c_entertainment_004",
+    "categoryId": "entertainment_broadcast",
+    "categoryKo": "연예·방송",
+    "difficulty": "standard",
+    "difficultyScore": 49,
+    "q1": {
+      "questionText": "전직 형사 엄중호가 사라진 여성들의 공통 전화번호를 좇다가 연쇄살인범을 추적하는 2008년 범죄 스릴러입니다. 거친 추격과 시간 압박을 밀어붙인 데뷔작입니다. 마지막 단서: 작품 제목은 「추격자」입니다. 감독은 누구일까요?",
+      "canonicalAnswer": "나홍진",
+      "acceptedAliases": []
+    },
+    "q2": {
+      "questionText": "전직 형사가 연쇄살인범을 뒤쫓는 범죄 스릴러 한국 영화의 제목은 무엇일까요?",
+      "canonicalAnswer": "추격자",
+      "acceptedAliases": []
+    },
+    "explanation": "영화 「추격자」의 연출은 나홍진 감독이 맡았다.",
+    "sourceUrls": [
+      "https://en.wikipedia.org/wiki/The_Chaser"
+    ],
+    "misdirectionVariant": "q1",
+    "misdirectionType": "late_easy_clue"
+  },
+  {
+    "key": "batch_c_entertainment_005",
+    "categoryId": "entertainment_broadcast",
+    "categoryKo": "연예·방송",
+    "difficulty": "hard",
+    "difficultyScore": 61,
+    "q1": {
+      "questionText": "옌볜의 택시기사가 빚을 갚으려 살인 청부를 받고 한국으로 향하는 범죄 스릴러입니다. 추격과 배신이 국경을 넘나듭니다. 마지막 힌트: 제목은 「황해」입니다. 감독은 누구일까요?",
+      "canonicalAnswer": "나홍진",
+      "acceptedAliases": [],
+      "questionStyle": "wait_for_clue"
+    },
+    "q2": {
+      "questionText": "옌볜의 택시기사가 살인 청부를 받고 한국으로 들어와 추격과 배신에 휘말리는 한국 범죄 스릴러 영화의 제목은 무엇일까요?",
+      "canonicalAnswer": "황해",
+      "acceptedAliases": []
+    },
+    "explanation": "영화 「황해」의 연출은 나홍진 감독이 맡았다.",
+    "sourceUrls": [
+      "https://en.wikipedia.org/wiki/The_Yellow_Sea_(film)"
+    ],
+    "misdirectionVariant": null
+  },
+  {
+    "key": "batch_c_entertainment_006",
+    "categoryId": "entertainment_broadcast",
+    "categoryKo": "연예·방송",
+    "difficulty": "standard",
+    "difficultyScore": 52,
+    "q1": {
+      "questionText": "시골 저택으로 돌아온 두 자매와 새어머니 사이의 불안한 관계를 다룬 심리 공포 영화입니다. 가족의 기억과 집 안의 기이한 현상이 얽힙니다. 마지막 단서: 제목은 「장화, 홍련」입니다. 감독은 누구일까요?",
+      "canonicalAnswer": "김지운",
+      "acceptedAliases": [],
+      "questionStyle": "wait_for_clue"
+    },
+    "q2": {
+      "questionText": "두 자매가 시골집으로 돌아온 뒤 기이한 일을 겪는 심리 공포 한국 영화의 제목은 무엇일까요?",
+      "canonicalAnswer": "장화, 홍련",
+      "acceptedAliases": []
+    },
+    "explanation": "영화 「장화, 홍련」의 연출은 김지운 감독이 맡았다.",
+    "sourceUrls": [
+      "https://en.wikipedia.org/wiki/A_Tale_of_Two_Sisters"
+    ],
+    "misdirectionVariant": null
+  },
+  {
+    "key": "batch_c_entertainment_007",
+    "categoryId": "entertainment_broadcast",
+    "categoryKo": "연예·방송",
+    "difficulty": "standard",
+    "difficultyScore": 54,
+    "q1": {
+      "questionText": "조직의 해결사가 보스의 연인을 감시하다 명령을 어기면서 처절한 보복에 휘말리는 누아르입니다. 절제된 화면과 액션으로 알려졌습니다. 마지막 힌트: 제목은 「달콤한 인생」입니다. 감독은 누구일까요?",
+      "canonicalAnswer": "김지운",
+      "acceptedAliases": [],
+      "questionStyle": "wait_for_clue"
+    },
+    "q2": {
+      "questionText": "조직의 명령을 어긴 해결사가 처절한 반격에 나서는 누아르 한국 영화의 제목은 무엇일까요?",
+      "canonicalAnswer": "달콤한 인생",
+      "acceptedAliases": []
+    },
+    "explanation": "영화 「달콤한 인생」의 연출은 김지운 감독이 맡았다.",
+    "sourceUrls": [
+      "https://en.wikipedia.org/wiki/A_Bittersweet_Life"
+    ],
+    "misdirectionVariant": null
+  },
+  {
+    "key": "batch_c_entertainment_008",
+    "categoryId": "entertainment_broadcast",
+    "categoryKo": "연예·방송",
+    "difficulty": "standard",
+    "difficultyScore": 53,
+    "q1": {
+      "questionText": "1930년대 만주에서 세 인물이 보물 지도를 두고 말·기차·총격이 이어지는 추격전을 벌입니다. 동아시아 배경에 서부극 문법을 옮긴 영화입니다. 마지막 단서: 제목은 「좋은 놈, 나쁜 놈, 이상한 놈」입니다. 감독은 누구일까요?",
+      "canonicalAnswer": "김지운",
+      "acceptedAliases": [],
+      "questionStyle": "wait_for_clue"
+    },
+    "q2": {
+      "questionText": "1930년대 만주에서 세 인물이 보물 지도를 놓고 추격전을 벌이는 액션 한국 영화의 제목은 무엇일까요?",
+      "canonicalAnswer": "좋은 놈, 나쁜 놈, 이상한 놈",
+      "acceptedAliases": []
+    },
+    "explanation": "영화 「좋은 놈, 나쁜 놈, 이상한 놈」의 연출은 김지운 감독이 맡았다.",
+    "sourceUrls": [
+      "https://en.wikipedia.org/wiki/The_Good,_the_Bad,_the_Weird"
+    ],
+    "misdirectionVariant": null
+  },
+  {
+    "key": "batch_c_entertainment_009",
+    "categoryId": "entertainment_broadcast",
+    "categoryKo": "연예·방송",
+    "difficulty": "hard",
+    "difficultyScore": 62,
+    "q1": {
+      "questionText": "약혼자를 잃은 정보요원이 살인범을 붙잡았다 놓아주기를 반복하며 극단적인 복수를 벌이는 스릴러입니다. 가해자와 추적자의 경계가 흔들립니다. 마지막 힌트: 제목은 「악마를 보았다」입니다. 감독은 누구일까요?",
+      "canonicalAnswer": "김지운",
+      "acceptedAliases": [],
+      "questionStyle": "wait_for_clue"
+    },
+    "q2": {
+      "questionText": "약혼자를 잃은 정보요원이 살인범에게 반복적으로 복수하는 스릴러 한국 영화의 제목은 무엇일까요?",
+      "canonicalAnswer": "악마를 보았다",
+      "acceptedAliases": []
+    },
+    "explanation": "영화 「악마를 보았다」의 연출은 김지운 감독이 맡았다.",
+    "sourceUrls": [
+      "https://en.wikipedia.org/wiki/I_Saw_the_Devil"
+    ],
+    "misdirectionVariant": null
+  },
+  {
+    "key": "batch_c_entertainment_010",
+    "categoryId": "entertainment_broadcast",
+    "categoryKo": "연예·방송",
+    "difficulty": "standard",
+    "difficultyScore": 55,
+    "q1": {
+      "questionText": "일제강점기 의열단과 조선인 일본 경찰 사이의 의심과 선택을 그린 첩보극입니다. 폭탄을 옮기는 작전을 둘러싸고 긴장이 높아집니다. 마지막 단서: 제목은 「밀정」입니다. 감독은 누구일까요?",
+      "canonicalAnswer": "김지운",
+      "acceptedAliases": [],
+      "questionStyle": "wait_for_clue"
+    },
+    "q2": {
+      "questionText": "일제강점기 의열단과 조선인 일본 경찰 사이의 긴장을 그린 첩보극 한국 영화의 제목은 무엇일까요?",
+      "canonicalAnswer": "밀정",
+      "acceptedAliases": []
+    },
+    "explanation": "영화 「밀정」의 연출은 김지운 감독이 맡았다.",
+    "sourceUrls": [
+      "https://en.wikipedia.org/wiki/The_Age_of_Shadows"
+    ],
+    "misdirectionVariant": null
+  },
+  {
+    "key": "batch_c_entertainment_011",
+    "categoryId": "entertainment_broadcast",
+    "categoryKo": "연예·방송",
+    "difficulty": "easy",
+    "difficultyScore": 40,
+    "q1": {
+      "questionText": "「베를린」을 연출한 감독은 재벌 3세를 쫓는 「베테랑」도 만들었습니다. 두 액션 영화를 잇는 감독은 누구일까요?",
+      "canonicalAnswer": "류승완",
+      "acceptedAliases": []
+    },
+    "q2": {
+      "questionText": "강력계 형사가 재벌 3세의 범죄를 파헤치는 액션 한국 영화의 제목은 무엇일까요?",
+      "canonicalAnswer": "베테랑",
+      "acceptedAliases": []
+    },
+    "explanation": "영화 「베테랑」의 연출은 류승완 감독이 맡았다.",
+    "sourceUrls": [
+      "https://en.wikipedia.org/wiki/Veteran_(2015_film)",
+      "https://en.wikipedia.org/wiki/The_Berlin_File"
+    ],
+    "misdirectionVariant": "q1",
+    "misdirectionType": "relation_twist"
+  },
+  {
+    "key": "batch_c_entertainment_012",
+    "categoryId": "entertainment_broadcast",
+    "categoryKo": "연예·방송",
+    "difficulty": "standard",
+    "difficultyScore": 52,
+    "q1": {
+      "questionText": "독일 수도를 무대로 남북한 정보요원과 여러 세력이 서로를 추적하는 첩보 액션입니다. 망명과 배신의 선택이 사건의 중심에 놓입니다. 마지막 힌트: 제목은 「베를린」입니다. 감독은 누구일까요?",
+      "canonicalAnswer": "류승완",
+      "acceptedAliases": [],
+      "questionStyle": "wait_for_clue"
+    },
+    "q2": {
+      "questionText": "독일 수도에서 남북한 요원들이 서로를 추적하는 첩보 액션 한국 영화의 제목은 무엇일까요?",
+      "canonicalAnswer": "베를린",
+      "acceptedAliases": []
+    },
+    "explanation": "영화 「베를린」의 연출은 류승완 감독이 맡았다.",
+    "sourceUrls": [
+      "https://en.wikipedia.org/wiki/The_Berlin_File"
+    ],
+    "misdirectionVariant": null
+  },
+  {
+    "key": "batch_c_entertainment_013",
+    "categoryId": "entertainment_broadcast",
+    "categoryKo": "연예·방송",
+    "difficulty": "standard",
+    "difficultyScore": 47,
+    "q1": {
+      "questionText": "소말리아 내전으로 고립된 남북한 외교관들이 생존을 위해 협력해 도시를 빠져나가는 영화입니다. 실제 외교 공관의 탈출 사건을 바탕으로 합니다. 마지막 단서: 제목은 「모가디슈」입니다. 감독은 누구일까요?",
+      "canonicalAnswer": "류승완",
+      "acceptedAliases": [],
+      "questionStyle": "wait_for_clue"
+    },
+    "q2": {
+      "questionText": "소말리아 내전 속에서 남북한 외교관들이 함께 탈출하는 한국 영화의 제목은 무엇일까요?",
+      "canonicalAnswer": "모가디슈",
+      "acceptedAliases": []
+    },
+    "explanation": "영화 「모가디슈」의 연출은 류승완 감독이 맡았다.",
+    "sourceUrls": [
+      "https://en.wikipedia.org/wiki/Escape_from_Mogadishu"
+    ],
+    "misdirectionVariant": null
+  },
+  {
+    "key": "batch_c_entertainment_014",
+    "categoryId": "entertainment_broadcast",
+    "categoryKo": "연예·방송",
+    "difficulty": "hard",
+    "difficultyScore": 60,
+    "q1": {
+      "questionText": "영화 「부당거래」의 감독은 누구일까요?",
+      "canonicalAnswer": "류승완",
+      "acceptedAliases": []
+    },
+    "q2": {
+      "questionText": "경찰은 가짜 범인을 만들고 검사는 사건을 덮으며 언론은 이를 부풀립니다. 세 집단의 정당하지 못한 거래를 제목으로 삼은 류승완 감독의 영화는 무엇일까요?",
+      "canonicalAnswer": "부당거래",
+      "acceptedAliases": [],
+      "questionStyle": "reasoning"
+    },
+    "explanation": "영화 「부당거래」의 연출은 류승완 감독이 맡았다.",
+    "sourceUrls": [
+      "https://en.wikipedia.org/wiki/The_Unjust"
+    ],
+    "misdirectionVariant": null
+  },
+  {
+    "key": "batch_c_entertainment_015",
+    "categoryId": "entertainment_broadcast",
+    "categoryKo": "연예·방송",
+    "difficulty": "standard",
+    "difficultyScore": 52,
+    "q1": {
+      "questionText": "영화 「내부자들」의 감독은 누구일까요?",
+      "canonicalAnswer": "우민호",
+      "acceptedAliases": []
+    },
+    "q2": {
+      "questionText": "정치인·언론인·재벌의 유착을 권력 조직 안쪽 인물들의 거래와 폭로로 그렸습니다. 그들을 가리키는 말을 제목으로 쓴 우민호 감독의 영화는 무엇일까요?",
+      "canonicalAnswer": "내부자들",
+      "acceptedAliases": [],
+      "questionStyle": "reasoning"
+    },
+    "explanation": "영화 「내부자들」의 연출은 우민호 감독이 맡았다.",
+    "sourceUrls": [
+      "https://en.wikipedia.org/wiki/Inside_Men_(film)"
+    ],
+    "misdirectionVariant": null
+  },
+  {
+    "key": "batch_c_entertainment_016",
+    "categoryId": "entertainment_broadcast",
+    "categoryKo": "연예·방송",
+    "difficulty": "standard",
+    "difficultyScore": 54,
+    "q1": {
+      "questionText": "영화 「남산의 부장들」의 감독은 누구일까요?",
+      "canonicalAnswer": "우민호",
+      "acceptedAliases": []
+    },
+    "q2": {
+      "questionText": "1979년 대통령 암살 전 40일을 중앙정보부 간부들의 시선으로 좇습니다. 당시 청사가 있던 서울의 산과 간부 호칭을 제목으로 이은 우민호 감독의 영화는 무엇일까요?",
+      "canonicalAnswer": "남산의 부장들",
+      "acceptedAliases": [],
+      "questionStyle": "reasoning"
+    },
+    "explanation": "영화 「남산의 부장들」의 연출은 우민호 감독이 맡았다.",
+    "sourceUrls": [
+      "https://en.wikipedia.org/wiki/The_Man_Standing_Next"
+    ],
+    "misdirectionVariant": null
+  },
+  {
+    "key": "batch_c_entertainment_017",
+    "categoryId": "entertainment_broadcast",
+    "categoryKo": "연예·방송",
+    "difficulty": "standard",
+    "difficultyScore": 49,
+    "q1": {
+      "questionText": "영화 「관상」의 감독은 누구일까요?",
+      "canonicalAnswer": "한재림",
+      "acceptedAliases": []
+    },
+    "q2": {
+      "questionText": "얼굴 생김새로 사람의 운명을 읽는 내경이 계유정난에 휘말립니다. 주인공의 바로 그 재주를 제목으로 쓴 한재림 감독의 사극은 무엇일까요?",
+      "canonicalAnswer": "관상",
+      "acceptedAliases": [],
+      "questionStyle": "reasoning"
+    },
+    "explanation": "영화 「관상」의 연출은 한재림 감독이 맡았다.",
+    "sourceUrls": [
+      "https://en.wikipedia.org/wiki/The_Face_Reader"
+    ],
+    "misdirectionVariant": null
+  },
+  {
+    "key": "batch_c_entertainment_018",
+    "categoryId": "entertainment_broadcast",
+    "categoryKo": "연예·방송",
+    "difficulty": "standard",
+    "difficultyScore": 51,
+    "q1": {
+      "questionText": "영화 「더 킹」의 감독은 누구일까요?",
+      "canonicalAnswer": "한재림",
+      "acceptedAliases": []
+    },
+    "q2": {
+      "questionText": "검사 태수가 권력의 정점에 오르려 정치와 범죄의 중심으로 들어갑니다. 최고 권력자를 뜻하는 말을 제목으로 쓴 한재림 감독의 영화는 무엇일까요?",
+      "canonicalAnswer": "더 킹",
+      "acceptedAliases": [],
+      "questionStyle": "reasoning"
+    },
+    "explanation": "영화 「더 킹」의 연출은 한재림 감독이 맡았다.",
+    "sourceUrls": [
+      "https://en.wikipedia.org/wiki/The_King_(2017_South_Korean_film)"
+    ],
+    "misdirectionVariant": null
+  },
+  {
+    "key": "batch_c_entertainment_019",
+    "categoryId": "entertainment_broadcast",
+    "categoryKo": "연예·방송",
+    "difficulty": "easy",
+    "difficultyScore": 43,
+    "q1": {
+      "questionText": "영화 「비상선언」의 감독은 누구일까요?",
+      "canonicalAnswer": "한재림",
+      "acceptedAliases": []
+    },
+    "q2": {
+      "questionText": "비행기 안에서 생화학 테러가 벌어지자 더는 정상 운항이 불가능해집니다. 항공기가 중대한 위험 때 내리는 최고 단계 선언을 제목으로 쓴 영화는 무엇일까요?",
+      "canonicalAnswer": "비상선언",
+      "acceptedAliases": [],
+      "questionStyle": "reasoning"
+    },
+    "explanation": "영화 「비상선언」의 연출은 한재림 감독이 맡았다.",
+    "sourceUrls": [
+      "https://en.wikipedia.org/wiki/Emergency_Declaration_(film)"
+    ],
+    "misdirectionVariant": null
+  },
+  {
+    "key": "batch_c_entertainment_020",
+    "categoryId": "entertainment_broadcast",
+    "categoryKo": "연예·방송",
+    "difficulty": "easy",
+    "difficultyScore": 42,
+    "q1": {
+      "questionText": "조선의 광대 하선이 독살 위협을 받는 왕의 대역이 되어 백성을 위한 정치를 펼칩니다. 이병헌이 왕과 광대를 1인 2역으로 연기한 2012년 사극입니다. 마지막 단서: 작품 제목은 「광해, 왕이 된 남자」입니다. 감독은 누구일까요?",
+      "canonicalAnswer": "추창민",
+      "acceptedAliases": []
+    },
+    "q2": {
+      "questionText": "조선의 광대가 왕의 대역으로 궁궐에 들어가 백성을 위한 정치를 펼치는 한국 사극 영화의 제목은 무엇일까요?",
+      "canonicalAnswer": "광해, 왕이 된 남자",
+      "acceptedAliases": []
+    },
+    "explanation": "영화 「광해, 왕이 된 남자」의 연출은 추창민 감독이 맡았다.",
+    "sourceUrls": [
+      "https://en.wikipedia.org/wiki/Masquerade_(2012_film)"
+    ],
+    "misdirectionVariant": "q1",
+    "misdirectionType": "late_easy_clue"
+  },
+  {
+    "key": "batch_c_entertainment_021",
+    "categoryId": "entertainment_broadcast",
+    "categoryKo": "연예·방송",
+    "difficulty": "hard",
+    "difficultyScore": 60,
+    "q1": {
+      "questionText": "영화 「남한산성」의 감독은 누구일까요?",
+      "canonicalAnswer": "황동혁",
+      "acceptedAliases": []
+    },
+    "q2": {
+      "questionText": "병자호란 때 인조와 조정이 청군을 피해 한 산성에 고립되어 척화와 화친을 논합니다. 그 피란처를 그대로 제목으로 쓴 황동혁 감독의 영화는 무엇일까요?",
+      "canonicalAnswer": "남한산성",
+      "acceptedAliases": [],
+      "questionStyle": "reasoning"
+    },
+    "explanation": "영화 「남한산성」의 연출은 황동혁 감독이 맡았다.",
+    "sourceUrls": [
+      "https://en.wikipedia.org/wiki/The_Fortress_(2017_film)"
+    ],
+    "misdirectionVariant": null
+  },
+  {
+    "key": "batch_c_entertainment_022",
+    "categoryId": "entertainment_broadcast",
+    "categoryKo": "연예·방송",
+    "difficulty": "easy",
+    "difficultyScore": 43,
+    "q1": {
+      "questionText": "영화 「도가니」의 감독은 누구일까요?",
+      "canonicalAnswer": "황동혁",
+      "acceptedAliases": []
+    },
+    "q2": {
+      "questionText": "청각장애인 학교의 학대가 세상에 드러나 사회 전체를 끓어오르게 합니다. 격렬한 상태나 혼란을 뜻하는 한 단어를 제목으로 쓴 황동혁 감독의 영화는 무엇일까요?",
+      "canonicalAnswer": "도가니",
+      "acceptedAliases": [],
+      "questionStyle": "reasoning"
+    },
+    "explanation": "영화 「도가니」의 연출은 황동혁 감독이 맡았다.",
+    "sourceUrls": [
+      "https://en.wikipedia.org/wiki/Silenced_(film)"
+    ],
+    "misdirectionVariant": null
+  },
+  {
+    "key": "batch_c_entertainment_023",
+    "categoryId": "entertainment_broadcast",
+    "categoryKo": "연예·방송",
+    "difficulty": "standard",
+    "difficultyScore": 55,
+    "q1": {
+      "questionText": "영화 「공작」의 감독은 누구일까요?",
+      "canonicalAnswer": "윤종빈",
+      "acceptedAliases": []
+    },
+    "q2": {
+      "questionText": "정보요원이 사업가로 위장해 북한 핵 정보를 얻는 비밀 작전을 수행합니다. 첩보 기관의 은밀한 작전을 뜻하는 두 글자를 제목으로 쓴 윤종빈 감독의 영화는 무엇일까요?",
+      "canonicalAnswer": "공작",
+      "acceptedAliases": [],
+      "questionStyle": "reasoning"
+    },
+    "explanation": "영화 「공작」의 연출은 윤종빈 감독이 맡았다.",
+    "sourceUrls": [
+      "https://en.wikipedia.org/wiki/The_Spy_Gone_North"
+    ],
+    "misdirectionVariant": null
+  },
+  {
+    "key": "batch_c_entertainment_024",
+    "categoryId": "entertainment_broadcast",
+    "categoryKo": "연예·방송",
+    "difficulty": "standard",
+    "difficultyScore": 53,
+    "q1": {
+      "questionText": "영화 「범죄와의 전쟁」의 감독은 누구일까요?",
+      "canonicalAnswer": "윤종빈",
+      "acceptedAliases": []
+    },
+    "q2": {
+      "questionText": "부산 세관원이 조직폭력 세계에 발을 들인 때, 정부는 1990년 조직폭력배 소탕을 선언합니다. 그 선언을 제목으로 쓴 윤종빈 감독의 영화는 무엇일까요?",
+      "canonicalAnswer": "범죄와의 전쟁",
+      "acceptedAliases": [],
+      "questionStyle": "reasoning"
+    },
+    "explanation": "영화 「범죄와의 전쟁」의 연출은 윤종빈 감독이 맡았다.",
+    "sourceUrls": [
+      "https://en.wikipedia.org/wiki/Nameless_Gangster:_Rules_of_the_Time"
+    ],
+    "misdirectionVariant": null
+  },
+  {
+    "key": "batch_c_entertainment_025",
+    "categoryId": "entertainment_broadcast",
+    "categoryKo": "연예·방송",
+    "difficulty": "standard",
+    "difficultyScore": 55,
+    "q1": {
+      "questionText": "영화 「군도: 민란의 시대」의 감독은 누구일까요?",
+      "canonicalAnswer": "윤종빈",
+      "acceptedAliases": []
+    },
+    "q2": {
+      "questionText": "조선 후기 탐관오리에 맞선 도치와 의적 떼가 백성을 대신해 싸웁니다. 이 무리를 뜻하는 말에 ‘민란의 시대’를 덧붙인 윤종빈 감독의 영화는 무엇일까요?",
+      "canonicalAnswer": "군도: 민란의 시대",
+      "acceptedAliases": [],
+      "questionStyle": "reasoning"
+    },
+    "explanation": "영화 「군도: 민란의 시대」의 연출은 윤종빈 감독이 맡았다.",
+    "sourceUrls": [
+      "https://en.wikipedia.org/wiki/Kundo:_Age_of_the_Rampant"
+    ],
+    "misdirectionVariant": null
+  },
+  {
+    "key": "batch_c_entertainment_026",
+    "categoryId": "entertainment_broadcast",
+    "categoryKo": "연예·방송",
+    "difficulty": "standard",
+    "difficultyScore": 49,
+    "q1": {
+      "questionText": "영화 「신세계」의 감독은 누구일까요?",
+      "canonicalAnswer": "박훈정",
+      "acceptedAliases": []
+    },
+    "q2": {
+      "questionText": "범죄조직에 잠입한 경찰이 후계 구도에 휘말리는 누아르 한국 영화의 제목은 무엇일까요?",
+      "canonicalAnswer": "신세계",
+      "acceptedAliases": []
+    },
+    "explanation": "영화 「신세계」의 연출은 박훈정 감독이 맡았다.",
+    "sourceUrls": [
+      "https://en.wikipedia.org/wiki/New_World_(2013_film)"
+    ],
+    "misdirectionVariant": null
+  },
+  {
+    "key": "batch_c_entertainment_027",
+    "categoryId": "entertainment_broadcast",
+    "categoryKo": "연예·방송",
+    "difficulty": "easy",
+    "difficultyScore": 44,
+    "q1": {
+      "questionText": "영화 「마녀」의 감독은 누구일까요?",
+      "canonicalAnswer": "박훈정",
+      "acceptedAliases": []
+    },
+    "q2": {
+      "questionText": "의문의 연구시설을 탈출한 소녀가 숨겨진 능력을 드러내는 액션 한국 영화의 제목은 무엇일까요?",
+      "canonicalAnswer": "마녀",
+      "acceptedAliases": []
+    },
+    "explanation": "영화 「마녀」의 연출은 박훈정 감독이 맡았다.",
+    "sourceUrls": [
+      "https://en.wikipedia.org/wiki/The_Witch:_Part_1._The_Subversion"
+    ],
+    "misdirectionVariant": null
+  },
+  {
+    "key": "batch_c_entertainment_028",
+    "categoryId": "entertainment_broadcast",
+    "categoryKo": "연예·방송",
+    "difficulty": "hard",
+    "difficultyScore": 62,
+    "q1": {
+      "questionText": "영화 「대호」의 감독은 누구일까요?",
+      "canonicalAnswer": "박훈정",
+      "acceptedAliases": []
+    },
+    "q2": {
+      "questionText": "일제강점기 지리산의 마지막 호랑이와 노년 포수의 대결을 그린 한국 영화의 제목은 무엇일까요?",
+      "canonicalAnswer": "대호",
+      "acceptedAliases": []
+    },
+    "explanation": "영화 「대호」의 연출은 박훈정 감독이 맡았다.",
+    "sourceUrls": [
+      "https://en.wikipedia.org/wiki/The_Tiger:_An_Old_Hunter%27s_Tale"
+    ],
+    "misdirectionVariant": null
+  },
+  {
+    "key": "batch_c_entertainment_029",
+    "categoryId": "entertainment_broadcast",
+    "categoryKo": "연예·방송",
+    "difficulty": "standard",
+    "difficultyScore": 50,
+    "q1": {
+      "questionText": "영화 「끝까지 간다」의 감독은 누구일까요?",
+      "canonicalAnswer": "김성훈",
+      "acceptedAliases": []
+    },
+    "q2": {
+      "questionText": "교통사고를 은폐한 형사가 정체불명의 협박을 받는 스릴러 한국 영화의 제목은 무엇일까요?",
+      "canonicalAnswer": "끝까지 간다",
+      "acceptedAliases": []
+    },
+    "explanation": "영화 「끝까지 간다」의 연출은 김성훈 감독이 맡았다.",
+    "sourceUrls": [
+      "https://en.wikipedia.org/wiki/A_Hard_Day"
+    ],
+    "misdirectionVariant": null
+  },
+  {
+    "key": "batch_c_entertainment_030",
+    "categoryId": "entertainment_broadcast",
+    "categoryKo": "연예·방송",
+    "difficulty": "easy",
+    "difficultyScore": 42,
+    "q1": {
+      "questionText": "영화 「터널」의 감독은 누구일까요?",
+      "canonicalAnswer": "김성훈",
+      "acceptedAliases": []
+    },
+    "q2": {
+      "questionText": "도로 구조물이 무너져 내부에 고립된 남자의 생존과 구조 과정을 그린 재난극 한국 영화의 제목은 무엇일까요?",
+      "canonicalAnswer": "터널",
+      "acceptedAliases": []
+    },
+    "explanation": "영화 「터널」의 연출은 김성훈 감독이 맡았다.",
+    "sourceUrls": [
+      "https://en.wikipedia.org/wiki/Tunnel_(2016_film)"
+    ],
+    "misdirectionVariant": null
+  },
+  {
+    "key": "batch_c_entertainment_031",
+    "categoryId": "entertainment_broadcast",
+    "categoryKo": "연예·방송",
+    "difficulty": "easy",
+    "difficultyScore": 40,
+    "q1": {
+      "questionText": "영화 「스물」의 감독은 누구일까요?",
+      "canonicalAnswer": "이병헌",
+      "acceptedAliases": []
+    },
+    "q2": {
+      "questionText": "스무 살 세 친구의 진로와 연애를 그린 성장 코미디 한국 영화의 제목은 무엇일까요?",
+      "canonicalAnswer": "스물",
+      "acceptedAliases": []
+    },
+    "explanation": "영화 「스물」의 연출은 이병헌 감독이 맡았다.",
+    "sourceUrls": [
+      "https://en.wikipedia.org/wiki/Twenty_(film)"
+    ],
+    "misdirectionVariant": null
+  },
+  {
+    "key": "batch_c_entertainment_032",
+    "categoryId": "entertainment_broadcast",
+    "categoryKo": "연예·방송",
+    "difficulty": "easy",
+    "difficultyScore": 43,
+    "q1": {
+      "questionText": "영화 「드림」의 감독은 누구일까요?",
+      "canonicalAnswer": "이병헌",
+      "acceptedAliases": []
+    },
+    "q2": {
+      "questionText": "축구선수가 홈리스 월드컵 대표팀의 감독을 맡는 스포츠 코미디 한국 영화의 제목은 무엇일까요?",
+      "canonicalAnswer": "드림",
+      "acceptedAliases": []
+    },
+    "explanation": "영화 「드림」의 연출은 이병헌 감독이 맡았다.",
+    "sourceUrls": [
+      "https://en.wikipedia.org/wiki/Dream_(2023_film)"
+    ],
+    "misdirectionVariant": null
+  },
+  {
+    "key": "batch_c_entertainment_033",
+    "categoryId": "entertainment_broadcast",
+    "categoryKo": "연예·방송",
+    "difficulty": "easy",
+    "difficultyScore": 41,
+    "q1": {
+      "questionText": "영화 「과속스캔들」의 감독은 누구일까요?",
+      "canonicalAnswer": "강형철",
+      "acceptedAliases": []
+    },
+    "q2": {
+      "questionText": "라디오 진행자 앞에 딸과 손자라고 주장하는 가족이 나타나는 코미디 한국 영화의 제목은 무엇일까요?",
+      "canonicalAnswer": "과속스캔들",
+      "acceptedAliases": []
+    },
+    "explanation": "영화 「과속스캔들」의 연출은 강형철 감독이 맡았다.",
+    "sourceUrls": [
+      "https://en.wikipedia.org/wiki/Scandal_Makers"
+    ],
+    "misdirectionVariant": null
+  },
+  {
+    "key": "batch_c_entertainment_034",
+    "categoryId": "entertainment_broadcast",
+    "categoryKo": "연예·방송",
+    "difficulty": "easy",
+    "difficultyScore": 42,
+    "q1": {
+      "questionText": "영화 「타짜」의 감독은 누구일까요?",
+      "canonicalAnswer": "최동훈",
+      "acceptedAliases": []
+    },
+    "q2": {
+      "questionText": "도박판에 뛰어든 고니의 승부와 복수를 그린 범죄극 한국 영화의 제목은 무엇일까요?",
+      "canonicalAnswer": "타짜",
+      "acceptedAliases": []
+    },
+    "explanation": "영화 「타짜」의 연출은 최동훈 감독이 맡았다.",
+    "sourceUrls": [
+      "https://en.wikipedia.org/wiki/Tazza:_The_High_Rollers"
+    ],
+    "misdirectionVariant": null
+  },
+  {
+    "key": "batch_c_entertainment_035",
+    "categoryId": "entertainment_broadcast",
+    "categoryKo": "연예·방송",
+    "difficulty": "standard",
+    "difficultyScore": 49,
+    "q1": {
+      "questionText": "영화 「외계+인」의 감독은 누구일까요?",
+      "canonicalAnswer": "최동훈",
+      "acceptedAliases": []
+    },
+    "q2": {
+      "questionText": "고려의 도사들과 현대의 외계 죄수 추적을 시간문으로 잇는 SF 액션 한국 영화의 제목은 무엇일까요?",
+      "canonicalAnswer": "외계+인",
+      "acceptedAliases": []
+    },
+    "explanation": "영화 「외계+인」의 연출은 최동훈 감독이 맡았다.",
+    "sourceUrls": [
+      "https://en.wikipedia.org/wiki/Alienoid"
+    ],
+    "misdirectionVariant": null
+  },
+  {
+    "key": "batch_c_entertainment_036",
+    "categoryId": "entertainment_broadcast",
+    "categoryKo": "연예·방송",
+    "difficulty": "standard",
+    "difficultyScore": 48,
+    "q1": {
+      "questionText": "영화 「1987」의 감독은 누구일까요?",
+      "canonicalAnswer": "장준환",
+      "acceptedAliases": []
+    },
+    "q2": {
+      "questionText": "박종철 고문치사 사건에서 6월 민주항쟁까지를 그린 역사극 한국 영화의 제목은 무엇일까요?",
+      "canonicalAnswer": "1987",
+      "acceptedAliases": []
+    },
+    "explanation": "영화 「1987」의 연출은 장준환 감독이 맡았다.",
+    "sourceUrls": [
+      "https://en.wikipedia.org/wiki/1987:_When_the_Day_Comes"
+    ],
+    "misdirectionVariant": null
+  },
+  {
+    "key": "batch_c_entertainment_037",
+    "categoryId": "entertainment_broadcast",
+    "categoryKo": "연예·방송",
+    "difficulty": "hard",
+    "difficultyScore": 59,
+    "q1": {
+      "questionText": "영화 「지구를 지켜라!」의 감독은 누구일까요?",
+      "canonicalAnswer": "장준환",
+      "acceptedAliases": []
+    },
+    "q2": {
+      "questionText": "한 남자가 기업 회장을 외계인이라고 믿고 납치하는 블랙코미디 한국 영화의 제목은 무엇일까요?",
+      "canonicalAnswer": "지구를 지켜라!",
+      "acceptedAliases": []
+    },
+    "explanation": "영화 「지구를 지켜라!」의 연출은 장준환 감독이 맡았다.",
+    "sourceUrls": [
+      "https://en.wikipedia.org/wiki/Save_the_Green_Planet!"
+    ],
+    "misdirectionVariant": null
+  },
+  {
+    "key": "batch_c_entertainment_038",
+    "categoryId": "entertainment_broadcast",
+    "categoryKo": "연예·방송",
+    "difficulty": "hard",
+    "difficultyScore": 58,
+    "q1": {
+      "questionText": "영화 「시」의 감독은 누구일까요?",
+      "canonicalAnswer": "이창동",
+      "acceptedAliases": []
+    },
+    "q2": {
+      "questionText": "손자의 범죄와 마주한 노년 여성이 문학 창작 수업을 들으며 삶을 돌아보는 이창동 감독의 영화 제목은 무엇일까요?",
+      "canonicalAnswer": "시",
+      "acceptedAliases": []
+    },
+    "explanation": "영화 「시」의 연출은 이창동 감독이 맡았다.",
+    "sourceUrls": [
+      "https://en.wikipedia.org/wiki/Poetry_(film)"
+    ],
+    "misdirectionVariant": null
+  },
+  {
+    "key": "batch_c_entertainment_039",
+    "categoryId": "entertainment_broadcast",
+    "categoryKo": "연예·방송",
+    "difficulty": "standard",
+    "difficultyScore": 54,
+    "q1": {
+      "questionText": "영화 「박하사탕」의 감독은 누구일까요?",
+      "canonicalAnswer": "이창동",
+      "acceptedAliases": []
+    },
+    "q2": {
+      "questionText": "한 남자의 삶을 시간의 역순으로 되짚는 드라마 한국 영화의 제목은 무엇일까요?",
+      "canonicalAnswer": "박하사탕",
+      "acceptedAliases": []
+    },
+    "explanation": "영화 「박하사탕」의 연출은 이창동 감독이 맡았다.",
+    "sourceUrls": [
+      "https://en.wikipedia.org/wiki/Peppermint_Candy"
+    ],
+    "misdirectionVariant": null
+  },
+  {
+    "key": "batch_c_entertainment_040",
+    "categoryId": "entertainment_broadcast",
+    "categoryKo": "연예·방송",
+    "difficulty": "hard",
+    "difficultyScore": 59,
+    "q1": {
+      "questionText": "영화 「오아시스」의 감독은 누구일까요?",
+      "canonicalAnswer": "이창동",
+      "acceptedAliases": []
+    },
+    "q2": {
+      "questionText": "출소한 남성과 뇌성마비 여성의 관계를 그린 드라마 한국 영화의 제목은 무엇일까요?",
+      "canonicalAnswer": "오아시스",
+      "acceptedAliases": []
+    },
+    "explanation": "영화 「오아시스」의 연출은 이창동 감독이 맡았다.",
+    "sourceUrls": [
+      "https://en.wikipedia.org/wiki/Oasis_(2002_film)"
+    ],
+    "misdirectionVariant": null
+  },
+  {
+    "key": "batch_c_games_001",
+    "categoryId": "games",
+    "categoryKo": "게임",
+    "difficulty": "easy",
+    "difficultyScore": 38,
+    "q1": {
+      "questionText": "애퍼처 사이언스의 실험 대상이 공간을 연결하는 장치로 시험실을 탈출합니다. 인공지능 GLaDOS의 건조한 안내와 물리 퍼즐이 이어지는 게임입니다. 마지막 단서: 제목은 「Portal」입니다. 개발사는 어디일까요?",
+      "canonicalAnswer": "Valve",
+      "acceptedAliases": []
+    },
+    "q2": {
+      "questionText": "개발사가 Valve이며, 공간을 잇는 두 개의 문을 활용해 퍼즐을 푸는 게임은 무엇일까요?",
+      "canonicalAnswer": "Portal",
+      "acceptedAliases": []
+    },
+    "explanation": "게임 「Portal」의 개발사는 Valve이다.",
+    "sourceUrls": [
+      "https://en.wikipedia.org/wiki/Portal_(video_game)"
+    ],
+    "misdirectionVariant": "q1",
+    "misdirectionType": "late_easy_clue"
+  },
+  {
+    "key": "batch_c_games_002",
+    "categoryId": "games",
+    "categoryKo": "게임",
+    "difficulty": "easy",
+    "difficultyScore": 39,
+    "q1": {
+      "questionText": "블랙 메사 연구시설 사고 뒤 과학자 고든 프리먼이 외계 생명체와 맞서는 1998년 1인칭 슈팅 게임입니다. 장면 전환 없이 주인공 시점을 따라갑니다. 마지막 단서: 제목은 「Half-Life」입니다. 개발사는 어디일까요?",
+      "canonicalAnswer": "Valve",
+      "acceptedAliases": [],
+      "questionStyle": "wait_for_clue"
+    },
+    "q2": {
+      "questionText": "개발사가 Valve이며, 블랙 메사 연구시설의 사고 뒤 과학자 고든 프리먼이 살아남는 게임은 무엇일까요?",
+      "canonicalAnswer": "Half-Life",
+      "acceptedAliases": []
+    },
+    "explanation": "게임 「Half-Life」의 개발사는 Valve이다.",
+    "sourceUrls": [
+      "https://en.wikipedia.org/wiki/Half-Life_(video_game)"
+    ],
+    "misdirectionVariant": null
+  },
+  {
+    "key": "batch_c_games_003",
+    "categoryId": "games",
+    "categoryKo": "게임",
+    "difficulty": "easy",
+    "difficultyScore": 41,
+    "q1": {
+      "questionText": "다섯 명씩 두 팀이 영웅을 골라 상대 진영의 고대 건물을 파괴하려 겨루는 MOBA입니다. 한 경기 안에서 역할 분담과 아이템 성장이 이어집니다. 마지막 단서: 제목은 「Dota 2」입니다. 개발사는 어디일까요?",
+      "canonicalAnswer": "Valve",
+      "acceptedAliases": [],
+      "questionStyle": "wait_for_clue"
+    },
+    "q2": {
+      "questionText": "개발사가 Valve이며, 다섯 명씩 두 팀이 상대 고대 건물을 파괴하려 겨루는 MOBA 게임은 무엇일까요?",
+      "canonicalAnswer": "Dota 2",
+      "acceptedAliases": []
+    },
+    "explanation": "게임 「Dota 2」의 개발사는 Valve이다.",
+    "sourceUrls": [
+      "https://en.wikipedia.org/wiki/Dota_2"
+    ],
+    "misdirectionVariant": null
+  },
+  {
+    "key": "batch_c_games_004",
+    "categoryId": "games",
+    "categoryKo": "게임",
+    "difficulty": "standard",
+    "difficultyScore": 46,
+    "q1": {
+      "questionText": "RED와 BLU가 맞붙고 서로 다른 능력의 아홉 병과가 협력하는 팀 기반 슈팅 게임입니다. 만화적 인물 표현과 병과별 뚜렷한 역할이 특징입니다. 마지막 단서: 제목은 「Team Fortress 2」입니다. 개발사는 어디일까요?",
+      "canonicalAnswer": "Valve",
+      "acceptedAliases": [],
+      "questionStyle": "wait_for_clue"
+    },
+    "q2": {
+      "questionText": "개발사가 Valve이며, 아홉 병과가 RED와 BLU 두 팀으로 대결하는 슈팅 게임은 무엇일까요?",
+      "canonicalAnswer": "Team Fortress 2",
+      "acceptedAliases": []
+    },
+    "explanation": "게임 「Team Fortress 2」의 개발사는 Valve이다.",
+    "sourceUrls": [
+      "https://en.wikipedia.org/wiki/Team_Fortress_2"
+    ],
+    "misdirectionVariant": null
+  },
+  {
+    "key": "batch_c_games_005",
+    "categoryId": "games",
+    "categoryKo": "게임",
+    "difficulty": "standard",
+    "difficultyScore": 48,
+    "q1": {
+      "questionText": "육각형 지도에서 도시와 문명을 키우며 과학·문화·종교 등 여러 승리를 노리는 턴제 전략 게임입니다. 지도자별 능력과 지형이 성장에 영향을 줍니다. 마지막 단서: 제목은 「문명 6」입니다. 개발사는 어디일까요?",
+      "canonicalAnswer": "Firaxis Games",
+      "acceptedAliases": [],
+      "questionStyle": "wait_for_clue"
+    },
+    "q2": {
+      "questionText": "개발사가 Firaxis Games이며, 육각형 지도에서 문명을 건설하고 여러 승리 조건을 노리는 전략 게임은 무엇일까요?",
+      "canonicalAnswer": "문명 6",
+      "acceptedAliases": []
+    },
+    "explanation": "게임 「문명 6」(Sid Meier’s Civilization VI)의 개발사는 Firaxis Games이다.",
+    "sourceUrls": [
+      "https://en.wikipedia.org/wiki/Civilization_VI"
+    ],
+    "misdirectionVariant": null
+  },
+  {
+    "key": "batch_c_games_006",
+    "categoryId": "games",
+    "categoryKo": "게임",
+    "difficulty": "standard",
+    "difficultyScore": 52,
+    "q1": {
+      "questionText": "외계 침공에 맞서 국제 방위조직의 병사·연구·기지를 지휘하는 턴제 전술 게임입니다. 전사한 대원을 되돌릴 수 없어 선택이 무겁습니다. 마지막 단서: 제목은 「엑스컴: 에너미 언노운」입니다. 개발사는 어디일까요?",
+      "canonicalAnswer": "Firaxis Games",
+      "acceptedAliases": [],
+      "questionStyle": "wait_for_clue"
+    },
+    "q2": {
+      "questionText": "개발사가 Firaxis Games이며, 외계 침공에 맞서 국제 방위조직을 지휘하는 턴제 전술 게임은 무엇일까요?",
+      "canonicalAnswer": "엑스컴: 에너미 언노운",
+      "acceptedAliases": []
+    },
+    "explanation": "게임 「엑스컴: 에너미 언노운」(XCOM: Enemy Unknown)의 개발사는 Firaxis Games이다.",
+    "sourceUrls": [
+      "https://en.wikipedia.org/wiki/XCOM:_Enemy_Unknown_(2012_video_game)"
+    ],
+    "misdirectionVariant": null
+  },
+  {
+    "key": "batch_c_games_007",
+    "categoryId": "games",
+    "categoryKo": "게임",
+    "difficulty": "easy",
+    "difficultyScore": 40,
+    "q1": {
+      "questionText": "가상 인물의 외모와 성격을 만들고 집·직업·인간관계를 관리하는 생활 시뮬레이션입니다. 정해진 결말보다 욕구와 일상의 선택이 중심입니다. 마지막 단서: 제목은 「The Sims」입니다. 개발사는 어디일까요?",
+      "canonicalAnswer": "Maxis",
+      "acceptedAliases": [],
+      "questionStyle": "wait_for_clue"
+    },
+    "q2": {
+      "questionText": "개발사가 Maxis이며, 가상 인물의 집과 직업과 인간관계를 관리하는 생활 시뮬레이션 게임은 무엇일까요?",
+      "canonicalAnswer": "The Sims",
+      "acceptedAliases": []
+    },
+    "explanation": "게임 「The Sims」의 개발사는 Maxis이다.",
+    "sourceUrls": [
+      "https://en.wikipedia.org/wiki/The_Sims_(video_game)"
+    ],
+    "misdirectionVariant": null
+  },
+  {
+    "key": "batch_c_games_008",
+    "categoryId": "games",
+    "categoryKo": "게임",
+    "difficulty": "standard",
+    "difficultyScore": 47,
+    "q1": {
+      "questionText": "주거·상업·공업 구역을 정하고 세금과 교통, 전력 같은 기반시설을 운영하는 도시 건설 게임입니다. 1990년대에 나온 시리즈의 두 번째 번호 작품입니다. 마지막 힌트: 제목은 「SimCity 2000」입니다. 개발사는 어디일까요?",
+      "canonicalAnswer": "Maxis",
+      "acceptedAliases": [],
+      "questionStyle": "wait_for_clue"
+    },
+    "q2": {
+      "questionText": "개발사가 Maxis이며, 도시 구역과 세금과 기반시설을 운영하는 도시 건설 시뮬레이션 게임은 무엇일까요?",
+      "canonicalAnswer": "SimCity 2000",
+      "acceptedAliases": []
+    },
+    "explanation": "게임 「SimCity 2000」의 개발사는 Maxis이다.",
+    "sourceUrls": [
+      "https://en.wikipedia.org/wiki/SimCity_2000"
+    ],
+    "misdirectionVariant": null
+  },
+  {
+    "key": "batch_c_games_009",
+    "categoryId": "games",
+    "categoryKo": "게임",
+    "difficulty": "easy",
+    "difficultyScore": 43,
+    "q1": {
+      "questionText": "셰퍼드 사령관이 동료를 모아 은하계의 위협에 맞서고 선택에 따라 관계와 사건이 달라지는 SF 역할수행 게임입니다. 여러 행성을 오가는 우주 오페라입니다. 마지막 단서: 제목은 「Mass Effect」입니다. 개발사는 어디일까요?",
+      "canonicalAnswer": "BioWare",
+      "acceptedAliases": [],
+      "questionStyle": "wait_for_clue"
+    },
+    "q2": {
+      "questionText": "개발사가 BioWare이며, 셰퍼드 사령관이 은하계의 위협에 맞서는 SF 역할수행 게임은 무엇일까요?",
+      "canonicalAnswer": "Mass Effect",
+      "acceptedAliases": []
+    },
+    "explanation": "게임 「Mass Effect」의 개발사는 BioWare이다.",
+    "sourceUrls": [
+      "https://en.wikipedia.org/wiki/Mass_Effect_(video_game)"
+    ],
+    "misdirectionVariant": null
+  },
+  {
+    "key": "batch_c_games_010",
+    "categoryId": "games",
+    "categoryKo": "게임",
+    "difficulty": "standard",
+    "difficultyScore": 49,
+    "q1": {
+      "questionText": "회색 감시자가 퍼렐던의 대재앙을 막으려 여러 세력을 규합하는 판타지 RPG입니다. 출신에 따라 도입부가 달라지고 동료 선택이 사건에 영향을 줍니다. 마지막 단서: 제목은 「드래곤 에이지: 오리진」입니다. 개발사는 어디일까요?",
+      "canonicalAnswer": "BioWare",
+      "acceptedAliases": [],
+      "questionStyle": "wait_for_clue"
+    },
+    "q2": {
+      "questionText": "개발사가 BioWare이며, 회색 감시자가 퍼렐던의 대재앙을 막는 판타지 역할수행 게임은 무엇일까요?",
+      "canonicalAnswer": "드래곤 에이지: 오리진",
+      "acceptedAliases": []
+    },
+    "explanation": "게임 「드래곤 에이지: 오리진」(Dragon Age: Origins)의 개발사는 BioWare이다.",
+    "sourceUrls": [
+      "https://en.wikipedia.org/wiki/Dragon_Age:_Origins"
+    ],
+    "misdirectionVariant": null
+  },
+  {
+    "key": "batch_c_games_011",
+    "categoryId": "games",
+    "categoryKo": "게임",
+    "difficulty": "standard",
+    "difficultyScore": 52,
+    "q1": {
+      "questionText": "포가튼 렐름에서 바알의 자손이 동료들과 모험하는 고전 RPG입니다. 실시간 전투를 멈춰 명령하며 테이블 게임 규칙을 구현했습니다. 마지막 단서: 제목은 「Baldur’s Gate」입니다. 개발사는 어디일까요?",
+      "canonicalAnswer": "BioWare",
+      "acceptedAliases": [],
+      "questionStyle": "wait_for_clue"
+    },
+    "q2": {
+      "questionText": "개발사가 BioWare이며, 포가튼 렐름에서 바알의 자손이 모험하는 고전 역할수행 게임은 무엇일까요?",
+      "canonicalAnswer": "Baldur’s Gate",
+      "acceptedAliases": []
+    },
+    "explanation": "게임 「Baldur’s Gate」의 개발사는 BioWare이다.",
+    "sourceUrls": [
+      "https://en.wikipedia.org/wiki/Baldur%27s_Gate_(video_game)"
+    ],
+    "misdirectionVariant": null
+  },
+  {
+    "key": "batch_c_games_012",
+    "categoryId": "games",
+    "categoryKo": "게임",
+    "difficulty": "easy",
+    "difficultyScore": 42,
+    "q1": {
+      "questionText": "「Divinity: Original Sin II」를 만든 스튜디오는 이어 「Baldur’s Gate 3」도 개발했습니다. 두 RPG를 잇는 개발사는 어디일까요?",
+      "canonicalAnswer": "Larian Studios",
+      "acceptedAliases": []
+    },
+    "q2": {
+      "questionText": "개발사가 Larian Studios이며, 기생충에 감염된 일행이 포가튼 렐름을 모험하는 역할수행 게임은 무엇일까요?",
+      "canonicalAnswer": "Baldur’s Gate 3",
+      "acceptedAliases": []
+    },
+    "explanation": "게임 「Baldur’s Gate 3」의 개발사는 Larian Studios이다.",
+    "sourceUrls": [
+      "https://en.wikipedia.org/wiki/Baldur%27s_Gate_3",
+      "https://en.wikipedia.org/wiki/Divinity:_Original_Sin_II"
+    ],
+    "misdirectionVariant": "q1",
+    "misdirectionType": "relation_twist"
+  },
+  {
+    "key": "batch_c_games_013",
+    "categoryId": "games",
+    "categoryKo": "게임",
+    "difficulty": "standard",
+    "difficultyScore": 52,
+    "q1": {
+      "questionText": "「Baldur’s Gate 3」의 개발사로 익숙한 스튜디오가 그보다 먼저 「Divinity: Original Sin II」도 만들었습니다. 두 작품을 연결하는 개발사는 어디일까요?",
+      "canonicalAnswer": "Larian Studios",
+      "acceptedAliases": [],
+      "questionStyle": "lateral"
+    },
+    "q2": {
+      "questionText": "리벨론에서 ‘소스’의 힘을 지닌 이들이 신성에 도전합니다. 신성을 뜻하는 말과 ‘원죄’, 두 번째 작품임을 나타내는 숫자로 제목을 만든 Larian의 RPG는 무엇일까요?",
+      "canonicalAnswer": "디비니티: 오리지널 신 2",
+      "acceptedAliases": [],
+      "questionStyle": "reasoning"
+    },
+    "explanation": "게임 「디비니티: 오리지널 신 2」(Divinity: Original Sin II)의 개발사는 Larian Studios이다.",
+    "sourceUrls": [
+      "https://en.wikipedia.org/wiki/Divinity:_Original_Sin_II"
+    ],
+    "misdirectionVariant": null
+  },
+  {
+    "key": "batch_c_games_014",
+    "categoryId": "games",
+    "categoryKo": "게임",
+    "difficulty": "easy",
+    "difficultyScore": 40,
+    "q1": {
+      "questionText": "게임 「Cyberpunk 2077」의 개발사는 어디일까요?",
+      "canonicalAnswer": "CD Projekt Red",
+      "acceptedAliases": []
+    },
+    "q2": {
+      "questionText": "나이트 시티의 용병 V가 디지털 인격 칩 때문에 생존을 위협받습니다. 장르명 뒤에 원작 세계의 연도를 붙인 CD Projekt Red의 RPG는 무엇일까요?",
+      "canonicalAnswer": "Cyberpunk 2077",
+      "acceptedAliases": [],
+      "questionStyle": "reasoning"
+    },
+    "explanation": "게임 「Cyberpunk 2077」의 개발사는 CD Projekt Red이다.",
+    "sourceUrls": [
+      "https://en.wikipedia.org/wiki/Cyberpunk_2077"
+    ],
+    "misdirectionVariant": null
+  },
+  {
+    "key": "batch_c_games_015",
+    "categoryId": "games",
+    "categoryKo": "게임",
+    "difficulty": "easy",
+    "difficultyScore": 41,
+    "q1": {
+      "questionText": "게임 「The Witcher 3: Wild Hunt」의 개발사는 어디일까요?",
+      "canonicalAnswer": "CD Projekt Red",
+      "acceptedAliases": []
+    },
+    "q2": {
+      "questionText": "괴물 사냥꾼 게롤트가 시리를 찾는 세 번째 게임이며, 시리를 쫓는 유령 기병대가 부제에 등장합니다. 이 CD Projekt Red 작품은 무엇일까요?",
+      "canonicalAnswer": "더 위쳐 3: 와일드 헌트",
+      "acceptedAliases": [],
+      "questionStyle": "reasoning"
+    },
+    "explanation": "게임 「더 위쳐 3: 와일드 헌트」(The Witcher 3: Wild Hunt)의 개발사는 CD Projekt Red이다.",
+    "sourceUrls": [
+      "https://en.wikipedia.org/wiki/The_Witcher_3:_Wild_Hunt"
+    ],
+    "misdirectionVariant": null
+  },
+  {
+    "key": "batch_c_games_016",
+    "categoryId": "games",
+    "categoryKo": "게임",
+    "difficulty": "easy",
+    "difficultyScore": 39,
+    "q1": {
+      "questionText": "게임 「Grand Theft Auto V」의 개발사는 어디일까요?",
+      "canonicalAnswer": "Rockstar North",
+      "acceptedAliases": []
+    },
+    "q2": {
+      "questionText": "로스 산토스에서 마이클·프랭클린·트레버가 대형 범죄를 벌입니다. 세 주인공을 내세운 이 시리즈의 다섯 번째 번호 작품은 무엇일까요?",
+      "canonicalAnswer": "GTA V",
+      "acceptedAliases": [],
+      "questionStyle": "reasoning"
+    },
+    "explanation": "게임 「GTA V」(Grand Theft Auto V)의 개발사는 Rockstar North이다.",
+    "sourceUrls": [
+      "https://en.wikipedia.org/wiki/Grand_Theft_Auto_V"
+    ],
+    "misdirectionVariant": null
+  },
+  {
+    "key": "batch_c_games_017",
+    "categoryId": "games",
+    "categoryKo": "게임",
+    "difficulty": "standard",
+    "difficultyScore": 45,
+    "q1": {
+      "questionText": "게임 「Red Dead Redemption」의 개발사는 어디일까요?",
+      "canonicalAnswer": "Rockstar San Diego",
+      "acceptedAliases": []
+    },
+    "q2": {
+      "questionText": "전직 무법자 존 마스턴이 가족을 되찾기 위해 옛 동료들을 추적합니다. 과거를 피로 씻고 구원받으려는 여정을 제목으로 삼은 서부극 게임은 무엇일까요?",
+      "canonicalAnswer": "레드 데드 리뎀션",
+      "acceptedAliases": [],
+      "questionStyle": "reasoning"
+    },
+    "explanation": "게임 「레드 데드 리뎀션」(Red Dead Redemption)의 개발사는 Rockstar San Diego이다.",
+    "sourceUrls": [
+      "https://en.wikipedia.org/wiki/Red_Dead_Redemption"
+    ],
+    "misdirectionVariant": null
+  },
+  {
+    "key": "batch_c_games_018",
+    "categoryId": "games",
+    "categoryKo": "게임",
+    "difficulty": "easy",
+    "difficultyScore": 41,
+    "q1": {
+      "questionText": "게임 「Hades」의 개발사는 어디일까요?",
+      "canonicalAnswer": "Supergiant",
+      "acceptedAliases": []
+    },
+    "q2": {
+      "questionText": "저승의 왕자 자그레우스가 탈출할 때마다 아버지가 길을 막습니다. 그 아버지이자 저승의 신 이름을 제목으로 쓴 로그라이크는 무엇일까요?",
+      "canonicalAnswer": "Hades",
+      "acceptedAliases": [],
+      "questionStyle": "reasoning"
+    },
+    "explanation": "게임 「Hades」의 개발사는 Supergiant Games이며, 일반적으로 Supergiant로도 불린다.",
+    "sourceUrls": [
+      "https://en.wikipedia.org/wiki/Hades_(video_game)"
+    ],
+    "misdirectionVariant": null
+  },
+  {
+    "key": "batch_c_games_019",
+    "categoryId": "games",
+    "categoryKo": "게임",
+    "difficulty": "standard",
+    "difficultyScore": 50,
+    "q1": {
+      "questionText": "「Hades」의 개발사로 익숙한 스튜디오가 그보다 먼저 「Bastion」도 만들었습니다. 두 작품을 연결하는 개발사는 어디일까요?",
+      "canonicalAnswer": "Supergiant",
+      "acceptedAliases": [],
+      "questionStyle": "lateral"
+    },
+    "q2": {
+      "questionText": "재앙으로 산산이 부서진 세계에서 ‘키드’가 조각을 모아 마지막 피난처를 복원합니다. 요새나 보루를 뜻하는 그 피난처의 이름이 곧 제목인 게임은 무엇일까요?",
+      "canonicalAnswer": "Bastion",
+      "acceptedAliases": [],
+      "questionStyle": "reasoning"
+    },
+    "explanation": "게임 「Bastion」의 개발사는 Supergiant Games이며, 일반적으로 Supergiant로도 불린다.",
+    "sourceUrls": [
+      "https://en.wikipedia.org/wiki/Bastion_(video_game)"
+    ],
+    "misdirectionVariant": null
+  },
+  {
+    "key": "batch_c_games_020",
+    "categoryId": "games",
+    "categoryKo": "게임",
+    "difficulty": "standard",
+    "difficultyScore": 52,
+    "q1": {
+      "questionText": "게임 「Transistor」의 개발사는 어디일까요?",
+      "canonicalAnswer": "Supergiant",
+      "acceptedAliases": []
+    },
+    "q2": {
+      "questionText": "가수 레드가 목소리를 잃고, 사람의 의식을 담는 검 모양 장치와 함께 클라우드뱅크를 달립니다. 전류를 증폭·전환하는 소자와 이름이 같은 게임은 무엇일까요?",
+      "canonicalAnswer": "Transistor",
+      "acceptedAliases": [],
+      "questionStyle": "reasoning"
+    },
+    "explanation": "게임 「Transistor」의 개발사는 Supergiant Games이며, 일반적으로 Supergiant로도 불린다.",
+    "sourceUrls": [
+      "https://en.wikipedia.org/wiki/Transistor_(video_game)"
+    ],
+    "misdirectionVariant": null
+  },
+  {
+    "key": "batch_c_games_021",
+    "categoryId": "games",
+    "categoryKo": "게임",
+    "difficulty": "easy",
+    "difficultyScore": 42,
+    "q1": {
+      "questionText": "게임 「Hollow Knight」의 개발사는 어디일까요?",
+      "canonicalAnswer": "Team Cherry",
+      "acceptedAliases": []
+    },
+    "q2": {
+      "questionText": "이름 없는 작은 기사가 폐허가 된 벌레 왕국 할로우네스트를 탐험합니다. ‘비어 있는’이라는 말과 주인공의 호칭을 이은 Team Cherry의 게임은 무엇일까요?",
+      "canonicalAnswer": "Hollow Knight",
+      "acceptedAliases": [],
+      "questionStyle": "reasoning"
+    },
+    "explanation": "게임 「Hollow Knight」의 개발사는 Team Cherry이다.",
+    "sourceUrls": [
+      "https://en.wikipedia.org/wiki/Hollow_Knight"
+    ],
+    "misdirectionVariant": null
+  },
+  {
+    "key": "batch_c_games_022",
+    "categoryId": "games",
+    "categoryKo": "게임",
+    "difficulty": "easy",
+    "difficultyScore": 38,
+    "q1": {
+      "questionText": "게임 「Stardew Valley」를 혼자 만든 개발자는 어떤 필명으로 활동할까요?",
+      "canonicalAnswer": "ConcernedApe",
+      "acceptedAliases": []
+    },
+    "q2": {
+      "questionText": "할아버지에게 물려받은 농장에서 작물을 키우고 펠리컨 타운 주민과 교류합니다. 농장이 자리한 별이슬 골짜기의 영어 이름을 제목으로 쓴 게임은 무엇일까요?",
+      "canonicalAnswer": "Stardew Valley",
+      "acceptedAliases": [],
+      "questionStyle": "reasoning"
+    },
+    "explanation": "게임 「Stardew Valley」의 1인 개발자는 에릭 배런(Eric Barone)이며, ConcernedApe라는 필명으로 활동한다.",
+    "sourceUrls": [
+      "https://en.wikipedia.org/wiki/Stardew_Valley"
+    ],
+    "misdirectionVariant": null
+  },
+  {
+    "key": "batch_c_games_023",
+    "categoryId": "games",
+    "categoryKo": "게임",
+    "difficulty": "easy",
+    "difficultyScore": 39,
+    "q1": {
+      "questionText": "게임 「Undertale」을 만든 개발자는 누구일까요?",
+      "canonicalAnswer": "Toby Fox",
+      "acceptedAliases": []
+    },
+    "q2": {
+      "questionText": "지하세계에 떨어진 아이가 괴물을 죽이지 않고도 이야기를 끝낼 수 있습니다. ‘아래’를 뜻하는 말과 ‘이야기’를 이은 Toby Fox의 게임은 무엇일까요?",
+      "canonicalAnswer": "Undertale",
+      "acceptedAliases": [],
+      "questionStyle": "reasoning"
+    },
+    "explanation": "게임 「Undertale」을 만든 개발자는 Toby Fox이다.",
+    "sourceUrls": [
+      "https://en.wikipedia.org/wiki/Undertale"
+    ],
+    "misdirectionVariant": null
+  },
+  {
+    "key": "batch_c_games_024",
+    "categoryId": "games",
+    "categoryKo": "게임",
+    "difficulty": "easy",
+    "difficultyScore": 42,
+    "q1": {
+      "questionText": "게임 「Cuphead」의 개발사는 어디일까요?",
+      "canonicalAnswer": "Studio MDHR",
+      "acceptedAliases": []
+    },
+    "q2": {
+      "questionText": "개발사가 Studio MDHR이며, 1930년대 고무호스 애니메이션풍 형제가 보스들과 싸우는 액션 게임은 무엇일까요?",
+      "canonicalAnswer": "Cuphead",
+      "acceptedAliases": []
+    },
+    "explanation": "게임 「Cuphead」의 개발사는 Studio MDHR이다.",
+    "sourceUrls": [
+      "https://en.wikipedia.org/wiki/Cuphead"
+    ],
+    "misdirectionVariant": null
+  },
+  {
+    "key": "batch_c_games_025",
+    "categoryId": "games",
+    "categoryKo": "게임",
+    "difficulty": "standard",
+    "difficultyScore": 47,
+    "q1": {
+      "questionText": "게임 「Ori and the Blind Forest」의 개발사는 어디일까요?",
+      "canonicalAnswer": "Moon Studios",
+      "acceptedAliases": []
+    },
+    "q2": {
+      "questionText": "개발사가 Moon Studios이며, 수호정령 오리가 니벨 숲을 되살리기 위해 모험하는 플랫폼 게임은 무엇일까요?",
+      "canonicalAnswer": "오리와 눈먼 숲",
+      "acceptedAliases": []
+    },
+    "explanation": "게임 「오리와 눈먼 숲」(Ori and the Blind Forest)의 개발사는 Moon Studios이다.",
+    "sourceUrls": [
+      "https://en.wikipedia.org/wiki/Ori_and_the_Blind_Forest"
+    ],
+    "misdirectionVariant": null
+  },
+  {
+    "key": "batch_c_games_026",
+    "categoryId": "games",
+    "categoryKo": "게임",
+    "difficulty": "easy",
+    "difficultyScore": 43,
+    "q1": {
+      "questionText": "게임 「No Man’s Sky」의 개발사는 어디일까요?",
+      "canonicalAnswer": "Hello Games",
+      "acceptedAliases": []
+    },
+    "q2": {
+      "questionText": "개발사가 Hello Games이며, 절차적으로 생성된 수많은 행성을 탐사하는 우주 생존 게임은 무엇일까요?",
+      "canonicalAnswer": "No Man’s Sky",
+      "acceptedAliases": []
+    },
+    "explanation": "게임 「No Man’s Sky」의 개발사는 Hello Games이다.",
+    "sourceUrls": [
+      "https://en.wikipedia.org/wiki/No_Man%27s_Sky"
+    ],
+    "misdirectionVariant": null
+  },
+  {
+    "key": "batch_c_games_027",
+    "categoryId": "games",
+    "categoryKo": "게임",
+    "difficulty": "easy",
+    "difficultyScore": 43,
+    "q1": {
+      "questionText": "게임 「Subnautica」의 개발사는 어디일까요?",
+      "canonicalAnswer": "Unknown Worlds",
+      "acceptedAliases": []
+    },
+    "q2": {
+      "questionText": "개발사가 Unknown Worlds Entertainment이며, 외계 해양 행성에 추락한 생존자가 바닷속을 탐사하는 게임은 무엇일까요?",
+      "canonicalAnswer": "Subnautica",
+      "acceptedAliases": []
+    },
+    "explanation": "게임 「Subnautica」의 개발사는 Unknown Worlds Entertainment이며, 일반적으로 Unknown Worlds로도 불린다.",
+    "sourceUrls": [
+      "https://en.wikipedia.org/wiki/Subnautica"
+    ],
+    "misdirectionVariant": null
+  },
+  {
+    "key": "batch_c_games_028",
+    "categoryId": "games",
+    "categoryKo": "게임",
+    "difficulty": "easy",
+    "difficultyScore": 35,
+    "q1": {
+      "questionText": "게임 「Among Us」의 개발사는 어디일까요?",
+      "canonicalAnswer": "Innersloth",
+      "acceptedAliases": []
+    },
+    "q2": {
+      "questionText": "개발사가 Innersloth이며, 우주선 승무원 사이에 숨은 임포스터를 찾아내는 사회적 추론 게임은 무엇일까요?",
+      "canonicalAnswer": "Among Us",
+      "acceptedAliases": []
+    },
+    "explanation": "게임 「Among Us」의 개발사는 Innersloth이다.",
+    "sourceUrls": [
+      "https://en.wikipedia.org/wiki/Among_Us"
+    ],
+    "misdirectionVariant": null
+  },
+  {
+    "key": "batch_c_games_029",
+    "categoryId": "games",
+    "categoryKo": "게임",
+    "difficulty": "easy",
+    "difficultyScore": 37,
+    "q1": {
+      "questionText": "게임 「Fall Guys」의 개발사는 어디일까요?",
+      "canonicalAnswer": "Mediatonic",
+      "acceptedAliases": []
+    },
+    "q2": {
+      "questionText": "개발사가 Mediatonic이며, 알록달록한 참가자들이 장애물 코스에서 마지막까지 경쟁하는 배틀로얄 게임은 무엇일까요?",
+      "canonicalAnswer": "Fall Guys",
+      "acceptedAliases": []
+    },
+    "explanation": "게임 「Fall Guys」의 개발사는 Mediatonic이다.",
+    "sourceUrls": [
+      "https://en.wikipedia.org/wiki/Fall_Guys"
+    ],
+    "misdirectionVariant": null
+  },
+  {
+    "key": "batch_c_games_030",
+    "categoryId": "games",
+    "categoryKo": "게임",
+    "difficulty": "easy",
+    "difficultyScore": 38,
+    "q1": {
+      "questionText": "게임 「Rocket League」의 개발사는 어디일까요?",
+      "canonicalAnswer": "Psyonix",
+      "acceptedAliases": []
+    },
+    "q2": {
+      "questionText": "개발사가 Psyonix이며, 로켓 자동차로 거대한 공을 상대 골문에 넣는 스포츠 게임은 무엇일까요?",
+      "canonicalAnswer": "Rocket League",
+      "acceptedAliases": []
+    },
+    "explanation": "게임 「Rocket League」의 개발사는 Psyonix이다.",
+    "sourceUrls": [
+      "https://en.wikipedia.org/wiki/Rocket_League"
+    ],
+    "misdirectionVariant": null
+  },
+  {
+    "key": "batch_c_games_031",
+    "categoryId": "games",
+    "categoryKo": "게임",
+    "difficulty": "easy",
+    "difficultyScore": 34,
+    "q1": {
+      "questionText": "Unreal Engine으로 익숙한 회사가 건축과 사격을 결합한 「Fortnite」도 개발했습니다. 엔진과 게임을 연결하는 회사는 어디일까요?",
+      "canonicalAnswer": "Epic Games",
+      "acceptedAliases": [],
+      "questionStyle": "lateral"
+    },
+    "q2": {
+      "questionText": "개발사가 Epic Games이며, 건축과 사격을 결합한 배틀로얄 모드로 널리 알려진 게임은 무엇일까요?",
+      "canonicalAnswer": "Fortnite",
+      "acceptedAliases": []
+    },
+    "explanation": "게임 「Fortnite」의 개발사는 Epic Games이다.",
+    "sourceUrls": [
+      "https://en.wikipedia.org/wiki/Fortnite"
+    ],
+    "misdirectionVariant": null
+  },
+  {
+    "key": "batch_c_games_032",
+    "categoryId": "games",
+    "categoryKo": "게임",
+    "difficulty": "easy",
+    "difficultyScore": 39,
+    "q1": {
+      "questionText": "게임 「Genshin Impact」의 개발사는 어디일까요?",
+      "canonicalAnswer": "miHoYo",
+      "acceptedAliases": []
+    },
+    "q2": {
+      "questionText": "개발사가 miHoYo이며, 여행자가 일곱 원소의 나라를 돌며 잃어버린 남매를 찾는 오픈월드 역할수행 게임은 무엇일까요?",
+      "canonicalAnswer": "Genshin Impact",
+      "acceptedAliases": []
+    },
+    "explanation": "게임 「Genshin Impact」의 개발사는 miHoYo이다.",
+    "sourceUrls": [
+      "https://en.wikipedia.org/wiki/Genshin_Impact"
+    ],
+    "misdirectionVariant": null
+  },
+  {
+    "key": "batch_c_games_033",
+    "categoryId": "games",
+    "categoryKo": "게임",
+    "difficulty": "standard",
+    "difficultyScore": 48,
+    "q1": {
+      "questionText": "게임 「Wuthering Waves」의 개발사는 어디일까요?",
+      "canonicalAnswer": "Kuro Games",
+      "acceptedAliases": []
+    },
+    "q2": {
+      "questionText": "개발사가 Kuro Games이며, 방랑자가 포스트 아포칼립스 세계 솔라리스-3를 탐험하는 오픈월드 역할수행 게임은 무엇일까요?",
+      "canonicalAnswer": "Wuthering Waves",
+      "acceptedAliases": []
+    },
+    "explanation": "게임 「Wuthering Waves」의 개발사는 Kuro Games이다.",
+    "sourceUrls": [
+      "https://en.wikipedia.org/wiki/Wuthering_Waves"
+    ],
+    "misdirectionVariant": null
+  },
+  {
+    "key": "batch_c_games_034",
+    "categoryId": "games",
+    "categoryKo": "게임",
+    "difficulty": "standard",
+    "difficultyScore": 50,
+    "q1": {
+      "questionText": "게임 「Arknights」의 개발사는 어디일까요?",
+      "canonicalAnswer": "Hypergryph",
+      "acceptedAliases": []
+    },
+    "q2": {
+      "questionText": "개발사가 Hypergryph이며, 감염병과 광석 재앙이 있는 테라에서 로도스 아일랜드를 지휘하는 전략 게임은 무엇일까요?",
+      "canonicalAnswer": "Arknights",
+      "acceptedAliases": []
+    },
+    "explanation": "게임 「Arknights」의 개발사는 Hypergryph이다.",
+    "sourceUrls": [
+      "https://en.wikipedia.org/wiki/Arknights"
+    ],
+    "misdirectionVariant": null
+  },
+  {
+    "key": "batch_c_games_035",
+    "categoryId": "games",
+    "categoryKo": "게임",
+    "difficulty": "standard",
+    "difficultyScore": 47,
+    "q1": {
+      "questionText": "게임 「Blue Archive」의 개발사는 어디일까요?",
+      "canonicalAnswer": "Nexon Games",
+      "acceptedAliases": []
+    },
+    "q2": {
+      "questionText": "개발사가 Nexon Games이며, 선생이 학원도시 키보토스의 학생들과 사건을 해결하는 역할수행 게임은 무엇일까요?",
+      "canonicalAnswer": "Blue Archive",
+      "acceptedAliases": []
+    },
+    "explanation": "게임 「Blue Archive」의 개발사는 Nexon Games이다.",
+    "sourceUrls": [
+      "https://en.wikipedia.org/wiki/Blue_Archive"
+    ],
+    "misdirectionVariant": null
+  },
+  {
+    "key": "batch_c_games_036",
+    "categoryId": "games",
+    "categoryKo": "게임",
+    "difficulty": "easy",
+    "difficultyScore": 39,
+    "q1": {
+      "questionText": "게임 「MapleStory」의 개발사는 어디일까요?",
+      "canonicalAnswer": "Wizet",
+      "acceptedAliases": []
+    },
+    "q2": {
+      "questionText": "개발사가 Wizet이며, 단풍잎 로고와 횡스크롤 방식으로 알려진 한국 온라인 역할수행 게임은 무엇일까요?",
+      "canonicalAnswer": "MapleStory",
+      "acceptedAliases": []
+    },
+    "explanation": "게임 「MapleStory」의 개발사는 Wizet이다.",
+    "sourceUrls": [
+      "https://en.wikipedia.org/wiki/MapleStory"
+    ],
+    "misdirectionVariant": null
+  },
+  {
+    "key": "batch_c_games_037",
+    "categoryId": "games",
+    "categoryKo": "게임",
+    "difficulty": "standard",
+    "difficultyScore": 49,
+    "q1": {
+      "questionText": "게임 「Mabinogi」의 개발사는 어디일까요?",
+      "canonicalAnswer": "devCAT Studio",
+      "acceptedAliases": []
+    },
+    "q2": {
+      "questionText": "개발사가 devCAT Studio이며, 에린 세계에서 생활과 전투와 음악을 자유롭게 즐기는 한국 온라인 역할수행 게임은 무엇일까요?",
+      "canonicalAnswer": "Mabinogi",
+      "acceptedAliases": []
+    },
+    "explanation": "게임 「Mabinogi」의 개발사는 devCAT Studio이다.",
+    "sourceUrls": [
+      "https://en.wikipedia.org/wiki/Mabinogi_(video_game)"
+    ],
+    "misdirectionVariant": null
+  },
+  {
+    "key": "batch_c_games_038",
+    "categoryId": "games",
+    "categoryKo": "게임",
+    "difficulty": "standard",
+    "difficultyScore": 46,
+    "q1": {
+      "questionText": "게임 「CrossFire」의 개발사는 어디일까요?",
+      "canonicalAnswer": "Smilegate Entertainment",
+      "acceptedAliases": []
+    },
+    "q2": {
+      "questionText": "개발사가 Smilegate Entertainment이며, 글로벌 리스크와 블랙 리스트 진영이 맞서는 온라인 1인칭 슈팅 게임은 무엇일까요?",
+      "canonicalAnswer": "CrossFire",
+      "acceptedAliases": []
+    },
+    "explanation": "게임 「CrossFire」의 개발사는 Smilegate Entertainment이다.",
+    "sourceUrls": [
+      "https://en.wikipedia.org/wiki/CrossFire_(video_game)"
+    ],
+    "misdirectionVariant": null
+  },
+  {
+    "key": "batch_c_games_039",
+    "categoryId": "games",
+    "categoryKo": "게임",
+    "difficulty": "easy",
+    "difficultyScore": 42,
+    "q1": {
+      "questionText": "벨 에포크풍 도시 크라트에서 피노키오를 재해석한 주인공이 폭주한 인형과 싸웁니다. 거짓말 선택에 따라 인간성이 달라지는 소울라이크입니다. 마지막 단서: 제목은 「Lies of P」입니다. 네오위즈 산하에서 이 게임의 실제 개발을 맡은 스튜디오는 어디일까요?",
+      "canonicalAnswer": "Round8 Studio",
+      "acceptedAliases": []
+    },
+    "q2": {
+      "questionText": "네오위즈 산하 Round8 Studio가 개발하고 네오위즈가 퍼블리싱한, 피노키오를 어둡게 재해석해 크라트 시를 탐험하는 소울라이크 액션 게임은 무엇일까요?",
+      "canonicalAnswer": "Lies of P",
+      "acceptedAliases": []
+    },
+    "explanation": "게임 「Lies of P」는 네오위즈 산하 Round8 Studio가 개발을 맡았고 네오위즈가 퍼블리싱했다.",
+    "sourceUrls": [
+      "https://en.wikipedia.org/wiki/Lies_of_P"
+    ],
+    "misdirectionVariant": "q1",
+    "misdirectionType": "late_easy_clue"
+  },
+  {
+    "key": "batch_c_games_040",
+    "categoryId": "games",
+    "categoryKo": "게임",
+    "difficulty": "easy",
+    "difficultyScore": 41,
+    "q1": {
+      "questionText": "게임 「Stellar Blade」의 개발사는 어디일까요?",
+      "canonicalAnswer": "Shift Up",
+      "acceptedAliases": []
+    },
+    "q2": {
+      "questionText": "개발사가 Shift Up이며, 전사 이브가 괴물에게 빼앗긴 지구를 되찾으려 싸우는 액션 게임은 무엇일까요?",
+      "canonicalAnswer": "Stellar Blade",
+      "acceptedAliases": []
+    },
+    "explanation": "게임 「Stellar Blade」의 개발사는 Shift Up이다.",
+    "sourceUrls": [
+      "https://en.wikipedia.org/wiki/Stellar_Blade"
+    ],
+    "misdirectionVariant": null
+  },
+  {
+    "key": "batch_c_games_041",
+    "categoryId": "games",
+    "categoryKo": "게임",
+    "difficulty": "easy",
+    "difficultyScore": 40,
+    "q1": {
+      "questionText": "게임 「Dave the Diver」의 개발사는 어디일까요?",
+      "canonicalAnswer": "Mintrocket",
+      "acceptedAliases": []
+    },
+    "q2": {
+      "questionText": "개발사가 Mintrocket이며, 낮에는 잠수해 물고기를 잡고 밤에는 초밥집을 운영하는 모험 게임은 무엇일까요?",
+      "canonicalAnswer": "Dave the Diver",
+      "acceptedAliases": []
+    },
+    "explanation": "게임 「Dave the Diver」의 개발사는 Mintrocket이다.",
+    "sourceUrls": [
+      "https://en.wikipedia.org/wiki/Dave_the_Diver"
+    ],
+    "misdirectionVariant": null
+  },
+  {
+    "key": "batch_c_games_042",
+    "categoryId": "games",
+    "categoryKo": "게임",
+    "difficulty": "easy",
+    "difficultyScore": 38,
+    "q1": {
+      "questionText": "게임 「Palworld」의 개발사는 어디일까요?",
+      "canonicalAnswer": "Pocketpair",
+      "acceptedAliases": []
+    },
+    "q2": {
+      "questionText": "개발사가 Pocketpair이며, 팰이라는 생물을 포획해 전투와 건설과 생산에 활용하는 생존 게임은 무엇일까요?",
+      "canonicalAnswer": "Palworld",
+      "acceptedAliases": []
+    },
+    "explanation": "게임 「Palworld」의 개발사는 Pocketpair이다.",
+    "sourceUrls": [
+      "https://en.wikipedia.org/wiki/Palworld"
+    ],
+    "misdirectionVariant": null
+  },
+  {
+    "key": "batch_c_games_043",
+    "categoryId": "games",
+    "categoryKo": "게임",
+    "difficulty": "easy",
+    "difficultyScore": 41,
+    "q1": {
+      "questionText": "「Resident Evil」과 「Street Fighter」로 익숙한 회사가 「Monster Hunter: World」도 개발했습니다. 세 작품을 연결하는 개발사는 어디일까요?",
+      "canonicalAnswer": "Capcom",
+      "acceptedAliases": [],
+      "questionStyle": "lateral"
+    },
+    "q2": {
+      "questionText": "개발사가 Capcom이며, 조사단의 사냥꾼이 신대륙의 거대 몬스터를 추적하는 액션 역할수행 게임은 무엇일까요?",
+      "canonicalAnswer": "몬스터 헌터: 월드",
+      "acceptedAliases": []
+    },
+    "explanation": "게임 「몬스터 헌터: 월드」(Monster Hunter: World)의 개발사는 Capcom이다.",
+    "sourceUrls": [
+      "https://en.wikipedia.org/wiki/Monster_Hunter:_World"
+    ],
+    "misdirectionVariant": null
+  },
+  {
+    "key": "batch_c_games_044",
+    "categoryId": "games",
+    "categoryKo": "게임",
+    "difficulty": "easy",
+    "difficultyScore": 39,
+    "q1": {
+      "questionText": "게임 「Resident Evil 4」의 개발사는 어디일까요?",
+      "canonicalAnswer": "Capcom",
+      "acceptedAliases": []
+    },
+    "q2": {
+      "questionText": "개발사가 Capcom이며, 요원 레온이 납치된 대통령의 딸을 구하러 유럽 마을에 잠입하는 서바이벌 호러 게임은 무엇일까요?",
+      "canonicalAnswer": "Resident Evil 4",
+      "acceptedAliases": []
+    },
+    "explanation": "게임 「Resident Evil 4」의 개발사는 Capcom이다.",
+    "sourceUrls": [
+      "https://en.wikipedia.org/wiki/Resident_Evil_4"
+    ],
+    "misdirectionVariant": null
+  },
+  {
+    "key": "batch_c_games_045",
+    "categoryId": "games",
+    "categoryKo": "게임",
+    "difficulty": "standard",
+    "difficultyScore": 45,
+    "q1": {
+      "questionText": "게임 「Tekken 7」의 개발사는 어디일까요?",
+      "canonicalAnswer": "Bandai Namco Studios",
+      "acceptedAliases": []
+    },
+    "q2": {
+      "questionText": "개발사가 Bandai Namco Studios이며, 미시마 가문의 부자 갈등을 중심으로 한 3차원 대전 격투 게임은 무엇일까요?",
+      "canonicalAnswer": "Tekken 7",
+      "acceptedAliases": []
+    },
+    "explanation": "게임 「Tekken 7」의 개발사는 Bandai Namco Studios이다.",
+    "sourceUrls": [
+      "https://en.wikipedia.org/wiki/Tekken_7"
+    ],
+    "misdirectionVariant": null
+  },
+  {
+    "key": "batch_c_games_046",
+    "categoryId": "games",
+    "categoryKo": "게임",
+    "difficulty": "easy",
+    "difficultyScore": 41,
+    "q1": {
+      "questionText": "게임 「Persona 5」의 개발사는 어디일까요?",
+      "canonicalAnswer": "P-Studio",
+      "acceptedAliases": []
+    },
+    "q2": {
+      "questionText": "개발사가 P-Studio이며, 괴도단이 타락한 어른들의 마음을 훔치는 일본식 역할수행 게임은 무엇일까요?",
+      "canonicalAnswer": "Persona 5",
+      "acceptedAliases": []
+    },
+    "explanation": "게임 「Persona 5」의 개발사는 P-Studio이다.",
+    "sourceUrls": [
+      "https://en.wikipedia.org/wiki/Persona_5"
+    ],
+    "misdirectionVariant": null
+  },
+  {
+    "key": "batch_c_games_047",
+    "categoryId": "games",
+    "categoryKo": "게임",
+    "difficulty": "easy",
+    "difficultyScore": 42,
+    "q1": {
+      "questionText": "게임 「NieR: Automata」의 개발사는 어디일까요?",
+      "canonicalAnswer": "PlatinumGames",
+      "acceptedAliases": []
+    },
+    "q2": {
+      "questionText": "개발사가 PlatinumGames이며, 안드로이드 2B와 9S가 기계생명체와 싸우는 액션 역할수행 게임은 무엇일까요?",
+      "canonicalAnswer": "NieR: Automata",
+      "acceptedAliases": []
+    },
+    "explanation": "게임 「NieR: Automata」의 개발사는 PlatinumGames이다.",
+    "sourceUrls": [
+      "https://en.wikipedia.org/wiki/Nier:_Automata"
+    ],
+    "misdirectionVariant": null
+  },
+  {
+    "key": "batch_c_games_048",
+    "categoryId": "games",
+    "categoryKo": "게임",
+    "difficulty": "standard",
+    "difficultyScore": 46,
+    "q1": {
+      "questionText": "게임 「Bayonetta」의 개발사는 어디일까요?",
+      "canonicalAnswer": "PlatinumGames",
+      "acceptedAliases": []
+    },
+    "q2": {
+      "questionText": "개발사가 PlatinumGames이며, 기억을 잃은 마녀가 천사들과 싸우는 스타일리시 액션 게임은 무엇일까요?",
+      "canonicalAnswer": "Bayonetta",
+      "acceptedAliases": []
+    },
+    "explanation": "게임 「Bayonetta」의 개발사는 PlatinumGames이다.",
+    "sourceUrls": [
+      "https://en.wikipedia.org/wiki/Bayonetta_(video_game)"
+    ],
+    "misdirectionVariant": null
+  },
+  {
+    "key": "batch_c_games_049",
+    "categoryId": "games",
+    "categoryKo": "게임",
+    "difficulty": "easy",
+    "difficultyScore": 43,
+    "q1": {
+      "questionText": "게임 「Death Stranding」의 개발사는 어디일까요?",
+      "canonicalAnswer": "Kojima Productions",
+      "acceptedAliases": []
+    },
+    "q2": {
+      "questionText": "개발사가 Kojima Productions이며, 샘이 단절된 도시들을 연결하며 화물을 운반하는 액션 게임은 무엇일까요?",
+      "canonicalAnswer": "Death Stranding",
+      "acceptedAliases": []
+    },
+    "explanation": "게임 「Death Stranding」의 개발사는 Kojima Productions이다.",
+    "sourceUrls": [
+      "https://en.wikipedia.org/wiki/Death_Stranding"
+    ],
+    "misdirectionVariant": null
+  },
+  {
+    "key": "batch_c_games_050",
+    "categoryId": "games",
+    "categoryKo": "게임",
+    "difficulty": "easy",
+    "difficultyScore": 40,
+    "q1": {
+      "questionText": "「inFAMOUS」 시리즈를 만든 스튜디오는 사카이 진의 「Ghost of Tsushima」도 개발했습니다. 두 작품을 잇는 개발사는 어디일까요?",
+      "canonicalAnswer": "Sucker Punch",
+      "acceptedAliases": []
+    },
+    "q2": {
+      "questionText": "개발사가 Sucker Punch이며, 몽골 침공을 받은 쓰시마에서 사카이 진이 싸우는 오픈월드 액션 게임은 무엇일까요?",
+      "canonicalAnswer": "고스트 오브 쓰시마",
+      "acceptedAliases": []
+    },
+    "explanation": "게임 「고스트 오브 쓰시마」(Ghost of Tsushima)의 개발사는 Sucker Punch Productions이며, 일반적으로 Sucker Punch로도 불린다.",
+    "sourceUrls": [
+      "https://en.wikipedia.org/wiki/Ghost_of_Tsushima",
+      "https://en.wikipedia.org/wiki/Infamous_(series)"
+    ],
+    "misdirectionVariant": "q1",
+    "misdirectionType": "relation_twist"
+  },
+  {
+    "key": "batch_c_anime_001",
+    "categoryId": "anime_manga_webtoon",
+    "categoryKo": "애니·만화·웹툰",
+    "difficulty": "easy",
+    "difficultyScore": 39,
+    "q1": {
+      "questionText": "사신의 힘을 얻은 고등학생 쿠로사키 이치고의 싸움을 그린 만화는 무엇일까요?",
+      "canonicalAnswer": "BLEACH",
+      "acceptedAliases": []
+    },
+    "q2": {
+      "questionText": "소울 소사이어티, 참백도, 쿠로사키 이치고라는 단서가 가리키는 작품은 「BLEACH」입니다. 하지만 제목이 아니라 이 세계를 만든 작가를 묻습니다. 누구일까요?",
+      "canonicalAnswer": "쿠보 타이토",
+      "acceptedAliases": []
+    },
+    "explanation": "만화 「BLEACH」의 작가는 쿠보 타이토이다.",
+    "sourceUrls": [
+      "https://en.wikipedia.org/wiki/Bleach_(manga)"
+    ],
+    "misdirectionVariant": "q2",
+    "misdirectionType": "relation_twist"
+  },
+  {
+    "key": "batch_c_anime_002",
+    "categoryId": "anime_manga_webtoon",
+    "categoryKo": "애니·만화·웹툰",
+    "difficulty": "easy",
+    "difficultyScore": 41,
+    "q1": {
+      "questionText": "죠스타 가문의 여러 세대와 스탠드 능력자들의 싸움을 그린 만화는 무엇일까요?",
+      "canonicalAnswer": "죠죠의 기묘한 모험",
+      "acceptedAliases": []
+    },
+    "q2": {
+      "questionText": "죠스타 가문의 여러 세대가 시대와 주인공을 바꾸며 기묘한 적과 싸웁니다. 후반부에서는 스탠드 능력이 전투의 핵심이 됩니다. 마지막 단서: 작품은 「죠죠의 기묘한 모험」입니다. 작가는 누구일까요?",
+      "canonicalAnswer": "아라키 히로히코",
+      "acceptedAliases": [],
+      "questionStyle": "wait_for_clue"
+    },
+    "explanation": "만화 「죠죠의 기묘한 모험」(JoJo’s Bizarre Adventure)의 작가는 아라키 히로히코이다.",
+    "sourceUrls": [
+      "https://en.wikipedia.org/wiki/JoJo%27s_Bizarre_Adventure"
+    ],
+    "misdirectionVariant": null
+  },
+  {
+    "key": "batch_c_anime_003",
+    "categoryId": "anime_manga_webtoon",
+    "categoryKo": "애니·만화·웹툰",
+    "difficulty": "standard",
+    "difficultyScore": 46,
+    "q1": {
+      "questionText": "사고로 죽은 소년 우라메시 유스케가 영계탐정으로 활동하는 만화는 무엇일까요?",
+      "canonicalAnswer": "YuYu Hakusho",
+      "acceptedAliases": []
+    },
+    "q2": {
+      "questionText": "사고로 죽은 소년 우라메시 유스케가 되살아나 영계탐정이 되고 인간계와 영계를 오가며 요괴와 맞섭니다. 초반에는 부활 자격 시험도 치릅니다. 마지막 단서: 작품은 「YuYu Hakusho」입니다. 작가는 누구일까요?",
+      "canonicalAnswer": "토가시 요시히로",
+      "acceptedAliases": [],
+      "questionStyle": "wait_for_clue"
+    },
+    "explanation": "만화 「YuYu Hakusho」의 작가는 토가시 요시히로이다.",
+    "sourceUrls": [
+      "https://en.wikipedia.org/wiki/YuYu_Hakusho"
+    ],
+    "misdirectionVariant": null
+  },
+  {
+    "key": "batch_c_anime_004",
+    "categoryId": "anime_manga_webtoon",
+    "categoryKo": "애니·만화·웹툰",
+    "difficulty": "easy",
+    "difficultyScore": 43,
+    "q1": {
+      "questionText": "메이지 시대의 떠돌이 검객 히무라 켄신을 그린 만화는 무엇일까요?",
+      "canonicalAnswer": "Rurouni Kenshin",
+      "acceptedAliases": []
+    },
+    "q2": {
+      "questionText": "메이지 시대의 검객 히무라 켄신이 역날검을 들고 불살의 맹세를 지키려 합니다. 과거의 암살자 경력과 현재가 충돌하고 뺨에는 십자 흉터가 있습니다. 마지막 단서: 작품은 「Rurouni Kenshin」입니다. 작가는 누구일까요?",
+      "canonicalAnswer": "와츠키 노부히로",
+      "acceptedAliases": [],
+      "questionStyle": "wait_for_clue"
+    },
+    "explanation": "만화 「Rurouni Kenshin」의 작가는 와츠키 노부히로이다.",
+    "sourceUrls": [
+      "https://en.wikipedia.org/wiki/Rurouni_Kenshin"
+    ],
+    "misdirectionVariant": null
+  },
+  {
+    "key": "batch_c_anime_005",
+    "categoryId": "anime_manga_webtoon",
+    "categoryKo": "애니·만화·웹툰",
+    "difficulty": "easy",
+    "difficultyScore": 41,
+    "q1": {
+      "questionText": "현대의 소녀 카고메가 전국시대로 넘어가 반요와 사혼의 구슬 조각을 찾는 만화는 무엇일까요?",
+      "canonicalAnswer": "Inuyasha",
+      "acceptedAliases": []
+    },
+    "q2": {
+      "questionText": "현대의 소녀 카고메가 전국시대로 넘어가 반요 소년과 함께 사혼의 구슬 조각을 찾는 만화입니다. 요괴와 시간 이동이 이야기를 잇습니다. 마지막 단서: 작품은 「Inuyasha」입니다. 작가는 누구일까요?",
+      "canonicalAnswer": "다카하시 루미코",
+      "acceptedAliases": [],
+      "questionStyle": "wait_for_clue"
+    },
+    "explanation": "만화 「Inuyasha」의 작가는 다카하시 루미코이다.",
+    "sourceUrls": [
+      "https://en.wikipedia.org/wiki/Inuyasha"
+    ],
+    "misdirectionVariant": null
+  },
+  {
+    "key": "batch_c_anime_006",
+    "categoryId": "anime_manga_webtoon",
+    "categoryKo": "애니·만화·웹툰",
+    "difficulty": "standard",
+    "difficultyScore": 47,
+    "q1": {
+      "questionText": "찬물을 맞으면 여자로 변하는 격투가 사오토메 란마를 그린 만화는 무엇일까요?",
+      "canonicalAnswer": "Ranma ½",
+      "acceptedAliases": []
+    },
+    "q2": {
+      "questionText": "찬물을 맞으면 여자로 변하고 뜨거운 물을 맞으면 돌아오는 격투가 소년을 중심으로 한 무술 코미디입니다. 약혼과 대결 소동이 끊이지 않습니다. 마지막 힌트: 작품은 「Ranma ½」입니다. 작가는 누구일까요?",
+      "canonicalAnswer": "다카하시 루미코",
+      "acceptedAliases": [],
+      "questionStyle": "wait_for_clue"
+    },
+    "explanation": "만화 「Ranma ½」의 작가는 다카하시 루미코이다.",
+    "sourceUrls": [
+      "https://en.wikipedia.org/wiki/Ranma_%C2%BD"
+    ],
+    "misdirectionVariant": null
+  },
+  {
+    "key": "batch_c_anime_007",
+    "categoryId": "anime_manga_webtoon",
+    "categoryKo": "애니·만화·웹툰",
+    "difficulty": "standard",
+    "difficultyScore": 48,
+    "q1": {
+      "questionText": "외계인 소녀 라무와 모로보시 아타루의 소동을 그린 만화는 무엇일까요?",
+      "canonicalAnswer": "Urusei Yatsura",
+      "acceptedAliases": []
+    },
+    "q2": {
+      "questionText": "호랑이무늬 옷의 외계인 소녀 라무와 모로보시 아타루가 벌이는 소동극입니다. 일본 설화와 외계인이 뒤섞이고 라무는 전기 충격 능력을 지녔습니다. 마지막 단서: 작품은 「Urusei Yatsura」입니다. 작가는 누구일까요?",
+      "canonicalAnswer": "다카하시 루미코",
+      "acceptedAliases": [],
+      "questionStyle": "wait_for_clue"
+    },
+    "explanation": "만화 「Urusei Yatsura」의 작가는 다카하시 루미코이다.",
+    "sourceUrls": [
+      "https://en.wikipedia.org/wiki/Urusei_Yatsura"
+    ],
+    "misdirectionVariant": null
+  },
+  {
+    "key": "batch_c_anime_008",
+    "categoryId": "anime_manga_webtoon",
+    "categoryKo": "애니·만화·웹툰",
+    "difficulty": "easy",
+    "difficultyScore": 42,
+    "q1": {
+      "questionText": "검사 가츠가 사도와 운명에 맞서 싸우는 다크 판타지 만화는 무엇일까요?",
+      "canonicalAnswer": "Berserk",
+      "acceptedAliases": []
+    },
+    "q2": {
+      "questionText": "검사 가츠가 거대한 검을 들고 사도와 싸우며, 그리피스와 매의 단을 둘러싼 배신과 낙인의 운명을 견딥니다. 중세풍 세계의 장기 연재 다크 판타지입니다. 마지막 단서: 작품 제목은 「Berserk」입니다. 작가는 누구일까요?",
+      "canonicalAnswer": "미우라 켄타로",
+      "acceptedAliases": []
+    },
+    "explanation": "만화 「Berserk」의 작가는 미우라 켄타로이다.",
+    "sourceUrls": [
+      "https://en.wikipedia.org/wiki/Berserk_(manga)"
+    ],
+    "misdirectionVariant": "q2",
+    "misdirectionType": "late_easy_clue"
+  },
+  {
+    "key": "batch_c_anime_009",
+    "categoryId": "anime_manga_webtoon",
+    "categoryKo": "애니·만화·웹툰",
+    "difficulty": "standard",
+    "difficultyScore": 48,
+    "q1": {
+      "questionText": "바이킹 시대의 소년 토르핀이 복수와 평화를 찾아가는 만화는 무엇일까요?",
+      "canonicalAnswer": "Vinland Saga",
+      "acceptedAliases": []
+    },
+    "q2": {
+      "questionText": "바이킹 시대의 소년 토르핀이 아버지의 죽음 뒤 복수에 매달리다 폭력을 버리고 삶과 평화의 의미를 다시 찾습니다. 북대서양 원정이 배경입니다. 마지막 단서: 작품은 「Vinland Saga」입니다. 작가는 누구일까요?",
+      "canonicalAnswer": "유키무라 마코토",
+      "acceptedAliases": [],
+      "questionStyle": "wait_for_clue"
+    },
+    "explanation": "만화 「Vinland Saga」의 작가는 유키무라 마코토이다.",
+    "sourceUrls": [
+      "https://en.wikipedia.org/wiki/Vinland_Saga_(manga)"
+    ],
+    "misdirectionVariant": null
+  },
+  {
+    "key": "batch_c_anime_010",
+    "categoryId": "anime_manga_webtoon",
+    "categoryKo": "애니·만화·웹툰",
+    "difficulty": "standard",
+    "difficultyScore": 50,
+    "q1": {
+      "questionText": "미야모토 무사시의 삶을 요시카와 에이지 소설을 바탕으로 재해석한 만화는 무엇일까요?",
+      "canonicalAnswer": "Vagabond",
+      "acceptedAliases": []
+    },
+    "q2": {
+      "questionText": "미야모토 무사시의 삶을 요시카와 에이지의 소설을 바탕으로 재해석한 검호 만화입니다. 강함을 좇는 청년의 내면 변화도 그립니다. 검술 대결과 함께 강함의 의미를 오래 묻습니다. 마지막 단서: 작품은 「Vagabond」입니다. 작가는 누구일까요?",
+      "canonicalAnswer": "이노우에 다케히코",
+      "acceptedAliases": [],
+      "questionStyle": "wait_for_clue"
+    },
+    "explanation": "만화 「Vagabond」의 작가는 이노우에 다케히코이다.",
+    "sourceUrls": [
+      "https://en.wikipedia.org/wiki/Vagabond_(manga)"
+    ],
+    "misdirectionVariant": null
+  },
+  {
+    "key": "batch_c_anime_011",
+    "categoryId": "anime_manga_webtoon",
+    "categoryKo": "애니·만화·웹툰",
+    "difficulty": "easy",
+    "difficultyScore": 43,
+    "q1": {
+      "questionText": "인간과 구울 사이의 존재가 된 카네키 켄을 그린 만화는 무엇일까요?",
+      "canonicalAnswer": "Tokyo Ghoul",
+      "acceptedAliases": []
+    },
+    "q2": {
+      "questionText": "평범한 대학생 카네키 켄이 인간과 구울 사이의 존재가 되어 두 세계의 갈등에 휘말립니다. 구울 수사기관과 한 커피숍이 대립의 축입니다. 마지막 단서: 작품은 「Tokyo Ghoul」입니다. 작가는 누구일까요?",
+      "canonicalAnswer": "이시다 스이",
+      "acceptedAliases": [],
+      "questionStyle": "wait_for_clue"
+    },
+    "explanation": "만화 「Tokyo Ghoul」의 작가는 이시다 스이이다.",
+    "sourceUrls": [
+      "https://en.wikipedia.org/wiki/Tokyo_Ghoul"
+    ],
+    "misdirectionVariant": null
+  },
+  {
+    "key": "batch_c_anime_012",
+    "categoryId": "anime_manga_webtoon",
+    "categoryKo": "애니·만화·웹툰",
+    "difficulty": "easy",
+    "difficultyScore": 39,
+    "q1": {
+      "questionText": "악마 포치타와 융합한 소년 덴지의 사투를 그린 만화는 무엇일까요?",
+      "canonicalAnswer": "Chainsaw Man",
+      "acceptedAliases": []
+    },
+    "q2": {
+      "questionText": "빚에 시달리던 소년 덴지가 악마 포치타와 융합해 공안의 악마 사냥꾼이 되는 만화입니다. 몸에서 톱날을 꺼내 싸웁니다. 공안 조직에서 여러 악마 사냥꾼과 함께 임무를 맡습니다. 마지막 단서: 작품은 「Chainsaw Man」입니다. 작가는 누구일까요?",
+      "canonicalAnswer": "후지모토 타츠키",
+      "acceptedAliases": [],
+      "questionStyle": "wait_for_clue"
+    },
+    "explanation": "만화 「Chainsaw Man」의 작가는 후지모토 타츠키이다.",
+    "sourceUrls": [
+      "https://en.wikipedia.org/wiki/Chainsaw_Man"
+    ],
+    "misdirectionVariant": null
+  },
+  {
+    "key": "batch_c_anime_013",
+    "categoryId": "anime_manga_webtoon",
+    "categoryKo": "애니·만화·웹툰",
+    "difficulty": "hard",
+    "difficultyScore": 59,
+    "q1": {
+      "questionText": "재생 능력자 아그니는 꺼지지 않는 불에 타면서도 주먹으로 싸웁니다. 그의 불길과 공격 방식을 영어 두 단어로 이은 후지모토 타츠키의 만화는 무엇일까요?",
+      "canonicalAnswer": "Fire Punch",
+      "acceptedAliases": [],
+      "questionStyle": "reasoning"
+    },
+    "q2": {
+      "questionText": "「Chainsaw Man」을 그린 작가가 그보다 먼저 「Fire Punch」도 연재했습니다. 두 작품을 연결하는 작가는 누구일까요?",
+      "canonicalAnswer": "후지모토 타츠키",
+      "acceptedAliases": [],
+      "questionStyle": "lateral"
+    },
+    "explanation": "만화 「Fire Punch」의 작가는 후지모토 타츠키이다.",
+    "sourceUrls": [
+      "https://en.wikipedia.org/wiki/Fire_Punch"
+    ],
+    "misdirectionVariant": null
+  },
+  {
+    "key": "batch_c_anime_014",
+    "categoryId": "anime_manga_webtoon",
+    "categoryKo": "애니·만화·웹툰",
+    "difficulty": "easy",
+    "difficultyScore": 41,
+    "q1": {
+      "questionText": "모모는 유령을 믿지만 외계인은 부정하고, 오카룬은 외계인을 믿지만 유령은 부정합니다. 둘의 믿음이 동시에 사실로 드러나는 타츠 유키노부의 만화는 무엇일까요?",
+      "canonicalAnswer": "Dandadan",
+      "acceptedAliases": [],
+      "questionStyle": "reasoning"
+    },
+    "q2": {
+      "questionText": "만화 「Dandadan」의 작가는 누구일까요?",
+      "canonicalAnswer": "타츠 유키노부",
+      "acceptedAliases": []
+    },
+    "explanation": "만화 「Dandadan」의 작가는 타츠 유키노부이다.",
+    "sourceUrls": [
+      "https://en.wikipedia.org/wiki/Dandadan"
+    ],
+    "misdirectionVariant": null
+  },
+  {
+    "key": "batch_c_anime_015",
+    "categoryId": "anime_manga_webtoon",
+    "categoryKo": "애니·만화·웹툰",
+    "difficulty": "easy",
+    "difficultyScore": 42,
+    "q1": {
+      "questionText": "별명이 ‘모브’인 초능력자 시게오의 감정 수치가 100에 닿으면 힘이 폭발합니다. 별명과 현상 이름을 이은 ONE의 만화는 무엇일까요?",
+      "canonicalAnswer": "Mob Psycho 100",
+      "acceptedAliases": [],
+      "questionStyle": "reasoning"
+    },
+    "q2": {
+      "questionText": "만화 「Mob Psycho 100」의 작가는 누구일까요?",
+      "canonicalAnswer": "ONE",
+      "acceptedAliases": []
+    },
+    "explanation": "만화 「Mob Psycho 100」의 작가는 ONE이다.",
+    "sourceUrls": [
+      "https://en.wikipedia.org/wiki/Mob_Psycho_100"
+    ],
+    "misdirectionVariant": null
+  },
+  {
+    "key": "batch_c_anime_016",
+    "categoryId": "anime_manga_webtoon",
+    "categoryKo": "애니·만화·웹툰",
+    "difficulty": "easy",
+    "difficultyScore": 40,
+    "q1": {
+      "questionText": "히어로 사이타마는 어떤 강적도 주먹 한 방에 쓰러뜨립니다. ONE이 원작 웹만화를 만들고 무라타 유스케가 리메이크판 작화를 맡은, 그 한 방을 제목에 담은 만화는 무엇일까요?",
+      "canonicalAnswer": "One-Punch Man",
+      "acceptedAliases": [],
+      "questionStyle": "reasoning"
+    },
+    "q2": {
+      "questionText": "사이타마가 등장하는 원작 웹만화를 만든 사람은 「Mob Psycho 100」도 창작했습니다. 리메이크판 작화가 무라타 유스케와는 다른 이 원작자의 세 글자 영문 필명은 무엇일까요?",
+      "canonicalAnswer": "ONE",
+      "acceptedAliases": [],
+      "questionStyle": "lateral"
+    },
+    "explanation": "「One-Punch Man」은 ONE이 원작 웹만화를 창작했으며, 리메이크 만화판의 작화는 무라타 유스케가 맡았다.",
+    "sourceUrls": [
+      "https://en.wikipedia.org/wiki/One-Punch_Man"
+    ],
+    "misdirectionVariant": null
+  },
+  {
+    "key": "batch_c_anime_017",
+    "categoryId": "anime_manga_webtoon",
+    "categoryKo": "애니·만화·웹툰",
+    "difficulty": "easy",
+    "difficultyScore": 42,
+    "q1": {
+      "questionText": "인류가 돌이 된 세계에서 센쿠가 과학으로 문명을 되살립니다. 학자를 부르는 호칭과 석화를 뜻하는 영어 단어를 이은 만화는 무엇일까요?",
+      "canonicalAnswer": "Dr. Stone",
+      "acceptedAliases": [],
+      "questionStyle": "reasoning"
+    },
+    "q2": {
+      "questionText": "만화 「Dr. Stone」의 스토리 작가는 누구일까요?",
+      "canonicalAnswer": "이나가키 리이치로",
+      "acceptedAliases": []
+    },
+    "explanation": "만화 「Dr. Stone」의 스토리 작가는 이나가키 리이치로이다.",
+    "sourceUrls": [
+      "https://en.wikipedia.org/wiki/Dr._Stone"
+    ],
+    "misdirectionVariant": null
+  },
+  {
+    "key": "batch_c_anime_018",
+    "categoryId": "anime_manga_webtoon",
+    "categoryKo": "애니·만화·웹툰",
+    "difficulty": "easy",
+    "difficultyScore": 43,
+    "q1": {
+      "questionText": "그레이스 필드의 아이들은 약속된 낙원처럼 보인 고아원이 실은 자신들을 가둔 곳임을 깨닫습니다. 그 거짓 약속과 낙원을 제목에 담은 만화는 무엇일까요?",
+      "canonicalAnswer": "약속의 네버랜드",
+      "acceptedAliases": [],
+      "questionStyle": "reasoning"
+    },
+    "q2": {
+      "questionText": "만화 「The Promised Neverland」의 스토리 작가는 누구일까요?",
+      "canonicalAnswer": "시라이 카이우",
+      "acceptedAliases": []
+    },
+    "explanation": "만화 「약속의 네버랜드」(The Promised Neverland)의 스토리 작가는 시라이 카이우이다.",
+    "sourceUrls": [
+      "https://en.wikipedia.org/wiki/The_Promised_Neverland"
+    ],
+    "misdirectionVariant": null
+  },
+  {
+    "key": "batch_c_anime_019",
+    "categoryId": "anime_manga_webtoon",
+    "categoryKo": "애니·만화·웹툰",
+    "difficulty": "standard",
+    "difficultyScore": 46,
+    "q1": {
+      "questionText": "카구야와 미유키는 먼저 고백하면 진다고 여기며 학생회실에서 연애 두뇌전을 벌입니다. 사랑을 전쟁에 빗댄 제목의 아카사카 아카 만화는 무엇일까요?",
+      "canonicalAnswer": "카구야 님은 고백받고 싶어",
+      "acceptedAliases": [],
+      "questionStyle": "reasoning"
+    },
+    "q2": {
+      "questionText": "만화 「Kaguya-sama: Love Is War」의 작가는 누구일까요?",
+      "canonicalAnswer": "아카사카 아카",
+      "acceptedAliases": []
+    },
+    "explanation": "만화 「카구야 님은 고백받고 싶어」(Kaguya-sama: Love Is War)의 작가는 아카사카 아카이다.",
+    "sourceUrls": [
+      "https://en.wikipedia.org/wiki/Kaguya-sama:_Love_Is_War"
+    ],
+    "misdirectionVariant": null
+  },
+  {
+    "key": "batch_c_anime_020",
+    "categoryId": "anime_manga_webtoon",
+    "categoryKo": "애니·만화·웹툰",
+    "difficulty": "easy",
+    "difficultyScore": 42,
+    "q1": {
+      "questionText": "의사와 환자가 최애 아이돌 아이의 쌍둥이 자녀로 환생합니다. ‘응원하는 아이’와 ‘그 아이의 자녀’라는 두 뜻이 겹치며, 아카사카 아카가 원작을 쓰고 요코야리 멘고가 작화를 맡은 만화는 무엇일까요?",
+      "canonicalAnswer": "Oshi no Ko",
+      "acceptedAliases": [],
+      "questionStyle": "reasoning"
+    },
+    "q2": {
+      "questionText": "「Kaguya-sama: Love Is War」의 작가는 「Oshi no Ko」에서는 원작을 맡았고, 작화는 요코야리 멘고가 담당했습니다. 두 작품을 잇는 원작자는 누구일까요?",
+      "canonicalAnswer": "아카사카 아카",
+      "acceptedAliases": [],
+      "questionStyle": "lateral"
+    },
+    "explanation": "「Oshi no Ko」는 아카사카 아카가 원작을, 요코야리 멘고가 작화를 맡았다.",
+    "sourceUrls": [
+      "https://en.wikipedia.org/wiki/Oshi_no_Ko"
+    ],
+    "misdirectionVariant": null
+  },
+  {
+    "key": "batch_c_anime_021",
+    "categoryId": "anime_manga_webtoon",
+    "categoryKo": "애니·만화·웹툰",
+    "difficulty": "easy",
+    "difficultyScore": 41,
+    "q1": {
+      "questionText": "마왕 토벌 뒤 오래 사는 엘프 마법사가 인간을 이해하려 여행하는 만화는 무엇일까요?",
+      "canonicalAnswer": "장송의 프리렌",
+      "acceptedAliases": []
+    },
+    "q2": {
+      "questionText": "마왕 토벌 뒤 오래 사는 엘프 마법사가 동료의 죽음을 겪고 인간을 이해하려 여행합니다. 이야기의 ‘그 이후’를 다루며 페른과 슈타르크가 동행합니다. 마지막 단서: 작품 제목은 「장송의 프리렌」입니다. 스토리 작가는 누구일까요?",
+      "canonicalAnswer": "야마다 카네히토",
+      "acceptedAliases": []
+    },
+    "explanation": "만화 「장송의 프리렌」(Frieren: Beyond Journey’s End)의 스토리 작가는 야마다 카네히토이다.",
+    "sourceUrls": [
+      "https://en.wikipedia.org/wiki/Frieren"
+    ],
+    "misdirectionVariant": "q2",
+    "misdirectionType": "late_easy_clue"
+  },
+  {
+    "key": "batch_c_anime_022",
+    "categoryId": "anime_manga_webtoon",
+    "categoryKo": "애니·만화·웹툰",
+    "difficulty": "standard",
+    "difficultyScore": 47,
+    "q1": {
+      "questionText": "던전에서 잡은 마물을 요리하며 동료를 구하러 가는 모험을 그린 만화는 무엇일까요?",
+      "canonicalAnswer": "던전밥",
+      "acceptedAliases": []
+    },
+    "q2": {
+      "questionText": "만화 「Delicious in Dungeon」의 작가는 누구일까요?",
+      "canonicalAnswer": "쿠이 료코",
+      "acceptedAliases": []
+    },
+    "explanation": "만화 「던전밥」(Delicious in Dungeon)의 작가는 쿠이 료코이다.",
+    "sourceUrls": [
+      "https://en.wikipedia.org/wiki/Delicious_in_Dungeon"
+    ],
+    "misdirectionVariant": null
+  },
+  {
+    "key": "batch_c_anime_023",
+    "categoryId": "anime_manga_webtoon",
+    "categoryKo": "애니·만화·웹툰",
+    "difficulty": "standard",
+    "difficultyScore": 48,
+    "q1": {
+      "questionText": "성적 우수한 고등학생 야토라가 미술대학 입시에 도전하는 만화는 무엇일까요?",
+      "canonicalAnswer": "Blue Period",
+      "acceptedAliases": []
+    },
+    "q2": {
+      "questionText": "만화 「Blue Period」의 작가는 누구일까요?",
+      "canonicalAnswer": "야마구치 츠바사",
+      "acceptedAliases": []
+    },
+    "explanation": "만화 「Blue Period」의 작가는 야마구치 츠바사이다.",
+    "sourceUrls": [
+      "https://en.wikipedia.org/wiki/Blue_Period_(manga)"
+    ],
+    "misdirectionVariant": null
+  },
+  {
+    "key": "batch_c_anime_024",
+    "categoryId": "anime_manga_webtoon",
+    "categoryKo": "애니·만화·웹툰",
+    "difficulty": "standard",
+    "difficultyScore": 48,
+    "q1": {
+      "questionText": "러일전쟁 참전병과 아이누 소녀가 홋카이도의 금괴를 찾는 만화는 무엇일까요?",
+      "canonicalAnswer": "Golden Kamuy",
+      "acceptedAliases": []
+    },
+    "q2": {
+      "questionText": "만화 「Golden Kamuy」의 작가는 누구일까요?",
+      "canonicalAnswer": "노다 사토루",
+      "acceptedAliases": []
+    },
+    "explanation": "만화 「Golden Kamuy」의 작가는 노다 사토루이다.",
+    "sourceUrls": [
+      "https://en.wikipedia.org/wiki/Golden_Kamuy"
+    ],
+    "misdirectionVariant": null
+  },
+  {
+    "key": "batch_c_anime_025",
+    "categoryId": "anime_manga_webtoon",
+    "categoryKo": "애니·만화·웹툰",
+    "difficulty": "easy",
+    "difficultyScore": 43,
+    "q1": {
+      "questionText": "중국 전국시대에 대장군을 꿈꾸는 소년 신과 진왕 영정을 그린 만화는 무엇일까요?",
+      "canonicalAnswer": "Kingdom",
+      "acceptedAliases": []
+    },
+    "q2": {
+      "questionText": "만화 「Kingdom」의 작가는 누구일까요?",
+      "canonicalAnswer": "하라 야스히사",
+      "acceptedAliases": []
+    },
+    "explanation": "만화 「Kingdom」의 작가는 하라 야스히사이다.",
+    "sourceUrls": [
+      "https://en.wikipedia.org/wiki/Kingdom_(manga)"
+    ],
+    "misdirectionVariant": null
+  },
+  {
+    "key": "batch_c_anime_026",
+    "categoryId": "anime_manga_webtoon",
+    "categoryKo": "애니·만화·웹툰",
+    "difficulty": "standard",
+    "difficultyScore": 49,
+    "q1": {
+      "questionText": "요마와 싸우는 반인반요 여성 전사 클레어를 그린 만화는 무엇일까요?",
+      "canonicalAnswer": "Claymore",
+      "acceptedAliases": []
+    },
+    "q2": {
+      "questionText": "만화 「Claymore」의 작가는 누구일까요?",
+      "canonicalAnswer": "야기 노리히로",
+      "acceptedAliases": []
+    },
+    "explanation": "만화 「Claymore」의 작가는 야기 노리히로이다.",
+    "sourceUrls": [
+      "https://en.wikipedia.org/wiki/Claymore_(manga)"
+    ],
+    "misdirectionVariant": null
+  },
+  {
+    "key": "batch_c_anime_027",
+    "categoryId": "anime_manga_webtoon",
+    "categoryKo": "애니·만화·웹툰",
+    "difficulty": "easy",
+    "difficultyScore": 42,
+    "q1": {
+      "questionText": "마력이 없는 소년 아스타가 마법제를 꿈꾸는 만화는 무엇일까요?",
+      "canonicalAnswer": "Black Clover",
+      "acceptedAliases": []
+    },
+    "q2": {
+      "questionText": "만화 「Black Clover」의 작가는 누구일까요?",
+      "canonicalAnswer": "타바타 유키",
+      "acceptedAliases": []
+    },
+    "explanation": "만화 「Black Clover」의 작가는 타바타 유키이다.",
+    "sourceUrls": [
+      "https://en.wikipedia.org/wiki/Black_Clover"
+    ],
+    "misdirectionVariant": null
+  },
+  {
+    "key": "batch_c_anime_028",
+    "categoryId": "anime_manga_webtoon",
+    "categoryKo": "애니·만화·웹툰",
+    "difficulty": "easy",
+    "difficultyScore": 40,
+    "q1": {
+      "questionText": "마도사 길드의 나츠와 루시 일행의 모험을 그린 만화는 무엇일까요?",
+      "canonicalAnswer": "Fairy Tail",
+      "acceptedAliases": []
+    },
+    "q2": {
+      "questionText": "만화 「Fairy Tail」의 작가는 누구일까요?",
+      "canonicalAnswer": "마시마 히로",
+      "acceptedAliases": []
+    },
+    "explanation": "만화 「Fairy Tail」의 작가는 마시마 히로이다.",
+    "sourceUrls": [
+      "https://en.wikipedia.org/wiki/Fairy_Tail"
+    ],
+    "misdirectionVariant": null
+  },
+  {
+    "key": "batch_c_anime_029",
+    "categoryId": "anime_manga_webtoon",
+    "categoryKo": "애니·만화·웹툰",
+    "difficulty": "easy",
+    "difficultyScore": 42,
+    "q1": {
+      "questionText": "일곱 명의 기사단과 리오네스 왕국의 싸움을 그린 만화는 무엇일까요?",
+      "canonicalAnswer": "일곱 개의 대죄",
+      "acceptedAliases": []
+    },
+    "q2": {
+      "questionText": "만화 「The Seven Deadly Sins」의 작가는 누구일까요?",
+      "canonicalAnswer": "스즈키 나카바",
+      "acceptedAliases": []
+    },
+    "explanation": "만화 「일곱 개의 대죄」(The Seven Deadly Sins)의 작가는 스즈키 나카바이다.",
+    "sourceUrls": [
+      "https://en.wikipedia.org/wiki/The_Seven_Deadly_Sins_(manga)"
+    ],
+    "misdirectionVariant": null
+  },
+  {
+    "key": "batch_c_anime_030",
+    "categoryId": "anime_manga_webtoon",
+    "categoryKo": "애니·만화·웹툰",
+    "difficulty": "standard",
+    "difficultyScore": 47,
+    "q1": {
+      "questionText": "사신무기전문학교 학생들이 무기와 장인으로 짝을 이뤄 싸우는 만화는 무엇일까요?",
+      "canonicalAnswer": "Soul Eater",
+      "acceptedAliases": []
+    },
+    "q2": {
+      "questionText": "만화 「Soul Eater」의 작가는 누구일까요?",
+      "canonicalAnswer": "오쿠보 아츠시",
+      "acceptedAliases": []
+    },
+    "explanation": "만화 「Soul Eater」의 작가는 오쿠보 아츠시이다.",
+    "sourceUrls": [
+      "https://en.wikipedia.org/wiki/Soul_Eater_(manga)"
+    ],
+    "misdirectionVariant": null
+  },
+  {
+    "key": "batch_c_anime_031",
+    "categoryId": "anime_manga_webtoon",
+    "categoryKo": "애니·만화·웹툰",
+    "difficulty": "easy",
+    "difficultyScore": 43,
+    "q1": {
+      "questionText": "인체 발화 현상에 맞서는 특수 소방대원들의 싸움을 그린 만화는 무엇일까요?",
+      "canonicalAnswer": "Fire Force",
+      "acceptedAliases": []
+    },
+    "q2": {
+      "questionText": "「Soul Eater」를 그린 작가가 인체 발화에 맞서는 특수 소방대 만화도 만들었습니다. 두 작품을 연결하는 작가는 누구일까요?",
+      "canonicalAnswer": "오쿠보 아츠시",
+      "acceptedAliases": [],
+      "questionStyle": "lateral"
+    },
+    "explanation": "만화 「Fire Force」의 작가는 오쿠보 아츠시이다.",
+    "sourceUrls": [
+      "https://en.wikipedia.org/wiki/Fire_Force"
+    ],
+    "misdirectionVariant": null
+  },
+  {
+    "key": "batch_c_anime_032",
+    "categoryId": "anime_manga_webtoon",
+    "categoryKo": "애니·만화·웹툰",
+    "difficulty": "standard",
+    "difficultyScore": 47,
+    "q1": {
+      "questionText": "엑소시스트 앨런 워커가 악마 병기와 싸우는 만화는 무엇일까요?",
+      "canonicalAnswer": "D.Gray-man",
+      "acceptedAliases": []
+    },
+    "q2": {
+      "questionText": "만화 「D.Gray-man」의 작가는 누구일까요?",
+      "canonicalAnswer": "호시노 카츠라",
+      "acceptedAliases": []
+    },
+    "explanation": "만화 「D.Gray-man」의 작가는 호시노 카츠라이다.",
+    "sourceUrls": [
+      "https://en.wikipedia.org/wiki/D.Gray-man"
+    ],
+    "misdirectionVariant": null
+  },
+  {
+    "key": "batch_c_anime_033",
+    "categoryId": "anime_manga_webtoon",
+    "categoryKo": "애니·만화·웹툰",
+    "difficulty": "easy",
+    "difficultyScore": 40,
+    "q1": {
+      "questionText": "외계인이 찾아온 에도에서 해결사 사카타 긴토키가 활약하는 만화는 무엇일까요?",
+      "canonicalAnswer": "Gintama",
+      "acceptedAliases": []
+    },
+    "q2": {
+      "questionText": "만화 「Gintama」의 작가는 누구일까요?",
+      "canonicalAnswer": "소라치 히데아키",
+      "acceptedAliases": []
+    },
+    "explanation": "만화 「Gintama」의 작가는 소라치 히데아키이다.",
+    "sourceUrls": [
+      "https://en.wikipedia.org/wiki/Gin_Tama"
+    ],
+    "misdirectionVariant": null
+  },
+  {
+    "key": "batch_c_anime_034",
+    "categoryId": "anime_manga_webtoon",
+    "categoryKo": "애니·만화·웹툰",
+    "difficulty": "easy",
+    "difficultyScore": 42,
+    "q1": {
+      "questionText": "존재감이 옅은 선수와 미국에서 돌아온 동료가 고교 농구 정상에 도전하는 만화는 무엇일까요?",
+      "canonicalAnswer": "쿠로코의 농구",
+      "acceptedAliases": []
+    },
+    "q2": {
+      "questionText": "만화 「Kuroko’s Basketball」의 작가는 누구일까요?",
+      "canonicalAnswer": "후지마키 타다토시",
+      "acceptedAliases": []
+    },
+    "explanation": "만화 「쿠로코의 농구」(Kuroko’s Basketball)의 작가는 후지마키 타다토시이다.",
+    "sourceUrls": [
+      "https://en.wikipedia.org/wiki/Kuroko%27s_Basketball"
+    ],
+    "misdirectionVariant": null
+  },
+  {
+    "key": "batch_c_anime_035",
+    "categoryId": "anime_manga_webtoon",
+    "categoryKo": "애니·만화·웹툰",
+    "difficulty": "easy",
+    "difficultyScore": 41,
+    "q1": {
+      "questionText": "축구 천재 오조라 츠바사의 성장과 세계 도전을 그린 만화는 무엇일까요?",
+      "canonicalAnswer": "Captain Tsubasa",
+      "acceptedAliases": []
+    },
+    "q2": {
+      "questionText": "만화 「Captain Tsubasa」의 작가는 누구일까요?",
+      "canonicalAnswer": "다카하시 요이치",
+      "acceptedAliases": []
+    },
+    "explanation": "만화 「Captain Tsubasa」의 작가는 다카하시 요이치이다.",
+    "sourceUrls": [
+      "https://en.wikipedia.org/wiki/Captain_Tsubasa"
+    ],
+    "misdirectionVariant": null
+  },
+  {
+    "key": "batch_c_anime_036",
+    "categoryId": "anime_manga_webtoon",
+    "categoryKo": "애니·만화·웹툰",
+    "difficulty": "standard",
+    "difficultyScore": 49,
+    "q1": {
+      "questionText": "경기 카루타에 몰두하는 아야세 치하야와 친구들을 그린 만화는 무엇일까요?",
+      "canonicalAnswer": "Chihayafuru",
+      "acceptedAliases": []
+    },
+    "q2": {
+      "questionText": "만화 「Chihayafuru」의 작가는 누구일까요?",
+      "canonicalAnswer": "스에츠구 유키",
+      "acceptedAliases": []
+    },
+    "explanation": "만화 「Chihayafuru」의 작가는 스에츠구 유키이다.",
+    "sourceUrls": [
+      "https://en.wikipedia.org/wiki/Chihayafuru"
+    ],
+    "misdirectionVariant": null
+  },
+  {
+    "key": "batch_c_anime_037",
+    "categoryId": "anime_manga_webtoon",
+    "categoryKo": "애니·만화·웹툰",
+    "difficulty": "standard",
+    "difficultyScore": 47,
+    "q1": {
+      "questionText": "음대생 피아니스트 노다 메구미와 지휘자를 꿈꾸는 치아키를 그린 만화는 무엇일까요?",
+      "canonicalAnswer": "노다메 칸타빌레",
+      "acceptedAliases": []
+    },
+    "q2": {
+      "questionText": "만화 「Nodame Cantabile」의 작가는 누구일까요?",
+      "canonicalAnswer": "니노미야 토모코",
+      "acceptedAliases": []
+    },
+    "explanation": "만화 「노다메 칸타빌레」(Nodame Cantabile)의 작가는 니노미야 토모코이다.",
+    "sourceUrls": [
+      "https://en.wikipedia.org/wiki/Nodame_Cantabile"
+    ],
+    "misdirectionVariant": null
+  },
+  {
+    "key": "batch_c_anime_038",
+    "categoryId": "anime_manga_webtoon",
+    "categoryKo": "애니·만화·웹툰",
+    "difficulty": "easy",
+    "difficultyScore": 42,
+    "q1": {
+      "questionText": "같은 이름을 가진 두 여성이 도쿄에서 만나 우정을 쌓는 만화는 무엇일까요?",
+      "canonicalAnswer": "NANA",
+      "acceptedAliases": []
+    },
+    "q2": {
+      "questionText": "만화 「NANA」의 작가는 누구일까요?",
+      "canonicalAnswer": "야자와 아이",
+      "acceptedAliases": []
+    },
+    "explanation": "만화 「NANA」의 작가는 야자와 아이이다.",
+    "sourceUrls": [
+      "https://en.wikipedia.org/wiki/Nana_(manga)"
+    ],
+    "misdirectionVariant": null
+  },
+  {
+    "key": "batch_c_anime_039",
+    "categoryId": "anime_manga_webtoon",
+    "categoryKo": "애니·만화·웹툰",
+    "difficulty": "easy",
+    "difficultyScore": 42,
+    "q1": {
+      "questionText": "십이지 동물로 변하는 소마 가문과 혼다 토오루를 그린 만화는 무엇일까요?",
+      "canonicalAnswer": "Fruits Basket",
+      "acceptedAliases": []
+    },
+    "q2": {
+      "questionText": "만화 「Fruits Basket」의 작가는 누구일까요?",
+      "canonicalAnswer": "타카야 나츠키",
+      "acceptedAliases": []
+    },
+    "explanation": "만화 「Fruits Basket」의 작가는 타카야 나츠키이다.",
+    "sourceUrls": [
+      "https://en.wikipedia.org/wiki/Fruits_Basket"
+    ],
+    "misdirectionVariant": null
+  },
+  {
+    "key": "batch_c_anime_040",
+    "categoryId": "anime_manga_webtoon",
+    "categoryKo": "애니·만화·웹툰",
+    "difficulty": "easy",
+    "difficultyScore": 41,
+    "q1": {
+      "questionText": "마법 카드가 흩어진 뒤 이를 회수하는 초등학생 키노모토 사쿠라를 그린 만화는 무엇일까요?",
+      "canonicalAnswer": "카드캡터 사쿠라",
+      "acceptedAliases": []
+    },
+    "q2": {
+      "questionText": "만화 「Cardcaptor Sakura」의 창작을 맡은 만화가 집단은 누구일까요?",
+      "canonicalAnswer": "CLAMP",
+      "acceptedAliases": []
+    },
+    "explanation": "만화 「카드캡터 사쿠라」(Cardcaptor Sakura)의 창작을 맡은 만화가 집단은 CLAMP이다.",
+    "sourceUrls": [
+      "https://en.wikipedia.org/wiki/Cardcaptor_Sakura"
+    ],
+    "misdirectionVariant": null
+  },
+  {
+    "key": "batch_c_general_001",
+    "categoryId": "general",
+    "categoryKo": "상식",
+    "difficulty": "easy",
+    "difficultyScore": 38,
+    "q1": {
+      "questionText": "1969년 아폴로 11호에서 내려 인류 최초로 달 표면을 걸은 우주비행사는 누구일까요?",
+      "canonicalAnswer": "닐 암스트롱",
+      "acceptedAliases": []
+    },
+    "q2": {
+      "questionText": "닐 암스트롱이 1969년 인류 최초로 발을 디딘 지구의 위성은 무엇일까요?",
+      "canonicalAnswer": "달",
+      "acceptedAliases": []
+    },
+    "explanation": "닐 암스트롱은 1969년 아폴로 11호 임무에서 인류 최초로 달 표면을 걸었다.",
+    "sourceUrls": [
+      "https://www.nasa.gov/people/neil-a-armstrong/"
+    ],
+    "misdirectionVariant": "q2",
+    "misdirectionType": "relation_twist"
+  },
+  {
+    "key": "batch_c_general_002",
+    "categoryId": "general",
+    "categoryKo": "상식",
+    "difficulty": "easy",
+    "difficultyScore": 39,
+    "q1": {
+      "questionText": "1961년, 한 소련 공군 조종사가 지구 궤도를 한 바퀴 돌며 인류 최초의 우주 비행을 완수했습니다. 비행은 약 108분간 이어졌습니다. 마지막 단서: 보스토크 1호의 탑승자는 누구일까요?",
+      "canonicalAnswer": "유리 가가린",
+      "acceptedAliases": [],
+      "questionStyle": "wait_for_clue"
+    },
+    "q2": {
+      "questionText": "유리 가가린이 1961년 인류 최초의 우주 비행에 탑승한 우주선은 무엇일까요?",
+      "canonicalAnswer": "보스토크 1호",
+      "acceptedAliases": [
+        "보스토크1호"
+      ]
+    },
+    "explanation": "유리 가가린은 보스토크 1호로 인류 최초의 우주 비행을 했다.",
+    "sourceUrls": [
+      "https://science.nasa.gov/resource/yuri-gagarin-first-human-in-space/"
+    ],
+    "misdirectionVariant": null
+  },
+  {
+    "key": "batch_c_general_003",
+    "categoryId": "general",
+    "categoryKo": "상식",
+    "difficulty": "standard",
+    "difficultyScore": 46,
+    "q1": {
+      "questionText": "1963년, 한 소련 우주비행사가 여성 최초로 우주에 나가 지구를 여러 차례 돌았습니다. 혼자 우주선을 조종한 기록도 남겼습니다. 마지막 힌트: 보스토크 6호의 탑승자는 누구일까요?",
+      "canonicalAnswer": "발렌티나 테레시코바",
+      "acceptedAliases": [],
+      "questionStyle": "wait_for_clue"
+    },
+    "q2": {
+      "questionText": "발렌티나 테레시코바가 1963년 여성 최초의 우주 비행에 탑승한 우주선은 무엇일까요?",
+      "canonicalAnswer": "보스토크 6호",
+      "acceptedAliases": [
+        "보스토크6호"
+      ]
+    },
+    "explanation": "발렌티나 테레시코바는 보스토크 6호로 우주에 간 최초의 여성이 되었다.",
+    "sourceUrls": [
+      "https://www.nasa.gov/history/sally-ride-and-valentina-tereshkova-changing-the-course-of-human-space-exploration/"
+    ],
+    "misdirectionVariant": null
+  },
+  {
+    "key": "batch_c_general_004",
+    "categoryId": "general",
+    "categoryKo": "상식",
+    "difficulty": "standard",
+    "difficultyScore": 48,
+    "q1": {
+      "questionText": "1911년 12월, 한 원정대가 로버트 스콧의 팀보다 먼저 남극점에 도달했습니다. 개썰매 운용과 치밀한 보급 계획을 활용했습니다. 마지막 단서: 프람호 원정대의 노르웨이인 대장은 누구일까요?",
+      "canonicalAnswer": "로알 아문센",
+      "acceptedAliases": [],
+      "questionStyle": "wait_for_clue"
+    },
+    "q2": {
+      "questionText": "로알 아문센이 이끈 프람호 원정대가 1911년 인류 최초로 도달한 지리적 지점은 어디일까요?",
+      "canonicalAnswer": "남극점",
+      "acceptedAliases": []
+    },
+    "explanation": "로알 아문센은 1911년 인류 최초로 남극점에 도달한 탐험대를 이끌었다.",
+    "sourceUrls": [
+      "https://www.britannica.com/biography/Roald-Amundsen"
+    ],
+    "misdirectionVariant": null
+  },
+  {
+    "key": "batch_c_general_005",
+    "categoryId": "general",
+    "categoryKo": "상식",
+    "difficulty": "standard",
+    "difficultyScore": 48,
+    "q1": {
+      "questionText": "1927년 뉴욕에서 파리까지 대서양 단독 무착륙 비행에 성공한 조종사는 누구일까요?",
+      "canonicalAnswer": "찰스 린드버그",
+      "acceptedAliases": []
+    },
+    "q2": {
+      "questionText": "찰스 린드버그가 1927년 뉴욕에서 파리까지 단독 무착륙 비행에 사용한 비행기의 이름은 무엇일까요?",
+      "canonicalAnswer": "스피릿 오브 세인트루이스호",
+      "acceptedAliases": [],
+      "questionStyle": "reasoning"
+    },
+    "explanation": "찰스 린드버그는 스피릿 오브 세인트루이스호로 1927년 대서양 단독 무착륙 비행에 성공했다.",
+    "sourceUrls": [
+      "https://www.britannica.com/biography/Charles-Lindbergh"
+    ],
+    "misdirectionVariant": null
+  },
+  {
+    "key": "batch_c_general_006",
+    "categoryId": "general",
+    "categoryKo": "상식",
+    "difficulty": "standard",
+    "difficultyScore": 50,
+    "q1": {
+      "questionText": "1922년 이집트에서 투탕카멘의 무덤을 발견한 고고학자는 누구일까요?",
+      "canonicalAnswer": "하워드 카터",
+      "acceptedAliases": []
+    },
+    "q2": {
+      "questionText": "하워드 카터가 1922년 왕가의 계곡에서 거의 온전한 무덤을 발견한 고대 이집트 파라오는 누구일까요?",
+      "canonicalAnswer": "투탕카멘",
+      "acceptedAliases": [],
+      "questionStyle": "reasoning"
+    },
+    "explanation": "하워드 카터는 1922년 왕가의 계곡에서 투탕카멘의 무덤을 발견했다.",
+    "sourceUrls": [
+      "https://www.britannica.com/biography/Howard-Carter"
+    ],
+    "misdirectionVariant": null
+  },
+  {
+    "key": "batch_c_general_007",
+    "categoryId": "general",
+    "categoryKo": "상식",
+    "difficulty": "hard",
+    "difficultyScore": 61,
+    "q1": {
+      "questionText": "로제타석 연구를 바탕으로 이집트 상형문자를 해독한 프랑스 학자는 누구일까요?",
+      "canonicalAnswer": "장프랑수아 샹폴리옹",
+      "acceptedAliases": []
+    },
+    "q2": {
+      "questionText": "장프랑수아 샹폴리옹이 로제타석의 그리스어와 대조해 해독의 돌파구를 마련한 고대 문자는 무엇일까요?",
+      "canonicalAnswer": "이집트 상형문자",
+      "acceptedAliases": [],
+      "questionStyle": "reasoning"
+    },
+    "explanation": "장프랑수아 샹폴리옹은 로제타석을 바탕으로 이집트 상형문자 해독에 기여했다.",
+    "sourceUrls": [
+      "https://www.britannica.com/biography/Jean-Francois-Champollion"
+    ],
+    "misdirectionVariant": null
+  },
+  {
+    "key": "batch_c_general_008",
+    "categoryId": "general",
+    "categoryKo": "상식",
+    "difficulty": "standard",
+    "difficultyScore": 48,
+    "q1": {
+      "questionText": "우두를 이용해 천연두 예방접종법을 발전시킨 영국 의사는 누구일까요?",
+      "canonicalAnswer": "에드워드 제너",
+      "acceptedAliases": []
+    },
+    "q2": {
+      "questionText": "에드워드 제너가 천연두 예방접종법을 발전시키는 데 이용한 소의 감염병은 무엇일까요?",
+      "canonicalAnswer": "우두",
+      "acceptedAliases": []
+    },
+    "explanation": "에드워드 제너는 우두를 이용한 천연두 예방접종법을 발전시켰다.",
+    "sourceUrls": [
+      "https://www.britannica.com/biography/Edward-Jenner"
+    ],
+    "misdirectionVariant": null
+  },
+  {
+    "key": "batch_c_general_009",
+    "categoryId": "general",
+    "categoryKo": "상식",
+    "difficulty": "easy",
+    "difficultyScore": 42,
+    "q1": {
+      "questionText": "미생물 연구와 저온 가열 살균법에 이름을 남긴 프랑스 과학자는 누구일까요?",
+      "canonicalAnswer": "루이 파스퇴르",
+      "acceptedAliases": []
+    },
+    "q2": {
+      "questionText": "루이 파스퇴르의 이름에서 유래한, 식품을 비교적 낮은 온도로 가열해 미생물을 줄이는 처리법은 무엇일까요?",
+      "canonicalAnswer": "저온 살균법",
+      "acceptedAliases": []
+    },
+    "explanation": "루이 파스퇴르는 미생물학과 백신 연구에 기여했고 저온 살균법에 이름을 남겼다.",
+    "sourceUrls": [
+      "https://www.britannica.com/biography/Louis-Pasteur"
+    ],
+    "misdirectionVariant": null
+  },
+  {
+    "key": "batch_c_general_010",
+    "categoryId": "general",
+    "categoryKo": "상식",
+    "difficulty": "hard",
+    "difficultyScore": 58,
+    "q1": {
+      "questionText": "결핵균을 발견하고 특정 미생물과 질병의 관계를 밝히는 원칙을 제시한 독일 의사는 누구일까요?",
+      "canonicalAnswer": "로베르트 코흐",
+      "acceptedAliases": []
+    },
+    "q2": {
+      "questionText": "로베르트 코흐가 1882년에 원인균을 발견했다고 발표한 감염병은 무엇일까요?",
+      "canonicalAnswer": "결핵",
+      "acceptedAliases": []
+    },
+    "explanation": "로베르트 코흐는 결핵의 원인균을 발견하고 코흐의 원칙을 제시했다.",
+    "sourceUrls": [
+      "https://www.britannica.com/biography/Robert-Koch"
+    ],
+    "misdirectionVariant": null
+  },
+  {
+    "key": "batch_c_general_011",
+    "categoryId": "general",
+    "categoryKo": "상식",
+    "difficulty": "standard",
+    "difficultyScore": 52,
+    "q1": {
+      "questionText": "찰스 배비지의 해석기관을 위한 알고리즘을 기록한 영국 수학자는 누구일까요?",
+      "canonicalAnswer": "에이다 러브레이스",
+      "acceptedAliases": []
+    },
+    "q2": {
+      "questionText": "에이다 러브레이스가 베르누이 수 계산 알고리즘을 기록한 찰스 배비지의 기계는 무엇일까요?",
+      "canonicalAnswer": "해석기관",
+      "acceptedAliases": []
+    },
+    "explanation": "에이다 러브레이스는 찰스 배비지의 해석기관을 위한 알고리즘을 기록했다.",
+    "sourceUrls": [
+      "https://www.britannica.com/biography/Ada-Lovelace"
+    ],
+    "misdirectionVariant": null
+  },
+  {
+    "key": "batch_c_general_012",
+    "categoryId": "general",
+    "categoryKo": "상식",
+    "difficulty": "easy",
+    "difficultyScore": 41,
+    "q1": {
+      "questionText": "계산 가능성을 설명하는 추상 기계 모델에 이름을 남긴 영국 수학자는 누구일까요?",
+      "canonicalAnswer": "앨런 튜링",
+      "acceptedAliases": []
+    },
+    "q2": {
+      "questionText": "앨런 튜링의 이름을 딴, 계산 가능성을 설명하는 추상적인 기계 모델은 무엇일까요?",
+      "canonicalAnswer": "튜링 기계",
+      "acceptedAliases": []
+    },
+    "explanation": "앨런 튜링은 튜링 기계 모델로 계산 가능성을 설명하고 암호 해독과 컴퓨터 과학에 기여했다.",
+    "sourceUrls": [
+      "https://www.britannica.com/biography/Alan-Turing"
+    ],
+    "misdirectionVariant": null
+  },
+  {
+    "key": "batch_c_general_013",
+    "categoryId": "general",
+    "categoryKo": "상식",
+    "difficulty": "standard",
+    "difficultyScore": 51,
+    "q1": {
+      "questionText": "초기 컴파일러 개발을 이끌고 코볼 보급에 기여한 미국 해군 장교는 누구일까요?",
+      "canonicalAnswer": "그레이스 호퍼",
+      "acceptedAliases": []
+    },
+    "q2": {
+      "questionText": "그레이스 호퍼가 표준화와 보급에 크게 기여한 사무 처리용 프로그래밍 언어는 무엇일까요?",
+      "canonicalAnswer": "COBOL",
+      "acceptedAliases": []
+    },
+    "explanation": "그레이스 호퍼는 초기 컴파일러를 개발하고 COBOL의 발전과 보급에 기여했다.",
+    "sourceUrls": [
+      "https://www.britannica.com/biography/Grace-Hopper"
+    ],
+    "misdirectionVariant": null
+  },
+  {
+    "key": "batch_c_general_014",
+    "categoryId": "general",
+    "categoryKo": "상식",
+    "difficulty": "standard",
+    "difficultyScore": 49,
+    "q1": {
+      "questionText": "15세기 유럽에서 금속활자 인쇄술을 확산시킨 독일 인쇄업자는 누구일까요?",
+      "canonicalAnswer": "요하네스 구텐베르크",
+      "acceptedAliases": []
+    },
+    "q2": {
+      "questionText": "요하네스 구텐베르크가 인쇄한 성경은 대부분의 페이지가 한 열에 42줄로 짜여 무엇이라고도 불릴까요?",
+      "canonicalAnswer": "42행 성경",
+      "acceptedAliases": []
+    },
+    "explanation": "요하네스 구텐베르크가 인쇄한 성경은 대부분의 페이지가 한 열에 42줄이어서 42행 성경이라고도 불린다.",
+    "sourceUrls": [
+      "https://www.britannica.com/biography/Johannes-Gutenberg",
+      "https://www.loc.gov/exhibits/bibles/the-gutenberg-bible.html"
+    ],
+    "misdirectionVariant": null
+  },
+  {
+    "key": "batch_c_general_015",
+    "categoryId": "general",
+    "categoryKo": "상식",
+    "difficulty": "easy",
+    "difficultyScore": 39,
+    "q1": {
+      "questionText": "1903년 노스캐롤라이나 킬데빌힐스의 모래언덕에서 동력 비행에 성공한 형제는 누구일까요?",
+      "canonicalAnswer": "라이트 형제",
+      "acceptedAliases": []
+    },
+    "q2": {
+      "questionText": "라이트 형제는 자전거점을 운영한 데이턴이 아니라, 키티호크에서 남쪽으로 약 4마일 떨어진 어느 모래언덕 지역에서 동력 비행에 성공했을까요?",
+      "canonicalAnswer": "킬데빌힐스",
+      "acceptedAliases": []
+    },
+    "explanation": "라이트 형제는 오하이오주 데이턴에서 자전거점을 운영했고, 1903년 키티호크 인근의 킬데빌힐스에서 동력 비행에 성공했다.",
+    "sourceUrls": [
+      "https://www.nps.gov/articles/wright-brothers-national-memorial-site-of-the-first-controlled-powered-flight-teaching-with-historic-places.htm"
+    ],
+    "misdirectionVariant": "q2",
+    "misdirectionType": "relation_twist"
+  },
+  {
+    "key": "batch_c_general_016",
+    "categoryId": "general",
+    "categoryKo": "상식",
+    "difficulty": "standard",
+    "difficultyScore": 48,
+    "q1": {
+      "questionText": "점과 선의 조합으로 문자를 전송하는 전신 부호에 이름을 남긴 미국 발명가는 누구일까요?",
+      "canonicalAnswer": "새뮤얼 모스",
+      "acceptedAliases": []
+    },
+    "q2": {
+      "questionText": "새뮤얼 모스의 이름을 딴, 점과 선의 조합으로 문자를 전송하는 전신 부호는 무엇일까요?",
+      "canonicalAnswer": "모스 부호",
+      "acceptedAliases": []
+    },
+    "explanation": "새뮤얼 모스는 전신과 모스 부호의 발전에 기여했다.",
+    "sourceUrls": [
+      "https://www.britannica.com/biography/Samuel-F-B-Morse"
+    ],
+    "misdirectionVariant": null
+  },
+  {
+    "key": "batch_c_general_017",
+    "categoryId": "general",
+    "categoryKo": "상식",
+    "difficulty": "easy",
+    "difficultyScore": 43,
+    "q1": {
+      "questionText": "다이너마이트를 발명하고 자신의 유산으로 국제적인 상을 만든 스웨덴인은 누구일까요?",
+      "canonicalAnswer": "알프레드 노벨",
+      "acceptedAliases": []
+    },
+    "q2": {
+      "questionText": "알프레드 노벨이 자신의 유산으로 설립하도록 한 국제적인 상은 무엇일까요?",
+      "canonicalAnswer": "노벨상",
+      "acceptedAliases": []
+    },
+    "explanation": "알프레드 노벨은 다이너마이트를 발명했고 자신의 유산으로 노벨상을 설립했다.",
+    "sourceUrls": [
+      "https://www.nobelprize.org/alfred-nobel/biographical-information/"
+    ],
+    "misdirectionVariant": null
+  },
+  {
+    "key": "batch_c_general_018",
+    "categoryId": "general",
+    "categoryKo": "상식",
+    "difficulty": "hard",
+    "difficultyScore": 60,
+    "q1": {
+      "questionText": "도꼬마리 열매가 옷에 붙는 모습에서 벨크로를 고안한 스위스 기술자는 누구일까요?",
+      "canonicalAnswer": "조르주 드 메스트랄",
+      "acceptedAliases": []
+    },
+    "q2": {
+      "questionText": "조르주 드 메스트랄이 도꼬마리 열매가 옷에 붙는 원리에서 착안해 발명한 잠금 장치는 무엇일까요?",
+      "canonicalAnswer": "벨크로",
+      "acceptedAliases": []
+    },
+    "explanation": "조르주 드 메스트랄은 도꼬마리 열매에서 영감을 받아 벨크로를 발명했다.",
+    "sourceUrls": [
+      "https://www.britannica.com/biography/George-de-Mestral"
+    ],
+    "misdirectionVariant": null
+  },
+  {
+    "key": "batch_c_general_019",
+    "categoryId": "general",
+    "categoryKo": "상식",
+    "difficulty": "hard",
+    "difficultyScore": 61,
+    "q1": {
+      "questionText": "레이더 장비 옆에서 초콜릿이 녹은 일을 계기로 전자레인지 조리법을 개발한 기술자는 누구일까요?",
+      "canonicalAnswer": "퍼시 스펜서",
+      "acceptedAliases": []
+    },
+    "q2": {
+      "questionText": "퍼시 스펜서가 레이더 장비 옆에서 초콜릿이 녹은 현상을 보고 개발한 조리 기기는 무엇일까요?",
+      "canonicalAnswer": "전자레인지",
+      "acceptedAliases": []
+    },
+    "explanation": "퍼시 스펜서는 마이크로파 가열 현상을 이용해 전자레인지 개발에 기여했다.",
+    "sourceUrls": [
+      "https://lemelson.mit.edu/resources/percy-spencer"
+    ],
+    "misdirectionVariant": null
+  },
+  {
+    "key": "batch_c_general_020",
+    "categoryId": "general",
+    "categoryKo": "상식",
+    "difficulty": "hard",
+    "difficultyScore": 60,
+    "q1": {
+      "questionText": "수압으로 식기를 씻는 실용적인 식기세척기를 발명한 미국 여성은 누구일까요?",
+      "canonicalAnswer": "조지핀 코크런",
+      "acceptedAliases": []
+    },
+    "q2": {
+      "questionText": "조지핀 코크런이 수압으로 식기를 씻도록 고안해 1893년 시카고 박람회에서 선보인 기계는 무엇일까요?",
+      "canonicalAnswer": "식기세척기",
+      "acceptedAliases": []
+    },
+    "explanation": "조지핀 코크런은 수압을 이용하는 실용적인 기계식 식기세척기를 발명했다.",
+    "sourceUrls": [
+      "https://lemelson.mit.edu/resources/josephine-cochrane"
+    ],
+    "misdirectionVariant": null
+  },
+  {
+    "key": "batch_c_general_021",
+    "categoryId": "general",
+    "categoryKo": "상식",
+    "difficulty": "hard",
+    "difficultyScore": 62,
+    "q1": {
+      "questionText": "운전자가 차 안에서 조작할 수 있는 초기 자동차 앞유리 닦개를 발명한 여성은 누구일까요?",
+      "canonicalAnswer": "메리 앤더슨",
+      "acceptedAliases": []
+    },
+    "q2": {
+      "questionText": "메리 앤더슨이 운전자가 차 안에서 조작하도록 고안한 앞유리 청소 장치는 오늘날 무엇이라고 부를까요?",
+      "canonicalAnswer": "와이퍼",
+      "acceptedAliases": []
+    },
+    "explanation": "메리 앤더슨은 운전석에서 조작하는 초기 자동차 앞유리 닦개, 즉 와이퍼를 발명했다.",
+    "sourceUrls": [
+      "https://www.invent.org/inductees/mary-anderson"
+    ],
+    "misdirectionVariant": null
+  }
+]

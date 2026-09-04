@@ -4,7 +4,7 @@ const baseUrl = process.env.MEONJEO_TEST_URL || 'https://meonjeo.syamo.chatgpt.s
 const buzzDelayMs = Math.max(0, Number(process.env.MEONJEO_BOT_BUZZ_DELAY_MS) || 0);
 const passive = process.env.MEONJEO_BOT_PASSIVE === '1';
 const apiKey = 'AIzaSyAFNxcPTqD8LK6IWXlygncDoaUFRAdb6sQ';
-const season = JSON.parse(await readFile(new URL('../data/seasons/S1-2026/questions.ko.json', import.meta.url), 'utf8'));
+const season = JSON.parse(await readFile(new URL('../data/seasons/S2-2026/questions.ko.json', import.meta.url), 'utf8'));
 const answers = new Map<string, string>(season.questions
   .filter((question: { enabledInSeason:boolean; qaStatus:string }) => question.enabledInSeason && question.qaStatus !== 'REJECT')
   .map((question: { questionText:string; canonicalAnswer:string }) => [question.questionText, question.canonicalAnswer]));
@@ -53,19 +53,24 @@ try {
       break;
     }
     if (snapshot.phase === 'open' && snapshot.questionToken !== lastToken) {
-      lastToken = String(snapshot.questionToken);
       const answer = answers.get(String(snapshot.question?.text || ''));
-      if (!answer) throw new Error(`Missing answer for ${String(snapshot.question?.text || '')}`);
+      // Rated snapshots reveal only the portion that has actually been read.
+      // Wait until the visible prefix becomes one complete authored question.
+      if (!answer) {
+        await sleep(100);
+        continue;
+      }
+      lastToken = String(snapshot.questionToken);
       console.log(JSON.stringify({event:'question',round:Number(snapshot.questionIndex)+1,text:snapshot.question?.text,answer,buzzDelayMs,passive}));
       if (passive) {
         await sleep(250);
         continue;
       }
       if (buzzDelayMs) await sleep(buzzDelayMs);
-      const buzz = await realtime('buzz', {matchId,questionToken:snapshot.questionToken,buzzId:crypto.randomUUID(),clientSequence:snapshot.questionIndex + 1});
+      const buzz = await realtime('buzz', {matchId,questionToken:snapshot.questionToken,buzzId:crypto.randomUUID(),clientSequence:Number(snapshot.questionIndex ?? 0) + 1});
       const buzzSnapshot = buzz.snapshot as Snapshot & { buzzWinner?:string };
       if (buzzSnapshot?.buzzWinner === 'me') {
-        await realtime('answer', {matchId,answerId:crypto.randomUUID(),answer});
+        await realtime('answer', {matchId,questionToken:snapshot.questionToken,answerId:crypto.randomUUID(),answer});
         console.log(JSON.stringify({event:'answered',round:Number(snapshot.questionIndex)+1,answer}));
       }
     }

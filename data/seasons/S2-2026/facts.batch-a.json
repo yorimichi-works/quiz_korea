@@ -1,0 +1,4694 @@
+{
+  "schemaVersion": 1,
+  "batchId": "A",
+  "seasonId": "S2-2026",
+  "facts": [
+    {
+      "key": "s2a_general_001",
+      "categoryId": "general",
+      "categoryKo": "상식",
+      "difficulty": "standard",
+      "difficultyScore": 48,
+      "q1": {
+        "questionText": "진주 귀걸이를 한 소녀를 그린 네덜란드 화가는 누구일까요?",
+        "canonicalAnswer": "요하네스 페르메이르",
+        "acceptedAliases": [
+          "얀 페르메이르"
+        ]
+      },
+      "q2": {
+        "questionText": "두 작품 모두 수수께끼 같은 표정으로 유명하지만 화가는 다릅니다. 「모나리자」가 다빈치의 작품이라면, 「진주 귀걸이를 한 소녀」를 그린 네덜란드 화가는 누구일까요?",
+        "canonicalAnswer": "요하네스 페르메이르",
+        "acceptedAliases": [
+          "얀 페르메이르"
+        ]
+      },
+      "explanation": "진주 귀걸이를 한 소녀는 네덜란드 화가 요하네스 페르메이르의 작품이다.",
+      "sourceUrls": [
+        "https://www.mauritshuis.nl/en/our-collection/artworks/670-girl-with-a-pearl-earring/"
+      ],
+      "misdirectionVariant": "q2",
+      "misdirectionType": "relation_twist"
+    },
+    {
+      "key": "s2a_general_002",
+      "categoryId": "general",
+      "categoryKo": "상식",
+      "difficulty": "standard",
+      "difficultyScore": 47,
+      "q1": {
+        "questionText": "금박 같은 배경에 기하학 무늬와 소용돌이가 가득하고, 인물과 배경의 경계가 장식 속에 녹아듭니다. 빈 분리파를 이끈 상징주의 화가의 작품입니다. 이제 답을 좁힐 마지막 단서: 제목은 「키스」입니다. 화가는 누구일까요?",
+        "questionStyle": "wait_for_clue",
+        "canonicalAnswer": "구스타프 클림트",
+        "acceptedAliases": []
+      },
+      "q2": {
+        "questionText": "오스트리아 벨베데레 미술관이 소장한 키스의 작가는 누구일까요?",
+        "canonicalAnswer": "구스타프 클림트",
+        "acceptedAliases": []
+      },
+      "explanation": "키스는 오스트리아 화가 구스타프 클림트의 대표작이다.",
+      "sourceUrls": [
+        "https://www.belvedere.at/en/kiss-gustav-klimt"
+      ],
+      "misdirectionVariant": null
+    },
+    {
+      "key": "s2a_general_003",
+      "categoryId": "general",
+      "categoryKo": "상식",
+      "difficulty": "standard",
+      "difficultyScore": 51,
+      "q1": {
+        "questionText": "황량한 해안에 낯선 생물 같은 형태와 개미가 놓이고, 익숙한 사물은 단단함을 잃었습니다. 무의식과 시간의 유동성을 다룬 작은 초현실주의 회화입니다. 마지막 힌트는 제목 「기억의 지속」입니다. 화가는 누구일까요?",
+        "questionStyle": "wait_for_clue",
+        "canonicalAnswer": "살바도르 달리",
+        "acceptedAliases": [
+          "살바도르 달리 이 도메네크"
+        ]
+      },
+      "q2": {
+        "questionText": "초현실주의 작품 기억의 지속의 작가는 누구일까요?",
+        "canonicalAnswer": "살바도르 달리",
+        "acceptedAliases": []
+      },
+      "explanation": "기억의 지속은 살바도르 달리가 1931년에 제작한 초현실주의 회화다.",
+      "sourceUrls": [
+        "https://www.moma.org/collection/works/79018"
+      ],
+      "misdirectionVariant": null
+    },
+    {
+      "key": "s2a_general_004",
+      "categoryId": "general",
+      "categoryKo": "상식",
+      "difficulty": "hard",
+      "difficultyScore": 64,
+      "q1": {
+        "questionText": "미국 대공황기에 농촌의 엄격한 분위기를 정면 구도와 세밀한 붓질로 담았습니다. 아이오와의 목조 주택 앞에서 두 인물이 굳은 표정으로 서 있고 농부는 쇠스랑을 들었습니다. 마지막 단서: 작품은 「아메리칸 고딕」입니다. 화가는 누구일까요?",
+        "questionStyle": "wait_for_clue",
+        "canonicalAnswer": "그랜트 우드",
+        "acceptedAliases": []
+      },
+      "q2": {
+        "questionText": "1930년작 아메리칸 고딕의 작가는 누구일까요?",
+        "canonicalAnswer": "그랜트 우드",
+        "acceptedAliases": []
+      },
+      "explanation": "아메리칸 고딕은 미국 화가 그랜트 우드의 작품이다.",
+      "sourceUrls": [
+        "https://www.artic.edu/artworks/6565/american-gothic"
+      ],
+      "misdirectionVariant": null
+    },
+    {
+      "key": "s2a_general_005",
+      "categoryId": "general",
+      "categoryKo": "상식",
+      "difficulty": "standard",
+      "difficultyScore": 48,
+      "q1": {
+        "questionText": "턱을 괴고 앉아 깊이 생각하는 인물을 표현한 조각 생각하는 사람의 작가는 누구일까요?",
+        "canonicalAnswer": "오귀스트 로댕",
+        "acceptedAliases": [
+          "로댕"
+        ]
+      },
+      "q2": {
+        "questionText": "긴장한 근육과 거친 굴곡을 청동 표면에 남겨 인간의 고뇌를 드러냈습니다. 거대한 조각군 「지옥의 문」 위 인물로 구상되었고, 나체 남자가 턱을 괴고 앉아 있습니다. 조각을 알아볼 마지막 단서: 「생각하는 사람」입니다. 조각가는 누구일까요?",
+        "questionStyle": "wait_for_clue",
+        "canonicalAnswer": "오귀스트 로댕",
+        "acceptedAliases": [
+          "로댕"
+        ]
+      },
+      "explanation": "생각하는 사람은 프랑스 조각가 오귀스트 로댕의 대표작이다.",
+      "sourceUrls": [
+        "https://www.musee-rodin.fr/en/musee/collections/oeuvres/thinker"
+      ],
+      "misdirectionVariant": null
+    },
+    {
+      "key": "s2a_general_006",
+      "categoryId": "general",
+      "categoryKo": "상식",
+      "difficulty": "easy",
+      "difficultyScore": 34,
+      "q1": {
+        "questionText": "현실과 어긋난 색채와 굽이치는 선이 풍경 전체를 흔들고, 불안과 공포를 한 인물의 표정으로 압축했습니다. 회화와 판화 등 여러 판본이 있으며 붉은 하늘 아래 인물이 두 손으로 귀를 막습니다. 마지막 힌트: 작품은 「절규」입니다. 화가는 누구일까요?",
+        "questionStyle": "wait_for_clue",
+        "canonicalAnswer": "에드바르 뭉크",
+        "acceptedAliases": [
+          "에드바르드 뭉크"
+        ]
+      },
+      "q2": {
+        "questionText": "노르웨이 화가의 대표작인 절규의 작가는 누구일까요?",
+        "canonicalAnswer": "에드바르 뭉크",
+        "acceptedAliases": [
+          "에드바르드 뭉크"
+        ]
+      },
+      "explanation": "절규는 노르웨이 화가 에드바르 뭉크의 대표작이다.",
+      "sourceUrls": [
+        "https://www.nasjonalmuseet.no/en/collection/object/NG.M.00939"
+      ],
+      "misdirectionVariant": null
+    },
+    {
+      "key": "s2a_general_007",
+      "categoryId": "general",
+      "categoryKo": "상식",
+      "difficulty": "standard",
+      "difficultyScore": 53,
+      "q1": {
+        "questionText": "서로 다른 복식의 두 자화상이 손을 잡고 앉아 있고, 드러난 심장과 혈관이 두 정체성과 상처를 잇습니다. 대칭 구도 속 두 인물은 사실 같은 사람입니다. 그림을 알아볼 마지막 단서: 작품은 「두 명의 프리다」입니다. 화가는 누구일까요?",
+        "questionStyle": "wait_for_clue",
+        "canonicalAnswer": "프리다 칼로",
+        "acceptedAliases": []
+      },
+      "q2": {
+        "questionText": "멕시코 화가의 이중 자화상 두 명의 프리다를 그린 사람은 누구일까요?",
+        "canonicalAnswer": "프리다 칼로",
+        "acceptedAliases": []
+      },
+      "explanation": "두 명의 프리다는 멕시코 화가 프리다 칼로가 1939년에 그린 작품이다.",
+      "sourceUrls": [
+        "https://artsandculture.google.com/asset/the-two-fridas-frida-kahlo/zAHG4EZ1WrwVYw"
+      ],
+      "misdirectionVariant": null
+    },
+    {
+      "key": "s2a_general_008",
+      "categoryId": "general",
+      "categoryKo": "상식",
+      "difficulty": "standard",
+      "difficultyScore": 54,
+      "q1": {
+        "questionText": "에도시대 다색 목판화로, 반복되는 곡선과 깊은 원근 속에 작은 배와 거대한 자연을 대비했습니다. 화면 멀리에는 후지산이 작게 놓이고 앞쪽 물결은 발톱처럼 말려듭니다. 마지막 힌트는 작품명 「가나가와 해변의 높은 파도」입니다. 화가는 누구일까요?",
+        "questionStyle": "wait_for_clue",
+        "canonicalAnswer": "가쓰시카 호쿠사이",
+        "acceptedAliases": [
+          "카츠시카 호쿠사이",
+          "호쿠사이"
+        ]
+      },
+      "q2": {
+        "questionText": "후가쿠 삼십육경 연작에 포함된 거대한 파도 그림의 작가는 누구일까요?",
+        "canonicalAnswer": "가쓰시카 호쿠사이",
+        "acceptedAliases": [
+          "카츠시카 호쿠사이",
+          "호쿠사이"
+        ]
+      },
+      "explanation": "가나가와 해변의 높은 파도는 가쓰시카 호쿠사이의 목판화다.",
+      "sourceUrls": [
+        "https://www.metmuseum.org/art/collection/search/45434"
+      ],
+      "misdirectionVariant": null
+    },
+    {
+      "key": "s2a_general_009",
+      "categoryId": "general",
+      "categoryKo": "상식",
+      "difficulty": "standard",
+      "difficultyScore": 45,
+      "q1": {
+        "questionText": "짧은 붓질과 보색의 대비로 항구의 안개와 순간의 빛을 붙잡았습니다. 완성되지 않은 듯 보인다는 비평가의 조롱은 오히려 한 미술 사조의 이름이 되었습니다. 결정적 단서: 작품은 「인상, 해돋이」입니다. 화가는 누구일까요?",
+        "questionStyle": "wait_for_clue",
+        "canonicalAnswer": "클로드 모네",
+        "acceptedAliases": [
+          "모네"
+        ]
+      },
+      "q2": {
+        "questionText": "르아브르 항구의 해돋이를 묘사한 인상, 해돋이의 작가는 누구일까요?",
+        "canonicalAnswer": "클로드 모네",
+        "acceptedAliases": [
+          "모네"
+        ]
+      },
+      "explanation": "인상, 해돋이는 프랑스 화가 클로드 모네의 작품이다.",
+      "sourceUrls": [
+        "https://www.marmottan.fr/notice/4014/"
+      ],
+      "misdirectionVariant": null
+    },
+    {
+      "key": "s2a_general_010",
+      "categoryId": "general",
+      "categoryKo": "상식",
+      "difficulty": "hard",
+      "difficultyScore": 62,
+      "q1": {
+        "questionText": "확대된 꽃 그림 검은 붓꽃으로 알려진 미국 화가는 누구일까요?",
+        "canonicalAnswer": "조지아 오키프",
+        "acceptedAliases": []
+      },
+      "q2": {
+        "questionText": "미국 모더니즘을 대표하며 꽃과 뉴멕시코 풍경을 즐겨 그린 화가는 누구일까요?",
+        "canonicalAnswer": "조지아 오키프",
+        "acceptedAliases": []
+      },
+      "explanation": "조지아 오키프는 확대된 꽃과 뉴멕시코 풍경을 그린 미국 모더니즘 화가다.",
+      "sourceUrls": [
+        "https://www.okeeffemuseum.org/about-georgia-okeeffe/"
+      ],
+      "misdirectionVariant": null
+    },
+    {
+      "key": "s2a_general_011",
+      "categoryId": "general",
+      "categoryKo": "상식",
+      "difficulty": "standard",
+      "difficultyScore": 43,
+      "q1": {
+        "questionText": "빅토리아 시대 계급과 신사의 이상을 1인칭 회고로 비판합니다. 신분 상승을 꿈꾸는 고아는 정체를 모르는 후원자에게 재산을 받지만 도덕적 성장을 겪습니다. 핍과 미스 해비셤이 등장합니다. 마지막 단서: 작품은 「위대한 유산」입니다. 작가는 누구일까요?",
+        "canonicalAnswer": "찰스 디킨스",
+        "acceptedAliases": [
+          "디킨스"
+        ]
+      },
+      "q2": {
+        "questionText": "소설 위대한 유산과 두 도시 이야기를 쓴 영국 작가는 누구일까요?",
+        "canonicalAnswer": "찰스 디킨스",
+        "acceptedAliases": [
+          "디킨스"
+        ]
+      },
+      "explanation": "위대한 유산은 영국 작가 찰스 디킨스가 쓴 소설이다.",
+      "sourceUrls": [
+        "https://www.britannica.com/topic/Great-Expectations-novel-by-Dickens"
+      ],
+      "misdirectionVariant": "q1",
+      "misdirectionType": "late_easy_clue"
+    },
+    {
+      "key": "s2a_general_012",
+      "categoryId": "general",
+      "categoryKo": "상식",
+      "difficulty": "easy",
+      "difficultyScore": 35,
+      "q1": {
+        "questionText": "기사문학의 관습을 뒤집어 현실과 이상이 부딪히는 순간을 유머와 비극으로 그린 근대소설입니다. 늙은 시골 귀족은 책 속 기사도를 현실이라 믿고 종자 산초 판사와 길을 나섭니다. 마지막 힌트: 작품은 「돈키호테」입니다. 작가는 누구일까요?",
+        "questionStyle": "wait_for_clue",
+        "canonicalAnswer": "미겔 데 세르반테스",
+        "acceptedAliases": [
+          "세르반테스"
+        ]
+      },
+      "q2": {
+        "questionText": "스페인 소설 돈키호테를 쓴 작가는 누구일까요?",
+        "canonicalAnswer": "미겔 데 세르반테스",
+        "acceptedAliases": [
+          "세르반테스"
+        ]
+      },
+      "explanation": "돈키호테는 스페인 작가 미겔 데 세르반테스의 소설이다.",
+      "sourceUrls": [
+        "https://www.britannica.com/biography/Miguel-de-Cervantes"
+      ],
+      "misdirectionVariant": null
+    },
+    {
+      "key": "s2a_general_013",
+      "categoryId": "general",
+      "categoryKo": "상식",
+      "difficulty": "standard",
+      "difficultyScore": 48,
+      "q1": {
+        "questionText": "가난한 청년이 비범한 사람은 도덕을 넘어설 수 있다고 믿고 범죄를 저지른 뒤, 죄의식과 구원의 문제에 사로잡힙니다. 내면 독백과 심리적 긴장이 중심인 러시아 소설입니다. 마지막 단서: 주인공 라스콜니코프가 나오는 「죄와 벌」입니다. 작가는 누구일까요?",
+        "questionStyle": "wait_for_clue",
+        "canonicalAnswer": "표도르 도스토옙스키",
+        "acceptedAliases": [
+          "도스토옙스키"
+        ]
+      },
+      "q2": {
+        "questionText": "죄와 벌과 카라마조프가의 형제들의 작가는 누구일까요?",
+        "canonicalAnswer": "표도르 도스토옙스키",
+        "acceptedAliases": [
+          "도스토옙스키"
+        ]
+      },
+      "explanation": "죄와 벌은 러시아 작가 표도르 도스토옙스키의 소설이다.",
+      "sourceUrls": [
+        "https://www.britannica.com/biography/Fyodor-Dostoyevsky"
+      ],
+      "misdirectionVariant": null
+    },
+    {
+      "key": "s2a_general_014",
+      "categoryId": "general",
+      "categoryKo": "상식",
+      "difficulty": "standard",
+      "difficultyScore": 46,
+      "q1": {
+        "questionText": "가족을 부양하던 외판원이 하루아침에 일할 수 없게 되자 가족의 태도가 차갑게 변합니다. 소외와 관료제의 부조리를 건조하게 그렸고, 주인공 그레고르 잠자는 거대한 벌레가 되어 눈을 뜹니다. 마지막 힌트는 제목 「변신」입니다. 작가는 누구일까요?",
+        "questionStyle": "wait_for_clue",
+        "canonicalAnswer": "프란츠 카프카",
+        "acceptedAliases": [
+          "카프카"
+        ]
+      },
+      "q2": {
+        "questionText": "소설 변신과 심판을 쓴 프라하 출신 작가는 누구일까요?",
+        "canonicalAnswer": "프란츠 카프카",
+        "acceptedAliases": [
+          "카프카"
+        ]
+      },
+      "explanation": "변신은 프란츠 카프카가 쓴 중편소설이다.",
+      "sourceUrls": [
+        "https://www.britannica.com/biography/Franz-Kafka"
+      ],
+      "misdirectionVariant": null
+    },
+    {
+      "key": "s2a_general_015",
+      "categoryId": "general",
+      "categoryKo": "상식",
+      "difficulty": "standard",
+      "difficultyScore": 44,
+      "q1": {
+        "questionText": "절제된 문장과 이른바 빙산 이론으로 드러내지 않은 감정을 남기고, 전쟁 속 개인의 사랑과 책임을 다룹니다. 미국인 폭파 전문가가 다리를 끊는 임무를 맡습니다. 마지막 단서: 제목은 「누구를 위하여 종은 울리나」입니다. 작가는 누구일까요?",
+        "questionStyle": "wait_for_clue",
+        "canonicalAnswer": "어니스트 헤밍웨이",
+        "acceptedAliases": [
+          "헤밍웨이"
+        ]
+      },
+      "q2": {
+        "questionText": "무기여 잘 있거라와 누구를 위하여 종은 울리나의 작가는 누구일까요?",
+        "canonicalAnswer": "어니스트 헤밍웨이",
+        "acceptedAliases": [
+          "헤밍웨이"
+        ]
+      },
+      "explanation": "누구를 위하여 종은 울리나는 미국 작가 어니스트 헤밍웨이의 소설이다.",
+      "sourceUrls": [
+        "https://www.britannica.com/biography/Ernest-Hemingway"
+      ],
+      "misdirectionVariant": null
+    },
+    {
+      "key": "s2a_general_016",
+      "categoryId": "general",
+      "categoryKo": "상식",
+      "difficulty": "hard",
+      "difficultyScore": 61,
+      "q1": {
+        "questionText": "부엔디아 가문의 여러 세대를 그린 백년의 고독을 쓴 콜롬비아 작가는 누구일까요?",
+        "canonicalAnswer": "가브리엘 가르시아 마르케스",
+        "acceptedAliases": [
+          "가르시아 마르케스"
+        ]
+      },
+      "q2": {
+        "questionText": "여러 세대에 걸쳐 같은 이름과 사건이 되풀이되고, 현실과 기적이 구분 없이 한 가문의 역사에 스며듭니다. 라틴아메리카의 기억을 마술적 사실주의로 풀어낸 소설입니다. 결정적 단서는 가상 마을 마콘도입니다. 「백년의 고독」의 작가는 누구일까요?",
+        "questionStyle": "wait_for_clue",
+        "canonicalAnswer": "가브리엘 가르시아 마르케스",
+        "acceptedAliases": [
+          "가르시아 마르케스"
+        ]
+      },
+      "explanation": "백년의 고독은 가브리엘 가르시아 마르케스의 대표 소설이다.",
+      "sourceUrls": [
+        "https://www.britannica.com/biography/Gabriel-Garcia-Marquez"
+      ],
+      "misdirectionVariant": null
+    },
+    {
+      "key": "s2a_general_017",
+      "categoryId": "general",
+      "categoryKo": "상식",
+      "difficulty": "standard",
+      "difficultyScore": 53,
+      "q1": {
+        "questionText": "말이 많고 상상력이 풍부한 고아 소녀가 실수와 우정을 거치며 공동체의 일원이 됩니다. 캐나다 프린스에드워드섬의 자연과 성장이 에피소드로 펼쳐지고, 소녀의 이름은 앤 셜리입니다. 마지막 힌트: 작품은 「빨간 머리 앤」입니다. 작가는 누구일까요?",
+        "questionStyle": "wait_for_clue",
+        "canonicalAnswer": "루시 모드 몽고메리",
+        "acceptedAliases": [
+          "L. M. 몽고메리",
+          "몽고메리"
+        ]
+      },
+      "q2": {
+        "questionText": "초록 지붕 집의 앤을 창조한 작가는 누구일까요?",
+        "canonicalAnswer": "루시 모드 몽고메리",
+        "acceptedAliases": [
+          "L. M. 몽고메리"
+        ]
+      },
+      "explanation": "빨간 머리 앤의 원작은 루시 모드 몽고메리의 소설 초록 지붕 집의 앤이다.",
+      "sourceUrls": [
+        "https://www.britannica.com/biography/L-M-Montgomery"
+      ],
+      "misdirectionVariant": null
+    },
+    {
+      "key": "s2a_general_018",
+      "categoryId": "general",
+      "categoryKo": "상식",
+      "difficulty": "hard",
+      "difficultyScore": 66,
+      "q1": {
+        "questionText": "중세 신학 논쟁과 기호 해석을 추리소설의 구조에 넣어 지식과 권력의 관계를 묻습니다. 수도원의 도서관은 미로처럼 닫혀 있고 수도사들이 차례로 죽습니다. 끝에 남은 마지막 단서: 작품은 「장미의 이름」입니다. 이탈리아 작가는 누구일까요?",
+        "questionStyle": "wait_for_clue",
+        "canonicalAnswer": "움베르토 에코",
+        "acceptedAliases": [
+          "에코"
+        ]
+      },
+      "q2": {
+        "questionText": "기호학자이자 소설 장미의 이름의 작가인 인물은 누구일까요?",
+        "canonicalAnswer": "움베르토 에코",
+        "acceptedAliases": [
+          "에코"
+        ]
+      },
+      "explanation": "장미의 이름은 이탈리아 기호학자 움베르토 에코의 첫 소설이다.",
+      "sourceUrls": [
+        "https://www.britannica.com/biography/Umberto-Eco"
+      ],
+      "misdirectionVariant": null
+    },
+    {
+      "key": "s2a_general_019",
+      "categoryId": "general",
+      "categoryKo": "상식",
+      "difficulty": "standard",
+      "difficultyScore": 51,
+      "q1": {
+        "questionText": "세 행이 운을 이어 가는 연쇄 운율과 중세 가톨릭 우주관을 바탕으로, 길을 잃은 화자가 영혼의 구원을 향해 여행합니다. 고대 로마 시인 베르길리우스가 초반의 안내자입니다. 마지막 힌트: 지옥·연옥·천국으로 이루어진 「신곡」입니다. 시인은 누구일까요?",
+        "questionStyle": "wait_for_clue",
+        "canonicalAnswer": "단테 알리기에리",
+        "acceptedAliases": [
+          "단테"
+        ]
+      },
+      "q2": {
+        "questionText": "베아트리체가 등장하는 서사시 신곡의 작가는 누구일까요?",
+        "canonicalAnswer": "단테 알리기에리",
+        "acceptedAliases": [
+          "단테"
+        ]
+      },
+      "explanation": "신곡은 이탈리아 시인 단테 알리기에리의 대표작이다.",
+      "sourceUrls": [
+        "https://www.britannica.com/biography/Dante-Alighieri"
+      ],
+      "misdirectionVariant": null
+    },
+    {
+      "key": "s2a_general_020",
+      "categoryId": "general",
+      "categoryKo": "상식",
+      "difficulty": "standard",
+      "difficultyScore": 48,
+      "q1": {
+        "questionText": "도시가 봉쇄되자 의사와 시민들은 탈출, 체념, 연대 사이에서 서로 다른 선택을 합니다. 집단 재난 속 책임을 실존주의적으로 묻고, 배경은 전염병이 번진 알제리의 오랑입니다. 결정적 단서는 제목 「페스트」입니다. 작가는 누구일까요?",
+        "questionStyle": "wait_for_clue",
+        "canonicalAnswer": "알베르 카뮈",
+        "acceptedAliases": [
+          "카뮈"
+        ]
+      },
+      "q2": {
+        "questionText": "이방인과 페스트를 쓴 프랑스어권 작가는 누구일까요?",
+        "canonicalAnswer": "알베르 카뮈",
+        "acceptedAliases": [
+          "카뮈"
+        ]
+      },
+      "explanation": "페스트는 알베르 카뮈가 1947년에 발표한 소설이다.",
+      "sourceUrls": [
+        "https://www.britannica.com/biography/Albert-Camus"
+      ],
+      "misdirectionVariant": null
+    },
+    {
+      "key": "s2a_general_021",
+      "categoryId": "general",
+      "categoryKo": "상식",
+      "difficulty": "hard",
+      "difficultyScore": 69,
+      "q1": {
+        "questionText": "프랑켄슈타인의 작가는 메리 셸리입니다. 그렇다면 그녀의 남편이자 서풍에 부치는 노래를 쓴 시인은 누구일까요?",
+        "canonicalAnswer": "퍼시 비시 셸리",
+        "acceptedAliases": [
+          "퍼시 셸리"
+        ]
+      },
+      "q2": {
+        "questionText": "영국 낭만주의 시 서풍에 부치는 노래를 쓴 시인은 누구일까요?",
+        "canonicalAnswer": "퍼시 비시 셸리",
+        "acceptedAliases": [
+          "퍼시 셸리"
+        ]
+      },
+      "explanation": "퍼시 비시 셸리는 메리 셸리의 남편이며 서풍에 부치는 노래를 쓴 영국 시인이다.",
+      "sourceUrls": [
+        "https://www.poetryfoundation.org/poets/percy-bysshe-shelley"
+      ],
+      "misdirectionVariant": "q1",
+      "misdirectionType": "relation_twist"
+    },
+    {
+      "key": "s2a_general_022",
+      "categoryId": "general",
+      "categoryKo": "상식",
+      "difficulty": "standard",
+      "difficultyScore": 49,
+      "q1": {
+        "questionText": "일기와 편지, 신문 기사, 항해 기록이 서로 빈틈을 메우는 서간체 소설입니다. 낯선 귀족이 영국으로 건너오며 근대 기술과 오래된 공포가 맞섭니다. 여기서 마지막 단서: 그 귀족은 흡혈귀 백작 드라큘라입니다. 작가는 누구일까요?",
+        "questionStyle": "wait_for_clue",
+        "canonicalAnswer": "브램 스토커",
+        "acceptedAliases": [
+          "브람 스토커"
+        ]
+      },
+      "q2": {
+        "questionText": "1897년에 출간된 고딕 소설 드라큘라의 작가는 누구일까요?",
+        "canonicalAnswer": "브램 스토커",
+        "acceptedAliases": [
+          "브람 스토커"
+        ]
+      },
+      "explanation": "드라큘라는 아일랜드 작가 브램 스토커의 소설이다.",
+      "sourceUrls": [
+        "https://www.britannica.com/biography/Bram-Stoker"
+      ],
+      "misdirectionVariant": null
+    },
+    {
+      "key": "s2a_general_023",
+      "categoryId": "general",
+      "categoryKo": "상식",
+      "difficulty": "standard",
+      "difficultyScore": 45,
+      "q1": {
+        "questionText": "19세기의 과학지식을 바탕으로 미지의 바다를 탐사하면서 기술이 주는 자유와 고립을 함께 그린 모험소설입니다. 수수께끼의 선장은 지상 국가를 떠나 바닷속에서 삽니다. 마지막 힌트는 잠수함 노틸러스호입니다. 「해저 2만 리」의 작가는 누구일까요?",
+        "questionStyle": "wait_for_clue",
+        "canonicalAnswer": "쥘 베른",
+        "acceptedAliases": [
+          "줄 베른"
+        ]
+      },
+      "q2": {
+        "questionText": "지구 속 여행과 해저 2만 리의 작가는 누구일까요?",
+        "canonicalAnswer": "쥘 베른",
+        "acceptedAliases": [
+          "줄 베른"
+        ]
+      },
+      "explanation": "해저 2만 리는 프랑스 작가 쥘 베른의 모험소설이다.",
+      "sourceUrls": [
+        "https://www.britannica.com/biography/Jules-Verne"
+      ],
+      "misdirectionVariant": null
+    },
+    {
+      "key": "s2a_general_024",
+      "categoryId": "general",
+      "categoryKo": "상식",
+      "difficulty": "easy",
+      "difficultyScore": 37,
+      "q1": {
+        "questionText": "혁명 이후 프랑스에서 법과 자비, 빈곤과 구원이 충돌하는 모습을 방대한 인물군으로 그렸습니다. 빵을 훔친 전과자는 새 삶을 살지만 자베르 경감이 추적하고, 그의 이름은 장발장입니다. 마지막 단서: 작품은 「레 미제라블」입니다. 작가는 누구일까요?",
+        "questionStyle": "wait_for_clue",
+        "canonicalAnswer": "빅토르 위고",
+        "acceptedAliases": []
+      },
+      "q2": {
+        "questionText": "노트르담 드 파리와 레 미제라블의 작가는 누구일까요?",
+        "canonicalAnswer": "빅토르 위고",
+        "acceptedAliases": []
+      },
+      "explanation": "레 미제라블은 프랑스 작가 빅토르 위고의 소설이다.",
+      "sourceUrls": [
+        "https://www.britannica.com/biography/Victor-Hugo"
+      ],
+      "misdirectionVariant": null
+    },
+    {
+      "key": "s2a_general_025",
+      "categoryId": "general",
+      "categoryKo": "상식",
+      "difficulty": "easy",
+      "difficultyScore": 38,
+      "q1": {
+        "questionText": "동물들이 농장을 차지한 뒤 권력이 변질되는 모습을 그린 동물농장의 작가는 누구일까요?",
+        "canonicalAnswer": "조지 오웰",
+        "acceptedAliases": []
+      },
+      "q2": {
+        "questionText": "1984와 동물농장을 쓴 영국 작가는 누구일까요?",
+        "canonicalAnswer": "조지 오웰",
+        "acceptedAliases": []
+      },
+      "explanation": "동물농장은 영국 작가 조지 오웰의 풍자소설이다.",
+      "sourceUrls": [
+        "https://www.britannica.com/biography/George-Orwell"
+      ],
+      "misdirectionVariant": null
+    },
+    {
+      "key": "s2a_general_026",
+      "categoryId": "general",
+      "categoryKo": "상식",
+      "difficulty": "standard",
+      "difficultyScore": 55,
+      "q1": {
+        "questionText": "인간이 인공적으로 계급화된 미래 사회를 그린 멋진 신세계를 쓴 작가는 누구일까요?",
+        "canonicalAnswer": "올더스 헉슬리",
+        "acceptedAliases": []
+      },
+      "q2": {
+        "questionText": "디스토피아 소설 멋진 신세계의 작가는 누구일까요?",
+        "canonicalAnswer": "올더스 헉슬리",
+        "acceptedAliases": []
+      },
+      "explanation": "멋진 신세계는 영국 작가 올더스 헉슬리의 소설이다.",
+      "sourceUrls": [
+        "https://www.britannica.com/biography/Aldous-Huxley"
+      ],
+      "misdirectionVariant": null
+    },
+    {
+      "key": "s2a_general_027",
+      "categoryId": "general",
+      "categoryKo": "상식",
+      "difficulty": "easy",
+      "difficultyScore": 38,
+      "q1": {
+        "questionText": "엘리자베스 베넷과 다아시가 등장하는 오만과 편견의 작가는 누구일까요?",
+        "canonicalAnswer": "제인 오스틴",
+        "acceptedAliases": []
+      },
+      "q2": {
+        "questionText": "이성과 감성, 오만과 편견을 쓴 영국 작가는 누구일까요?",
+        "canonicalAnswer": "제인 오스틴",
+        "acceptedAliases": []
+      },
+      "explanation": "오만과 편견은 영국 작가 제인 오스틴의 소설이다.",
+      "sourceUrls": [
+        "https://www.britannica.com/biography/Jane-Austen"
+      ],
+      "misdirectionVariant": null
+    },
+    {
+      "key": "s2a_general_028",
+      "categoryId": "general",
+      "categoryKo": "상식",
+      "difficulty": "standard",
+      "difficultyScore": 48,
+      "q1": {
+        "questionText": "히스클리프와 캐서린의 비극을 그린 폭풍의 언덕을 쓴 작가는 누구일까요?",
+        "canonicalAnswer": "에밀리 브론테",
+        "acceptedAliases": []
+      },
+      "q2": {
+        "questionText": "영국 요크셔 황야를 배경으로 한 폭풍의 언덕의 작가는 누구일까요?",
+        "canonicalAnswer": "에밀리 브론테",
+        "acceptedAliases": []
+      },
+      "explanation": "폭풍의 언덕은 에밀리 브론테가 발표한 유일한 소설이다.",
+      "sourceUrls": [
+        "https://www.britannica.com/biography/Emily-Bronte"
+      ],
+      "misdirectionVariant": null
+    },
+    {
+      "key": "s2a_general_029",
+      "categoryId": "general",
+      "categoryKo": "상식",
+      "difficulty": "standard",
+      "difficultyScore": 45,
+      "q1": {
+        "questionText": "허클베리 핀의 모험을 쓴 미국 작가는 누구일까요?",
+        "canonicalAnswer": "마크 트웨인",
+        "acceptedAliases": []
+      },
+      "q2": {
+        "questionText": "톰 소여의 모험과 허클베리 핀의 모험의 작가는 누구일까요?",
+        "canonicalAnswer": "마크 트웨인",
+        "acceptedAliases": []
+      },
+      "explanation": "허클베리 핀의 모험은 미국 작가 마크 트웨인의 소설이다.",
+      "sourceUrls": [
+        "https://www.britannica.com/biography/Mark-Twain"
+      ],
+      "misdirectionVariant": null
+    },
+    {
+      "key": "s2a_general_030",
+      "categoryId": "general",
+      "categoryKo": "상식",
+      "difficulty": "standard",
+      "difficultyScore": 51,
+      "q1": {
+        "questionText": "젊음을 유지하는 초상화를 소재로 한 도리언 그레이의 초상의 작가는 누구일까요?",
+        "canonicalAnswer": "오스카 와일드",
+        "acceptedAliases": []
+      },
+      "q2": {
+        "questionText": "희곡 진지함의 중요성과 소설 도리언 그레이의 초상을 쓴 작가는 누구일까요?",
+        "canonicalAnswer": "오스카 와일드",
+        "acceptedAliases": []
+      },
+      "explanation": "도리언 그레이의 초상은 아일랜드 작가 오스카 와일드의 소설이다.",
+      "sourceUrls": [
+        "https://www.britannica.com/biography/Oscar-Wilde"
+      ],
+      "misdirectionVariant": null
+    },
+    {
+      "key": "s2a_general_031",
+      "categoryId": "general",
+      "categoryKo": "상식",
+      "difficulty": "standard",
+      "difficultyScore": 51,
+      "q1": {
+        "questionText": "여섯 곡으로 이루어진 브란덴부르크 협주곡의 작곡가는 누구일까요?",
+        "canonicalAnswer": "요한 제바스티안 바흐",
+        "acceptedAliases": [
+          "J. S. 바흐",
+          "바흐"
+        ]
+      },
+      "q2": {
+        "questionText": "같은 바로크 음악이라도 「메시아」의 작곡가 헨델과 혼동하면 안 됩니다. 여러 악기를 독주처럼 살린 「브란덴부르크 협주곡」의 작곡가는 누구일까요?",
+        "canonicalAnswer": "요한 제바스티안 바흐",
+        "acceptedAliases": [
+          "J. S. 바흐",
+          "바흐"
+        ]
+      },
+      "explanation": "브란덴부르크 협주곡은 요한 제바스티안 바흐가 작곡한 여섯 협주곡이다.",
+      "sourceUrls": [
+        "https://www.britannica.com/topic/Brandenburg-Concertos"
+      ],
+      "misdirectionVariant": "q2",
+      "misdirectionType": "relation_twist"
+    },
+    {
+      "key": "s2a_general_032",
+      "categoryId": "general",
+      "categoryKo": "상식",
+      "difficulty": "standard",
+      "difficultyScore": 49,
+      "q1": {
+        "questionText": "성서의 예언과 수난, 부활을 레치타티보와 아리아, 합창으로 엮은 바로크 오라토리오입니다. 무대장치 없이 연주되지만 극적인 독창과 합창이 교차하고 ‘할렐루야’ 합창으로 절정에 이릅니다. 마지막 힌트: 작품은 「메시아」입니다. 작곡가는 누구일까요?",
+        "questionStyle": "wait_for_clue",
+        "canonicalAnswer": "게오르크 프리드리히 헨델",
+        "acceptedAliases": [
+          "헨델"
+        ]
+      },
+      "q2": {
+        "questionText": "영어 오라토리오 메시아를 작곡한 바로크 음악가는 누구일까요?",
+        "canonicalAnswer": "게오르크 프리드리히 헨델",
+        "acceptedAliases": [
+          "헨델"
+        ]
+      },
+      "explanation": "메시아는 게오르크 프리드리히 헨델이 작곡한 오라토리오다.",
+      "sourceUrls": [
+        "https://www.britannica.com/topic/Messiah-oratorio-by-Handel"
+      ],
+      "misdirectionVariant": null
+    },
+    {
+      "key": "s2a_general_033",
+      "categoryId": "general",
+      "categoryKo": "상식",
+      "difficulty": "standard",
+      "difficultyScore": 54,
+      "q1": {
+        "questionText": "고향의 민요풍 선율과 낯선 대륙에서 들은 음악을 교향곡 안에서 만나게 했습니다. 여러 악장에 되돌아오는 주제가 전체를 하나로 묶고 잉글리시 호른의 선율이 유명합니다. 결정적 단서: 교향곡 제9번 「신세계로부터」입니다. 체코 작곡가는 누구일까요?",
+        "questionStyle": "wait_for_clue",
+        "canonicalAnswer": "안토닌 드보르자크",
+        "acceptedAliases": [
+          "드보르자크"
+        ]
+      },
+      "q2": {
+        "questionText": "교향곡 신세계로부터의 작곡가는 누구일까요?",
+        "canonicalAnswer": "안토닌 드보르자크",
+        "acceptedAliases": [
+          "드보르자크"
+        ]
+      },
+      "explanation": "교향곡 제9번 신세계로부터는 안토닌 드보르자크의 작품이다.",
+      "sourceUrls": [
+        "https://www.britannica.com/topic/New-World-Symphony"
+      ],
+      "misdirectionVariant": null
+    },
+    {
+      "key": "s2a_general_034",
+      "categoryId": "general",
+      "categoryKo": "상식",
+      "difficulty": "hard",
+      "difficultyScore": 62,
+      "q1": {
+        "questionText": "각 악장에 점성술적 성격을 부여해 행성을 서로 다른 관현악 음색으로 그렸습니다. 당시 알려진 천체 가운데 지구는 빠지고 전쟁과 평화, 환희 같은 부제가 이어집니다. 마지막 단서: 화성과 목성이 포함된 모음곡 「행성」입니다. 작곡가는 누구일까요?",
+        "questionStyle": "wait_for_clue",
+        "canonicalAnswer": "구스타브 홀스트",
+        "acceptedAliases": [
+          "홀스트"
+        ]
+      },
+      "q2": {
+        "questionText": "관현악 모음곡 행성을 작곡한 영국 음악가는 누구일까요?",
+        "canonicalAnswer": "구스타브 홀스트",
+        "acceptedAliases": [
+          "홀스트"
+        ]
+      },
+      "explanation": "행성은 영국 작곡가 구스타브 홀스트의 관현악 모음곡이다.",
+      "sourceUrls": [
+        "https://www.britannica.com/topic/The-Planets"
+      ],
+      "misdirectionVariant": null
+    },
+    {
+      "key": "s2a_general_035",
+      "categoryId": "general",
+      "categoryKo": "상식",
+      "difficulty": "standard",
+      "difficultyScore": 48,
+      "q1": {
+        "questionText": "말로 하는 대사 사이에 이국적 선율과 춤 리듬을 넣어 자유와 집착의 충돌을 그렸습니다. 여주인공은 자유를 노래하고 군인 돈 호세는 질투에 빠지며 ‘하바네라’가 유명합니다. 정답을 가를 마지막 단서: 오페라는 「카르멘」입니다. 작곡가는 누구일까요?",
+        "questionStyle": "wait_for_clue",
+        "canonicalAnswer": "조르주 비제",
+        "acceptedAliases": [
+          "비제"
+        ]
+      },
+      "q2": {
+        "questionText": "투우사의 노래로 유명한 오페라 카르멘을 작곡한 사람은 누구일까요?",
+        "canonicalAnswer": "조르주 비제",
+        "acceptedAliases": [
+          "비제"
+        ]
+      },
+      "explanation": "카르멘은 프랑스 작곡가 조르주 비제의 오페라다.",
+      "sourceUrls": [
+        "https://www.britannica.com/topic/Carmen-opera-by-Bizet"
+      ],
+      "misdirectionVariant": null
+    },
+    {
+      "key": "s2a_general_036",
+      "categoryId": "general",
+      "categoryKo": "상식",
+      "difficulty": "standard",
+      "difficultyScore": 52,
+      "q1": {
+        "questionText": "정치적 억압 속 사랑과 배신, 살인이 하루 동안 이어집니다. 짧은 동기와 관현악 색채가 공포를 따라가고 로마의 실제 장소들이 배경입니다. 화가 카바라도시와 가수 토스카가 등장합니다. 결정적 단서: 오페라 제목은 「토스카」입니다. 작곡가는 누구일까요?",
+        "questionStyle": "wait_for_clue",
+        "canonicalAnswer": "자코모 푸치니",
+        "acceptedAliases": [
+          "푸치니"
+        ]
+      },
+      "q2": {
+        "questionText": "오페라 라 보엠, 토스카, 나비부인을 작곡한 사람은 누구일까요?",
+        "canonicalAnswer": "자코모 푸치니",
+        "acceptedAliases": [
+          "푸치니"
+        ]
+      },
+      "explanation": "토스카는 이탈리아 작곡가 자코모 푸치니의 오페라다.",
+      "sourceUrls": [
+        "https://www.britannica.com/topic/Tosca"
+      ],
+      "misdirectionVariant": null
+    },
+    {
+      "key": "s2a_general_037",
+      "categoryId": "general",
+      "categoryKo": "상식",
+      "difficulty": "hard",
+      "difficultyScore": 63,
+      "q1": {
+        "questionText": "되풀이되는 음악 동기로 권력의 반지와 신들의 몰락을 네 악극에 엮었습니다. 음악·시·무대를 하나로 묶은 대작으로 첫 편은 「라인의 황금」, 끝은 「신들의 황혼」입니다. 마지막 단서: 연작은 「니벨룽의 반지」입니다. 작곡가는 누구일까요?",
+        "questionStyle": "wait_for_clue",
+        "canonicalAnswer": "리하르트 바그너",
+        "acceptedAliases": [
+          "바그너"
+        ]
+      },
+      "q2": {
+        "questionText": "악극 연작 니벨룽의 반지의 작곡가는 누구일까요?",
+        "canonicalAnswer": "리하르트 바그너",
+        "acceptedAliases": [
+          "바그너"
+        ]
+      },
+      "explanation": "니벨룽의 반지는 리하르트 바그너가 작곡한 네 편의 악극 연작이다.",
+      "sourceUrls": [
+        "https://www.britannica.com/topic/Der-Ring-des-Nibelungen"
+      ],
+      "misdirectionVariant": null
+    },
+    {
+      "key": "s2a_general_038",
+      "categoryId": "general",
+      "categoryKo": "상식",
+      "difficulty": "hard",
+      "difficultyScore": 61,
+      "q1": {
+        "questionText": "뚜렷한 선율보다 빛과 바람, 파도가 바뀌는 순간을 섬세한 관현악 음색으로 포착했습니다. 기능화성의 방향감은 흐려지고 세 악장이 서로 다른 수면의 표정을 만듭니다. 마지막 힌트: 세 개의 교향적 소묘 「바다」입니다. 프랑스 작곡가는 누구일까요?",
+        "questionStyle": "wait_for_clue",
+        "canonicalAnswer": "클로드 드뷔시",
+        "acceptedAliases": [
+          "드뷔시"
+        ]
+      },
+      "q2": {
+        "questionText": "목신의 오후에의 전주곡과 바다의 작곡가는 누구일까요?",
+        "canonicalAnswer": "클로드 드뷔시",
+        "acceptedAliases": [
+          "드뷔시"
+        ]
+      },
+      "explanation": "바다는 프랑스 작곡가 클로드 드뷔시의 관현악 작품이다.",
+      "sourceUrls": [
+        "https://www.britannica.com/topic/La-Mer-by-Debussy"
+      ],
+      "misdirectionVariant": null
+    },
+    {
+      "key": "s2a_general_039",
+      "categoryId": "general",
+      "categoryKo": "상식",
+      "difficulty": "hard",
+      "difficultyScore": 65,
+      "q1": {
+        "questionText": "하나의 바이올린 카프리스 선율을 스물네 번 변형하면서 피아노와 관현악이 협주곡처럼 맞섭니다. 중간에는 원래 선율을 뒤집은 서정적인 변주가 나타납니다. 이제 마지막 단서: 「파가니니 주제에 의한 광시곡」의 작곡가는 누구일까요?",
+        "questionStyle": "wait_for_clue",
+        "canonicalAnswer": "세르게이 라흐마니노프",
+        "acceptedAliases": [
+          "라흐마니노프"
+        ]
+      },
+      "q2": {
+        "questionText": "피아노와 관현악을 위한 파가니니 주제에 의한 광시곡의 작곡가는 누구일까요?",
+        "canonicalAnswer": "세르게이 라흐마니노프",
+        "acceptedAliases": [
+          "라흐마니노프"
+        ]
+      },
+      "explanation": "파가니니 주제에 의한 광시곡은 세르게이 라흐마니노프의 작품이다.",
+      "sourceUrls": [
+        "https://www.britannica.com/topic/Rhapsody-on-a-Theme-of-Paganini"
+      ],
+      "misdirectionVariant": null
+    },
+    {
+      "key": "s2a_general_040",
+      "categoryId": "general",
+      "categoryKo": "상식",
+      "difficulty": "standard",
+      "difficultyScore": 57,
+      "q1": {
+        "questionText": "불규칙한 악센트와 복합박자, 거친 관현악 음색이 원시 제의의 긴장을 밀어붙입니다. 낯선 안무가 더해진 1913년 파리 초연에서는 객석이 소란스러워졌습니다. 마지막 힌트는 발레 「봄의 제전」입니다. 작곡가는 누구일까요?",
+        "questionStyle": "wait_for_clue",
+        "canonicalAnswer": "이고리 스트라빈스키",
+        "acceptedAliases": [
+          "스트라빈스키"
+        ]
+      },
+      "q2": {
+        "questionText": "발레 음악 불새와 봄의 제전을 작곡한 사람은 누구일까요?",
+        "canonicalAnswer": "이고리 스트라빈스키",
+        "acceptedAliases": [
+          "스트라빈스키"
+        ]
+      },
+      "explanation": "봄의 제전은 이고리 스트라빈스키가 작곡한 발레 음악이다.",
+      "sourceUrls": [
+        "https://www.britannica.com/topic/The-Rite-of-Spring"
+      ],
+      "misdirectionVariant": null
+    },
+    {
+      "key": "s2a_general_041",
+      "categoryId": "general",
+      "categoryKo": "상식",
+      "difficulty": "standard",
+      "difficultyScore": 55,
+      "q1": {
+        "questionText": "입센의 극을 위해 쓴 장면 음악으로 노르웨이 민속 선율과 낭만주의 관현악법이 만납니다. 새벽과 트롤의 세계를 그린 「아침 기분」과 「산왕의 궁전에서」가 한 모음곡에 묶였습니다. 결정적 단서: 작품은 「페르 귄트」입니다. 작곡가는 누구일까요?",
+        "questionStyle": "wait_for_clue",
+        "canonicalAnswer": "에드바르 그리그",
+        "acceptedAliases": [
+          "그리그"
+        ]
+      },
+      "q2": {
+        "questionText": "노르웨이 작곡가가 쓴 극음악 페르 귄트의 작곡가는 누구일까요?",
+        "canonicalAnswer": "에드바르 그리그",
+        "acceptedAliases": [
+          "그리그"
+        ]
+      },
+      "explanation": "페르 귄트의 극음악은 노르웨이 작곡가 에드바르 그리그의 작품이다.",
+      "sourceUrls": [
+        "https://www.britannica.com/biography/Edvard-Grieg"
+      ],
+      "misdirectionVariant": null
+    },
+    {
+      "key": "s2a_general_042",
+      "categoryId": "general",
+      "categoryKo": "상식",
+      "difficulty": "hard",
+      "difficultyScore": 66,
+      "q1": {
+        "questionText": "천일야화에서 영감을 받은 교향 모음곡 세헤라자데의 작곡가는 누구일까요?",
+        "canonicalAnswer": "니콜라이 림스키코르사코프",
+        "acceptedAliases": [
+          "림스키코르사코프"
+        ]
+      },
+      "q2": {
+        "questionText": "바다와 신드바드의 배 등의 악장으로 이루어진 세헤라자데를 작곡한 사람은 누구일까요?",
+        "canonicalAnswer": "니콜라이 림스키코르사코프",
+        "acceptedAliases": [
+          "림스키코르사코프"
+        ]
+      },
+      "explanation": "세헤라자데는 니콜라이 림스키코르사코프의 교향 모음곡이다.",
+      "sourceUrls": [
+        "https://www.britannica.com/topic/Scheherazade-by-Rimsky-Korsakov"
+      ],
+      "misdirectionVariant": null
+    },
+    {
+      "key": "s2a_general_043",
+      "categoryId": "general",
+      "categoryKo": "상식",
+      "difficulty": "standard",
+      "difficultyScore": 52,
+      "q1": {
+        "questionText": "왈츠 아름답고 푸른 도나우를 작곡한 오스트리아 음악가는 누구일까요?",
+        "canonicalAnswer": "요한 슈트라우스 2세",
+        "acceptedAliases": []
+      },
+      "q2": {
+        "questionText": "왈츠의 왕이라는 별칭으로 불린 아름답고 푸른 도나우의 작곡가는 누구일까요?",
+        "canonicalAnswer": "요한 슈트라우스 2세",
+        "acceptedAliases": []
+      },
+      "explanation": "아름답고 푸른 도나우는 요한 슈트라우스 2세가 작곡한 왈츠다.",
+      "sourceUrls": [
+        "https://www.britannica.com/biography/Johann-Strauss-II"
+      ],
+      "misdirectionVariant": null
+    },
+    {
+      "key": "s2a_general_044",
+      "categoryId": "general",
+      "categoryKo": "상식",
+      "difficulty": "hard",
+      "difficultyScore": 67,
+      "q1": {
+        "questionText": "관현악과 성악을 결합한 대지의 노래를 작곡한 오스트리아 음악가는 누구일까요?",
+        "canonicalAnswer": "구스타프 말러",
+        "acceptedAliases": [
+          "말러"
+        ]
+      },
+      "q2": {
+        "questionText": "교향곡 제5번과 연가곡 대지의 노래의 작곡가는 누구일까요?",
+        "canonicalAnswer": "구스타프 말러",
+        "acceptedAliases": [
+          "말러"
+        ]
+      },
+      "explanation": "대지의 노래는 오스트리아 작곡가 구스타프 말러의 작품이다.",
+      "sourceUrls": [
+        "https://www.britannica.com/topic/Das-Lied-von-der-Erde"
+      ],
+      "misdirectionVariant": null
+    },
+    {
+      "key": "s2a_general_045",
+      "categoryId": "general",
+      "categoryKo": "상식",
+      "difficulty": "standard",
+      "difficultyScore": 54,
+      "q1": {
+        "questionText": "백조와 수족관 등의 곡이 포함된 동물의 사육제를 작곡한 사람은 누구일까요?",
+        "canonicalAnswer": "카미유 생상스",
+        "acceptedAliases": [
+          "생상스"
+        ]
+      },
+      "q2": {
+        "questionText": "관현악 모음곡 동물의 사육제의 작곡가는 누구일까요?",
+        "canonicalAnswer": "카미유 생상스",
+        "acceptedAliases": [
+          "생상스"
+        ]
+      },
+      "explanation": "동물의 사육제는 프랑스 작곡가 카미유 생상스의 작품이다.",
+      "sourceUrls": [
+        "https://www.britannica.com/topic/The-Carnival-of-the-Animals"
+      ],
+      "misdirectionVariant": null
+    },
+    {
+      "key": "s2a_general_046",
+      "categoryId": "general",
+      "categoryKo": "상식",
+      "difficulty": "standard",
+      "difficultyScore": 46,
+      "q1": {
+        "questionText": "모스 부호는 점과 선으로 신호를 나타냅니다. 그렇다면 그 체계가 아니라, 여섯 점으로 글자를 읽는 촉각 문자 체계를 만든 프랑스인은 누구일까요?",
+        "canonicalAnswer": "루이 브라유",
+        "acceptedAliases": [
+          "루이 브레유"
+        ]
+      },
+      "q2": {
+        "questionText": "시각장애인이 손끝으로 읽는 점자 체계를 고안한 프랑스인은 누구일까요?",
+        "canonicalAnswer": "루이 브라유",
+        "acceptedAliases": [
+          "루이 브레유"
+        ]
+      },
+      "explanation": "루이 브라유는 여섯 점을 조합하는 점자 체계를 고안했다.",
+      "sourceUrls": [
+        "https://www.britannica.com/biography/Louis-Braille"
+      ],
+      "misdirectionVariant": "q1",
+      "misdirectionType": "relation_twist"
+    },
+    {
+      "key": "s2a_general_047",
+      "categoryId": "general",
+      "categoryKo": "상식",
+      "difficulty": "standard",
+      "difficultyScore": 47,
+      "q1": {
+        "questionText": "섭씨온도 눈금의 이름이 유래한 스웨덴 천문학자는 누구일까요?",
+        "canonicalAnswer": "안데르스 셀시우스",
+        "acceptedAliases": [
+          "안데르스 섭씨우스"
+        ]
+      },
+      "q2": {
+        "questionText": "물의 어는점과 끓는점 사이를 100등분한 온도 눈금을 제안해 자신의 이름이 단위명에 남은 스웨덴 천문학자는 누구일까요?",
+        "canonicalAnswer": "안데르스 셀시우스",
+        "acceptedAliases": []
+      },
+      "explanation": "스웨덴 천문학자 안데르스 셀시우스는 물의 어는점과 끓는점 사이를 100등분한 온도 눈금을 제안했고, 오늘날 섭씨온도와 단위명에 그의 이름이 남아 있다.",
+      "sourceUrls": [
+        "https://www.britannica.com/biography/Anders-Celsius"
+      ],
+      "misdirectionVariant": null
+    },
+    {
+      "key": "s2a_general_048",
+      "categoryId": "general",
+      "categoryKo": "상식",
+      "difficulty": "hard",
+      "difficultyScore": 62,
+      "q1": {
+        "questionText": "지진 규모를 나타내는 초기 로그 눈금을 개발한 미국 지진학자는 누구일까요?",
+        "canonicalAnswer": "찰스 릭터",
+        "acceptedAliases": [
+          "찰스 리히터"
+        ]
+      },
+      "q2": {
+        "questionText": "지진의 국지 규모 척도에 이름을 남긴 과학자는 누구일까요?",
+        "canonicalAnswer": "찰스 릭터",
+        "acceptedAliases": [
+          "찰스 리히터"
+        ]
+      },
+      "explanation": "찰스 릭터는 베노 구텐베르크와 함께 국지 규모 척도를 개발했다.",
+      "sourceUrls": [
+        "https://www.britannica.com/biography/Charles-F-Richter"
+      ],
+      "misdirectionVariant": null
+    },
+    {
+      "key": "s2a_general_049",
+      "categoryId": "general",
+      "categoryKo": "상식",
+      "difficulty": "standard",
+      "difficultyScore": 48,
+      "q1": {
+        "questionText": "회전시켜 색을 맞추는 정육면체 퍼즐을 1974년에 고안한 헝가리인은 누구일까요?",
+        "canonicalAnswer": "에르뇌 루빅",
+        "acceptedAliases": [
+          "에르노 루빅"
+        ]
+      },
+      "q2": {
+        "questionText": "둘 다 돌려 맞추는 퍼즐로 유명하지만, 화면 속 블록을 만든 파지트노프를 묻는 문제가 아닙니다. 여섯 면의 색을 맞추는 루빅스 큐브를 고안한 사람은 누구일까요?",
+        "canonicalAnswer": "에르뇌 루빅",
+        "acceptedAliases": [
+          "에르노 루빅"
+        ]
+      },
+      "explanation": "루빅스 큐브는 헝가리 건축학 교수 에르뇌 루빅이 고안했다.",
+      "sourceUrls": [
+        "https://www.britannica.com/biography/Erno-Rubik"
+      ],
+      "misdirectionVariant": "q2",
+      "misdirectionType": "relation_twist"
+    },
+    {
+      "key": "s2a_general_050",
+      "categoryId": "general",
+      "categoryKo": "상식",
+      "difficulty": "easy",
+      "difficultyScore": 36,
+      "q1": {
+        "questionText": "1989년에 월드 와이드 웹을 제안한 영국의 컴퓨터 과학자는 누구일까요?",
+        "canonicalAnswer": "팀 버너스리",
+        "acceptedAliases": []
+      },
+      "q2": {
+        "questionText": "웹의 창시자로 알려진 인물은 누구일까요?",
+        "canonicalAnswer": "팀 버너스리",
+        "acceptedAliases": []
+      },
+      "explanation": "팀 버너스리는 CERN에서 월드 와이드 웹을 제안하고 구현했다.",
+      "sourceUrls": [
+        "https://home.cern/science/computing/birth-web"
+      ],
+      "misdirectionVariant": null
+    },
+    {
+      "key": "s2a_general_051",
+      "categoryId": "general",
+      "categoryKo": "상식",
+      "difficulty": "standard",
+      "difficultyScore": 45,
+      "q1": {
+        "questionText": "1991년에 리눅스 커널 개발을 시작한 핀란드 출신 프로그래머는 누구일까요?",
+        "canonicalAnswer": "리누스 토르발스",
+        "acceptedAliases": [
+          "리누스 토발즈"
+        ]
+      },
+      "q2": {
+        "questionText": "리눅스 커널과 분산 버전 관리 도구 Git을 만든 인물은 누구일까요?",
+        "canonicalAnswer": "리누스 토르발스",
+        "acceptedAliases": [
+          "리누스 토발즈"
+        ]
+      },
+      "explanation": "리누스 토르발스는 리눅스 커널 개발을 시작했고 Git도 만들었다.",
+      "sourceUrls": [
+        "https://www.britannica.com/biography/Linus-Torvalds"
+      ],
+      "misdirectionVariant": null
+    },
+    {
+      "key": "s2a_general_052",
+      "categoryId": "general",
+      "categoryKo": "상식",
+      "difficulty": "standard",
+      "difficultyScore": 46,
+      "q1": {
+        "questionText": "프로그래밍 언어 파이썬을 만든 네덜란드 출신 개발자는 누구일까요?",
+        "canonicalAnswer": "귀도 반 로섬",
+        "acceptedAliases": [
+          "귀도 판 로섬"
+        ]
+      },
+      "q2": {
+        "questionText": "파이썬의 자비로운 종신 독재자라는 별칭으로 불렸던 창시자는 누구일까요?",
+        "canonicalAnswer": "귀도 반 로섬",
+        "acceptedAliases": [
+          "귀도 판 로섬"
+        ]
+      },
+      "explanation": "귀도 반 로섬은 프로그래밍 언어 파이썬을 만들었다.",
+      "sourceUrls": [
+        "https://www.python.org/doc/essays/foreword/"
+      ],
+      "misdirectionVariant": null
+    },
+    {
+      "key": "s2a_general_053",
+      "categoryId": "general",
+      "categoryKo": "상식",
+      "difficulty": "standard",
+      "difficultyScore": 50,
+      "q1": {
+        "questionText": "선 마이크로시스템즈에서 프로그래밍 언어 자바 개발을 이끈 인물은 누구일까요?",
+        "canonicalAnswer": "제임스 고슬링",
+        "acceptedAliases": []
+      },
+      "q2": {
+        "questionText": "프로그래밍 언어 자바의 아버지로 불리는 컴퓨터 과학자는 누구일까요?",
+        "canonicalAnswer": "제임스 고슬링",
+        "acceptedAliases": []
+      },
+      "explanation": "제임스 고슬링은 자바 언어 설계를 주도했다.",
+      "sourceUrls": [
+        "https://www.britannica.com/biography/James-Gosling"
+      ],
+      "misdirectionVariant": null
+    },
+    {
+      "key": "s2a_general_054",
+      "categoryId": "general",
+      "categoryKo": "상식",
+      "difficulty": "standard",
+      "difficultyScore": 49,
+      "q1": {
+        "questionText": "벨 연구소에서 프로그래밍 언어 C를 만든 컴퓨터 과학자는 누구일까요?",
+        "canonicalAnswer": "데니스 리치",
+        "acceptedAliases": []
+      },
+      "q2": {
+        "questionText": "C 언어를 만들고 유닉스 개발에 참여한 인물은 누구일까요?",
+        "canonicalAnswer": "데니스 리치",
+        "acceptedAliases": []
+      },
+      "explanation": "데니스 리치는 C 언어를 만들고 유닉스 개발에 핵심적으로 참여했다.",
+      "sourceUrls": [
+        "https://www.britannica.com/biography/Dennis-M-Ritchie"
+      ],
+      "misdirectionVariant": null
+    },
+    {
+      "key": "s2a_general_055",
+      "categoryId": "general",
+      "categoryKo": "상식",
+      "difficulty": "hard",
+      "difficultyScore": 63,
+      "q1": {
+        "questionText": "IBM에서 초기 고급 프로그래밍 언어 포트란 개발팀을 이끈 인물은 누구일까요?",
+        "canonicalAnswer": "존 배커스",
+        "acceptedAliases": [
+          "존 백커스"
+        ]
+      },
+      "q2": {
+        "questionText": "포트란 개발과 배커스 나우르 표기법에 이름을 남긴 컴퓨터 과학자는 누구일까요?",
+        "canonicalAnswer": "존 배커스",
+        "acceptedAliases": [
+          "존 백커스"
+        ]
+      },
+      "explanation": "존 배커스는 IBM의 포트란 개발팀을 이끌었다.",
+      "sourceUrls": [
+        "https://www.britannica.com/biography/John-Backus"
+      ],
+      "misdirectionVariant": null
+    },
+    {
+      "key": "s2a_general_056",
+      "categoryId": "general",
+      "categoryKo": "상식",
+      "difficulty": "standard",
+      "difficultyScore": 50,
+      "q1": {
+        "questionText": "자동차 부품 관리를 위해 1994년에 QR 코드를 개발한 일본 기업은 어디일까요?",
+        "canonicalAnswer": "덴소웨이브",
+        "acceptedAliases": []
+      },
+      "q2": {
+        "questionText": "QR 코드의 원형을 개발한 덴소의 자회사 이름은 무엇일까요?",
+        "canonicalAnswer": "덴소웨이브",
+        "acceptedAliases": []
+      },
+      "explanation": "QR 코드는 일본 기업 덴소웨이브의 개발팀이 1994년에 만들었다.",
+      "sourceUrls": [
+        "https://www.qrcode.com/en/history/"
+      ],
+      "misdirectionVariant": null
+    },
+    {
+      "key": "s2a_general_057",
+      "categoryId": "general",
+      "categoryKo": "상식",
+      "difficulty": "easy",
+      "difficultyScore": 25,
+      "q1": {
+        "questionText": "컴퓨터 정보 단위 1바이트는 일반적으로 몇 비트일까요?",
+        "canonicalAnswer": "8비트",
+        "acceptedAliases": [
+          "8 bit",
+          "8bits"
+        ]
+      },
+      "q2": {
+        "questionText": "문어(octopus)와 팔각형(octagon)에 공통으로 붙은 oct-는 8을 뜻합니다. 네트워크에서 한 바이트를 옥텟(octet)이라고도 부른다면, 한 바이트는 몇 비트일까요?",
+        "questionStyle": "lateral",
+        "canonicalAnswer": "8비트",
+        "acceptedAliases": [
+          "8 bit"
+        ]
+      },
+      "explanation": "현대 컴퓨팅에서 1바이트는 일반적으로 8비트다.",
+      "sourceUrls": [
+        "https://www.britannica.com/technology/byte"
+      ],
+      "misdirectionVariant": null
+    },
+    {
+      "key": "s2a_general_058",
+      "categoryId": "general",
+      "categoryKo": "상식",
+      "difficulty": "standard",
+      "difficultyScore": 48,
+      "q1": {
+        "questionText": "국제 표준 A계열 종이의 가로세로 비율에서 긴 변을 짧은 변으로 나눈 값은 무엇일까요?",
+        "canonicalAnswer": "루트 2",
+        "acceptedAliases": [
+          "√2",
+          "제곱근 2"
+        ]
+      },
+      "q2": {
+        "questionText": "A4 용지를 긴 변의 절반에서 접으면 긴 쪽과 짧은 쪽의 역할이 바뀌는데도 원래 종이와 닮은꼴입니다. 짧은 변을 1로 둘 때, 긴 변은 제곱하면 2가 되는 어떤 수일까요?",
+        "questionStyle": "lateral",
+        "canonicalAnswer": "루트 2",
+        "acceptedAliases": [
+          "√2",
+          "제곱근 2"
+        ]
+      },
+      "explanation": "ISO A계열 종이의 변 비율은 1 대 루트 2다.",
+      "sourceUrls": [
+        "https://www.iso.org/obp/ui/#iso:std:iso:216:ed-2:v1:en"
+      ],
+      "misdirectionVariant": null
+    },
+    {
+      "key": "s2a_general_059",
+      "categoryId": "general",
+      "categoryKo": "상식",
+      "difficulty": "easy",
+      "difficultyScore": 28,
+      "q1": {
+        "questionText": "표준 현대 피아노의 건반은 흰 건반과 검은 건반을 합해 보통 몇 개일까요?",
+        "canonicalAnswer": "88개",
+        "acceptedAliases": [
+          "88"
+        ]
+      },
+      "q2": {
+        "questionText": "피아노에서 C부터 B까지의 열두 건반 무늬가 일곱 번 반복됩니다. 여기에 가장 낮은 A·A♯·B와 맨 위 C를 붙이면, 표준 피아노는 모두 몇 건반일까요?",
+        "canonicalAnswer": "88개",
+        "acceptedAliases": [
+          "88"
+        ],
+        "questionStyle": "lateral"
+      },
+      "explanation": "표준 현대 피아노는 보통 88개의 건반을 갖는다.",
+      "sourceUrls": [
+        "https://www.britannica.com/art/piano"
+      ],
+      "misdirectionVariant": null
+    },
+    {
+      "key": "s2a_general_060",
+      "categoryId": "general",
+      "categoryKo": "상식",
+      "difficulty": "easy",
+      "difficultyScore": 24,
+      "q1": {
+        "questionText": "현대 서양음악에서 음높이를 적는 오선은 평행선 몇 줄로 이루어질까요?",
+        "canonicalAnswer": "5줄",
+        "acceptedAliases": [
+          "다섯 줄"
+        ]
+      },
+      "q2": {
+        "questionText": "악보 이름 ‘오선보’를 한자로 풀면 ‘다섯 오(五)’와 ‘줄 선(線)’입니다. 이름 속 숫자를 그대로 읽으면 음표를 놓는 가로선은 몇 줄일까요?",
+        "canonicalAnswer": "5줄",
+        "acceptedAliases": [
+          "다섯 줄"
+        ],
+        "questionStyle": "lateral"
+      },
+      "explanation": "오선보의 보표는 다섯 개의 평행선으로 이루어진다.",
+      "sourceUrls": [
+        "https://www.britannica.com/art/staff-music"
+      ],
+      "misdirectionVariant": null
+    },
+    {
+      "key": "s2a_general_061",
+      "categoryId": "general",
+      "categoryKo": "상식",
+      "difficulty": "easy",
+      "difficultyScore": 25,
+      "q1": {
+        "questionText": "표준 조율의 클래식기타와 통기타는 보통 줄이 몇 개일까요?",
+        "canonicalAnswer": "6줄",
+        "acceptedAliases": [
+          "여섯 줄"
+        ]
+      },
+      "q2": {
+        "questionText": "기타 조율을 ‘미라레솔시미’라고 한 호흡에 외워 보세요. 처음과 끝의 ‘미’도 서로 다른 줄이라는 점을 놓치지 않으면, 표준 기타의 줄은 모두 몇 개일까요?",
+        "canonicalAnswer": "6줄",
+        "acceptedAliases": [
+          "여섯 줄"
+        ],
+        "questionStyle": "lateral"
+      },
+      "explanation": "표준 기타는 보통 여섯 줄을 사용한다.",
+      "sourceUrls": [
+        "https://www.britannica.com/art/guitar"
+      ],
+      "misdirectionVariant": null
+    },
+    {
+      "key": "s2a_general_062",
+      "categoryId": "general",
+      "categoryKo": "상식",
+      "difficulty": "easy",
+      "difficultyScore": 23,
+      "q1": {
+        "questionText": "표준 주사위에서 서로 마주 보는 두 면의 눈을 더하면 얼마일까요?",
+        "canonicalAnswer": "7",
+        "acceptedAliases": [
+          "칠"
+        ]
+      },
+      "q2": {
+        "questionText": "일반적인 주사위는 마주 보는 두 면의 눈을 더하면 늘 같은 수가 됩니다. 1과 6, 2와 5, 3과 4가 서로 마주 볼 때 세 쌍이 공유하는 합은 얼마일까요?",
+        "questionStyle": "lateral",
+        "canonicalAnswer": "7",
+        "acceptedAliases": [
+          "칠"
+        ]
+      },
+      "explanation": "표준 주사위의 마주 보는 면은 각각 합이 7이 되도록 배치된다.",
+      "sourceUrls": [
+        "https://www.britannica.com/topic/dice"
+      ],
+      "misdirectionVariant": null
+    },
+    {
+      "key": "s2a_general_063",
+      "categoryId": "general",
+      "categoryKo": "상식",
+      "difficulty": "standard",
+      "difficultyScore": 43,
+      "q1": {
+        "questionText": "수량 단위 한 그로스는 물건 몇 개를 뜻할까요?",
+        "canonicalAnswer": "144개",
+        "acceptedAliases": [
+          "144"
+        ]
+      },
+      "q2": {
+        "questionText": "‘그로스’는 다스 하나가 아니라 ‘다스의 다스’입니다. 달력의 열두 달마다 연필 한 다스씩 놓는 장면을 떠올리면, 한 그로스는 모두 몇 개일까요?",
+        "questionStyle": "lateral",
+        "canonicalAnswer": "144개",
+        "acceptedAliases": [
+          "144"
+        ]
+      },
+      "explanation": "한 그로스는 12다스, 즉 144개다.",
+      "sourceUrls": [
+        "https://www.britannica.com/dictionary/gross"
+      ],
+      "misdirectionVariant": null
+    },
+    {
+      "key": "s2a_general_064",
+      "categoryId": "general",
+      "categoryKo": "상식",
+      "difficulty": "standard",
+      "difficultyScore": 40,
+      "q1": {
+        "questionText": "손님에게 빵을 모자라게 줬다는 벌을 피하려고, 옛 제빵사는 한 다스를 담고도 하나를 더 얹었습니다. 그래서 ‘제빵사의 다스’는 보통 다스와 달리 몇 개일까요?",
+        "questionStyle": "lateral",
+        "canonicalAnswer": "13개",
+        "acceptedAliases": [
+          "13"
+        ]
+      },
+      "q2": {
+        "questionText": "제빵사의 한 다스라고 번역되는 베이커스 더즌의 수량은 얼마일까요?",
+        "canonicalAnswer": "13개",
+        "acceptedAliases": [
+          "13"
+        ]
+      },
+      "explanation": "베이커스 더즌은 보통 13개를 뜻한다.",
+      "sourceUrls": [
+        "https://www.britannica.com/dictionary/baker%27s-dozen"
+      ],
+      "misdirectionVariant": null
+    },
+    {
+      "key": "s2a_general_065",
+      "categoryId": "general",
+      "categoryKo": "상식",
+      "difficulty": "easy",
+      "difficultyScore": 27,
+      "q1": {
+        "questionText": "로마 숫자 L은 아라비아 숫자로 얼마를 나타낼까요?",
+        "canonicalAnswer": "50",
+        "acceptedAliases": [
+          "오십"
+        ]
+      },
+      "q2": {
+        "questionText": "로마 숫자 XL은 40이고 LX는 60입니다. X가 앞에 서면 빼고 뒤에 서면 더한다는 규칙을 거꾸로 적용할 때, 두 표현의 중심인 L은 얼마일까요?",
+        "questionStyle": "lateral",
+        "canonicalAnswer": "50",
+        "acceptedAliases": [
+          "오십"
+        ]
+      },
+      "explanation": "로마 숫자 L은 50을 나타낸다.",
+      "sourceUrls": [
+        "https://www.britannica.com/topic/Roman-numeral"
+      ],
+      "misdirectionVariant": null
+    },
+    {
+      "key": "s2a_general_066",
+      "categoryId": "general",
+      "categoryKo": "상식",
+      "difficulty": "standard",
+      "difficultyScore": 39,
+      "q1": {
+        "questionText": "로마 숫자 D는 아라비아 숫자로 얼마를 나타낼까요?",
+        "canonicalAnswer": "500",
+        "acceptedAliases": [
+          "오백"
+        ]
+      },
+      "q2": {
+        "questionText": "로마 숫자 CD는 400이고 DC는 600입니다. C가 앞에 서면 빼고 뒤에 서면 더한다는 규칙을 거꾸로 적용할 때, 두 표현의 중심인 D는 얼마일까요?",
+        "questionStyle": "lateral",
+        "canonicalAnswer": "500",
+        "acceptedAliases": [
+          "오백"
+        ]
+      },
+      "explanation": "로마 숫자 D는 500을 나타낸다.",
+      "sourceUrls": [
+        "https://www.britannica.com/topic/Roman-numeral"
+      ],
+      "misdirectionVariant": null
+    },
+    {
+      "key": "s2a_general_067",
+      "categoryId": "general",
+      "categoryKo": "상식",
+      "difficulty": "easy",
+      "difficultyScore": 30,
+      "q1": {
+        "questionText": "그리스 알파벳의 마지막 글자는 무엇일까요?",
+        "canonicalAnswer": "오메가",
+        "acceptedAliases": [
+          "Ω",
+          "omega"
+        ]
+      },
+      "q2": {
+        "questionText": "‘처음과 끝’을 뜻할 때 그리스 첫 글자 알파와 마지막 글자를 짝지어 말합니다. 알파가 출발점이라면 ‘알파와 ___’의 종착점에 들어갈 글자는 무엇일까요?",
+        "questionStyle": "lateral",
+        "canonicalAnswer": "오메가",
+        "acceptedAliases": [
+          "Ω",
+          "omega"
+        ]
+      },
+      "explanation": "오메가는 그리스 알파벳의 스물네 번째이자 마지막 글자다.",
+      "sourceUrls": [
+        "https://www.britannica.com/topic/Greek-alphabet"
+      ],
+      "misdirectionVariant": null
+    },
+    {
+      "key": "s2a_general_068",
+      "categoryId": "general",
+      "categoryKo": "상식",
+      "difficulty": "easy",
+      "difficultyScore": 24,
+      "q1": {
+        "questionText": "표준 스도쿠의 격자는 가로 아홉 칸, 세로 아홉 칸으로 모두 몇 칸일까요?",
+        "canonicalAnswer": "81칸",
+        "acceptedAliases": [
+          "81"
+        ]
+      },
+      "q2": {
+        "questionText": "스도쿠 한 판은 3×3칸짜리 작은 구역이 다시 3×3으로 모인 ‘겹친 3×3’ 구조입니다. 작은 구역과 구역의 배열을 차례로 펼치면 전체는 몇 칸일까요?",
+        "questionStyle": "lateral",
+        "canonicalAnswer": "81칸",
+        "acceptedAliases": [
+          "81"
+        ]
+      },
+      "explanation": "표준 스도쿠 격자는 9×9이므로 모두 81칸이다.",
+      "sourceUrls": [
+        "https://www.britannica.com/topic/sudoku"
+      ],
+      "misdirectionVariant": null
+    },
+    {
+      "key": "s2a_general_069",
+      "categoryId": "general",
+      "categoryKo": "상식",
+      "difficulty": "standard",
+      "difficultyScore": 42,
+      "q1": {
+        "questionText": "회전한 모양은 같게 보고 거울상인 J/L과 S/Z는 서로 다르게 셀 때, 정사각형 네 개로 만든 테트로미노는 몇 종류일까요?",
+        "canonicalAnswer": "7종",
+        "acceptedAliases": [
+          "7개",
+          "일곱 종류"
+        ]
+      },
+      "q2": {
+        "questionText": "네 칸짜리 테트리스 조각의 회전형은 따로 세지 않습니다. I·O·T에 거울상인 J/L 한 쌍과 S/Z 한 쌍을 보태면 모두 몇 종류일까요?",
+        "canonicalAnswer": "7종",
+        "acceptedAliases": [
+          "7개",
+          "일곱 종류"
+        ],
+        "questionStyle": "lateral"
+      },
+      "explanation": "회전은 같은 모양으로 보되 거울상은 구분하는 한쪽면 테트로미노 분류에서는 I·O·T·J·L·S·Z의 일곱 종류가 있다.",
+      "sourceUrls": [
+        "https://mathworld.wolfram.com/Tetromino.html"
+      ],
+      "misdirectionVariant": null
+    },
+    {
+      "key": "s2a_general_070",
+      "categoryId": "general",
+      "categoryKo": "상식",
+      "difficulty": "easy",
+      "difficultyScore": 22,
+      "q1": {
+        "questionText": "북쪽, 남쪽, 동쪽, 서쪽으로 이루어진 기본 방위는 몇 개일까요?",
+        "canonicalAnswer": "4개",
+        "acceptedAliases": [
+          "넷"
+        ]
+      },
+      "q2": {
+        "questionText": "나침반의 기본 방위를 십자로 그리면 위아래 한 축과 좌우 한 축이 만납니다. 십자의 각 끝을 동·서·남·북과 하나씩 대응시키면 방향은 모두 몇 개일까요?",
+        "canonicalAnswer": "4개",
+        "acceptedAliases": [
+          "넷"
+        ],
+        "questionStyle": "lateral"
+      },
+      "explanation": "기본 방위는 동·서·남·북 네 개다.",
+      "sourceUrls": [
+        "https://www.britannica.com/science/cardinal-direction"
+      ],
+      "misdirectionVariant": null
+    },
+    {
+      "key": "s2a_general_071",
+      "categoryId": "general",
+      "categoryKo": "상식",
+      "difficulty": "hard",
+      "difficultyScore": 64,
+      "q1": {
+        "questionText": "고전 궁전의 중심축은 그대로 두고 입구와 관람 동선을 지하에서 다시 연결했습니다. 투명한 기하학 구조는 오래된 석조 입면과 강한 대비를 이루지만 시야는 막지 않습니다. 마지막 단서: 파리 루브르 안뜰의 유리 피라미드입니다. 설계자는 누구일까요?",
+        "canonicalAnswer": "이오 밍 페이",
+        "acceptedAliases": [
+          "I. M. 페이",
+          "아이엠 페이"
+        ]
+      },
+      "q2": {
+        "questionText": "파리 루브르 박물관 안뜰의 유리 피라미드를 설계한 건축가는 누구일까요?",
+        "canonicalAnswer": "이오 밍 페이",
+        "acceptedAliases": [
+          "I. M. 페이",
+          "아이엠 페이"
+        ]
+      },
+      "explanation": "루브르 피라미드는 중국계 미국인 건축가 이오 밍 페이가 설계했다.",
+      "sourceUrls": [
+        "https://www.louvre.fr/en/explore/the-palace/the-louvre-pyramid"
+      ],
+      "misdirectionVariant": "q1",
+      "misdirectionType": "late_easy_clue"
+    },
+    {
+      "key": "s2a_general_072",
+      "categoryId": "general",
+      "categoryKo": "상식",
+      "difficulty": "hard",
+      "difficultyScore": 62,
+      "q1": {
+        "questionText": "돛을 펼친 듯한 지붕으로 유명한 시드니 오페라하우스를 설계한 덴마크 건축가는 누구일까요?",
+        "canonicalAnswer": "예른 웃손",
+        "acceptedAliases": [
+          "요른 웃손",
+          "외른 웃손"
+        ]
+      },
+      "q2": {
+        "questionText": "1957년 국제 공모에서 시드니 오페라하우스 설계안이 채택된 건축가는 누구일까요?",
+        "canonicalAnswer": "예른 웃손",
+        "acceptedAliases": [
+          "요른 웃손",
+          "외른 웃손"
+        ]
+      },
+      "explanation": "시드니 오페라하우스는 덴마크 건축가 예른 웃손이 설계했다.",
+      "sourceUrls": [
+        "https://www.sydneyoperahouse.com/our-story/jorn-utzon"
+      ],
+      "misdirectionVariant": null
+    },
+    {
+      "key": "s2a_general_073",
+      "categoryId": "general",
+      "categoryKo": "상식",
+      "difficulty": "standard",
+      "difficultyScore": 56,
+      "q1": {
+        "questionText": "폭포 위 바위에 세운 주택 낙수장을 설계한 미국 건축가는 누구일까요?",
+        "canonicalAnswer": "프랭크 로이드 라이트",
+        "acceptedAliases": []
+      },
+      "q2": {
+        "questionText": "펜실베이니아의 주택 낙수장을 설계한 유기적 건축의 거장은 누구일까요?",
+        "canonicalAnswer": "프랭크 로이드 라이트",
+        "acceptedAliases": []
+      },
+      "explanation": "낙수장은 미국 건축가 프랭크 로이드 라이트가 설계했다.",
+      "sourceUrls": [
+        "https://fallingwater.org/history/about-fallingwater/"
+      ],
+      "misdirectionVariant": null
+    },
+    {
+      "key": "s2a_general_074",
+      "categoryId": "general",
+      "categoryKo": "상식",
+      "difficulty": "easy",
+      "difficultyScore": 34,
+      "q1": {
+        "questionText": "1883년 초대 건축가의 뒤를 이어 사그라다 파밀리아 설계를 맡아 독창적으로 발전시킨 건축가는 누구일까요?",
+        "canonicalAnswer": "안토니 가우디",
+        "acceptedAliases": [
+          "가우디"
+        ]
+      },
+      "q2": {
+        "questionText": "카사 밀라와 사그라다 파밀리아로 유명한 카탈루냐 건축가는 누구일까요?",
+        "canonicalAnswer": "안토니 가우디",
+        "acceptedAliases": [
+          "가우디"
+        ]
+      },
+      "explanation": "사그라다 파밀리아의 초기 설계는 프란시스코 데 파울라 델 비야르가 맡았고, 안토니 가우디가 1883년 이어받아 독창적인 설계로 발전시켰다.",
+      "sourceUrls": [
+        "https://sagradafamilia.org/en/heritage-assets"
+      ],
+      "misdirectionVariant": null
+    },
+    {
+      "key": "s2a_general_075",
+      "categoryId": "general",
+      "categoryKo": "상식",
+      "difficulty": "standard",
+      "difficultyScore": 53,
+      "q1": {
+        "questionText": "휘어진 티타늄 외관으로 유명한 빌바오 구겐하임 미술관을 설계한 건축가는 누구일까요?",
+        "canonicalAnswer": "프랭크 게리",
+        "acceptedAliases": [
+          "프랭크 O. 게리"
+        ]
+      },
+      "q2": {
+        "questionText": "스페인 빌바오의 구겐하임 미술관을 설계한 캐나다 태생 건축가는 누구일까요?",
+        "canonicalAnswer": "프랭크 게리",
+        "acceptedAliases": [
+          "프랭크 O. 게리"
+        ]
+      },
+      "explanation": "빌바오 구겐하임 미술관은 프랭크 게리가 설계했다.",
+      "sourceUrls": [
+        "https://www.guggenheim-bilbao.eus/en/the-building/the-architect"
+      ],
+      "misdirectionVariant": null
+    },
+    {
+      "key": "s2a_general_076",
+      "categoryId": "general",
+      "categoryKo": "상식",
+      "difficulty": "easy",
+      "difficultyScore": 29,
+      "q1": {
+        "questionText": "자유의 여신상을 미국에 선물한 나라는 어디일까요?",
+        "canonicalAnswer": "프랑스",
+        "acceptedAliases": [
+          "프랑스 공화국"
+        ]
+      },
+      "q2": {
+        "questionText": "미국 독립 100주년을 기념해 자유의 여신상을 제작하여 선물한 국가는 어디일까요?",
+        "canonicalAnswer": "프랑스",
+        "acceptedAliases": []
+      },
+      "explanation": "자유의 여신상은 프랑스가 미국에 선물한 기념물이다.",
+      "sourceUrls": [
+        "https://www.nps.gov/stli/learn/historyculture/places_creating_statue.htm"
+      ],
+      "misdirectionVariant": null
+    },
+    {
+      "key": "s2a_general_077",
+      "categoryId": "general",
+      "categoryKo": "상식",
+      "difficulty": "standard",
+      "difficultyScore": 50,
+      "q1": {
+        "questionText": "빅벤이라는 이름이 본래 가리키는 엘리자베스 타워 안의 대상은 무엇일까요?",
+        "canonicalAnswer": "대종",
+        "acceptedAliases": [
+          "큰 종",
+          "그레이트 벨"
+        ]
+      },
+      "q2": {
+        "questionText": "사진에서는 시계탑을 보고 ‘빅벤’이라 부르기 쉽지만, 이름의 주인은 겉에 보이는 시계도 탑도 아닙니다. 시간을 알리려고 탑 안에서 울리는 무엇일까요?",
+        "canonicalAnswer": "대종",
+        "acceptedAliases": [
+          "큰 종",
+          "그레이트 벨"
+        ],
+        "questionStyle": "lateral"
+      },
+      "explanation": "빅벤은 엄밀히는 엘리자베스 타워 안의 큰 종을 가리키는 이름이다.",
+      "sourceUrls": [
+        "https://www.parliament.uk/about/living-heritage/building/palace/big-ben/"
+      ],
+      "misdirectionVariant": null
+    },
+    {
+      "key": "s2a_general_078",
+      "categoryId": "general",
+      "categoryKo": "상식",
+      "difficulty": "easy",
+      "difficultyScore": 30,
+      "q1": {
+        "questionText": "런던의 타워 브리지가 가로지르는 강은 어디일까요?",
+        "canonicalAnswer": "템스강",
+        "acceptedAliases": [
+          "템스"
+        ]
+      },
+      "q2": {
+        "questionText": "타워 브리지와 웨스트민스터 다리가 놓인 런던의 강은 어디일까요?",
+        "canonicalAnswer": "템스강",
+        "acceptedAliases": [
+          "템스"
+        ]
+      },
+      "explanation": "타워 브리지는 런던의 템스강을 가로지른다.",
+      "sourceUrls": [
+        "https://www.towerbridge.org.uk/discover/history"
+      ],
+      "misdirectionVariant": null
+    },
+    {
+      "key": "s2a_general_079",
+      "categoryId": "general",
+      "categoryKo": "상식",
+      "difficulty": "standard",
+      "difficultyScore": 43,
+      "q1": {
+        "questionText": "샌프란시스코의 골든게이트교가 가로지르는 해협은 무엇일까요?",
+        "canonicalAnswer": "골든게이트 해협",
+        "acceptedAliases": [
+          "골든게이트"
+        ]
+      },
+      "q2": {
+        "questionText": "샌프란시스코의 붉은 다리는 도시 이름이 아니라 자신이 건너는 물길의 이름을 따랐습니다. 만과 태평양 사이에서 다리 아래로 이어지는 해협은 무엇일까요?",
+        "canonicalAnswer": "골든게이트 해협",
+        "acceptedAliases": [],
+        "questionStyle": "lateral"
+      },
+      "explanation": "골든게이트교는 샌프란시스코만 입구의 골든게이트 해협을 가로지른다.",
+      "sourceUrls": [
+        "https://www.goldengate.org/bridge/history-research/statistics-data/"
+      ],
+      "misdirectionVariant": null
+    },
+    {
+      "key": "s2a_general_080",
+      "categoryId": "general",
+      "categoryKo": "상식",
+      "difficulty": "easy",
+      "difficultyScore": 31,
+      "q1": {
+        "questionText": "러시모어산 조각에 새겨진 미국 대통령 얼굴은 모두 몇 명일까요?",
+        "canonicalAnswer": "4명",
+        "acceptedAliases": [
+          "네 명",
+          "4"
+        ]
+      },
+      "q2": {
+        "questionText": "러시모어산의 대통령 얼굴들을 음악 그룹으로 부른다면 듀오도 트리오도 아닌 ‘쿼텟(quartet)’입니다. 이 말이 가리키는 인원수대로, 산에 새겨진 대통령은 몇 명일까요?",
+        "canonicalAnswer": "4명",
+        "acceptedAliases": [
+          "네 명",
+          "4"
+        ],
+        "questionStyle": "lateral"
+      },
+      "explanation": "러시모어산에는 미국 대통령 네 명의 얼굴이 조각되어 있다.",
+      "sourceUrls": [
+        "https://www.nps.gov/moru/learn/historyculture/index.htm"
+      ],
+      "misdirectionVariant": null
+    },
+    {
+      "key": "s2a_world_001",
+      "categoryId": "world_history_geography",
+      "categoryKo": "세계사·지리",
+      "difficulty": "easy",
+      "difficultyScore": 34,
+      "q1": {
+        "questionText": "남아메리카 서쪽을 따라 길게 이어지는 세계 최장의 대륙 산맥은 무엇일까요?",
+        "canonicalAnswer": "안데스산맥",
+        "acceptedAliases": []
+      },
+      "q2": {
+        "questionText": "남아메리카 서쪽 해안을 따라 적도 남쪽까지 길게 이어지는 산맥을 찾고 있습니다. 대륙 최고봉 아콩카과산도 여기에 속한다면 어느 산맥일까요?",
+        "questionStyle": "reasoning",
+        "canonicalAnswer": "안데스산맥",
+        "acceptedAliases": []
+      },
+      "explanation": "안데스산맥은 남아메리카 서부를 따라 이어지는 세계 최장의 대륙 산맥이다.",
+      "sourceUrls": [
+        "https://www.britannica.com/place/Andes-Mountains"
+      ],
+      "misdirectionVariant": null
+    },
+    {
+      "key": "s2a_world_002",
+      "categoryId": "world_history_geography",
+      "categoryKo": "세계사·지리",
+      "difficulty": "easy",
+      "difficultyScore": 35,
+      "q1": {
+        "questionText": "대륙을 제외한 섬 가운데 면적이 가장 큰 섬은 어디일까요?",
+        "canonicalAnswer": "그린란드",
+        "acceptedAliases": []
+      },
+      "q2": {
+        "questionText": "대부분이 빙상으로 덮여 있으며 덴마크 왕국을 이루는 세계 최대 섬은 어디일까요?",
+        "canonicalAnswer": "그린란드",
+        "acceptedAliases": []
+      },
+      "explanation": "그린란드는 대륙으로 분류되는 오스트레일리아를 제외하면 세계에서 가장 큰 섬이다.",
+      "sourceUrls": [
+        "https://www.britannica.com/place/Greenland"
+      ],
+      "misdirectionVariant": null
+    },
+    {
+      "key": "s2a_world_003",
+      "categoryId": "world_history_geography",
+      "categoryKo": "세계사·지리",
+      "difficulty": "standard",
+      "difficultyScore": 45,
+      "q1": {
+        "questionText": "슈피리어호는 면적이 가장 넓은 담수호입니다. 그렇다면 최대 수심이 가장 깊은 호수는 어디일까요?",
+        "canonicalAnswer": "바이칼호",
+        "acceptedAliases": [
+          "바이칼 호수"
+        ]
+      },
+      "q2": {
+        "questionText": "러시아 시베리아에 있으며 세계에서 가장 깊은 호수는 어디일까요?",
+        "canonicalAnswer": "바이칼호",
+        "acceptedAliases": [
+          "바이칼 호수"
+        ]
+      },
+      "explanation": "바이칼호는 최대 수심 약 1,642미터로 세계에서 가장 깊은 호수다.",
+      "sourceUrls": [
+        "https://whc.unesco.org/en/list/754/"
+      ],
+      "misdirectionVariant": "q1",
+      "misdirectionType": "relation_twist"
+    },
+    {
+      "key": "s2a_world_004",
+      "categoryId": "world_history_geography",
+      "categoryKo": "세계사·지리",
+      "difficulty": "standard",
+      "difficultyScore": 43,
+      "q1": {
+        "questionText": "표면적을 기준으로 세계에서 가장 넓은 담수호는 어디일까요?",
+        "canonicalAnswer": "슈피리어호",
+        "acceptedAliases": [
+          "슈피리어 호수"
+        ]
+      },
+      "q2": {
+        "questionText": "오대호에서 미국 영토 안에만 있는 곳은 미시간호이고, 면적 두 번째는 휴런호입니다. 두 호수가 아닌 곳 중 미국과 캐나다가 맞대고 있으며 면적이 가장 넓은 호수는 어디일까요?",
+        "questionStyle": "reasoning",
+        "canonicalAnswer": "슈피리어호",
+        "acceptedAliases": [
+          "슈피리어 호수"
+        ]
+      },
+      "explanation": "슈피리어호는 표면적 기준 세계 최대 담수호다.",
+      "sourceUrls": [
+        "https://www.epa.gov/greatlakes/facts-and-figures-about-great-lakes"
+      ],
+      "misdirectionVariant": null
+    },
+    {
+      "key": "s2a_world_005",
+      "categoryId": "world_history_geography",
+      "categoryKo": "세계사·지리",
+      "difficulty": "standard",
+      "difficultyScore": 44,
+      "q1": {
+        "questionText": "라인강과 다뉴브강은 바다로 나가지만, 찾는 강은 러시아 서부를 지나 내해인 카스피해로 들어갑니다. 게다가 유럽에서 가장 길다면 어느 강일까요?",
+        "questionStyle": "reasoning",
+        "canonicalAnswer": "볼가강",
+        "acceptedAliases": [
+          "볼가"
+        ]
+      },
+      "q2": {
+        "questionText": "모스크바 북서쪽에서 발원해 카스피해로 흐르는 유럽의 가장 긴 강은 무엇일까요?",
+        "canonicalAnswer": "볼가강",
+        "acceptedAliases": [
+          "볼가"
+        ]
+      },
+      "explanation": "볼가강은 러시아 서부를 흘러 카스피해로 들어가는 유럽 최장의 강이다.",
+      "sourceUrls": [
+        "https://www.britannica.com/place/Volga-River"
+      ],
+      "misdirectionVariant": null
+    },
+    {
+      "key": "s2a_world_006",
+      "categoryId": "world_history_geography",
+      "categoryKo": "세계사·지리",
+      "difficulty": "standard",
+      "difficultyScore": 43,
+      "q1": {
+        "questionText": "보스포루스 해협에서 북쪽으로 올라가고, 다뉴브강이 루마니아와 우크라이나 사이에 삼각주를 만든 뒤 닿는 바다는 어디일까요?",
+        "questionStyle": "reasoning",
+        "canonicalAnswer": "흑해",
+        "acceptedAliases": []
+      },
+      "q2": {
+        "questionText": "유럽 여러 나라를 지나는 다뉴브강의 하구가 있는 바다는 어디일까요?",
+        "canonicalAnswer": "흑해",
+        "acceptedAliases": []
+      },
+      "explanation": "다뉴브강은 루마니아와 우크라이나 부근의 삼각주를 거쳐 흑해로 들어간다.",
+      "sourceUrls": [
+        "https://www.britannica.com/place/Danube-River"
+      ],
+      "misdirectionVariant": null
+    },
+    {
+      "key": "s2a_world_007",
+      "categoryId": "world_history_geography",
+      "categoryKo": "세계사·지리",
+      "difficulty": "standard",
+      "difficultyScore": 47,
+      "q1": {
+        "questionText": "스위스 알프스에서 시작한 라인강을 독일과 네덜란드까지 따라가면 로테르담 부근의 삼각주에 닿습니다. 여기서 강물은 영국과 스칸디나비아 사이의 어느 바다로 들어갈까요?",
+        "questionStyle": "reasoning",
+        "canonicalAnswer": "북해",
+        "acceptedAliases": []
+      },
+      "q2": {
+        "questionText": "네덜란드의 삼각주를 거쳐 라인강 물이 도달하는 바다는 어디일까요?",
+        "canonicalAnswer": "북해",
+        "acceptedAliases": []
+      },
+      "explanation": "라인강은 네덜란드에서 여러 지류로 갈라져 북해로 들어간다.",
+      "sourceUrls": [
+        "https://www.britannica.com/place/Rhine-River"
+      ],
+      "misdirectionVariant": null
+    },
+    {
+      "key": "s2a_world_008",
+      "categoryId": "world_history_geography",
+      "categoryKo": "세계사·지리",
+      "difficulty": "easy",
+      "difficultyScore": 32,
+      "q1": {
+        "questionText": "적도 부근에서 북쪽으로 흐르는 나일강은 카이로를 지난 뒤 알렉산드리아와 포트사이드 사이에 삼각주를 만듭니다. 이집트 북쪽 해안에서 어느 바다로 들어갈까요?",
+        "questionStyle": "reasoning",
+        "canonicalAnswer": "지중해",
+        "acceptedAliases": []
+      },
+      "q2": {
+        "questionText": "알렉산드리아 동쪽의 나일강 하구가 맞닿은 바다는 어디일까요?",
+        "canonicalAnswer": "지중해",
+        "acceptedAliases": []
+      },
+      "explanation": "나일강은 이집트 북부의 넓은 삼각주를 거쳐 지중해로 들어간다.",
+      "sourceUrls": [
+        "https://www.britannica.com/place/Nile-River"
+      ],
+      "misdirectionVariant": null
+    },
+    {
+      "key": "s2a_world_009",
+      "categoryId": "world_history_geography",
+      "categoryKo": "세계사·지리",
+      "difficulty": "standard",
+      "difficultyScore": 48,
+      "q1": {
+        "questionText": "티베트고원에서 시작해 라오스와 태국의 경계를 지나고, 캄보디아를 통과한 뒤 베트남 남부에 큰 삼각주를 만드는 강은 무엇일까요?",
+        "questionStyle": "reasoning",
+        "canonicalAnswer": "메콩강",
+        "acceptedAliases": [
+          "메콩"
+        ]
+      },
+      "q2": {
+        "questionText": "프놈펜을 지나 베트남의 구룡강 삼각주로 흐르는 국제하천은 무엇일까요?",
+        "canonicalAnswer": "메콩강",
+        "acceptedAliases": [
+          "메콩"
+        ]
+      },
+      "explanation": "메콩강은 동남아시아 여러 나라를 지나 베트남 남부에서 큰 삼각주를 이룬다.",
+      "sourceUrls": [
+        "https://www.britannica.com/place/Mekong-River"
+      ],
+      "misdirectionVariant": null
+    },
+    {
+      "key": "s2a_world_010",
+      "categoryId": "world_history_geography",
+      "categoryKo": "세계사·지리",
+      "difficulty": "hard",
+      "difficultyScore": 65,
+      "q1": {
+        "questionText": "조수가 드나드는 거대한 삼각주에서 민물과 바닷물이 섞이고, 뿌리를 수면 위로 내민 나무들이 빽빽한 숲을 이룹니다. 벵골호랑이가 살며 갠지스강과 브라마푸트라강 하구에 걸쳐 있습니다. 마지막 단서: 세계 최대 맹그로브 숲의 이름은 무엇일까요?",
+        "questionStyle": "wait_for_clue",
+        "canonicalAnswer": "순다르반스",
+        "acceptedAliases": [
+          "순다르반"
+        ]
+      },
+      "q2": {
+        "questionText": "갠지스강과 브라마푸트라강이 만든 삼각주를 인도에서 방글라데시까지 따라가 보세요. 벵골호랑이가 사는 거대한 맹그로브 숲은 어디일까요?",
+        "questionStyle": "reasoning",
+        "canonicalAnswer": "순다르반스",
+        "acceptedAliases": [
+          "순다르반"
+        ]
+      },
+      "explanation": "순다르반스는 갠지스·브라마푸트라 삼각주에 형성된 광대한 맹그로브 숲이다.",
+      "sourceUrls": [
+        "https://whc.unesco.org/en/list/798/"
+      ],
+      "misdirectionVariant": null
+    },
+    {
+      "key": "s2a_world_011",
+      "categoryId": "world_history_geography",
+      "categoryKo": "세계사·지리",
+      "difficulty": "standard",
+      "difficultyScore": 49,
+      "q1": {
+        "questionText": "칠레 북부에 있으며 지구에서 가장 건조한 지역 가운데 하나인 사막은 무엇일까요?",
+        "canonicalAnswer": "아타카마사막",
+        "acceptedAliases": []
+      },
+      "q2": {
+        "questionText": "칠레 서안을 따라 흐르는 차가운 훔볼트 해류와 동쪽 안데스산맥의 비그늘이 수분을 막습니다. 그래서 극도로 건조하고 천문대가 밀집한 칠레 북부의 사막은 무엇일까요?",
+        "questionStyle": "reasoning",
+        "canonicalAnswer": "아타카마사막",
+        "acceptedAliases": []
+      },
+      "explanation": "아타카마사막은 칠레 북부의 극건조 지대다. 차가운 훔볼트 해류가 해수 증발과 비구름 발달을 억제하고, 안데스산맥이 동쪽의 습한 공기를 막아 비그늘을 만들기 때문에 강수가 극히 적다.",
+      "sourceUrls": [
+        "https://www.britannica.com/place/Atacama-Desert"
+      ],
+      "misdirectionVariant": null
+    },
+    {
+      "key": "s2a_world_012",
+      "categoryId": "world_history_geography",
+      "categoryKo": "세계사·지리",
+      "difficulty": "easy",
+      "difficultyScore": 36,
+      "q1": {
+        "questionText": "오스트레일리아 퀸즐랜드 해안 앞바다에 펼쳐진 세계 최대 산호초 체계는 무엇일까요?",
+        "canonicalAnswer": "그레이트배리어리프",
+        "acceptedAliases": [
+          "대보초"
+        ]
+      },
+      "q2": {
+        "questionText": "작은 산호충 군체가 탄산칼슘 골격을 쌓고 수천 개의 암초와 섬이 이어져 거대한 생태계를 이룹니다. 얕고 따뜻한 바다의 생물이 기대어 살지만 백화 현상이 큰 위협입니다. 결정적 단서는 호주 퀸즐랜드 앞바다입니다. 세계 최대 산호초 체계는 무엇일까요?",
+        "canonicalAnswer": "그레이트배리어리프",
+        "acceptedAliases": [
+          "대보초"
+        ]
+      },
+      "explanation": "그레이트배리어리프는 오스트레일리아 북동부 해안의 거대한 산호초 체계다.",
+      "sourceUrls": [
+        "https://whc.unesco.org/en/list/154/"
+      ],
+      "misdirectionVariant": "q2",
+      "misdirectionType": "late_easy_clue"
+    },
+    {
+      "key": "s2a_world_013",
+      "categoryId": "world_history_geography",
+      "categoryKo": "세계사·지리",
+      "difficulty": "standard",
+      "difficultyScore": 48,
+      "q1": {
+        "questionText": "대서양 해안의 나미브사막이 아니라 아프리카 남부 내륙을 보세요. 보츠와나를 중심으로 나미비아 동부와 남아프리카공화국 북부까지 이어지는 반건조 사막은 무엇일까요?",
+        "questionStyle": "reasoning",
+        "canonicalAnswer": "칼라하리사막",
+        "acceptedAliases": []
+      },
+      "q2": {
+        "questionText": "오카방고 삼각주 주변 남부 아프리카에 넓게 펼쳐진 사막은 무엇일까요?",
+        "canonicalAnswer": "칼라하리사막",
+        "acceptedAliases": []
+      },
+      "explanation": "칼라하리사막은 남부 아프리카 내륙에 펼쳐진 광대한 모래 지대다.",
+      "sourceUrls": [
+        "https://www.britannica.com/place/Kalahari-Desert"
+      ],
+      "misdirectionVariant": null
+    },
+    {
+      "key": "s2a_world_014",
+      "categoryId": "world_history_geography",
+      "categoryKo": "세계사·지리",
+      "difficulty": "standard",
+      "difficultyScore": 45,
+      "q1": {
+        "questionText": "필리핀 동쪽과 일본 남쪽 사이의 서태평양으로 가 보세요. 알려진 해양 최심부인 챌린저 해연을 품은 해구는 무엇일까요?",
+        "questionStyle": "reasoning",
+        "canonicalAnswer": "마리아나해구",
+        "acceptedAliases": []
+      },
+      "q2": {
+        "questionText": "서태평양 마리아나 제도 동쪽에 위치한 세계에서 가장 깊은 해구는 무엇일까요?",
+        "canonicalAnswer": "마리아나해구",
+        "acceptedAliases": []
+      },
+      "explanation": "마리아나해구의 챌린저 해연은 알려진 지구 해양의 최심부다.",
+      "sourceUrls": [
+        "https://oceanservice.noaa.gov/facts/oceandepth.html"
+      ],
+      "misdirectionVariant": null
+    },
+    {
+      "key": "s2a_world_015",
+      "categoryId": "world_history_geography",
+      "categoryKo": "세계사·지리",
+      "difficulty": "easy",
+      "difficultyScore": 35,
+      "q1": {
+        "questionText": "요르단과 이스라엘 사이에서 물이 빠져나갈 강을 찾을 수 없고, 수면은 해수면보다 훨씬 낮습니다. 증발로 염도가 높아 사람이 쉽게 뜨는 이 호수는 무엇일까요?",
+        "questionStyle": "reasoning",
+        "canonicalAnswer": "사해",
+        "acceptedAliases": [
+          "죽은 바다"
+        ]
+      },
+      "q2": {
+        "questionText": "염도가 매우 높아 사람이 쉽게 뜨는 것으로 알려진 서아시아의 호수는 무엇일까요?",
+        "canonicalAnswer": "사해",
+        "acceptedAliases": []
+      },
+      "explanation": "사해는 요르단과 이스라엘 사이의 지구에서 가장 낮은 육상 지역에 있는 염호다.",
+      "sourceUrls": [
+        "https://www.britannica.com/place/Dead-Sea"
+      ],
+      "misdirectionVariant": null
+    },
+    {
+      "key": "s2a_world_016",
+      "categoryId": "world_history_geography",
+      "categoryKo": "세계사·지리",
+      "difficulty": "standard",
+      "difficultyScore": 47,
+      "q1": {
+        "questionText": "페루와 볼리비아의 국경을 따라 안데스고원으로 올라가 보세요. 해발 약 3,812미터인데도 큰 배가 다니는 호수는 무엇일까요?",
+        "questionStyle": "reasoning",
+        "canonicalAnswer": "티티카카호",
+        "acceptedAliases": [
+          "티티카카 호수"
+        ]
+      },
+      "q2": {
+        "questionText": "고도 약 3,812미터에 있어 대형 선박이 다니는 호수 가운데 가장 높은 곳으로 알려진 호수는 무엇일까요?",
+        "canonicalAnswer": "티티카카호",
+        "acceptedAliases": [
+          "티티카카 호수"
+        ]
+      },
+      "explanation": "티티카카호는 페루와 볼리비아 국경의 안데스고원에 있는 담수호다.",
+      "sourceUrls": [
+        "https://www.britannica.com/place/Lake-Titicaca"
+      ],
+      "misdirectionVariant": null
+    },
+    {
+      "key": "s2a_world_017",
+      "categoryId": "world_history_geography",
+      "categoryKo": "세계사·지리",
+      "difficulty": "easy",
+      "difficultyScore": 34,
+      "q1": {
+        "questionText": "잠베지강이 잠비아와 짐바브웨의 국경을 이루다가 거대한 절벽 아래로 떨어집니다. 현지에서 ‘천둥 치는 연기’라 부르는 이 폭포는 무엇일까요?",
+        "questionStyle": "reasoning",
+        "canonicalAnswer": "빅토리아폭포",
+        "acceptedAliases": []
+      },
+      "q2": {
+        "questionText": "현지에서 천둥 치는 연기라는 뜻의 이름으로도 불리는 아프리카 폭포는 무엇일까요?",
+        "canonicalAnswer": "빅토리아폭포",
+        "acceptedAliases": [
+          "모시 오아 툰야"
+        ]
+      },
+      "explanation": "빅토리아폭포는 잠베지강의 잠비아와 짐바브웨 국경에 있다.",
+      "sourceUrls": [
+        "https://whc.unesco.org/en/list/509/"
+      ],
+      "misdirectionVariant": null
+    },
+    {
+      "key": "s2a_world_018",
+      "categoryId": "world_history_geography",
+      "categoryKo": "세계사·지리",
+      "difficulty": "standard",
+      "difficultyScore": 47,
+      "q1": {
+        "questionText": "브라질과 아르헨티나의 국경에서 파라나강의 지류를 거슬러 가면 ‘악마의 목구멍’이라 불리는 거대한 낙차부가 나옵니다. 이 폭포는 무엇일까요?",
+        "questionStyle": "reasoning",
+        "canonicalAnswer": "이구아수폭포",
+        "acceptedAliases": [
+          "이과수 폭포"
+        ]
+      },
+      "q2": {
+        "questionText": "파라나강의 지류에 형성되어 악마의 목구멍으로 유명한 폭포는 무엇일까요?",
+        "canonicalAnswer": "이구아수폭포",
+        "acceptedAliases": [
+          "이과수 폭포"
+        ]
+      },
+      "explanation": "이구아수폭포는 아르헨티나와 브라질 국경에 걸친 폭포군이다.",
+      "sourceUrls": [
+        "https://whc.unesco.org/en/list/303/"
+      ],
+      "misdirectionVariant": null
+    },
+    {
+      "key": "s2a_world_019",
+      "categoryId": "world_history_geography",
+      "categoryKo": "세계사·지리",
+      "difficulty": "easy",
+      "difficultyScore": 33,
+      "q1": {
+        "questionText": "탄자니아에 있으며 아프리카에서 해발고도가 가장 높은 산은 무엇일까요?",
+        "canonicalAnswer": "킬리만자로산",
+        "acceptedAliases": [
+          "킬리만자로"
+        ]
+      },
+      "q2": {
+        "questionText": "키보·마웬지·시라라는 세 화산체가 하나의 산을 이루고, 산맥에 속하지 않은 채 탄자니아에 홀로 솟아 있습니다. 아프리카 최고봉인 이 산은 무엇일까요?",
+        "questionStyle": "reasoning",
+        "canonicalAnswer": "킬리만자로산",
+        "acceptedAliases": [
+          "킬리만자로"
+        ]
+      },
+      "explanation": "킬리만자로산은 탄자니아에 있는 아프리카 최고봉이다.",
+      "sourceUrls": [
+        "https://www.britannica.com/place/Kilimanjaro"
+      ],
+      "misdirectionVariant": null
+    },
+    {
+      "key": "s2a_world_020",
+      "categoryId": "world_history_geography",
+      "categoryKo": "세계사·지리",
+      "difficulty": "standard",
+      "difficultyScore": 47,
+      "q1": {
+        "questionText": "알래스카산맥에서 약 6,190미터 높이로 솟은 북아메리카 최고봉입니다. 코유콘어에서 유래해 '높은 것'이라는 뜻을 지닌, 알래스카주가 사용하는 이름은 무엇일까요?",
+        "questionStyle": "reasoning",
+        "canonicalAnswer": "데날리산",
+        "acceptedAliases": [
+          "데날리"
+        ]
+      },
+      "q2": {
+        "questionText": "미국 연방정부는 2025년 이 봉우리의 명칭을 매킨리산으로 되돌렸습니다. 그렇다면 코유콘어에서 유래해 알래스카주가 사용하는 이름은 무엇일까요?",
+        "canonicalAnswer": "데날리산",
+        "acceptedAliases": [
+          "데날리"
+        ]
+      },
+      "explanation": "데날리는 코유콘어에서 유래해 '높은 것'을 뜻하며 알래스카주가 북아메리카 최고봉에 사용하는 이름이다. 미국 연방정부는 2025년 봉우리의 공식 명칭을 매킨리산으로 되돌렸지만 국립공원 이름은 데날리 국립공원으로 유지된다.",
+      "sourceUrls": [
+        "https://www.nps.gov/dena/learn/historyculture/mountain-name.htm"
+      ],
+      "misdirectionVariant": null
+    },
+    {
+      "key": "s2a_world_021",
+      "categoryId": "world_history_geography",
+      "categoryKo": "세계사·지리",
+      "difficulty": "standard",
+      "difficultyScore": 50,
+      "q1": {
+        "questionText": "표층의 염도 낮은 물은 남쪽으로, 심층의 짠물은 반대로 흘러 이층 해류가 생깁니다. 수위와 염분 차가 원인이며 이스탄불을 가로질러 흑해와 마르마라해를 잇습니다. 마지막 힌트: 유럽과 아시아를 가르는 이 해협은 무엇일까요?",
+        "canonicalAnswer": "보스포루스 해협",
+        "acceptedAliases": [
+          "보스포러스 해협",
+          "보스포루스"
+        ]
+      },
+      "q2": {
+        "questionText": "이스탄불을 유럽과 아시아로 나누며 흑해와 마르마라해를 연결하는 해협은 무엇일까요?",
+        "canonicalAnswer": "보스포루스 해협",
+        "acceptedAliases": [
+          "보스포러스 해협",
+          "보스포루스"
+        ]
+      },
+      "explanation": "보스포루스 해협은 흑해와 마르마라해를 연결한다.",
+      "sourceUrls": [
+        "https://www.britannica.com/place/Bosporus"
+      ],
+      "misdirectionVariant": "q1",
+      "misdirectionType": "late_easy_clue"
+    },
+    {
+      "key": "s2a_world_022",
+      "categoryId": "world_history_geography",
+      "categoryKo": "세계사·지리",
+      "difficulty": "standard",
+      "difficultyScore": 46,
+      "q1": {
+        "questionText": "프랑스와 이탈리아의 국경 부근에서 알프스 최고봉을 찾고 있습니다. 이름까지 프랑스어로 ‘흰 산’을 뜻하는 이 산은 무엇일까요?",
+        "questionStyle": "reasoning",
+        "canonicalAnswer": "몽블랑산",
+        "acceptedAliases": [
+          "몽블랑"
+        ]
+      },
+      "q2": {
+        "questionText": "흰 산이라는 뜻의 이름을 가진 알프스 최고봉은 무엇일까요?",
+        "canonicalAnswer": "몽블랑산",
+        "acceptedAliases": [
+          "몽블랑"
+        ]
+      },
+      "explanation": "몽블랑산은 프랑스와 이탈리아 국경 부근의 알프스 최고봉이다.",
+      "sourceUrls": [
+        "https://www.britannica.com/place/Mont-Blanc-mountain-Europe"
+      ],
+      "misdirectionVariant": null
+    },
+    {
+      "key": "s2a_world_023",
+      "categoryId": "world_history_geography",
+      "categoryKo": "세계사·지리",
+      "difficulty": "easy",
+      "difficultyScore": 38,
+      "q1": {
+        "questionText": "러시아 서부를 남북으로 길게 그어 서쪽의 동유럽 평원과 동쪽의 서시베리아 평원을 나눕니다. 유럽과 아시아의 전통적 경계가 되는 산맥은 무엇일까요?",
+        "questionStyle": "reasoning",
+        "canonicalAnswer": "우랄산맥",
+        "acceptedAliases": []
+      },
+      "q2": {
+        "questionText": "북극해 쪽에서 카자흐스탄 북부까지 이어지는 러시아 서부의 산맥은 무엇일까요?",
+        "canonicalAnswer": "우랄산맥",
+        "acceptedAliases": []
+      },
+      "explanation": "우랄산맥은 유럽과 아시아를 나누는 전통적 지리 경계로 쓰인다.",
+      "sourceUrls": [
+        "https://www.britannica.com/place/Ural-Mountains"
+      ],
+      "misdirectionVariant": null
+    },
+    {
+      "key": "s2a_world_024",
+      "categoryId": "world_history_geography",
+      "categoryKo": "세계사·지리",
+      "difficulty": "easy",
+      "difficultyScore": 35,
+      "q1": {
+        "questionText": "북쪽의 스페인 남단과 남쪽의 모로코 사이로 배를 몰아 보세요. 대서양에서 지중해로 들어가는 이 길목은 어느 해협일까요?",
+        "questionStyle": "reasoning",
+        "canonicalAnswer": "지브롤터 해협",
+        "acceptedAliases": [
+          "지브롤터"
+        ]
+      },
+      "q2": {
+        "questionText": "스페인 남단과 모로코 북부 사이의 해협은 무엇일까요?",
+        "canonicalAnswer": "지브롤터 해협",
+        "acceptedAliases": [
+          "지브롤터"
+        ]
+      },
+      "explanation": "지브롤터 해협은 대서양과 지중해를 연결하며 유럽과 아프리카 사이에 있다.",
+      "sourceUrls": [
+        "https://www.britannica.com/place/Strait-of-Gibraltar"
+      ],
+      "misdirectionVariant": null
+    },
+    {
+      "key": "s2a_world_025",
+      "categoryId": "world_history_geography",
+      "categoryKo": "세계사·지리",
+      "difficulty": "easy",
+      "difficultyScore": 37,
+      "q1": {
+        "questionText": "아시아의 시베리아와 북아메리카의 알래스카 사이에 있는 해협은 무엇일까요?",
+        "canonicalAnswer": "베링 해협",
+        "acceptedAliases": []
+      },
+      "q2": {
+        "questionText": "러시아와 미국을 바다로 나누며 북극해와 태평양을 잇는 해협은 무엇일까요?",
+        "canonicalAnswer": "베링 해협",
+        "acceptedAliases": []
+      },
+      "explanation": "베링 해협은 러시아 극동과 미국 알래스카 사이에 있다.",
+      "sourceUrls": [
+        "https://www.britannica.com/place/Bering-Strait"
+      ],
+      "misdirectionVariant": null
+    },
+    {
+      "key": "s2a_world_026",
+      "categoryId": "world_history_geography",
+      "categoryKo": "세계사·지리",
+      "difficulty": "easy",
+      "difficultyScore": 36,
+      "q1": {
+        "questionText": "지중해와 홍해를 연결해 유럽과 아시아 사이 항로를 단축한 운하는 무엇일까요?",
+        "canonicalAnswer": "수에즈운하",
+        "acceptedAliases": []
+      },
+      "q2": {
+        "questionText": "이집트의 수에즈 지협을 가로질러 1869년에 개통한 운하는 무엇일까요?",
+        "canonicalAnswer": "수에즈운하",
+        "acceptedAliases": []
+      },
+      "explanation": "수에즈운하는 지중해와 홍해를 직접 연결한다.",
+      "sourceUrls": [
+        "https://www.britannica.com/topic/Suez-Canal"
+      ],
+      "misdirectionVariant": null
+    },
+    {
+      "key": "s2a_world_027",
+      "categoryId": "world_history_geography",
+      "categoryKo": "세계사·지리",
+      "difficulty": "standard",
+      "difficultyScore": 52,
+      "q1": {
+        "questionText": "남아메리카 티에라델푸에고 제도의 남쪽 끝으로 알려진 곶은 무엇일까요?",
+        "canonicalAnswer": "호른곶",
+        "acceptedAliases": [
+          "케이프 혼",
+          "혼곶"
+        ]
+      },
+      "q2": {
+        "questionText": "대서양과 태평양 사이 범선 항로의 험지로 유명한 남아메리카 남단의 곶은 무엇일까요?",
+        "canonicalAnswer": "호른곶",
+        "acceptedAliases": [
+          "케이프 혼",
+          "혼곶"
+        ]
+      },
+      "explanation": "호른곶은 티에라델푸에고 제도 남쪽의 항해 요충지다.",
+      "sourceUrls": [
+        "https://www.britannica.com/place/Cape-Horn"
+      ],
+      "misdirectionVariant": null
+    },
+    {
+      "key": "s2a_world_028",
+      "categoryId": "world_history_geography",
+      "categoryKo": "세계사·지리",
+      "difficulty": "easy",
+      "difficultyScore": 37,
+      "q1": {
+        "questionText": "본초자오선의 기준이 되는 영국 런던의 지역은 어디일까요?",
+        "canonicalAnswer": "그리니치",
+        "acceptedAliases": []
+      },
+      "q2": {
+        "questionText": "경도 0도의 기준 자오선이 지나는 왕립천문대가 있는 곳은 어디일까요?",
+        "canonicalAnswer": "그리니치",
+        "acceptedAliases": []
+      },
+      "explanation": "국제적으로 채택된 본초자오선은 런던의 그리니치 천문대를 지난다.",
+      "sourceUrls": [
+        "https://www.rmg.co.uk/stories/topics/what-prime-meridian-why-it-greenwich"
+      ],
+      "misdirectionVariant": null
+    },
+    {
+      "key": "s2a_world_029",
+      "categoryId": "world_history_geography",
+      "categoryKo": "세계사·지리",
+      "difficulty": "standard",
+      "difficultyScore": 44,
+      "q1": {
+        "questionText": "국제 날짜 변경선이 대체로 따라가는 경도는 몇 도일까요?",
+        "canonicalAnswer": "180도 경선",
+        "acceptedAliases": [
+          "경도 180도",
+          "180도"
+        ]
+      },
+      "q2": {
+        "questionText": "본초자오선의 지구 반대편에 있어 날짜 변경선의 기준이 되는 경선은 무엇일까요?",
+        "canonicalAnswer": "180도 경선",
+        "acceptedAliases": [
+          "경도 180도",
+          "180도"
+        ]
+      },
+      "explanation": "국제 날짜 변경선은 섬과 국경을 피해 굽어지지만 대체로 180도 경선을 따른다.",
+      "sourceUrls": [
+        "https://www.britannica.com/science/International-Date-Line"
+      ],
+      "misdirectionVariant": null
+    },
+    {
+      "key": "s2a_world_030",
+      "categoryId": "world_history_geography",
+      "categoryKo": "세계사·지리",
+      "difficulty": "hard",
+      "difficultyScore": 61,
+      "q1": {
+        "questionText": "대륙에 막히지 않은 남극 순환류와 강한 편서풍이 만나 큰 너울과 급격한 날씨 변화를 만듭니다. 오랫동안 선원들이 두려워한 남빙양의 항로로, 남아메리카 호른곶과 남극반도 사이를 지납니다. 항로를 알아볼 마지막 단서: 이 거친 해협의 이름은 무엇일까요?",
+        "questionStyle": "wait_for_clue",
+        "canonicalAnswer": "드레이크 해협",
+        "acceptedAliases": [
+          "드레이크 통로"
+        ]
+      },
+      "q2": {
+        "questionText": "대서양과 태평양을 연결하며 남극 순환류가 흐르는 남극 북쪽의 해협은 무엇일까요?",
+        "canonicalAnswer": "드레이크 해협",
+        "acceptedAliases": [
+          "드레이크 통로"
+        ]
+      },
+      "explanation": "드레이크 해협은 남아메리카 남단과 남극반도 사이에 있다.",
+      "sourceUrls": [
+        "https://www.britannica.com/place/Drake-Passage"
+      ],
+      "misdirectionVariant": null
+    },
+    {
+      "key": "s2a_world_031",
+      "categoryId": "world_history_geography",
+      "categoryKo": "세계사·지리",
+      "difficulty": "standard",
+      "difficultyScore": 50,
+      "q1": {
+        "questionText": "고대 이집트 상형문자 해독의 열쇠가 된 돌은 무엇일까요?",
+        "canonicalAnswer": "로제타석",
+        "acceptedAliases": [
+          "로제타 스톤",
+          "로제타돌"
+        ]
+      },
+      "q2": {
+        "questionText": "같은 내용을 상형문자와 민중문자, 고대 그리스어로 새긴 유물은 무엇일까요?",
+        "canonicalAnswer": "로제타석",
+        "acceptedAliases": [
+          "로제타 스톤",
+          "로제타돌"
+        ]
+      },
+      "explanation": "로제타석의 세 문자로 된 명문은 이집트 상형문자 해독에 결정적 단서를 제공했다.",
+      "sourceUrls": [
+        "https://www.britishmuseum.org/collection/object/Y_EA24"
+      ],
+      "misdirectionVariant": null
+    },
+    {
+      "key": "s2a_world_032",
+      "categoryId": "world_history_geography",
+      "categoryKo": "세계사·지리",
+      "difficulty": "standard",
+      "difficultyScore": 50,
+      "q1": {
+        "questionText": "1215년 잉글랜드의 존 왕이 승인한 자유 대헌장은 무엇일까요?",
+        "canonicalAnswer": "마그나카르타",
+        "acceptedAliases": [
+          "대헌장"
+        ]
+      },
+      "q2": {
+        "questionText": "러니미드에서 봉인되어 왕권도 법의 지배를 받는다는 상징이 된 문서는 무엇일까요?",
+        "canonicalAnswer": "마그나카르타",
+        "acceptedAliases": [
+          "대헌장"
+        ]
+      },
+      "explanation": "마그나카르타는 1215년 존 왕이 봉인한 잉글랜드의 헌장이다.",
+      "sourceUrls": [
+        "https://www.parliament.uk/magnacarta/"
+      ],
+      "misdirectionVariant": null
+    },
+    {
+      "key": "s2a_world_033",
+      "categoryId": "world_history_geography",
+      "categoryKo": "세계사·지리",
+      "difficulty": "standard",
+      "difficultyScore": 53,
+      "q1": {
+        "questionText": "유럽에서 금속활자로 대량 인쇄된 초기 대작 성경은 무엇일까요?",
+        "canonicalAnswer": "구텐베르크 성경",
+        "acceptedAliases": [
+          "42행 성경"
+        ]
+      },
+      "q2": {
+        "questionText": "요하네스 구텐베르크가 1450년대에 마인츠에서 인쇄한 성경은 무엇일까요?",
+        "canonicalAnswer": "구텐베르크 성경",
+        "acceptedAliases": [
+          "42행 성경"
+        ]
+      },
+      "explanation": "구텐베르크 성경은 유럽 금속활자 인쇄의 대표적인 초기 대작이다.",
+      "sourceUrls": [
+        "https://www.loc.gov/exhibits/bibles/the-gutenberg-bible.html"
+      ],
+      "misdirectionVariant": null
+    },
+    {
+      "key": "s2a_world_034",
+      "categoryId": "world_history_geography",
+      "categoryKo": "세계사·지리",
+      "difficulty": "standard",
+      "difficultyScore": 49,
+      "q1": {
+        "questionText": "1517년 비텐베르크에서 95개조 반박문을 발표한 종교개혁가는 누구일까요?",
+        "canonicalAnswer": "마르틴 루터",
+        "acceptedAliases": [
+          "마틴 루터"
+        ]
+      },
+      "q2": {
+        "questionText": "잉글랜드의 종교개혁 군주는 헨리 8세입니다. 그렇다면 95개조 반박문으로 독일 종교개혁의 계기를 만든 인물은 누구일까요?",
+        "canonicalAnswer": "마르틴 루터",
+        "acceptedAliases": [
+          "마틴 루터"
+        ]
+      },
+      "explanation": "마르틴 루터의 95개조 반박문은 종교개혁의 중요한 계기가 되었다.",
+      "sourceUrls": [
+        "https://www.britannica.com/biography/Martin-Luther"
+      ],
+      "misdirectionVariant": "q2",
+      "misdirectionType": "relation_twist"
+    },
+    {
+      "key": "s2a_world_035",
+      "categoryId": "world_history_geography",
+      "categoryKo": "세계사·지리",
+      "difficulty": "hard",
+      "difficultyScore": 62,
+      "q1": {
+        "questionText": "1648년 삼십년전쟁을 끝낸 일련의 평화조약을 무엇이라고 할까요?",
+        "canonicalAnswer": "베스트팔렌 조약",
+        "acceptedAliases": [
+          "베스트팔리아 조약",
+          "웨스트팔리아 조약"
+        ]
+      },
+      "q2": {
+        "questionText": "뮌스터와 오스나브뤼크에서 체결되어 삼십년전쟁을 종결한 평화는 무엇일까요?",
+        "canonicalAnswer": "베스트팔렌 조약",
+        "acceptedAliases": [
+          "베스트팔리아 조약",
+          "웨스트팔리아 조약"
+        ]
+      },
+      "explanation": "베스트팔렌 조약은 1648년 삼십년전쟁을 종결한 여러 조약을 가리킨다.",
+      "sourceUrls": [
+        "https://www.britannica.com/event/Peace-of-Westphalia"
+      ],
+      "misdirectionVariant": null
+    },
+    {
+      "key": "s2a_world_036",
+      "categoryId": "world_history_geography",
+      "categoryKo": "세계사·지리",
+      "difficulty": "standard",
+      "difficultyScore": 54,
+      "q1": {
+        "questionText": "1688년 잉글랜드에서 제임스 2세를 몰아내고 윌리엄과 메리를 공동 군주로 세운 혁명은 무엇일까요?",
+        "canonicalAnswer": "명예혁명",
+        "acceptedAliases": [
+          "영광의 혁명"
+        ]
+      },
+      "q2": {
+        "questionText": "큰 유혈 충돌 없이 왕권 교체가 이루어졌다고 하여 이름 붙은 1688년 영국 혁명은 무엇일까요?",
+        "canonicalAnswer": "명예혁명",
+        "acceptedAliases": [
+          "영광의 혁명"
+        ]
+      },
+      "explanation": "명예혁명은 1688년 제임스 2세가 축출되고 윌리엄 3세와 메리 2세가 즉위한 사건이다.",
+      "sourceUrls": [
+        "https://www.britannica.com/event/Glorious-Revolution"
+      ],
+      "misdirectionVariant": null
+    },
+    {
+      "key": "s2a_world_037",
+      "categoryId": "world_history_geography",
+      "categoryKo": "세계사·지리",
+      "difficulty": "easy",
+      "difficultyScore": 39,
+      "q1": {
+        "questionText": "1773년 식민지 주민들이 영국산 차를 바다에 던진 항의 사건은 무엇일까요?",
+        "canonicalAnswer": "보스턴 차 사건",
+        "acceptedAliases": [
+          "보스턴 티 파티"
+        ]
+      },
+      "q2": {
+        "questionText": "미국 독립혁명 전 보스턴항에서 차 상자를 바다에 버린 사건은 무엇일까요?",
+        "canonicalAnswer": "보스턴 차 사건",
+        "acceptedAliases": [
+          "보스턴 티 파티"
+        ]
+      },
+      "explanation": "보스턴 차 사건은 1773년 영국의 차 정책에 항의해 일어난 사건이다.",
+      "sourceUrls": [
+        "https://www.britannica.com/event/Boston-Tea-Party"
+      ],
+      "misdirectionVariant": null
+    },
+    {
+      "key": "s2a_world_038",
+      "categoryId": "world_history_geography",
+      "categoryKo": "세계사·지리",
+      "difficulty": "easy",
+      "difficultyScore": 35,
+      "q1": {
+        "questionText": "1776년 7월 4일 대륙회의가 채택한 문서는 무엇일까요?",
+        "canonicalAnswer": "미국 독립선언",
+        "acceptedAliases": [
+          "독립선언서",
+          "미국 독립선언서"
+        ]
+      },
+      "q2": {
+        "questionText": "영국에서 분리되는 열세 식민지의 원칙과 이유를 밝힌 1776년 문서는 무엇일까요?",
+        "canonicalAnswer": "미국 독립선언",
+        "acceptedAliases": [
+          "독립선언서",
+          "미국 독립선언서"
+        ]
+      },
+      "explanation": "미국 독립선언은 1776년 7월 4일 대륙회의에서 채택되었다.",
+      "sourceUrls": [
+        "https://www.archives.gov/founding-docs/declaration"
+      ],
+      "misdirectionVariant": null
+    },
+    {
+      "key": "s2a_world_039",
+      "categoryId": "world_history_geography",
+      "categoryKo": "세계사·지리",
+      "difficulty": "easy",
+      "difficultyScore": 38,
+      "q1": {
+        "questionText": "1789년 7월 14일 파리 시민들이 감옥을 점령한 프랑스혁명의 상징적 사건은 무엇일까요?",
+        "canonicalAnswer": "바스티유 감옥 습격",
+        "acceptedAliases": [
+          "바스티유 습격",
+          "바스티유 감옥 함락"
+        ]
+      },
+      "q2": {
+        "questionText": "프랑스 국경일의 날짜가 된 1789년 파리의 요새 감옥 공격 사건은 무엇일까요?",
+        "canonicalAnswer": "바스티유 감옥 습격",
+        "acceptedAliases": [
+          "바스티유 습격",
+          "바스티유 감옥 함락"
+        ]
+      },
+      "explanation": "바스티유 감옥 습격은 1789년 7월 14일 일어난 프랑스혁명의 상징적 사건이다.",
+      "sourceUrls": [
+        "https://www.britannica.com/event/storming-of-the-Bastille"
+      ],
+      "misdirectionVariant": null
+    },
+    {
+      "key": "s2a_world_040",
+      "categoryId": "world_history_geography",
+      "categoryKo": "세계사·지리",
+      "difficulty": "easy",
+      "difficultyScore": 39,
+      "q1": {
+        "questionText": "1815년 나폴레옹이 최종 패배한 전투는 무엇일까요?",
+        "canonicalAnswer": "워털루 전투",
+        "acceptedAliases": [
+          "워털루"
+        ]
+      },
+      "q2": {
+        "questionText": "벨기에의 한 마을 이름에서 유래하며 나폴레옹 전쟁을 끝낸 전투는 무엇일까요?",
+        "canonicalAnswer": "워털루 전투",
+        "acceptedAliases": [
+          "워털루"
+        ]
+      },
+      "explanation": "워털루 전투에서 패한 나폴레옹은 다시 퇴위했다.",
+      "sourceUrls": [
+        "https://www.britannica.com/event/Battle-of-Waterloo"
+      ],
+      "misdirectionVariant": null
+    },
+    {
+      "key": "s2a_world_041",
+      "categoryId": "world_history_geography",
+      "categoryKo": "세계사·지리",
+      "difficulty": "standard",
+      "difficultyScore": 54,
+      "q1": {
+        "questionText": "나폴레옹 전쟁 뒤 유럽 질서를 재편하기 위해 1814년부터 열린 국제회의는 무엇일까요?",
+        "canonicalAnswer": "빈 회의",
+        "acceptedAliases": [
+          "비엔나 회의"
+        ]
+      },
+      "q2": {
+        "questionText": "메테르니히가 주도하고 정통주의와 세력균형을 내세운 국제회의는 무엇일까요?",
+        "canonicalAnswer": "빈 회의",
+        "acceptedAliases": [
+          "비엔나 회의"
+        ]
+      },
+      "explanation": "빈 회의는 나폴레옹 전쟁 이후 유럽의 국경과 정치 질서를 재편했다.",
+      "sourceUrls": [
+        "https://www.britannica.com/event/Congress-of-Vienna"
+      ],
+      "misdirectionVariant": null
+    },
+    {
+      "key": "s2a_world_042",
+      "categoryId": "world_history_geography",
+      "categoryKo": "세계사·지리",
+      "difficulty": "standard",
+      "difficultyScore": 48,
+      "q1": {
+        "questionText": "1868년 일본에서 막부 체제가 끝나고 천황 중심의 근대화가 시작된 정치 변혁은 무엇일까요?",
+        "canonicalAnswer": "메이지유신",
+        "acceptedAliases": []
+      },
+      "q2": {
+        "questionText": "도쿠가와 막부의 종말과 함께 일본의 중앙집권적 개혁을 연 사건은 무엇일까요?",
+        "canonicalAnswer": "메이지유신",
+        "acceptedAliases": []
+      },
+      "explanation": "메이지유신은 1868년을 전후해 일본의 통치 체제와 사회를 크게 바꾼 변혁이다.",
+      "sourceUrls": [
+        "https://www.britannica.com/event/Meiji-Restoration"
+      ],
+      "misdirectionVariant": null
+    },
+    {
+      "key": "s2a_world_043",
+      "categoryId": "world_history_geography",
+      "categoryKo": "세계사·지리",
+      "difficulty": "hard",
+      "difficultyScore": 63,
+      "q1": {
+        "questionText": "1884년부터 1885년까지 열려 유럽 열강의 아프리카 분할 원칙을 논의한 회의는 무엇일까요?",
+        "canonicalAnswer": "베를린 회의",
+        "acceptedAliases": [
+          "베를린 서아프리카 회의",
+          "콩고 회의"
+        ]
+      },
+      "q2": {
+        "questionText": "비스마르크가 소집하고 콩고강·니제르강 유역의 통상 문제를 다룬 국제회의는 무엇일까요?",
+        "canonicalAnswer": "베를린 회의",
+        "acceptedAliases": [
+          "베를린 서아프리카 회의",
+          "콩고 회의"
+        ]
+      },
+      "explanation": "베를린 회의는 유럽 열강의 아프리카 식민지 획득 규칙을 정하는 계기가 되었다.",
+      "sourceUrls": [
+        "https://www.britannica.com/event/Berlin-West-Africa-Conference"
+      ],
+      "misdirectionVariant": null
+    },
+    {
+      "key": "s2a_world_044",
+      "categoryId": "world_history_geography",
+      "categoryKo": "세계사·지리",
+      "difficulty": "standard",
+      "difficultyScore": 50,
+      "q1": {
+        "questionText": "1903년 키티호크 인근에서 동력 비행에 성공한 라이트 형제의 비행기 이름은 무엇일까요?",
+        "canonicalAnswer": "라이트 플라이어호",
+        "acceptedAliases": [
+          "플라이어 1호",
+          "라이트 플라이어"
+        ]
+      },
+      "q2": {
+        "questionText": "라이트 형제가 최초의 지속적·통제된 동력 비행에 사용한 기체는 무엇일까요?",
+        "canonicalAnswer": "라이트 플라이어호",
+        "acceptedAliases": [
+          "플라이어 1호",
+          "라이트 플라이어"
+        ]
+      },
+      "explanation": "라이트 플라이어호는 1903년 라이트 형제가 동력 비행에 사용한 항공기다.",
+      "sourceUrls": [
+        "https://airandspace.si.edu/collection-objects/1903-wright-flyer/nasm_A19610048000"
+      ],
+      "misdirectionVariant": null
+    },
+    {
+      "key": "s2a_world_045",
+      "categoryId": "world_history_geography",
+      "categoryKo": "세계사·지리",
+      "difficulty": "standard",
+      "difficultyScore": 52,
+      "q1": {
+        "questionText": "제1차 세계대전은 1918년 휴전으로 끝났습니다. 그렇다면 1914년 사라예보에서 암살되어 전쟁의 도화선이 된 황태자는 누구일까요?",
+        "canonicalAnswer": "프란츠 페르디난트",
+        "acceptedAliases": [
+          "프란츠 페르디난트 대공"
+        ]
+      },
+      "q2": {
+        "questionText": "사라예보 사건에서 가브릴로 프린치프에게 암살된 오스트리아 황태자는 누구일까요?",
+        "canonicalAnswer": "프란츠 페르디난트",
+        "acceptedAliases": [
+          "프란츠 페르디난트 대공"
+        ]
+      },
+      "explanation": "오스트리아 황태자 프란츠 페르디난트의 암살은 제1차 세계대전 발발의 직접적 계기가 되었다.",
+      "sourceUrls": [
+        "https://www.britannica.com/biography/Franz-Ferdinand-Archduke-of-Austria-Este"
+      ],
+      "misdirectionVariant": "q1",
+      "misdirectionType": "relation_twist"
+    },
+    {
+      "key": "s2a_world_046",
+      "categoryId": "world_history_geography",
+      "categoryKo": "세계사·지리",
+      "difficulty": "standard",
+      "difficultyScore": 48,
+      "q1": {
+        "questionText": "서부전선의 교전을 멈춘 제1차 세계대전 휴전협정이 발효된 날짜는 언제일까요?",
+        "canonicalAnswer": "1918년 11월 11일",
+        "acceptedAliases": [
+          "1918-11-11"
+        ]
+      },
+      "q2": {
+        "questionText": "매년 영연방에서 현충일로 기리는 제1차 세계대전 휴전일은 언제일까요?",
+        "canonicalAnswer": "1918년 11월 11일",
+        "acceptedAliases": [
+          "1918-11-11"
+        ]
+      },
+      "explanation": "제1차 세계대전 서부전선의 휴전은 1918년 11월 11일 오전 11시에 발효되었다.",
+      "sourceUrls": [
+        "https://www.britannica.com/event/Armistice-of-November-11-1918"
+      ],
+      "misdirectionVariant": null
+    },
+    {
+      "key": "s2a_world_047",
+      "categoryId": "world_history_geography",
+      "categoryKo": "세계사·지리",
+      "difficulty": "easy",
+      "difficultyScore": 39,
+      "q1": {
+        "questionText": "제1차 세계대전 뒤 독일과 연합국 사이에 1919년 체결된 강화조약은 무엇일까요?",
+        "canonicalAnswer": "베르사유 조약",
+        "acceptedAliases": [
+          "베르사이유 조약"
+        ]
+      },
+      "q2": {
+        "questionText": "국제연맹 규약을 포함하고 독일의 전쟁 책임을 규정한 조약은 무엇일까요?",
+        "canonicalAnswer": "베르사유 조약",
+        "acceptedAliases": [
+          "베르사이유 조약"
+        ]
+      },
+      "explanation": "베르사유 조약은 1919년 독일과 연합국 사이에 체결된 제1차 세계대전 강화조약이다.",
+      "sourceUrls": [
+        "https://www.britannica.com/event/Treaty-of-Versailles-1919"
+      ],
+      "misdirectionVariant": null
+    },
+    {
+      "key": "s2a_world_048",
+      "categoryId": "world_history_geography",
+      "categoryKo": "세계사·지리",
+      "difficulty": "easy",
+      "difficultyScore": 39,
+      "q1": {
+        "questionText": "1929년 미국 주식시장 붕괴 뒤 세계적으로 이어진 장기 경제침체를 무엇이라고 할까요?",
+        "canonicalAnswer": "대공황",
+        "acceptedAliases": [
+          "세계 대공황"
+        ]
+      },
+      "q2": {
+        "questionText": "검은 목요일과 뉴딜 정책의 배경이 된 1930년대 경제 위기는 무엇일까요?",
+        "canonicalAnswer": "대공황",
+        "acceptedAliases": [
+          "세계 대공황"
+        ]
+      },
+      "explanation": "대공황은 1929년 시작되어 1930년대 세계 경제를 크게 위축시킨 경제 위기다.",
+      "sourceUrls": [
+        "https://www.britannica.com/event/Great-Depression"
+      ],
+      "misdirectionVariant": null
+    },
+    {
+      "key": "s2a_world_049",
+      "categoryId": "world_history_geography",
+      "categoryKo": "세계사·지리",
+      "difficulty": "easy",
+      "difficultyScore": 37,
+      "q1": {
+        "questionText": "1944년 6월 6일 연합군이 프랑스 해안에 상륙한 작전은 무엇일까요?",
+        "canonicalAnswer": "노르망디 상륙작전",
+        "acceptedAliases": [
+          "디데이 상륙작전"
+        ]
+      },
+      "q2": {
+        "questionText": "오버로드 작전 가운데 유타·오마하 등 해변으로 병력과 함대를 보내는 해상·상륙 단계에 붙은 암호명은 무엇일까요?",
+        "canonicalAnswer": "넵튠 작전",
+        "acceptedAliases": [
+          "넵튠",
+          "Operation Neptune",
+          "오퍼레이션 넵튠"
+        ]
+      },
+      "explanation": "연합군의 노르망디 침공 전체 계획은 오버로드 작전이었고, 그 해상·상륙 단계의 암호명은 넵튠 작전이었다. 1944년 6월 6일 유타·오마하 등에서 시작된 상륙은 흔히 노르망디 상륙작전 또는 D-Day 상륙으로 불린다.",
+      "sourceUrls": [
+        "https://www.britannica.com/event/Normandy-Invasion",
+        "https://www.history.navy.mil/browse-by-topic/wars-conflicts-and-operations/world-war-ii/1944/overlord/operation-neptune.html"
+      ],
+      "misdirectionVariant": null
+    },
+    {
+      "key": "s2a_world_050",
+      "categoryId": "world_history_geography",
+      "categoryKo": "세계사·지리",
+      "difficulty": "standard",
+      "difficultyScore": 47,
+      "q1": {
+        "questionText": "1945년 샌프란시스코 회의에서 서명되어 국제연합의 기초가 된 문서는 무엇일까요?",
+        "canonicalAnswer": "유엔 헌장",
+        "acceptedAliases": [
+          "국제연합 헌장",
+          "UN 헌장"
+        ]
+      },
+      "q2": {
+        "questionText": "국제연합의 목적과 조직, 회원국 의무를 정한 설립 문서는 무엇일까요?",
+        "canonicalAnswer": "유엔 헌장",
+        "acceptedAliases": [
+          "국제연합 헌장",
+          "UN 헌장"
+        ]
+      },
+      "explanation": "유엔 헌장은 1945년 서명되고 발효되어 국제연합의 법적 기초가 되었다.",
+      "sourceUrls": [
+        "https://www.un.org/en/about-us/un-charter/history-of-the-charter"
+      ],
+      "misdirectionVariant": null
+    },
+    {
+      "key": "s2a_world_051",
+      "categoryId": "world_history_geography",
+      "categoryKo": "세계사·지리",
+      "difficulty": "easy",
+      "difficultyScore": 37,
+      "q1": {
+        "questionText": "인도가 영국의 식민 통치에서 독립한 해는 몇 년일까요?",
+        "canonicalAnswer": "1947년",
+        "acceptedAliases": [
+          "1947"
+        ]
+      },
+      "q2": {
+        "questionText": "인도와 파키스탄이 분리 독립한 해는 몇 년일까요?",
+        "canonicalAnswer": "1947년",
+        "acceptedAliases": [
+          "1947"
+        ]
+      },
+      "explanation": "인도 독립법에 따라 인도와 파키스탄은 1947년에 영국 통치에서 독립했다.",
+      "sourceUrls": [
+        "https://www.britannica.com/event/Indian-Independence-Act-1947"
+      ],
+      "misdirectionVariant": null
+    },
+    {
+      "key": "s2a_world_052",
+      "categoryId": "world_history_geography",
+      "categoryKo": "세계사·지리",
+      "difficulty": "standard",
+      "difficultyScore": 52,
+      "q1": {
+        "questionText": "소련의 육로 봉쇄에 맞서 서방 연합국이 서베를린에 물자를 공수한 작전은 무엇일까요?",
+        "canonicalAnswer": "베를린 공수작전",
+        "acceptedAliases": [
+          "베를린 공수",
+          "베를린 에어리프트"
+        ]
+      },
+      "q2": {
+        "questionText": "1948년부터 1949년까지 항공기로 서베를린을 보급한 냉전 초기 작전은 무엇일까요?",
+        "canonicalAnswer": "베를린 공수작전",
+        "acceptedAliases": [
+          "베를린 공수",
+          "베를린 에어리프트"
+        ]
+      },
+      "explanation": "베를린 공수작전은 소련의 봉쇄 기간 서베를린에 식량과 연료를 공급했다.",
+      "sourceUrls": [
+        "https://www.britannica.com/event/Berlin-blockade-and-airlift"
+      ],
+      "misdirectionVariant": null
+    },
+    {
+      "key": "s2a_world_053",
+      "categoryId": "world_history_geography",
+      "categoryKo": "세계사·지리",
+      "difficulty": "easy",
+      "difficultyScore": 38,
+      "q1": {
+        "questionText": "1957년 소련이 발사한 세계 최초의 인공위성은 무엇일까요?",
+        "canonicalAnswer": "스푸트니크 1호",
+        "acceptedAliases": [
+          "스푸트니크"
+        ]
+      },
+      "q2": {
+        "questionText": "우주시대의 시작을 알린 소련의 구형 인공위성 이름은 무엇일까요?",
+        "canonicalAnswer": "스푸트니크 1호",
+        "acceptedAliases": [
+          "스푸트니크"
+        ]
+      },
+      "explanation": "스푸트니크 1호는 1957년 소련이 발사한 최초의 인공위성이다.",
+      "sourceUrls": [
+        "https://www.nasa.gov/history/sputnik/sputorig.html"
+      ],
+      "misdirectionVariant": null
+    },
+    {
+      "key": "s2a_world_054",
+      "categoryId": "world_history_geography",
+      "categoryKo": "세계사·지리",
+      "difficulty": "easy",
+      "difficultyScore": 39,
+      "q1": {
+        "questionText": "1962년 소련의 핵미사일 배치를 둘러싸고 미국과 소련이 대치한 사건은 무엇일까요?",
+        "canonicalAnswer": "쿠바 미사일 위기",
+        "acceptedAliases": [
+          "쿠바 미사일 사태"
+        ]
+      },
+      "q2": {
+        "questionText": "케네디와 흐루쇼프 시대에 핵전쟁 위험이 최고조에 이른 13일간의 대치는 무엇일까요?",
+        "canonicalAnswer": "쿠바 미사일 위기",
+        "acceptedAliases": [
+          "쿠바 미사일 사태"
+        ]
+      },
+      "explanation": "쿠바 미사일 위기는 1962년 쿠바의 소련 미사일 배치를 둘러싼 미·소 대치였다.",
+      "sourceUrls": [
+        "https://history.state.gov/milestones/1961-1968/cuban-missile-crisis"
+      ],
+      "misdirectionVariant": null
+    },
+    {
+      "key": "s2a_world_055",
+      "categoryId": "world_history_geography",
+      "categoryKo": "세계사·지리",
+      "difficulty": "easy",
+      "difficultyScore": 36,
+      "q1": {
+        "questionText": "1989년 동독 정부의 여행 규정 발표 뒤 시민들이 국경 검문소로 몰리며 일어난 냉전의 상징적 사건은 무엇일까요?",
+        "canonicalAnswer": "베를린 장벽 붕괴",
+        "acceptedAliases": [
+          "베를린 장벽의 붕괴"
+        ]
+      },
+      "q2": {
+        "questionText": "오랜 이동 통제 끝에 새 여행 규정이 마련됐습니다. 한 관리가 시행 시점을 잘못 전하자 시민들이 검문소로 몰렸고 경비대는 문을 열었습니다. 때는 1989년 11월, 도시는 베를린입니다. 결정적 단서: 냉전의 장벽이 무너진 이 사건을 무엇이라고 할까요?",
+        "canonicalAnswer": "베를린 장벽 붕괴",
+        "acceptedAliases": [
+          "베를린 장벽의 붕괴"
+        ]
+      },
+      "explanation": "1989년 11월 9일 국경이 개방되며 베를린 장벽 붕괴가 시작되었다.",
+      "sourceUrls": [
+        "https://www.britannica.com/event/Berlin-Wall"
+      ],
+      "misdirectionVariant": "q2",
+      "misdirectionType": "late_easy_clue"
+    },
+    {
+      "key": "s2a_world_056",
+      "categoryId": "world_history_geography",
+      "categoryKo": "세계사·지리",
+      "difficulty": "easy",
+      "difficultyScore": 36,
+      "q1": {
+        "questionText": "소비에트 사회주의 공화국 연방이 공식 해체된 해는 몇 년일까요?",
+        "canonicalAnswer": "1991년",
+        "acceptedAliases": [
+          "1991"
+        ]
+      },
+      "q2": {
+        "questionText": "고르바초프가 소련 대통령직에서 물러나고 소련 국기가 내려진 해는 몇 년일까요?",
+        "canonicalAnswer": "1991년",
+        "acceptedAliases": [
+          "1991"
+        ]
+      },
+      "explanation": "소련은 1991년 12월 공식적으로 해체되었다.",
+      "sourceUrls": [
+        "https://www.britannica.com/event/the-collapse-of-the-Soviet-Union"
+      ],
+      "misdirectionVariant": null
+    },
+    {
+      "key": "s2a_world_057",
+      "categoryId": "world_history_geography",
+      "categoryKo": "세계사·지리",
+      "difficulty": "standard",
+      "difficultyScore": 51,
+      "q1": {
+        "questionText": "유럽연합 창설과 유럽 단일통화의 길을 연 1992년 조약은 무엇일까요?",
+        "canonicalAnswer": "마스트리흐트 조약",
+        "acceptedAliases": [
+          "유럽연합 조약"
+        ]
+      },
+      "q2": {
+        "questionText": "네덜란드의 한 도시에서 서명되어 유럽경제공동체를 유럽공동체로 바꾼 조약은 무엇일까요?",
+        "canonicalAnswer": "마스트리흐트 조약",
+        "acceptedAliases": [
+          "유럽연합 조약"
+        ]
+      },
+      "explanation": "마스트리흐트 조약은 유럽연합을 세우고 경제통화동맹의 틀을 마련했다.",
+      "sourceUrls": [
+        "https://european-union.europa.eu/principles-countries-history/history-eu/1990-99_en"
+      ],
+      "misdirectionVariant": null
+    },
+    {
+      "key": "s2a_world_058",
+      "categoryId": "world_history_geography",
+      "categoryKo": "세계사·지리",
+      "difficulty": "easy",
+      "difficultyScore": 39,
+      "q1": {
+        "questionText": "눈에는 눈이라는 표현으로 유명한 고대 바빌로니아의 법전은 무엇일까요?",
+        "canonicalAnswer": "함무라비 법전",
+        "acceptedAliases": []
+      },
+      "q2": {
+        "questionText": "바빌론 왕의 이름을 따서 불리며 현무암 비석에 새겨진 법전은 무엇일까요?",
+        "canonicalAnswer": "함무라비 법전",
+        "acceptedAliases": []
+      },
+      "explanation": "함무라비 법전은 고대 바빌로니아 왕 함무라비 시대의 법 조항을 새긴 비문이다.",
+      "sourceUrls": [
+        "https://www.louvre.fr/en/explore/the-palace/the-code-of-hammurabi"
+      ],
+      "misdirectionVariant": null
+    },
+    {
+      "key": "s2a_world_059",
+      "categoryId": "world_history_geography",
+      "categoryKo": "세계사·지리",
+      "difficulty": "standard",
+      "difficultyScore": 48,
+      "q1": {
+        "questionText": "고대 로마와 카르타고가 서부 지중해 패권을 두고 벌인 세 차례 전쟁은 무엇일까요?",
+        "canonicalAnswer": "포에니 전쟁",
+        "acceptedAliases": []
+      },
+      "q2": {
+        "questionText": "한니발이 알프스를 넘어 로마를 공격한 전쟁이 포함된 전쟁군은 무엇일까요?",
+        "canonicalAnswer": "포에니 전쟁",
+        "acceptedAliases": []
+      },
+      "explanation": "포에니 전쟁은 로마와 카르타고가 기원전 3세기부터 2세기에 걸쳐 벌인 세 전쟁이다.",
+      "sourceUrls": [
+        "https://www.britannica.com/event/Punic-Wars"
+      ],
+      "misdirectionVariant": null
+    },
+    {
+      "key": "s2a_world_060",
+      "categoryId": "world_history_geography",
+      "categoryKo": "세계사·지리",
+      "difficulty": "standard",
+      "difficultyScore": 52,
+      "q1": {
+        "questionText": "1453년 오스만 제국의 메흐메트 2세가 점령한 동로마 제국의 수도는 어디였을까요?",
+        "canonicalAnswer": "콘스탄티노폴리스",
+        "acceptedAliases": [
+          "콘스탄티노플"
+        ]
+      },
+      "q2": {
+        "questionText": "동로마 제국의 마지막 황제 콘스탄티노스 11세가 방어하다 함락된 도시는 어디일까요?",
+        "canonicalAnswer": "콘스탄티노폴리스",
+        "acceptedAliases": [
+          "콘스탄티노플"
+        ]
+      },
+      "explanation": "오스만 제국은 1453년 동로마 제국의 수도 콘스탄티노폴리스를 함락했다.",
+      "sourceUrls": [
+        "https://www.britannica.com/event/Fall-of-Constantinople-1453"
+      ],
+      "misdirectionVariant": null
+    },
+    {
+      "key": "s2a_science_001",
+      "categoryId": "science_math",
+      "categoryKo": "과학·수학",
+      "difficulty": "easy",
+      "difficultyScore": 32,
+      "q1": {
+        "questionText": "이 입자의 수가 달라지면 원소가 바뀌고, 같으면 중성자 수가 달라도 동위원소로 남습니다. 주기율표의 배열 순서도 이 수를 기준으로 하며 원자번호와 정확히 일치합니다. 원자핵 안에서 양전하를 띱니다. 마지막 힌트: 이 입자의 이름은 무엇일까요?",
+        "canonicalAnswer": "양성자",
+        "acceptedAliases": [
+          "프로톤"
+        ]
+      },
+      "q2": {
+        "questionText": "한 원소의 원자번호와 개수가 같은 양전하 입자는 무엇일까요?",
+        "canonicalAnswer": "양성자",
+        "acceptedAliases": [
+          "프로톤"
+        ]
+      },
+      "explanation": "원자번호는 원자핵에 들어 있는 양성자의 수와 같다.",
+      "sourceUrls": [
+        "https://goldbook.iupac.org/terms/view/A00499"
+      ],
+      "misdirectionVariant": "q1",
+      "misdirectionType": "late_easy_clue"
+    },
+    {
+      "key": "s2a_science_002",
+      "categoryId": "science_math",
+      "categoryKo": "과학·수학",
+      "difficulty": "standard",
+      "difficultyScore": 44,
+      "q1": {
+        "questionText": "탄소-12와 탄소-14는 양성자가 여섯 개라 같은 원소로 남습니다. 그런데 중성자 수가 달라 질량수가 달라진 두 원자의 관계를 무엇이라고 할까요?",
+        "questionStyle": "reasoning",
+        "canonicalAnswer": "동위원소",
+        "acceptedAliases": [
+          "아이소토프"
+        ]
+      },
+      "q2": {
+        "questionText": "탄소-12와 탄소-14처럼 같은 원소이면서 질량수가 다른 원자를 무엇이라고 할까요?",
+        "canonicalAnswer": "동위원소",
+        "acceptedAliases": [
+          "아이소토프"
+        ]
+      },
+      "explanation": "동위원소는 원자번호는 같고 중성자 수가 달라 질량수가 다른 원자들이다.",
+      "sourceUrls": [
+        "https://goldbook.iupac.org/terms/view/I03331"
+      ],
+      "misdirectionVariant": null
+    },
+    {
+      "key": "s2a_science_003",
+      "categoryId": "science_math",
+      "categoryKo": "과학·수학",
+      "difficulty": "easy",
+      "difficultyScore": 28,
+      "q1": {
+        "questionText": "원자에서 음전하를 띠는 기본 입자는 무엇일까요?",
+        "canonicalAnswer": "전자",
+        "acceptedAliases": [
+          "일렉트론"
+        ]
+      },
+      "q2": {
+        "questionText": "원자핵 바깥의 오비탈을 차지하며 화학결합에 관여하는 입자는 무엇일까요?",
+        "canonicalAnswer": "전자",
+        "acceptedAliases": [
+          "일렉트론"
+        ]
+      },
+      "explanation": "전자는 음의 기본 전하를 가진 아원자 입자다.",
+      "sourceUrls": [
+        "https://www.britannica.com/science/electron"
+      ],
+      "misdirectionVariant": null
+    },
+    {
+      "key": "s2a_science_004",
+      "categoryId": "science_math",
+      "categoryKo": "과학·수학",
+      "difficulty": "easy",
+      "difficultyScore": 30,
+      "q1": {
+        "questionText": "원자핵을 이루며 전기적으로 중성인 입자는 무엇일까요?",
+        "canonicalAnswer": "중성자",
+        "acceptedAliases": [
+          "뉴트론"
+        ]
+      },
+      "q2": {
+        "questionText": "양성자와 질량이 비슷하지만 전하를 띠지 않는 아원자 입자는 무엇일까요?",
+        "canonicalAnswer": "중성자",
+        "acceptedAliases": [
+          "뉴트론"
+        ]
+      },
+      "explanation": "중성자는 전하가 없으며 양성자와 함께 원자핵을 구성한다.",
+      "sourceUrls": [
+        "https://www.britannica.com/science/neutron"
+      ],
+      "misdirectionVariant": null
+    },
+    {
+      "key": "s2a_science_005",
+      "categoryId": "science_math",
+      "categoryKo": "과학·수학",
+      "difficulty": "standard",
+      "difficultyScore": 45,
+      "q1": {
+        "questionText": "순수한 액체 물의 밀도가 가장 커지는 온도는 약 섭씨 몇 도일까요?",
+        "canonicalAnswer": "4도",
+        "acceptedAliases": [
+          "섭씨 4도",
+          "4°C"
+        ]
+      },
+      "q2": {
+        "questionText": "순수한 물은 섭씨 5도까지 식힐수록 밀도가 커지지만, 3도까지 더 식히면 오히려 작아집니다. 방향이 바뀌는 두 온도 사이의 정수에서 밀도가 최대라면 약 몇 도일까요?",
+        "questionStyle": "reasoning",
+        "canonicalAnswer": "4도",
+        "acceptedAliases": [
+          "섭씨 4도",
+          "4°C"
+        ]
+      },
+      "explanation": "순수한 물은 약 섭씨 4도에서 밀도가 최대가 된다.",
+      "sourceUrls": [
+        "https://www.usgs.gov/special-topics/water-science-school/science/water-density"
+      ],
+      "misdirectionVariant": null
+    },
+    {
+      "key": "s2a_science_006",
+      "categoryId": "science_math",
+      "categoryKo": "과학·수학",
+      "difficulty": "easy",
+      "difficultyScore": 35,
+      "q1": {
+        "questionText": "절대영도는 섭씨로 몇 도일까요?",
+        "canonicalAnswer": "영하 273.15도",
+        "acceptedAliases": [
+          "-273.15°C",
+          "섭씨 영하 273.15도"
+        ]
+      },
+      "q2": {
+        "questionText": "섭씨온도는 켈빈값에서 273.15를 빼서 구합니다. 열역학적 온도가 0켈빈이라면 계산한 섭씨온도는 얼마일까요?",
+        "questionStyle": "reasoning",
+        "canonicalAnswer": "영하 273.15도",
+        "acceptedAliases": [
+          "-273.15°C",
+          "섭씨 영하 273.15도"
+        ]
+      },
+      "explanation": "0켈빈은 섭씨 영하 273.15도와 정확히 같다.",
+      "sourceUrls": [
+        "https://www.bipm.org/en/measurement-units/si-base-units"
+      ],
+      "misdirectionVariant": null
+    },
+    {
+      "key": "s2a_science_007",
+      "categoryId": "science_math",
+      "categoryKo": "과학·수학",
+      "difficulty": "easy",
+      "difficultyScore": 32,
+      "q1": {
+        "questionText": "초당 한 번의 주기를 뜻하는 주파수의 SI 유도단위는 무엇일까요?",
+        "canonicalAnswer": "헤르츠",
+        "acceptedAliases": [
+          "Hz"
+        ]
+      },
+      "q2": {
+        "questionText": "라디오 주파수나 소리의 진동수를 나타낼 때 기호 Hz를 쓰는 단위는 무엇일까요?",
+        "canonicalAnswer": "헤르츠",
+        "acceptedAliases": [
+          "Hz"
+        ]
+      },
+      "explanation": "헤르츠는 1초당 한 주기를 뜻하는 주파수 단위다.",
+      "sourceUrls": [
+        "https://www.bipm.org/en/measurement-units/si-derived-units"
+      ],
+      "misdirectionVariant": null
+    },
+    {
+      "key": "s2a_science_008",
+      "categoryId": "science_math",
+      "categoryKo": "과학·수학",
+      "difficulty": "easy",
+      "difficultyScore": 31,
+      "q1": {
+        "questionText": "에너지와 일의 SI 유도단위는 무엇일까요?",
+        "canonicalAnswer": "줄",
+        "acceptedAliases": [
+          "J",
+          "joule"
+        ]
+      },
+      "q2": {
+        "questionText": "1뉴턴의 힘으로 물체를 1미터 이동시킨 일과 같은 단위는 무엇일까요?",
+        "canonicalAnswer": "줄",
+        "acceptedAliases": [
+          "J",
+          "joule"
+        ]
+      },
+      "explanation": "줄은 에너지와 일의 SI 유도단위이며 기호는 J다.",
+      "sourceUrls": [
+        "https://www.bipm.org/en/measurement-units/si-derived-units"
+      ],
+      "misdirectionVariant": null
+    },
+    {
+      "key": "s2a_science_009",
+      "categoryId": "science_math",
+      "categoryKo": "과학·수학",
+      "difficulty": "standard",
+      "difficultyScore": 42,
+      "q1": {
+        "questionText": "전하량의 SI 유도단위로 기호 C를 사용하는 것은 무엇일까요?",
+        "canonicalAnswer": "쿨롬",
+        "acceptedAliases": [
+          "C",
+          "coulomb"
+        ]
+      },
+      "q2": {
+        "questionText": "전하량은 전류와 시간의 곱입니다. 전류 1암페어가 1초 동안 흐르면 전하량의 수치는 1이 됩니다. 이때 기호 C로 적는 SI 단위는 무엇일까요?",
+        "questionStyle": "reasoning",
+        "canonicalAnswer": "쿨롬",
+        "acceptedAliases": [
+          "C",
+          "coulomb"
+        ]
+      },
+      "explanation": "쿨롬은 전하량의 SI 유도단위다.",
+      "sourceUrls": [
+        "https://www.bipm.org/en/measurement-units/si-derived-units"
+      ],
+      "misdirectionVariant": null
+    },
+    {
+      "key": "s2a_science_010",
+      "categoryId": "science_math",
+      "categoryKo": "과학·수학",
+      "difficulty": "easy",
+      "difficultyScore": 33,
+      "q1": {
+        "questionText": "평행한 빛을 한 점으로 모으는 수렴렌즈는 무엇일까요?",
+        "canonicalAnswer": "볼록렌즈",
+        "acceptedAliases": []
+      },
+      "q2": {
+        "questionText": "평행하게 들어온 빛이 두 굴절면을 지나 한쪽의 실제 초점으로 모이고, 초점거리는 양수로 표시됩니다. 물체의 위치에 따라 확대된 상이나 거꾸로 된 상을 만들 수 있습니다. 마지막 단서: 돋보기에 쓰이며 가운데가 가장자리보다 두껍습니다. 어떤 렌즈일까요?",
+        "canonicalAnswer": "볼록렌즈",
+        "acceptedAliases": []
+      },
+      "explanation": "볼록렌즈는 평행하게 들어온 빛을 초점으로 모으는 수렴렌즈다.",
+      "sourceUrls": [
+        "https://www.britannica.com/technology/lens-optics"
+      ],
+      "misdirectionVariant": "q2",
+      "misdirectionType": "late_easy_clue"
+    },
+    {
+      "key": "s2a_science_011",
+      "categoryId": "science_math",
+      "categoryKo": "과학·수학",
+      "difficulty": "easy",
+      "difficultyScore": 32,
+      "q1": {
+        "questionText": "가운데가 가장자리보다 얇아 평행한 빛을 퍼뜨리는 렌즈는 무엇일까요?",
+        "canonicalAnswer": "오목렌즈",
+        "acceptedAliases": []
+      },
+      "q2": {
+        "questionText": "근시 교정용 안경에 주로 사용하는 발산렌즈는 무엇일까요?",
+        "canonicalAnswer": "오목렌즈",
+        "acceptedAliases": []
+      },
+      "explanation": "오목렌즈는 평행광선을 퍼뜨리는 발산렌즈다.",
+      "sourceUrls": [
+        "https://www.britannica.com/technology/lens-optics"
+      ],
+      "misdirectionVariant": null
+    },
+    {
+      "key": "s2a_science_012",
+      "categoryId": "science_math",
+      "categoryKo": "과학·수학",
+      "difficulty": "standard",
+      "difficultyScore": 43,
+      "q1": {
+        "questionText": "같은 매질에서도 파장에 따라 굴절률이 달라져 색마다 진행 방향에 차이가 생깁니다. 그래서 하나로 보이던 빛 속 색들이 공간적으로 벌어지고, 프리즘을 지난 백색광은 무지개색으로 갈라집니다. 결정적 단서: 이 광학 현상의 이름은 무엇일까요?",
+        "questionStyle": "wait_for_clue",
+        "canonicalAnswer": "분산",
+        "acceptedAliases": [
+          "빛의 분산"
+        ]
+      },
+      "q2": {
+        "questionText": "무지개처럼 빛이 파장별로 나뉘는 광학 현상을 무엇이라고 할까요?",
+        "canonicalAnswer": "분산",
+        "acceptedAliases": [
+          "빛의 분산"
+        ]
+      },
+      "explanation": "분산은 매질의 굴절률이 파장에 따라 달라 빛이 여러 색으로 갈라지는 현상이다.",
+      "sourceUrls": [
+        "https://www.britannica.com/science/dispersion-optics"
+      ],
+      "misdirectionVariant": null
+    },
+    {
+      "key": "s2a_science_013",
+      "categoryId": "science_math",
+      "categoryKo": "과학·수학",
+      "difficulty": "easy",
+      "difficultyScore": 34,
+      "q1": {
+        "questionText": "한 물체가 다른 물체에 힘을 주면 크기가 같고 방향이 반대인 힘을 받는다는 법칙은 무엇일까요?",
+        "canonicalAnswer": "작용·반작용 법칙",
+        "acceptedAliases": [
+          "뉴턴의 제3법칙"
+        ]
+      },
+      "q2": {
+        "questionText": "스케이트보드 위에서 벽을 앞으로 밀었더니 몸은 뒤로 움직였습니다. 벽도 같은 크기의 힘을 반대 방향으로 돌려준 셈입니다. 힘이 이렇게 한 쌍으로 생기는 뉴턴 법칙은 무엇일까요?",
+        "questionStyle": "reasoning",
+        "canonicalAnswer": "작용·반작용 법칙",
+        "acceptedAliases": [
+          "뉴턴의 제3법칙"
+        ]
+      },
+      "explanation": "뉴턴의 제3법칙은 두 물체 사이 힘이 크기는 같고 방향은 반대라고 설명한다.",
+      "sourceUrls": [
+        "https://www.britannica.com/science/Newtons-laws-of-motion"
+      ],
+      "misdirectionVariant": null
+    },
+    {
+      "key": "s2a_science_014",
+      "categoryId": "science_math",
+      "categoryKo": "과학·수학",
+      "difficulty": "easy",
+      "difficultyScore": 37,
+      "q1": {
+        "questionText": "물체를 담그자 물 2킬로그램이 밀려났고, 물체에는 그 물의 무게와 같은 크기의 힘이 위로 작용했습니다. 밀려난 유체의 무게로 부력을 알아내는 원리는 무엇일까요?",
+        "questionStyle": "reasoning",
+        "canonicalAnswer": "아르키메데스 원리",
+        "acceptedAliases": [
+          "아르키메데스의 원리"
+        ]
+      },
+      "q2": {
+        "questionText": "배가 물에 뜨는 현상을 부력과 배제된 물의 무게로 설명하는 원리는 무엇일까요?",
+        "canonicalAnswer": "아르키메데스 원리",
+        "acceptedAliases": [
+          "아르키메데스의 원리"
+        ]
+      },
+      "explanation": "아르키메데스 원리는 유체 속 물체가 밀어낸 유체의 무게와 같은 부력을 받는다고 말한다.",
+      "sourceUrls": [
+        "https://www.britannica.com/science/Archimedes-principle"
+      ],
+      "misdirectionVariant": null
+    },
+    {
+      "key": "s2a_science_015",
+      "categoryId": "science_math",
+      "categoryKo": "과학·수학",
+      "difficulty": "standard",
+      "difficultyScore": 48,
+      "q1": {
+        "questionText": "높이가 같은 수평 관에서 좁은 부분의 물은 더 빨리 흐르는데 압력계 수치는 오히려 낮아졌습니다. 유속이 커질수록 압력이 작아지는 이 관계를 설명하는 원리는 무엇일까요?",
+        "questionStyle": "reasoning",
+        "canonicalAnswer": "베르누이 원리",
+        "acceptedAliases": [
+          "베르누이의 정리",
+          "베르누이 법칙"
+        ]
+      },
+      "q2": {
+        "questionText": "비행기 날개 주변 유속과 압력의 관계를 설명할 때 쓰는 유체역학 원리는 무엇일까요?",
+        "canonicalAnswer": "베르누이 원리",
+        "acceptedAliases": [
+          "베르누이의 정리",
+          "베르누이 법칙"
+        ]
+      },
+      "explanation": "베르누이 원리는 정상 유동에서 유속, 압력, 높이 사이의 에너지 관계를 나타낸다.",
+      "sourceUrls": [
+        "https://www.britannica.com/science/Bernoullis-theorem"
+      ],
+      "misdirectionVariant": null
+    },
+    {
+      "key": "s2a_science_016",
+      "categoryId": "science_math",
+      "categoryKo": "과학·수학",
+      "difficulty": "easy",
+      "difficultyScore": 34,
+      "q1": {
+        "questionText": "한 도체에 12볼트를 걸자 3암페어가 흘렀고, 전압을 전류로 나누니 저항은 4옴이었습니다. 전압·전류·저항을 이 비례식으로 잇는 법칙은 무엇일까요?",
+        "questionStyle": "reasoning",
+        "canonicalAnswer": "옴의 법칙",
+        "acceptedAliases": [
+          "오옴의 법칙"
+        ]
+      },
+      "q2": {
+        "questionText": "V=IR로 나타내는 전압, 전류, 저항의 관계는 무엇일까요?",
+        "canonicalAnswer": "옴의 법칙",
+        "acceptedAliases": [
+          "오옴의 법칙"
+        ]
+      },
+      "explanation": "옴의 법칙은 일정한 조건에서 전압이 전류와 저항의 곱과 같음을 나타낸다.",
+      "sourceUrls": [
+        "https://www.britannica.com/science/Ohms-law"
+      ],
+      "misdirectionVariant": null
+    },
+    {
+      "key": "s2a_science_017",
+      "categoryId": "science_math",
+      "categoryKo": "과학·수학",
+      "difficulty": "standard",
+      "difficultyScore": 44,
+      "q1": {
+        "questionText": "탄성 한계 안에서 용수철을 2센티미터 늘리면 복원력은 4뉴턴, 4센티미터 늘리면 8뉴턴입니다. 늘어난 길이와 힘이 같은 비율로 커지는 현상을 설명하는 법칙은 무엇일까요?",
+        "questionStyle": "reasoning",
+        "canonicalAnswer": "훅의 법칙",
+        "acceptedAliases": [
+          "후크의 법칙"
+        ]
+      },
+      "q2": {
+        "questionText": "용수철 상수와 늘어난 길이를 이용해 복원력을 구하는 법칙은 무엇일까요?",
+        "canonicalAnswer": "훅의 법칙",
+        "acceptedAliases": [
+          "후크의 법칙"
+        ]
+      },
+      "explanation": "훅의 법칙은 탄성 한계 안에서 복원력의 크기가 변형량에 비례한다고 말한다.",
+      "sourceUrls": [
+        "https://www.britannica.com/science/Hookes-law"
+      ],
+      "misdirectionVariant": null
+    },
+    {
+      "key": "s2a_science_018",
+      "categoryId": "science_math",
+      "categoryKo": "과학·수학",
+      "difficulty": "easy",
+      "difficultyScore": 36,
+      "q1": {
+        "questionText": "방사성 시료가 80그램에서 5년 뒤 40그램, 다시 5년 뒤 20그램으로 줄었습니다. 매번 양을 절반으로 만드는 5년이라는 일정한 시간 간격을 무엇이라고 할까요?",
+        "questionStyle": "reasoning",
+        "canonicalAnswer": "반감기",
+        "acceptedAliases": []
+      },
+      "q2": {
+        "questionText": "방사성 붕괴에서 시료의 방사능이 절반이 되는 시간 간격은 무엇일까요?",
+        "canonicalAnswer": "반감기",
+        "acceptedAliases": []
+      },
+      "explanation": "반감기는 방사성 핵종의 수나 방사능이 절반으로 감소하는 데 걸리는 시간이다.",
+      "sourceUrls": [
+        "https://www.britannica.com/science/half-life-radioactivity"
+      ],
+      "misdirectionVariant": null
+    },
+    {
+      "key": "s2a_science_019",
+      "categoryId": "science_math",
+      "categoryKo": "과학·수학",
+      "difficulty": "standard",
+      "difficultyScore": 47,
+      "q1": {
+        "questionText": "물과 가까워지려는 머리는 바깥을 향하고 물을 피하는 꼬리는 안쪽에서 서로 마주 봅니다. 이런 양친매성 분자들이 물속에서 저절로 선택적 장벽을 만듭니다. 마지막 힌트: 세포막의 기본 골격인 두 겹의 분자층입니다. 무엇일까요?",
+        "questionStyle": "wait_for_clue",
+        "canonicalAnswer": "인지질 이중층",
+        "acceptedAliases": [
+          "인지질 이중막"
+        ]
+      },
+      "q2": {
+        "questionText": "친수성 머리는 바깥을 향하고 소수성 꼬리는 안쪽을 향하는 세포막 구조는 무엇일까요?",
+        "canonicalAnswer": "인지질 이중층",
+        "acceptedAliases": [
+          "인지질 이중막"
+        ]
+      },
+      "explanation": "세포막은 인지질 분자들이 두 겹으로 배열된 이중층을 기본 구조로 한다.",
+      "sourceUrls": [
+        "https://openstax.org/books/biology-2e/pages/5-1-components-and-structure"
+      ],
+      "misdirectionVariant": null
+    },
+    {
+      "key": "s2a_science_020",
+      "categoryId": "science_math",
+      "categoryKo": "과학·수학",
+      "difficulty": "easy",
+      "difficultyScore": 29,
+      "q1": {
+        "questionText": "진핵세포에서 대부분의 DNA를 담고 이중막으로 둘러싸인 소기관은 무엇일까요?",
+        "canonicalAnswer": "세포핵",
+        "acceptedAliases": [
+          "핵"
+        ]
+      },
+      "q2": {
+        "questionText": "염색체가 들어 있고 세포 활동을 조절하는 진핵세포의 중심 소기관은 무엇일까요?",
+        "canonicalAnswer": "세포핵",
+        "acceptedAliases": [
+          "핵"
+        ]
+      },
+      "explanation": "진핵세포의 세포핵은 대부분의 유전물질을 담고 있다.",
+      "sourceUrls": [
+        "https://openstax.org/books/biology-2e/pages/4-3-eukaryotic-cells"
+      ],
+      "misdirectionVariant": null
+    },
+    {
+      "key": "s2a_science_021",
+      "categoryId": "science_math",
+      "categoryKo": "과학·수학",
+      "difficulty": "standard",
+      "difficultyScore": 43,
+      "q1": {
+        "questionText": "가수분해 효소를 담아 세포 안의 노폐물과 거대분자를 분해하는 소기관은 무엇일까요?",
+        "canonicalAnswer": "리소좀",
+        "acceptedAliases": [
+          "라이소좀"
+        ]
+      },
+      "q2": {
+        "questionText": "세포 내 소화와 재활용을 담당하는 막성 주머니 형태의 소기관은 무엇일까요?",
+        "canonicalAnswer": "리소좀",
+        "acceptedAliases": [
+          "라이소좀"
+        ]
+      },
+      "explanation": "리소좀은 분해 효소를 이용해 세포 안의 물질을 소화하고 재활용한다.",
+      "sourceUrls": [
+        "https://www.britannica.com/science/lysosome"
+      ],
+      "misdirectionVariant": null
+    },
+    {
+      "key": "s2a_science_022",
+      "categoryId": "science_math",
+      "categoryKo": "과학·수학",
+      "difficulty": "standard",
+      "difficultyScore": 44,
+      "q1": {
+        "questionText": "단백질과 지질을 변형하고 분류해 소낭으로 포장하는 세포 소기관은 무엇일까요?",
+        "canonicalAnswer": "골지체",
+        "acceptedAliases": [
+          "골지 장치",
+          "골지기관"
+        ]
+      },
+      "q2": {
+        "questionText": "납작한 막주머니가 겹친 구조로 세포의 배송 센터에 비유되는 소기관은 무엇일까요?",
+        "canonicalAnswer": "골지체",
+        "acceptedAliases": [
+          "골지 장치",
+          "골지기관"
+        ]
+      },
+      "explanation": "골지체는 단백질과 지질을 가공·분류·포장한다.",
+      "sourceUrls": [
+        "https://www.britannica.com/science/Golgi-apparatus"
+      ],
+      "misdirectionVariant": null
+    },
+    {
+      "key": "s2a_science_023",
+      "categoryId": "science_math",
+      "categoryKo": "과학·수학",
+      "difficulty": "easy",
+      "difficultyScore": 34,
+      "q1": {
+        "questionText": "잎 표피의 두 공변세포가 벌어지자 이산화탄소가 들어오고 수증기가 빠져나갔습니다. 공변세포 사이에서 열리고 닫히며 기체 교환과 증산을 조절하는 구멍은 무엇일까요?",
+        "questionStyle": "reasoning",
+        "canonicalAnswer": "기공",
+        "acceptedAliases": [
+          "숨구멍"
+        ]
+      },
+      "q2": {
+        "questionText": "식물 잎에서 이산화탄소가 들어오고 수증기가 나가는 미세한 구멍은 무엇일까요?",
+        "canonicalAnswer": "기공",
+        "acceptedAliases": [
+          "숨구멍"
+        ]
+      },
+      "explanation": "기공은 잎의 기체 교환과 수분 손실을 조절하는 작은 구멍이다.",
+      "sourceUrls": [
+        "https://www.britannica.com/science/stoma"
+      ],
+      "misdirectionVariant": null
+    },
+    {
+      "key": "s2a_science_024",
+      "categoryId": "science_math",
+      "categoryKo": "과학·수학",
+      "difficulty": "easy",
+      "difficultyScore": 35,
+      "q1": {
+        "questionText": "리그닌이 쌓인 도관 요소와 헛물관이 길게 연결되어 내부 압력이 낮아져도 찌그러지지 않습니다. 성숙한 세포 대부분은 죽어 빈 관처럼 작동하고, 뿌리의 물과 무기질을 줄기와 잎으로 올립니다. 마지막으로, 결정적 단서: 이 조직의 이름은 무엇일까요?",
+        "canonicalAnswer": "물관",
+        "acceptedAliases": [
+          "목부",
+          "자일렘"
+        ]
+      },
+      "q2": {
+        "questionText": "식물의 뿌리에서 줄기와 잎으로 물을 주로 올려 보내는 관다발 조직은 무엇일까요?",
+        "canonicalAnswer": "물관",
+        "acceptedAliases": [
+          "목부",
+          "자일렘"
+        ]
+      },
+      "explanation": "물관은 뿌리에서 흡수한 물과 무기질을 식물체 위쪽으로 운반한다.",
+      "sourceUrls": [
+        "https://www.britannica.com/science/xylem"
+      ],
+      "misdirectionVariant": "q1",
+      "misdirectionType": "late_easy_clue"
+    },
+    {
+      "key": "s2a_science_025",
+      "categoryId": "science_math",
+      "categoryKo": "과학·수학",
+      "difficulty": "easy",
+      "difficultyScore": 35,
+      "q1": {
+        "questionText": "나무껍질을 고리 모양으로 벗겨도 물은 위로 올라갔지만, 잎에서 만든 당은 아래로 내려가지 못했습니다. 껍질과 함께 제거되어 유기양분 수송이 막힌 조직은 무엇일까요?",
+        "questionStyle": "reasoning",
+        "canonicalAnswer": "체관",
+        "acceptedAliases": [
+          "사부",
+          "플로엠"
+        ]
+      },
+      "q2": {
+        "questionText": "광합성 산물을 공급원에서 필요한 조직으로 이동시키는 관다발 조직은 무엇일까요?",
+        "canonicalAnswer": "체관",
+        "acceptedAliases": [
+          "사부",
+          "플로엠"
+        ]
+      },
+      "explanation": "체관은 광합성으로 만든 당 등 유기양분을 식물체 곳곳으로 운반한다.",
+      "sourceUrls": [
+        "https://www.britannica.com/science/phloem"
+      ],
+      "misdirectionVariant": null
+    },
+    {
+      "key": "s2a_science_026",
+      "categoryId": "science_math",
+      "categoryKo": "과학·수학",
+      "difficulty": "easy",
+      "difficultyScore": 33,
+      "q1": {
+        "questionText": "뇌에서 운동의 정밀한 조절과 균형 유지에 중요한 부분은 무엇일까요?",
+        "canonicalAnswer": "소뇌",
+        "acceptedAliases": []
+      },
+      "q2": {
+        "questionText": "대뇌 뒤쪽 아래에 있으며 자세와 협응을 조절하는 뇌 구조는 무엇일까요?",
+        "canonicalAnswer": "소뇌",
+        "acceptedAliases": []
+      },
+      "explanation": "소뇌는 운동 협응, 자세, 균형 유지에 중요한 역할을 한다.",
+      "sourceUrls": [
+        "https://www.britannica.com/science/cerebellum"
+      ],
+      "misdirectionVariant": null
+    },
+    {
+      "key": "s2a_science_027",
+      "categoryId": "science_math",
+      "categoryKo": "과학·수학",
+      "difficulty": "easy",
+      "difficultyScore": 31,
+      "q1": {
+        "questionText": "폐에서 산소와 이산화탄소의 교환이 일어나는 작은 공기주머니는 무엇일까요?",
+        "canonicalAnswer": "폐포",
+        "acceptedAliases": [
+          "허파꽈리"
+        ]
+      },
+      "q2": {
+        "questionText": "모세혈관으로 둘러싸여 기체 확산이 일어나는 폐의 말단 구조는 무엇일까요?",
+        "canonicalAnswer": "폐포",
+        "acceptedAliases": [
+          "허파꽈리"
+        ]
+      },
+      "explanation": "폐포는 얇은 벽과 넓은 표면적을 통해 혈액과 기체를 교환한다.",
+      "sourceUrls": [
+        "https://www.britannica.com/science/pulmonary-alveolus"
+      ],
+      "misdirectionVariant": null
+    },
+    {
+      "key": "s2a_science_028",
+      "categoryId": "science_math",
+      "categoryKo": "과학·수학",
+      "difficulty": "standard",
+      "difficultyScore": 43,
+      "q1": {
+        "questionText": "혈액을 여과하고 소변을 만드는 콩팥의 기본 기능 단위는 무엇일까요?",
+        "canonicalAnswer": "네프론",
+        "acceptedAliases": [
+          "신단위"
+        ]
+      },
+      "q2": {
+        "questionText": "사구체와 세뇨관으로 이루어진 신장의 미세한 기능 단위는 무엇일까요?",
+        "canonicalAnswer": "네프론",
+        "acceptedAliases": [
+          "신단위"
+        ]
+      },
+      "explanation": "네프론은 혈액을 여과하고 필요한 물질을 재흡수해 소변을 형성하는 신장의 기능 단위다.",
+      "sourceUrls": [
+        "https://www.britannica.com/science/nephron"
+      ],
+      "misdirectionVariant": null
+    },
+    {
+      "key": "s2a_science_029",
+      "categoryId": "science_math",
+      "categoryKo": "과학·수학",
+      "difficulty": "easy",
+      "difficultyScore": 32,
+      "q1": {
+        "questionText": "췌장의 베타세포에서 분비되어 혈당을 낮추는 호르몬은 무엇일까요?",
+        "canonicalAnswer": "인슐린",
+        "acceptedAliases": []
+      },
+      "q2": {
+        "questionText": "글루카곤은 혈당을 올리는 작용을 합니다. 그렇다면 세포의 포도당 흡수를 도와 혈당을 낮추는 호르몬은 무엇일까요?",
+        "canonicalAnswer": "인슐린",
+        "acceptedAliases": []
+      },
+      "explanation": "인슐린은 세포의 포도당 이용과 저장을 촉진해 혈당을 낮춘다.",
+      "sourceUrls": [
+        "https://www.britannica.com/science/insulin"
+      ],
+      "misdirectionVariant": "q2",
+      "misdirectionType": "relation_twist"
+    },
+    {
+      "key": "s2a_science_030",
+      "categoryId": "science_math",
+      "categoryKo": "과학·수학",
+      "difficulty": "standard",
+      "difficultyScore": 46,
+      "q1": {
+        "questionText": "균류의 세포벽과 절지동물의 외골격에 공통으로 포함되는 다당류는 무엇일까요?",
+        "canonicalAnswer": "키틴",
+        "acceptedAliases": [
+          "키틴질"
+        ]
+      },
+      "q2": {
+        "questionText": "게 껍데기와 곤충 외골격의 강도를 높이는 질소 함유 다당류는 무엇일까요?",
+        "canonicalAnswer": "키틴",
+        "acceptedAliases": [
+          "키틴질"
+        ]
+      },
+      "explanation": "키틴은 균류 세포벽과 절지동물 외골격의 주요 구조 다당류다.",
+      "sourceUrls": [
+        "https://www.britannica.com/science/chitin"
+      ],
+      "misdirectionVariant": null
+    },
+    {
+      "key": "s2a_science_031",
+      "categoryId": "science_math",
+      "categoryKo": "과학·수학",
+      "difficulty": "easy",
+      "difficultyScore": 36,
+      "q1": {
+        "questionText": "막으로 둘러싸인 세포핵이 없는 생물을 무엇이라고 할까요?",
+        "canonicalAnswer": "원핵생물",
+        "acceptedAliases": [
+          "프로카리오트"
+        ]
+      },
+      "q2": {
+        "questionText": "세균과 고세균처럼 DNA가 핵막 안에 들어 있지 않은 생물군은 무엇일까요?",
+        "canonicalAnswer": "원핵생물",
+        "acceptedAliases": [
+          "프로카리오트"
+        ]
+      },
+      "explanation": "원핵생물은 막으로 둘러싸인 핵과 막성 소기관이 없는 세포로 이루어진다.",
+      "sourceUrls": [
+        "https://www.britannica.com/science/prokaryote"
+      ],
+      "misdirectionVariant": null
+    },
+    {
+      "key": "s2a_science_032",
+      "categoryId": "science_math",
+      "categoryKo": "과학·수학",
+      "difficulty": "standard",
+      "difficultyScore": 49,
+      "q1": {
+        "questionText": "속명과 종소명으로 생물의 학명을 적는 이명법을 정착시킨 스웨덴 학자는 누구일까요?",
+        "canonicalAnswer": "칼 폰 린네",
+        "acceptedAliases": [
+          "카를 폰 린네",
+          "린네"
+        ]
+      },
+      "q2": {
+        "questionText": "생물 분류학의 아버지로 불리며 자연의 체계를 쓴 인물은 누구일까요?",
+        "canonicalAnswer": "칼 폰 린네",
+        "acceptedAliases": [
+          "카를 폰 린네",
+          "린네"
+        ]
+      },
+      "explanation": "칼 폰 린네는 생물 학명에 속명과 종소명을 쓰는 이명법을 정착시켰다.",
+      "sourceUrls": [
+        "https://www.britannica.com/biography/Carolus-Linnaeus"
+      ],
+      "misdirectionVariant": null
+    },
+    {
+      "key": "s2a_science_033",
+      "categoryId": "science_math",
+      "categoryKo": "과학·수학",
+      "difficulty": "easy",
+      "difficultyScore": 33,
+      "q1": {
+        "questionText": "볼록다각형에서 한 꼭짓점씩 잡은 외각의 합은 몇 도일까요?",
+        "canonicalAnswer": "360도",
+        "acceptedAliases": [
+          "360°"
+        ]
+      },
+      "q2": {
+        "questionText": "볼록다각형의 변을 따라 걷고 꼭짓점마다 외각만큼 몸을 돌려 보세요. 마지막 변을 지나 출발 방향으로 돌아오면 정확히 한 바퀴를 돈 셈입니다. 외각의 합은 몇 도일까요?",
+        "questionStyle": "reasoning",
+        "canonicalAnswer": "360도",
+        "acceptedAliases": [
+          "360°"
+        ]
+      },
+      "explanation": "모든 볼록다각형에서 한 꼭짓점당 하나씩 택한 외각의 합은 360도다.",
+      "sourceUrls": [
+        "https://en.wikipedia.org/wiki/Exterior_angle"
+      ],
+      "misdirectionVariant": null
+    },
+    {
+      "key": "s2a_science_034",
+      "categoryId": "science_math",
+      "categoryKo": "과학·수학",
+      "difficulty": "standard",
+      "difficultyScore": 48,
+      "q1": {
+        "questionText": "이차방정식에서 실근의 개수를 판단할 때 사용하는 b²-4ac를 무엇이라고 할까요?",
+        "canonicalAnswer": "판별식",
+        "acceptedAliases": [
+          "discriminant"
+        ]
+      },
+      "q2": {
+        "questionText": "이차방정식의 근이 서로 다른지, 중근인지, 실수가 아닌지를 가르는 식의 이름은 무엇일까요?",
+        "canonicalAnswer": "판별식",
+        "acceptedAliases": [
+          "discriminant"
+        ]
+      },
+      "explanation": "이차방정식의 판별식 b²-4ac의 부호로 실근의 수를 판단한다.",
+      "sourceUrls": [
+        "https://en.wikipedia.org/wiki/Discriminant"
+      ],
+      "misdirectionVariant": null
+    },
+    {
+      "key": "s2a_science_035",
+      "categoryId": "science_math",
+      "categoryKo": "과학·수학",
+      "difficulty": "standard",
+      "difficultyScore": 48,
+      "q1": {
+        "questionText": "함수 그래프의 한 점에서 접선의 기울기를 나타내는 극한값을 무엇이라고 할까요?",
+        "canonicalAnswer": "미분계수",
+        "acceptedAliases": [
+          "도함숫값"
+        ]
+      },
+      "q2": {
+        "questionText": "평균변화율의 구간을 한 점으로 좁힐 때 얻는 순간변화율은 무엇일까요?",
+        "canonicalAnswer": "미분계수",
+        "acceptedAliases": [
+          "도함숫값"
+        ]
+      },
+      "explanation": "미분계수는 한 점에서의 순간변화율이자 그래프 접선의 기울기다.",
+      "sourceUrls": [
+        "https://en.wikipedia.org/wiki/Derivative"
+      ],
+      "misdirectionVariant": null
+    },
+    {
+      "key": "s2a_science_036",
+      "categoryId": "science_math",
+      "categoryKo": "과학·수학",
+      "difficulty": "standard",
+      "difficultyScore": 50,
+      "q1": {
+        "questionText": "함수와 x축 사이의 부호 있는 넓이를 일정 구간에서 나타내는 적분은 무엇일까요?",
+        "canonicalAnswer": "정적분",
+        "acceptedAliases": [
+          "정적분값"
+        ]
+      },
+      "q2": {
+        "questionText": "적분구간의 시작값과 끝값이 정해져 결과가 수로 계산되는 적분을 무엇이라고 할까요?",
+        "canonicalAnswer": "정적분",
+        "acceptedAliases": [
+          "정적분값"
+        ]
+      },
+      "explanation": "정적분은 주어진 구간에서 함수의 누적량이나 부호 있는 넓이를 나타낸다.",
+      "sourceUrls": [
+        "https://en.wikipedia.org/wiki/Integral"
+      ],
+      "misdirectionVariant": null
+    },
+    {
+      "key": "s2a_science_037",
+      "categoryId": "science_math",
+      "categoryKo": "과학·수학",
+      "difficulty": "hard",
+      "difficultyScore": 60,
+      "q1": {
+        "questionText": "1보다 큰 모든 자연수는 소수들의 곱으로 유일하게 표현된다는 정리는 무엇일까요?",
+        "canonicalAnswer": "산술의 기본정리",
+        "acceptedAliases": [
+          "산술 기본정리",
+          "소인수분해의 유일성 정리"
+        ]
+      },
+      "q2": {
+        "questionText": "소인수분해가 순서를 제외하면 하나뿐임을 보장하는 정리는 무엇일까요?",
+        "canonicalAnswer": "산술의 기본정리",
+        "acceptedAliases": [
+          "산술 기본정리",
+          "소인수분해의 유일성 정리"
+        ]
+      },
+      "explanation": "산술의 기본정리는 1보다 큰 정수의 소인수분해가 순서를 제외하고 유일하다고 말한다.",
+      "sourceUrls": [
+        "https://en.wikipedia.org/wiki/Fundamental_theorem_of_arithmetic"
+      ],
+      "misdirectionVariant": null
+    },
+    {
+      "key": "s2a_science_038",
+      "categoryId": "science_math",
+      "categoryKo": "과학·수학",
+      "difficulty": "standard",
+      "difficultyScore": 47,
+      "q1": {
+        "questionText": "자연로그의 밑으로 쓰이며 약 2.71828인 수학 상수는 무엇일까요?",
+        "canonicalAnswer": "e",
+        "acceptedAliases": [
+          "오일러 수"
+        ]
+      },
+      "q2": {
+        "questionText": "연속 복리와 지수함수의 미분에서 자연스럽게 등장하는 상수는 무엇일까요?",
+        "canonicalAnswer": "e",
+        "acceptedAliases": [
+          "오일러 수"
+        ]
+      },
+      "explanation": "e는 자연로그의 밑이며 약 2.71828인 무리수다.",
+      "sourceUrls": [
+        "https://en.wikipedia.org/wiki/E_(mathematical_constant)"
+      ],
+      "misdirectionVariant": null
+    },
+    {
+      "key": "s2a_science_039",
+      "categoryId": "science_math",
+      "categoryKo": "과학·수학",
+      "difficulty": "hard",
+      "difficultyScore": 60,
+      "q1": {
+        "questionText": "정육면체의 꼭짓점은 8개, 모서리는 12개, 면은 6개입니다. 오일러의 식처럼 꼭짓점 수에서 모서리 수를 빼고 면 수를 더하면 얼마일까요?",
+        "questionStyle": "reasoning",
+        "canonicalAnswer": "2",
+        "acceptedAliases": [
+          "이"
+        ]
+      },
+      "q2": {
+        "questionText": "정육면체에서 V-E+F를 계산하면 얻는 오일러 특성값은 얼마일까요?",
+        "canonicalAnswer": "2",
+        "acceptedAliases": [
+          "이"
+        ]
+      },
+      "explanation": "볼록다면체에서는 꼭짓점 수 V, 모서리 수 E, 면 수 F에 대해 V-E+F=2가 성립한다.",
+      "sourceUrls": [
+        "https://en.wikipedia.org/wiki/Euler_characteristic"
+      ],
+      "misdirectionVariant": null
+    },
+    {
+      "key": "s2a_science_040",
+      "categoryId": "science_math",
+      "categoryKo": "과학·수학",
+      "difficulty": "standard",
+      "difficultyScore": 46,
+      "q1": {
+        "questionText": "평균을 중심으로 좌우가 대칭인 종 모양의 연속확률분포는 무엇일까요?",
+        "canonicalAnswer": "정규분포",
+        "acceptedAliases": [
+          "가우스 분포"
+        ]
+      },
+      "q2": {
+        "questionText": "평균과 표준편차 두 매개변수로 정해지며 자연·사회 현상에 널리 쓰이는 확률분포는 무엇일까요?",
+        "canonicalAnswer": "정규분포",
+        "acceptedAliases": [
+          "가우스 분포"
+        ]
+      },
+      "explanation": "정규분포는 평균을 중심으로 대칭인 종 모양의 연속확률분포다.",
+      "sourceUrls": [
+        "https://en.wikipedia.org/wiki/Normal_distribution"
+      ],
+      "misdirectionVariant": null
+    }
+  ]
+}

@@ -17,7 +17,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Noto+Sans+KR:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=4" />
+  <link rel="stylesheet" href="styles.css?v=6" />
 </head>
 <body>
   <div class="app-shell">
@@ -33,10 +33,10 @@
   </div>
   <script type="module" src="auth.js?v=4"></script>
   <script type="module" src="realtime.js?v=3"></script>
-  <script src="app.js?v=9"></script>
+  <script src="app.js?v=11"></script>
   <script>
     if ('serviceWorker' in navigator) {
-      window.addEventListener('load', () => navigator.serviceWorker.register('sw.js?v=9').catch(() => {}));
+      window.addEventListener('load', () => navigator.serviceWorker.register('sw.js?v=11').catch(() => {}));
     }
   </script>
 </body>
