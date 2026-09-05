@@ -1,8 +1,18 @@
 import assert from 'node:assert/strict';
-import { existsSync, readFileSync } from 'node:fs';
+import { existsSync, readFileSync, readdirSync } from 'node:fs';
 import test from 'node:test';
 
 const read = path => readFileSync(new URL(`../${path}`, import.meta.url), 'utf8');
+const pngInfo = path => {
+  const data = readFileSync(new URL(`../${path}`, import.meta.url));
+  assert.equal(data.subarray(1, 4).toString('ascii'), 'PNG', `${path} must be a PNG`);
+  return {
+    width: data.readUInt32BE(16),
+    height: data.readUInt32BE(20),
+    colorType: data[25],
+    size: data.length,
+  };
+};
 
 test('root and public browser clients remain identical', () => {
   for (const file of ['app.js', 'auth.js', 'styles.css', 'sw.js', 'manifest.webmanifest']) {
@@ -22,6 +32,28 @@ test('PWA manifest has install and store icon metadata', () => {
   }
 });
 
+test('Google Play preview assets meet mandatory dimensions', () => {
+  const icon = pngInfo('store/assets/google-play-icon-512.png');
+  assert.deepEqual([icon.width, icon.height], [512, 512]);
+  assert.equal(icon.colorType, 6, 'Play icon must be a 32-bit PNG with alpha');
+  assert.ok(icon.size <= 1024 * 1024, 'Play icon must be at most 1 MB');
+
+  const feature = pngInfo('store/assets/google-play-feature-graphic.png');
+  assert.deepEqual([feature.width, feature.height], [1024, 500]);
+  assert.equal(feature.colorType, 2, 'Feature graphic must not have an alpha channel');
+
+  const screenshotDirectory = new URL('../store/assets/screenshots/', import.meta.url);
+  const screenshots = readdirSync(screenshotDirectory).filter(file => file.endsWith('.png'));
+  assert.ok(screenshots.length >= 2, 'At least two screenshots are required');
+  for (const screenshot of screenshots) {
+    const image = pngInfo(`store/assets/screenshots/${screenshot}`);
+    const shortSide = Math.min(image.width, image.height);
+    const longSide = Math.max(image.width, image.height);
+    assert.ok(shortSide >= 320 && longSide <= 3840, `${screenshot} is outside Play dimensions`);
+    assert.ok(longSide <= shortSide * 2, `${screenshot} exceeds the 2:1 aspect-ratio limit`);
+  }
+});
+
 test('policy, support and deletion pages are present and linked in-app', () => {
   for (const route of ['privacy', 'terms', 'support', 'account-deletion']) {
     assert.equal(existsSync(new URL(`../app/${route}/page.tsx`, import.meta.url)), true);
@@ -31,6 +63,9 @@ test('policy, support and deletion pages are present and linked in-app', () => {
   assert.match(client, /id="terms-link"/);
   assert.match(client, /id="account-delete"/);
   assert.match(client, /openAccountDeletionDialog/);
+  const privacy = read('app/privacy/page.tsx');
+  assert.match(privacy, /IP 주소/);
+  assert.match(privacy, /Trusted Web Activity/);
 });
 
 test('reports are transmitted to a durable API with offline retry', () => {

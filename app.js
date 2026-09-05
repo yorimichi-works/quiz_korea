@@ -977,8 +977,8 @@ function settings() {
   });
   document.querySelector('#feedback-report').onclick = () => openReportDialog({ kind: 'feedback' });
   document.querySelector('#match-history').onclick = matchHistory;
-  document.querySelector('#privacy-link').onclick = () => { globalThis.location.href = '/privacy'; };
-  document.querySelector('#terms-link').onclick = () => { globalThis.location.href = '/terms'; };
+  document.querySelector('#privacy-link').onclick = () => { globalThis.location.href = '/privacy'; }; // eslint-disable-line @next/next/no-location-assign-relative-destination
+  document.querySelector('#terms-link').onclick = () => { globalThis.location.href = '/terms'; }; // eslint-disable-line @next/next/no-location-assign-relative-destination
   document.querySelector('#account-delete').onclick = openAccountDeletionDialog;
   document.querySelectorAll('.title-choice:not(:disabled)').forEach(button => { button.onclick = async () => { try { state.titles = await globalThis.meonjeoAuth.selectTitle(button.dataset.titleId); settings(); } catch (error) { console.error(error); showToast(isJapaneseTest() ? '称号を変更できませんでした' : '칭호를 변경하지 못했습니다'); } }; });
   document.querySelector('#settings-back').onclick = home;

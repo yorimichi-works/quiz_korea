@@ -17,7 +17,7 @@
     { "src": "/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
   ],
   "shortcuts": [
-    { "name": "온라인 매치", "short_name": "온라인 매치", "url": "/game.html" },
-    { "name": "계정 및 설정", "short_name": "설정", "url": "/game.html?account=settings" }
+    { "name": "온라인 매치", "short_name": "온라인 매치", "url": "/game.html", "icons": [{ "src": "/icon-192.png", "sizes": "192x192", "type": "image/png" }] },
+    { "name": "계정 및 설정", "short_name": "설정", "url": "/game.html?account=settings", "icons": [{ "src": "/icon-192.png", "sizes": "192x192", "type": "image/png" }] }
   ]
 }

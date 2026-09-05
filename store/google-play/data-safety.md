@@ -8,6 +8,8 @@ Play Consoleへ入力する前に、実際のリリースビルドと照合す�
 - App activity: 対戦結果、レーティング、称号、マッチイベント。アプリ機能、不正防止、分析目的。
 - Other user-generated content: ユーザーが送信した通報・問い合わせ。カスタマーサポート、安全確保目的。
 - Email address / Name: Google連携時にFirebase Authenticationが処理し、アプリ画面に表示する。ゲームDBには独自保存しない。Firebase SDKの実際の転送内容に合わせて申告する。
+- Device / network information: Firebase Authenticationや配信基盤がIPアドレス、ユーザーエージェント、ブラウザ・端末メタデータを認証、セキュリティ、不正防止、サービス提供のため自動処理する。
+- Web browsing: Android Browser HelperはTWAまたはCustom Tabを起動するため、アプリ内で扱うURLを端末のホストブラウザへ渡す。一般の閲覧履歴をアプリが取得する機能はない。
 
 ## 共有・安全性
 
@@ -16,6 +18,7 @@ Play Consoleへ入力する前に、実際のリリースビルドと照合す�
 - アカウントなし（ゲスト）で主要機能を利用可能。
 - アプリ内削除と外部Web削除導線あり。
 - Firebase Authenticationおよびホスティング・データベース基盤をサービス提供者として使用。
+- Android版は端末のホストブラウザをアプリ表示に使用する。Play ConsoleではAndroid Browser Helperの最新公式開示と照合する。
 
 ## 広告
 

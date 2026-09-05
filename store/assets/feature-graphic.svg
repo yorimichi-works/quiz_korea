@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="500" viewBox="0 0 1024 500">
+  <defs>
+    <linearGradient id="background" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#071a3e"/>
+      <stop offset="0.58" stop-color="#123e8a"/>
+      <stop offset="1" stop-color="#2d70dd"/>
+    </linearGradient>
+    <linearGradient id="panel" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#3179eb"/>
+      <stop offset="1" stop-color="#1554bf"/>
+    </linearGradient>
+    <filter id="shadow" x="-30%" y="-30%" width="160%" height="160%">
+      <feDropShadow dx="0" dy="18" stdDeviation="18" flood-color="#020b1f" flood-opacity=".38"/>
+    </filter>
+  </defs>
+
+  <rect width="1024" height="500" fill="url(#background)"/>
+  <circle cx="870" cy="40" r="210" fill="#3d80e9" opacity=".18"/>
+  <circle cx="940" cy="455" r="250" fill="#071a3e" opacity=".22"/>
+  <path d="M0 430L395 120L560 0H420L0 330Z" fill="#2d70dd" opacity=".12"/>
+
+  <g transform="translate(72 98)">
+    <text x="0" y="102" fill="#ffffff" font-family="Pretendard, Noto Sans KR, Malgun Gothic, sans-serif" font-size="92" font-weight="900" letter-spacing="-5">먼저<tspan fill="#dfff38">!</tspan></text>
+    <text x="3" y="165" fill="#bcd3ff" font-family="Pretendard, Noto Sans KR, Malgun Gothic, sans-serif" font-size="27" font-weight="700" letter-spacing="-1">실시간 1대1 버저 퀴즈</text>
+    <rect x="0" y="205" width="445" height="68" rx="34" fill="#ffffff" opacity=".1"/>
+    <circle cx="34" cy="239" r="19" fill="#dfff38"/>
+    <path d="M28 230h9l-3 7h8l-15 14 4-9h-8z" fill="#112d5c"/>
+    <text x="69" y="249" fill="#ffffff" font-family="Pretendard, Noto Sans KR, Malgun Gothic, sans-serif" font-size="23" font-weight="700" letter-spacing="-.6">문제가 끝나기 전에, 먼저 눌러라</text>
+  </g>
+
+  <g transform="translate(640 70)" filter="url(#shadow)">
+    <g transform="rotate(-8 158 180)">
+      <rect x="35" y="18" width="286" height="354" rx="64" fill="#ffffff" opacity=".14"/>
+      <rect x="54" y="37" width="248" height="316" rx="52" fill="url(#panel)" stroke="#6da2fa" stroke-width="2"/>
+      <circle cx="178" cy="195" r="91" fill="#112d5c" opacity=".76"/>
+      <circle cx="178" cy="195" r="72" fill="#286bd7"/>
+      <path d="M171 111h53l-32 69h52L139 287l29-72h-54z" fill="#dfff38"/>
+      <circle cx="98" cy="80" r="8" fill="#dfff38"/>
+      <rect x="218" y="73" width="52" height="12" rx="6" fill="#bcd3ff" opacity=".8"/>
+      <rect x="82" y="316" width="192" height="7" rx="3.5" fill="#dfff38" opacity=".9"/>
+    </g>
+  </g>
+</svg>
