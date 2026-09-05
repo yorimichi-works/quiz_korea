@@ -42,6 +42,8 @@ npm run android:bundle -- -RequireSigned
 ```
 
 The signed result is copied to `store/android/meonjeo-1.0.0-signed.aab`.
+The build fails unless the AAB contains a valid JAR signature when signing is
+requested.
 
 ## Digital Asset Links
 
