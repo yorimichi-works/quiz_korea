@@ -9,7 +9,7 @@ const activeSeasonUrl = new URL(`../data/seasons/${activeSeason.questionFile}`, 
 const activeSeasonData = JSON.parse(await readFile(activeSeasonUrl, 'utf8'));
 const live = activeSeasonData.questions.filter(question => question.enabledInSeason && question.qaStatus !== 'REJECT');
 const placeholderPattern = /은\(는\)|이\(가\)|말는|기록는|종목는|영법는|게임 또는 대표 시리즈/;
-const entertainmentContextPattern = /(?:영화|드라마|방송|예능|작품|제목|감독|연출|프로그램|시리즈|다큐멘터리|애니메이션|뮤지컬|연극|가수|노래|앨범|배우|출연)/;
+const entertainmentContextPattern = /(?:영화|드라마|방송|예능|작품|소설|제목|감독|연출|프로그램|시리즈|다큐멘터리|애니메이션|뮤지컬|연극|가수|노래|앨범|배우|출연)/;
 const normalize = value => value.normalize('NFKC').toLowerCase().replace(/[\s·.,!?！？'"“”‘’()（）\-_:：/「」]/g, '');
 
 test('live Korean questions contain no unresolved grammar templates', () => {

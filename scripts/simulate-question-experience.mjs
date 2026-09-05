@@ -25,15 +25,18 @@ const simulations = 5_000;
 const failures = [];
 const varietyStyles = { lateral:0, misdirection:0 };
 const specialRounds = new Map();
+const waitRounds = new Map();
 
 for (let seed = 0; seed < simulations; seed += 1) {
   const selected = selectMatchQuestionIds(questions, 20, seededRandom(seed)).map(id => byId.get(id));
   const styles = selected.map(question => question.questionStyle);
   const difficulties = Object.fromEntries(['easy','standard','hard'].map(value => [value, selected.filter(question => question.difficulty === value).length]));
   const specialIndexes = styles.map((style, index) => style === 'standard' ? -1 : index).filter(index => index >= 0);
+  const waitIndex = styles.indexOf('wait_for_clue');
   let hardRun = 0;
   const invalid = selected.length !== 20
     || new Set(selected.map(question => question.factGroupId)).size !== 20
+    || new Set(selected.map(question => question.knowledgeFactId || question.factGroupId || question.questionId)).size !== 20
     || new Set(selected.map(answerKey)).size !== 20
     || new Set(selected.map(question => question.categoryId)).size !== 11
     || selected.some((question, index) => index > 0 && question.categoryId === selected[index - 1].categoryId)
@@ -47,6 +50,7 @@ for (let seed = 0; seed < simulations; seed += 1) {
     || styles.filter(style => style === 'wait_for_clue').length !== 1
     || styles.filter(style => style === 'reasoning').length !== 1
     || styles.filter(style => style === 'lateral' || style === 'misdirection').length !== 1
+    || waitIndex !== specialIndexes[0]
     || specialIndexes[0] < 2 || specialIndexes[0] > 3
     || specialIndexes[1] < 5 || specialIndexes[1] > 6
     || specialIndexes[2] !== 8;
@@ -54,6 +58,7 @@ for (let seed = 0; seed < simulations; seed += 1) {
   const variety = styles.find(style => style === 'lateral' || style === 'misdirection');
   varietyStyles[variety] += 1;
   for (const index of specialIndexes) specialRounds.set(index + 1, (specialRounds.get(index + 1) || 0) + 1);
+  waitRounds.set(waitIndex + 1, (waitRounds.get(waitIndex + 1) || 0) + 1);
 }
 
 let recentAnswerRepeats = 0;
@@ -74,6 +79,7 @@ const report = {
   invariantFailures: failures.length,
   varietyStyles,
   specialRoundCounts: Object.fromEntries([...specialRounds].sort((left, right) => left[0] - right[0])),
+  waitRoundCounts: Object.fromEntries([...waitRounds].sort((left, right) => left[0] - right[0])),
   recentAnswerRepeatsAcross1_000Matches: recentAnswerRepeats,
   revealDurationMs: { p50:percentile(0.5), p90:percentile(0.9), p99:percentile(0.99), max:durations.at(-1) },
 };

@@ -50,7 +50,6 @@ const canonicalKnowledgeGroups = new Map([
   ['korean_history_fact_0007', 'korean_history_fact_0003'], // Goguryeo / Pyongyang
   ['korean_history_fact_0038', 'korean_history_fact_0037'], // Yi Seong-gye / Joseon founding
   ['s2_fact_batch_c_general_014', 's2_fact_s2a_world_033'], // Gutenberg / 42-line Bible
-  ['s2_fact_batch_c_games_013', 's2_fact_batch_c_games_012'], // Larian RPGs
   ['s2_fact_batch_c_general_007', 's2_fact_s2a_world_031'], // Rosetta Stone / hieroglyphs
   ['s2_fact_s2a_general_078', 'general_fact_0003'], // London / Thames
   ['s2_fact_s2a_world_017', 'world_history_geography_fact_0005'], // Zimbabwe / Victoria Falls
@@ -147,7 +146,9 @@ const inherited = source.questions
         ? '미토콘드리아 전자전달계에서 최종 전자수용체로 작용하고 산화적 인산화가 이어지게 하는 분자입니다. 어렵게 생각하지 말고, 사람이 숨을 쉴 때 반드시 들이마셔야 하는 기체는 무엇일까요?'
         : question.questionText,
       acceptedAliases: safeAliases(question.canonicalAnswer, question.acceptedAliases),
-      explanation,
+      explanation: isOxygenLateClue
+        ? '산소는 사람이 호흡할 때 들이마시는 기체이면서, 미토콘드리아 전자전달계에서 전자를 받아 물이 되도록 하는 최종 전자수용체이다.'
+        : explanation,
       sourceUrls: isOxygenLateClue
         ? ['https://www.ncbi.nlm.nih.gov/books/NBK26882/']
         : question.sourceUrls,

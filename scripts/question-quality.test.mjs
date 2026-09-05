@@ -245,13 +245,13 @@ test('fact groups do not repeat the same multi-answer fingerprint', () => {
   assertNoIssues(issues, 'duplicate fact answer fingerprints');
 });
 
-test('a knowledge fact never spans multiple fact groups', () => {
+test('each authored fact group maps to exactly one knowledge fact', () => {
   const questionsWithKnowledgeFacts = questions.filter(
     question => typeof question.knowledgeFactId === 'string' && question.knowledgeFactId.trim(),
   );
-  const issues = [...groupBy(questionsWithKnowledgeFacts, question => question.knowledgeFactId).entries()]
-    .filter(([, members]) => new Set(members.map(question => question.factGroupId)).size > 1)
-    .map(([knowledgeFactId, members]) => `${knowledgeFactId || '<missing-knowledge-fact>'}: ${[...new Set(members.map(question => question.factGroupId))].join(', ')}`);
+  const issues = [...groupBy(questionsWithKnowledgeFacts, question => question.factGroupId).entries()]
+    .filter(([, members]) => new Set(members.map(question => question.knowledgeFactId)).size > 1)
+    .map(([factGroupId, members]) => `${factGroupId || '<missing-fact-group>'}: ${[...new Set(members.map(question => question.knowledgeFactId))].join(', ')}`);
   assertNoIssues(issues, 'knowledge fact grouping');
 });
 
@@ -340,7 +340,7 @@ test('special question styles retain their objective reading structure', () => {
   const lateClueMarker = /(?:마지막\s*(?:단서|힌트)(?:로|는|:)?|결정적\s*단서(?:는|:)?)/;
   const inferenceCue = /(?:두\s*(?:정보|조건|특징|기록|단서|뜻)|세\s*(?:집단|주인공)|함께|동시에|모두\s*만족|조합|연결|가리키|추론|연상|합치|더하|합(?:은|이|을|쳐|치면)|곱|나누|빼서|계산|세면|각각|반대|보다|차례|한\s*바퀴|몇\s*(?:개|명|줄|종류|비트|점|미터|분|배|도)|절반|두\s*쌍|대조|겹치|이은|곧\s*제목|제목에\s*담|부제|바로\s*그|자리한)/;
   const naturalRelationCue = /(?:속하|가운데|따라|흘러|들어가|삼각주|걸쳐|사이|가장|최장|최고|이루어|경계|국경|지류|거슬러|비그늘|그래서|같|다르|바꾸|동안|만큼|더\s*이상|빨라질수록|비례|있|포함|먼저|흐름|대비|횟수|변화|공통|결과|조건|단계|순서|반올림|다음|뒤|후|전|때|마다|부터|까지|라면|하지만|막힌)/;
-  const associationCue = /(?:연상|연결|합치|이어|붙여|붙인\s*형태|빼면|같은|공통|뜻|머리글자|팬덤명|무게\s*단위|더하|합(?:은|이|을|쳐|치면)|곱|나누|세면|각각|반대|거꾸로|보다|차례|한\s*바퀴|몇\s*(?:개|명|줄|종류|비트)|절반|두\s*쌍|닮은|빗대|그대로|떠올리|떠올렸|시작|끝|처럼|아니|그렇다면|반응|이름|되기\s*전|훗날|묶|어느\s*팀도|두\s*선수)/;
+  const associationCue = /(?:연상|연결|합치|이어|잇는|붙여|붙인\s*형태|빼면|같은|다른|공통|뜻|머리글자|팬덤명|무게\s*단위|더하|합(?:은|이|을|쳐|치면)|곱|나누|세면|각각|반대|거꾸로|보다|차례|한\s*바퀴|몇\s*(?:개|명|줄|종류|비트)|절반|두\s*쌍|닮은|빗대|그대로|떠올리|떠올렸|시작|끝|처럼|아니|그렇다면|반응|이름|되기\s*전|훗날|묶|맡았|담당|어느\s*팀도|두\s*선수)/;
 
   for (const question of questions) {
     const text = String(question.questionText || '');

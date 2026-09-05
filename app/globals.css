@@ -7,3 +7,25 @@ body {
   margin: 0;
   background: #f5f7fb;
 }
+
+.legal-page { min-height:100vh; padding:24px; color:#112d5c; font-family:'Noto Sans KR',system-ui,sans-serif; background:linear-gradient(155deg,#f7faff 0%,#eef4ff 100%); }
+.legal-header { width:min(820px,100%); margin:0 auto 18px; display:flex; align-items:center; justify-content:space-between; gap:16px; }
+.legal-brand { color:#112d5c; font-size:22px; font-weight:900; text-decoration:none; letter-spacing:-.06em; }
+.legal-back,.legal-nav a { color:#246bdb; font-size:13px; font-weight:750; text-decoration:none; }
+.legal-card { width:min(820px,100%); margin:auto; padding:clamp(26px,6vw,58px); border:1px solid #dbe5f3; border-radius:28px; background:#fff; box-shadow:0 24px 60px rgba(17,45,92,.09); }
+.legal-kicker { margin:0 0 9px; color:#246bdb; font-size:11px; font-weight:900; letter-spacing:.13em; }
+.legal-card h1 { margin:0; color:#071a3a; font-size:clamp(30px,6vw,46px); line-height:1.15; letter-spacing:-.055em; }
+.legal-lead { margin:16px 0 34px; color:#57677f; font-size:16px; line-height:1.8; }
+.legal-section { padding:25px 0; border-top:1px solid #e4ebf4; }
+.legal-section h2 { margin:0 0 12px; color:#112d5c; font-size:18px; letter-spacing:-.03em; }
+.legal-section p,.legal-section li { color:#43536b; font-size:14px; line-height:1.85; }
+.legal-section ul,.legal-section ol { margin:0; padding-left:22px; }
+.legal-section a { color:#246bdb; font-weight:750; }
+.legal-updated { margin:28px 0 0; color:#7a899f; font-size:12px; }
+.legal-nav { width:min(820px,100%); margin:18px auto 0; display:flex; flex-wrap:wrap; justify-content:center; gap:18px; }
+.legal-actions { margin:0 0 30px; display:flex; flex-wrap:wrap; gap:10px; }
+.legal-actions a { min-height:48px; padding:0 18px; display:inline-flex; align-items:center; justify-content:center; border-radius:13px; font-size:14px; font-weight:850; text-decoration:none; }
+.legal-primary { color:#fff; background:#246bdb; }
+.legal-secondary { color:#112d5c; border:1px solid #ccd9eb; background:#f7faff; }
+.legal-danger { color:#fff; background:#c73d4f; }
+@media (max-width:600px) { .legal-page{padding:16px}.legal-card{padding:26px 20px;border-radius:21px}.legal-actions{display:grid}.legal-header{align-items:flex-start}.legal-nav{gap:12px} }

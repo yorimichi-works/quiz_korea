@@ -136,15 +136,25 @@ function arrangeOnce<T extends MatchQuestion>(selected: readonly T[], random: ()
   const specials = shuffle(selected.filter(isSpecial), random);
   const standards = shuffle(selected.filter(question => !isSpecial(question)), random);
   const specialSlots = chooseSpecialSlots(selected.length, specials.length, random);
+  const firstSpecialSlot = Math.min(...specialSlots);
   const arranged: T[] = [];
 
   for (let position = 0; position < selected.length; position += 1) {
-    const pool = specialSlots.has(position) ? specials : standards;
+    const specialRound = specialSlots.has(position);
+    const pool = specialRound ? specials : standards;
     if (pool.length === 0) throw new Error('Unable to fill the paced match deck');
 
-    let bestIndex = 0;
+    let candidateIndexes = pool.map((_, index) => index);
+    // A match can end 5-0 after round five. Put the authored wait decision in
+    // the opening special slot so even a sweep includes one risk/reward pause.
+    if (specialRound && position === firstSpecialSlot) {
+      const waitIndexes = candidateIndexes.filter(index => styleOf(pool[index]) === 'wait_for_clue');
+      if (waitIndexes.length > 0) candidateIndexes = waitIndexes;
+    }
+
+    let bestIndex = candidateIndexes[0];
     let bestPenalty = Number.POSITIVE_INFINITY;
-    for (let index = 0; index < pool.length; index += 1) {
+    for (const index of candidateIndexes) {
       const penalty = arrangementPenalty(pool[index], arranged, position);
       if (penalty < bestPenalty) {
         bestPenalty = penalty;

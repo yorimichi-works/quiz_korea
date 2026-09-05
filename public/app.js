@@ -281,6 +281,18 @@ function readStoredList(key) {
   try { const value = JSON.parse(localStorage.getItem(key) || '[]'); return Array.isArray(value) ? value : []; } catch { return []; }
 }
 
+async function flushReportOutbox() {
+  if (state.authSession?.status !== 'ready' || !globalThis.meonjeoAuth?.submitReport) return;
+  const queued = readStoredList(REPORT_OUTBOX_KEY);
+  if (!queued.length) return;
+  const remaining = [];
+  for (const report of queued.slice().reverse()) {
+    try { await globalThis.meonjeoAuth.submitReport(report); }
+    catch { remaining.unshift(report); }
+  }
+  localStorage.setItem(REPORT_OUTBOX_KEY, JSON.stringify(remaining.slice(0, 100)));
+}
+
 function openReportDialog({ kind = 'feedback', targetId = null, targetLabel = '', matchId = null } = {}) {
   document.querySelector('#report-dialog')?.remove();
   const title = kind === 'player' ? (isJapaneseTest() ? '対戦相手を通報' : '상대 신고') : kind === 'question' ? (isJapaneseTest() ? '問題を報告' : '문제 신고') : (isJapaneseTest() ? '問題報告・要望' : '문제 신고 · 건의');
@@ -290,15 +302,22 @@ function openReportDialog({ kind = 'feedback', targetId = null, targetLabel = ''
   document.body.appendChild(dialog);
   dialog.querySelector('#report-cancel').onclick = () => dialog.close();
   dialog.addEventListener('close', () => dialog.remove(), { once: true });
-  dialog.querySelector('form').onsubmit = event => {
+  dialog.querySelector('form').onsubmit = async event => {
     event.preventDefault();
     const detail = dialog.querySelector('#report-detail').value.trim();
     if (detail.length < 2) { dialog.querySelector('#report-error').textContent = isJapaneseTest() ? '詳細を2文字以上入力してください' : '상세 내용을 2자 이상 입력해 주세요'; return; }
-    const outbox = readStoredList(REPORT_OUTBOX_KEY);
-    outbox.unshift({ reportId: globalThis.crypto?.randomUUID?.() || `report-${Date.now()}`, kind, category: dialog.querySelector('#report-category').value, targetId, targetLabel, matchId, detail, locale: state.locale, createdAt: new Date().toISOString(), status: 'queued' });
-    localStorage.setItem(REPORT_OUTBOX_KEY, JSON.stringify(outbox.slice(0, 100)));
-    dialog.close();
-    showToast(isJapaneseTest() ? '報告を受け付けました' : '신고가 접수되었습니다');
+    const submit = dialog.querySelector('#report-submit'); submit.disabled = true;
+    const report = { reportId: globalThis.crypto?.randomUUID?.() || `report-${Date.now()}`, kind, category: dialog.querySelector('#report-category').value, targetId, targetLabel, matchId, detail, locale: state.locale, createdAt: new Date().toISOString() };
+    try {
+      await globalThis.meonjeoAuth?.submitReport?.(report);
+      dialog.close();
+      showToast(isJapaneseTest() ? '報告を送信しました' : '신고가 전송되었습니다');
+    } catch {
+      const outbox = readStoredList(REPORT_OUTBOX_KEY); outbox.unshift(report);
+      localStorage.setItem(REPORT_OUTBOX_KEY, JSON.stringify(outbox.slice(0, 100)));
+      dialog.close();
+      showToast(isJapaneseTest() ? '端末に保存しました · 接続後に再送します' : '기기에 저장했습니다 · 연결 후 다시 전송합니다');
+    }
   };
   dialog.showModal();
   dialog.querySelector('#report-detail').focus();
@@ -398,7 +417,7 @@ function refreshTopProfile() {
   const playerRank = rankFromPoints(state.rankPoints);
   const topProfile = document.querySelector('#top-profile');
   if (!topProfile) return;
-  topProfile.innerHTML = `<div class="top-profile-rank">${rankEmblemMarkup(playerRank, 'rank-emblem-top')}<div><b>${playerRank.label}</b><small>${playerRank.current.toLocaleString()} RP</small></div></div>${titleBadgeMarkup(state.titles?.selectedTitleId, 'title-badge-top')}<div class="top-profile-rating"><span>RATING</span><strong>${state.rating.toLocaleString()}</strong></div>`;
+  topProfile.innerHTML = `<div class="top-profile-rank">${rankEmblemMarkup(playerRank, 'rank-emblem-top')}<small>${playerRank.current.toLocaleString()} RP</small></div>${titleBadgeMarkup(state.titles?.selectedTitleId, 'title-badge-top')}<div class="top-profile-rating"><span>RATING</span><strong>${state.rating.toLocaleString()}</strong></div>`;
 }
 
 function home() {
@@ -413,25 +432,26 @@ function home() {
   const motionClass = isFirstHome ? 'home-intro' : 'home-return';
   const brandTranslation = isJapaneseTest() ? '<span class="brand-translation">（先に！）</span>' : '';
   refreshTopProfile();
+  const qaControls = ['localhost','127.0.0.1'].includes(globalThis.location.hostname) || new URLSearchParams(globalThis.location.search).get('qa') === '1';
   app.innerHTML = `<div class="title-screen ${motionClass}">
     <section class="title-brand-panel" aria-labelledby="home-title">
       <h1 id="home-title" aria-label="${isJapaneseTest() ? '먼저!（先に！）' : '먼저!'}"><span class="logo-clip"><span class="logo-letter">먼</span></span><span class="logo-clip"><span class="logo-letter">저</span></span><span class="logo-clip logo-bang"><span class="logo-letter">!</span></span>${brandTranslation}</h1>
     </section>
     <div class="home-actions"><div id="quiz-time-slot" class="quiz-time-slot" aria-live="polite"></div><nav class="home-menu" aria-label="${isJapaneseTest() ? 'メインメニュー' : '메인 메뉴'}">
       <button class="menu-card menu-card-primary" id="online-match" type="button"><span class="menu-number">01</span><span class="menu-copy"><strong>${ui('online')}</strong><small>${ui('onlineSub')}</small></span><span class="menu-arrow" aria-hidden="true">→</span></button>
-      <button class="menu-card" id="friend-match" type="button"><span class="menu-number">02</span><span class="menu-copy"><strong>${ui('friend')}</strong><small>${ui('friendSub')}</small></span><span class="menu-arrow" aria-hidden="true">→</span></button>
-      <button class="menu-card" id="ranking" type="button"><span class="menu-number">03</span><span class="menu-copy"><strong>${ui('ranking')}</strong><small>${ui('rankingSub')}</small></span><span class="menu-arrow" aria-hidden="true">→</span></button>
+      ${qaControls ? `<button class="menu-card" id="friend-match" type="button"><span class="menu-number">02</span><span class="menu-copy"><strong>${ui('friend')}</strong><small>${ui('friendSub')}</small></span><span class="menu-arrow" aria-hidden="true">→</span></button>` : ''}
+      <button class="menu-card" id="ranking" type="button"><span class="menu-number">${qaControls ? '03' : '02'}</span><span class="menu-copy"><strong>${ui('ranking')}</strong><small>${ui('rankingSub')}</small></span><span class="menu-arrow" aria-hidden="true">→</span></button>
     </nav></div>
-    <button class="test-locale-button" id="test-locale" type="button">${isJapaneseTest() ? '한국어로 돌아가기' : '日本語 TEST'}</button>
+    ${qaControls ? `<button class="test-locale-button" id="test-locale" type="button">${isJapaneseTest() ? '한국어로 돌아가기' : '日本語 TEST'}</button>` : ''}
   </div>`;
   bindHomeMenuAction('#online-match', () => {
     if (isJapaneseTest()) { matching(); return; }
     if (state.authSession?.status !== 'ready') { showToast('게스트 계정을 준비하고 있습니다…'); return; }
     onlineMatching();
   });
-  bindHomeMenuAction('#friend-match', friendMatch);
+  if (qaControls) bindHomeMenuAction('#friend-match', friendMatch);
   bindHomeMenuAction('#ranking', ranking);
-  document.querySelector('#test-locale').onclick = () => {
+  if (qaControls) document.querySelector('#test-locale').onclick = () => {
     state.locale = isJapaneseTest() ? 'ko' : 'ja';
     localStorage.setItem(TEST_LOCALE_KEY, state.locale);
     state.questionIndex = 0; state.score = 0; state.opponentScore = 0; state.lives = 5;
@@ -668,7 +688,7 @@ async function submitOnlineBuzz(event) {
   try {
     const result = await globalThis.meonjeoRealtime.buzz({ ...pending, clientSequence: (state.onlineSequence = (state.onlineSequence || 0) + 1), lastKnownRttMs: state.onlineRtt || 0 });
     state.onlinePendingBuzz = null;
-    if (result.snapshot) applyOnlineSnapshot(result.snapshot, true);
+    if (result.snapshot) applyOnlineSnapshot(result.snapshot);
   } catch (error) {
     console.error(error);
     const latest = state.onlineSnapshot;
@@ -710,7 +730,7 @@ function renderOnlineAnswer(snapshot) {
     try {
       const result = await globalThis.meonjeoRealtime.answer(pending);
       state.onlinePendingAnswer = null;
-      if (result.snapshot) applyOnlineSnapshot(result.snapshot, true);
+      if (result.snapshot) applyOnlineSnapshot(result.snapshot);
     } catch (error) {
       console.error(error); submitting = false;
       const latest = state.onlineSnapshot;
@@ -775,8 +795,13 @@ function renderOnlineComplete(snapshot) {
   setTimeout(() => { void syncCloudProgress(); void loadTitles({ notifyUnlock:true }); }, 350);
 }
 
-function applyOnlineSnapshot(snapshot, force = false) {
+function applyOnlineSnapshot(snapshot) {
   if (!snapshot || snapshot.matchId !== state.onlineMatchId) return;
+  const current = state.onlineSnapshot;
+  if (current?.matchId === snapshot.matchId && (
+    snapshot.version < current.version
+    || (snapshot.version === current.version && snapshot.serverNow < current.serverNow)
+  )) return;
   if (state.onlinePendingBuzz && (
     state.onlinePendingBuzz.matchId !== snapshot.matchId
     || state.onlinePendingBuzz.questionToken !== snapshot.questionToken
@@ -788,7 +813,7 @@ function applyOnlineSnapshot(snapshot, force = false) {
     || snapshot.phase !== 'answering'
   )) state.onlinePendingAnswer = null;
   state.onlineSnapshot = snapshot; const renderKey = `${snapshot.phase}:${snapshot.version}`;
-  if (!force && state.onlineRenderKey === renderKey) { updateOnlineTimeline(snapshot); return; }
+  if (state.onlineRenderKey === renderKey) { updateOnlineTimeline(snapshot); return; }
   state.onlineRenderKey = renderKey;
   if (snapshot.phase === 'scheduled' || snapshot.phase === 'open') renderOnlineQuestion(snapshot);
   else if (snapshot.phase === 'answering') renderOnlineAnswer(snapshot);
@@ -899,6 +924,36 @@ function bindAccountPanel() {
   };
 }
 
+function clearLocalAccountData() {
+  [RATING_KEY, RANK_POINTS_KEY, RANK_AWARDED_MATCH_KEY, PROFILE_UPDATED_AT_KEY, MATCH_HISTORY_KEY, SESSION_KEY, REPORT_OUTBOX_KEY, ONLINE_MATCH_KEY].forEach(key => localStorage.removeItem(key));
+  state.rating = 1248; state.rankPoints = 0; state.questionHistory = []; state.titles = { selectedTitleId:null, unlockedTitleIds:[], stats:null };
+  globalThis.meonjeoRealtime?.resetSession?.();
+}
+
+function openAccountDeletionDialog() {
+  document.querySelector('#account-delete-dialog')?.remove();
+  const dialog = document.createElement('dialog'); dialog.id = 'account-delete-dialog'; dialog.className = 'report-dialog account-delete-dialog';
+  dialog.innerHTML = `<form method="dialog"><div class="eyebrow">ACCOUNT DELETE</div><h2>${isJapaneseTest() ? 'アカウントとデータを削除' : '계정 및 데이터 삭제'}</h2><p>${isJapaneseTest() ? '戦績、レーティング、称号、対戦記録、通報履歴を削除します。この操作は取り消せません。' : '전적, 레이팅, 칭호, 대전 기록과 신고 내역이 삭제됩니다. 이 작업은 되돌릴 수 없습니다.'}</p><label class="delete-confirm"><input id="delete-confirm" type="checkbox"> <span>${isJapaneseTest() ? '削除内容を確認しました' : '삭제 내용을 확인했습니다'}</span></label><p class="report-error" id="delete-error"></p><div class="report-actions"><button class="text-button" id="delete-cancel" type="button">${isJapaneseTest() ? 'キャンセル' : '취소'}</button><button class="danger-button" id="delete-submit" type="submit" disabled>${isJapaneseTest() ? '完全に削除' : '완전히 삭제'}</button></div></form>`;
+  document.body.appendChild(dialog);
+  const checkbox = dialog.querySelector('#delete-confirm'); const submit = dialog.querySelector('#delete-submit');
+  checkbox.onchange = () => { submit.disabled = !checkbox.checked; };
+  dialog.querySelector('#delete-cancel').onclick = () => dialog.close();
+  dialog.addEventListener('close', () => dialog.remove(), { once:true });
+  dialog.querySelector('form').onsubmit = async event => {
+    event.preventDefault(); if (!checkbox.checked || !globalThis.meonjeoAuth?.deleteAccount) return;
+    submit.disabled = true; submit.textContent = isJapaneseTest() ? '削除中…' : '삭제 중…';
+    try {
+      await globalThis.meonjeoAuth.deleteAccount(); clearLocalAccountData(); dialog.close(); home();
+      showToast(isJapaneseTest() ? 'アカウントとデータを削除しました' : '계정과 데이터를 삭제했습니다');
+    } catch (error) {
+      dialog.querySelector('#delete-error').textContent = isJapaneseTest() ? '削除できませんでした。接続を確認して再試行してください。' : '삭제하지 못했습니다. 연결을 확인한 뒤 다시 시도해 주세요.';
+      submit.disabled = false; submit.textContent = isJapaneseTest() ? '完全に削除' : '완전히 삭제';
+      console.error(error);
+    }
+  };
+  dialog.showModal();
+}
+
 function refreshAccountPanel() {
   const panel = document.querySelector('#account-panel');
   if (!panel) return;
@@ -911,7 +966,7 @@ function settings() {
   state.phase = 'settings';
   showSettingsButton(false);
   const titleCards = TITLE_DEFS.map(title => { const unlocked = state.titles?.unlockedTitleIds?.includes(title.id); const selected = state.titles?.selectedTitleId === title.id; const requirement = titleRequirement(title); return `<button class="title-choice ${selected ? 'is-selected' : ''}" data-title-id="${title.id}" type="button" ${unlocked ? '' : 'disabled'}>${titleBadgeMarkup(title.id,'title-badge-choice')}<small>${unlocked ? (selected ? (isJapaneseTest() ? '選択中' : '사용 중') : requirement) : `🔒 ${requirement}`}</small></button>`; }).join('');
-  app.innerHTML = `<div class="battle-page centered"><div class="settings-card"><div class="eyebrow">SETTINGS</div><h2>${ui('settings')}</h2>${accountPanelMarkup()}<section class="title-settings"><header><strong>${isJapaneseTest() ? '称号' : '칭호'}</strong><small>${isJapaneseTest() ? '対戦画面に表示されます' : '대전 화면에 표시됩니다'}</small></header><div class="title-choice-grid">${titleCards}</div></section><div class="settings-list"><button class="setting-row" aria-pressed="true"><span><strong>${ui('sound')}</strong><small>${isJapaneseTest() ? 'ボタンと正解の効果音' : '버튼과 정답 효과음'}</small></span><b>ON</b></button><button class="setting-row" aria-pressed="true"><span><strong>${ui('vibration')}</strong><small>${isJapaneseTest() ? '早押し時のフィードバック' : '빠른 누르기 피드백'}</small></span><b>ON</b></button><div class="setting-row static"><span><strong>${ui('language')}</strong><small>${isJapaneseTest() ? '一時テストモード' : '앱 표시 언어'}</small></span><b>${isJapaneseTest() ? '日本語 TEST' : '한국어'}</b></div><button class="setting-row setting-link" id="feedback-report"><span><strong>${isJapaneseTest() ? '問題報告・要望' : '문제 신고 · 건의'}</strong><small>${isJapaneseTest() ? '問題、動作、改善案を送る' : '문제·오류·개선 의견 보내기'}</small></span><b>→</b></button><button class="setting-row setting-link" id="match-history"><span><strong>${isJapaneseTest() ? 'マッチング履歴' : '매칭 기록'}</strong><small>${isJapaneseTest() ? '対戦相手の確認・通報' : '상대 확인 및 신고'}</small></span><b>→</b></button></div><button class="primary" id="settings-back">${ui('backTitle')}</button></div></div>`;
+  app.innerHTML = `<div class="battle-page centered"><div class="settings-card"><div class="eyebrow">SETTINGS</div><h2>${ui('settings')}</h2>${accountPanelMarkup()}<section class="title-settings"><header><strong>${isJapaneseTest() ? '称号' : '칭호'}</strong><small>${isJapaneseTest() ? '対戦画面に表示されます' : '대전 화면에 표시됩니다'}</small></header><div class="title-choice-grid">${titleCards}</div></section><div class="settings-list"><button class="setting-row" aria-pressed="true"><span><strong>${ui('sound')}</strong><small>${isJapaneseTest() ? 'ボタンと正解の効果音' : '버튼과 정답 효과음'}</small></span><b>ON</b></button><button class="setting-row" aria-pressed="true"><span><strong>${ui('vibration')}</strong><small>${isJapaneseTest() ? '早押し時のフィードバック' : '빠른 누르기 피드백'}</small></span><b>ON</b></button><div class="setting-row static"><span><strong>${ui('language')}</strong><small>${isJapaneseTest() ? 'テスト表示言語' : '앱 표시 언어'}</small></span><b>${isJapaneseTest() ? '日本語' : '한국어'}</b></div><button class="setting-row setting-link" id="feedback-report"><span><strong>${isJapaneseTest() ? '問題報告・要望' : '문제 신고 · 건의'}</strong><small>${isJapaneseTest() ? '問題、動作、改善案を運営へ送る' : '문제·오류·개선 의견을 운영팀에 보내기'}</small></span><b>→</b></button><button class="setting-row setting-link" id="match-history"><span><strong>${isJapaneseTest() ? 'マッチング履歴' : '매칭 기록'}</strong><small>${isJapaneseTest() ? '対戦相手の確認・通報' : '상대 확인 및 신고'}</small></span><b>→</b></button><button class="setting-row setting-link" id="privacy-link"><span><strong>${isJapaneseTest() ? 'プライバシーポリシー' : '개인정보 처리방침'}</strong><small>${isJapaneseTest() ? 'データの取扱いと削除について' : '데이터 처리 및 삭제 안내'}</small></span><b>→</b></button><button class="setting-row setting-link" id="terms-link"><span><strong>${isJapaneseTest() ? '利用規約・サポート' : '이용약관 · 고객지원'}</strong><small>${isJapaneseTest() ? 'サービス条件と問い合わせ' : '서비스 조건 및 문의'}</small></span><b>→</b></button><button class="setting-row setting-link danger-link" id="account-delete"><span><strong>${isJapaneseTest() ? 'アカウントとデータを削除' : '계정 및 데이터 삭제'}</strong><small>${isJapaneseTest() ? '保存された情報を完全に削除' : '저장된 정보를 완전히 삭제'}</small></span><b>→</b></button></div><button class="primary" id="settings-back">${ui('backTitle')}</button></div></div>`;
   bindAccountPanel();
   document.querySelectorAll('.setting-row[aria-pressed]').forEach(button => {
     button.onclick = () => {
@@ -922,6 +977,9 @@ function settings() {
   });
   document.querySelector('#feedback-report').onclick = () => openReportDialog({ kind: 'feedback' });
   document.querySelector('#match-history').onclick = matchHistory;
+  document.querySelector('#privacy-link').onclick = () => { globalThis.location.href = '/privacy'; };
+  document.querySelector('#terms-link').onclick = () => { globalThis.location.href = '/terms'; };
+  document.querySelector('#account-delete').onclick = openAccountDeletionDialog;
   document.querySelectorAll('.title-choice:not(:disabled)').forEach(button => { button.onclick = async () => { try { state.titles = await globalThis.meonjeoAuth.selectTitle(button.dataset.titleId); settings(); } catch (error) { console.error(error); showToast(isJapaneseTest() ? '称号を変更できませんでした' : '칭호를 변경하지 못했습니다'); } }; });
   document.querySelector('#settings-back').onclick = home;
 }
@@ -1346,7 +1404,11 @@ async function bootstrap() {
   const [seasonLoad, rankLoad] = await Promise.allSettled([loadActiveSeason(), loadRankConfig()]);
   if (seasonLoad.status === 'rejected') { console.error(seasonLoad.reason); seasonInfo = { seasonId: '시즌 데이터 오류', eligibleCount: 0 }; }
   if (rankLoad.status === 'rejected') console.error(rankLoad.reason);
-  if (new URLSearchParams(globalThis.location.search).has('rank-preview')) { renderRankPreview(); return; }
+  const launchParams = new URLSearchParams(globalThis.location.search);
+  if (launchParams.has('rank-preview')) { renderRankPreview(); return; }
+  if (launchParams.get('account') === 'delete') { settings(); setTimeout(openAccountDeletionDialog, 0); return; }
+  if (launchParams.get('account') === 'settings') { settings(); return; }
+  if (launchParams.get('support') === '1') { settings(); setTimeout(() => openReportDialog({ kind:'feedback' }), 0); return; }
   const snapshot = readSavedSession();
   if (snapshot?.state?.matchId && ACTIVE_PHASES.has(snapshot.state.phase)) {
     hydrateSession(snapshot);
@@ -1365,6 +1427,7 @@ window.addEventListener('meonjeo-auth-change', event => {
   if (previousUid && state.authSession.uid && previousUid !== state.authSession.uid) globalThis.meonjeoRealtime?.resetSession?.();
   refreshAccountPanel();
   if (state.authSession.status === 'ready') void syncCloudProgress({ refreshUi: true });
+  if (state.authSession.status === 'ready') void flushReportOutbox();
   if (state.authSession.status === 'ready' && state.phase === 'home') void loadHomeEnhancements();
   if (state.authSession.status === 'ready' && state.bootstrapped && localStorage.getItem(ONLINE_MATCH_KEY) && state.phase === 'home') void onlineMatching();
 });

@@ -70,6 +70,7 @@ test('a full match receives the intended gameplay mix and unique facts', () => {
     assert.ok(specialIndexes[0] >= 2 && specialIndexes[0] <= 3, `seed ${seed} has a mistimed opening beat`);
     assert.ok(specialIndexes[1] >= 5 && specialIndexes[1] <= 6, `seed ${seed} has a mistimed middle beat`);
     assert.equal(specialIndexes[2], 8, `seed ${seed} has a mistimed deciding beat`);
+    assert.equal(styles.indexOf('wait_for_clue'), specialIndexes[0], `seed ${seed} can finish 5-0 before its wait decision`);
     assert.ok(specialIndexes.every((index, position) => position === 0 || index - specialIndexes[position - 1] > 1));
   }
 });
@@ -84,6 +85,7 @@ test('pacing is deterministically repaired when random shuffles never improve', 
     assert.ok(specialIndexes[0] >= 2 && specialIndexes[0] <= 3);
     assert.ok(specialIndexes[1] >= 5 && specialIndexes[1] <= 6);
     assert.equal(specialIndexes[2], 8);
+    assert.equal(styles.indexOf('wait_for_clue'), specialIndexes[0]);
     assert.ok(specialIndexes.every((index, position) => position === 0 || index - specialIndexes[position - 1] > 1));
   }
 });
@@ -174,5 +176,6 @@ test('the active season produces paced decks from real fact groups', async () =>
     assert.equal(styles.filter(style => style === 'wait_for_clue').length, 1);
     assert.equal(styles.filter(style => style === 'reasoning').length, 1);
     assert.equal(styles.filter(style => style === 'lateral' || style === 'misdirection').length, 1);
+    assert.ok(styles.indexOf('wait_for_clue') >= 2 && styles.indexOf('wait_for_clue') <= 3);
   }
 });

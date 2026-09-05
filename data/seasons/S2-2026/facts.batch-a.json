@@ -4250,22 +4250,23 @@
       "difficulty": "easy",
       "difficultyScore": 35,
       "q1": {
-        "questionText": "리그닌이 쌓인 도관 요소와 헛물관이 길게 연결되어 내부 압력이 낮아져도 찌그러지지 않습니다. 성숙한 세포 대부분은 죽어 빈 관처럼 작동하고, 뿌리의 물과 무기질을 줄기와 잎으로 올립니다. 마지막으로, 결정적 단서: 이 조직의 이름은 무엇일까요?",
-        "canonicalAnswer": "물관",
-        "acceptedAliases": [
-          "목부",
-          "자일렘"
+      "questionText": "리그닌이 쌓인 도관 요소와 가도관으로 이루어지고, 성숙한 세포는 죽어 빈 관처럼 물과 무기질을 올립니다. 어렵게 생각하지 마세요. 마지막 단서는 ‘물이 다니는 관다발 부분’을 세 글자로 줄인 이름입니다. 무엇일까요?",
+      "canonicalAnswer": "물관부",
+      "acceptedAliases": [
+        "물관 부"
         ]
       },
-      "q2": {
-        "questionText": "식물의 뿌리에서 줄기와 잎으로 물을 주로 올려 보내는 관다발 조직은 무엇일까요?",
-        "canonicalAnswer": "물관",
-        "acceptedAliases": [
-          "목부",
-          "자일렘"
-        ]
+    "q2": {
+      "questionText": "식물의 뿌리에서 줄기와 잎으로 물을 주로 올려 보내는 관다발 조직은 무엇일까요?",
+      "canonicalAnswer": "물관부",
+      "acceptedAliases": [
+        "물관 부",
+        "물관",
+        "목부",
+        "자일렘"
+      ]
       },
-      "explanation": "물관은 뿌리에서 흡수한 물과 무기질을 식물체 위쪽으로 운반한다.",
+    "explanation": "물관부(목부)는 도관 요소와 가도관 등으로 이루어져 물과 무기질을 위로 운반하며, 그 안의 물 운반 통로를 교과서에서 물관이라 부른다.",
       "sourceUrls": [
         "https://www.britannica.com/science/xylem"
       ],

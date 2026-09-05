@@ -220,39 +220,52 @@ async function applyMatchRewards(db: D1Database, match: MatchRow) {
     try { const parsed = JSON.parse(row?.match_history_json || '[]'); if (Array.isArray(parsed)) history = parsed; } catch { history = []; }
     const item = { matchId: match.id, opponentName: 'LIVE PLAYER', opponentIcon: '●', opponentRating, playedAt: new Date(now).toISOString(), result: tied ? 'draw' : won ? 'win' : 'loss', score, opponentScore };
     const mergedHistory = [item, ...history.filter(entry => (entry as { matchId?: string })?.matchId !== match.id)].slice(0, 30);
-    statements.push(db.prepare(`INSERT INTO meonjeo_player_progress (user_id, rating, rank_points, profile_updated_at, match_history_json, updated_at) VALUES (?1, ?2, ?3, ?4, ?5, CURRENT_TIMESTAMP) ON CONFLICT(user_id) DO UPDATE SET rating = excluded.rating, rank_points = excluded.rank_points, profile_updated_at = excluded.profile_updated_at, match_history_json = excluded.match_history_json, updated_at = CURRENT_TIMESTAMP`)
-      .bind(uid, Math.max(0, (row?.rating ?? 1248) + delta), Math.max(0, (row?.rank_points ?? 0) + rankGain), now, JSON.stringify(mergedHistory)));
+    statements.push(db.prepare(`INSERT INTO meonjeo_player_progress (user_id, rating, rank_points, profile_updated_at, match_history_json, updated_at)
+      SELECT ?1, ?2, ?3, ?4, ?5, CURRENT_TIMESTAMP
+      WHERE EXISTS (SELECT 1 FROM meonjeo_matches WHERE id = ?6 AND rating_applied = 0)
+      ON CONFLICT(user_id) DO UPDATE SET rating = excluded.rating, rank_points = excluded.rank_points, profile_updated_at = excluded.profile_updated_at, match_history_json = excluded.match_history_json, updated_at = CURRENT_TIMESTAMP`)
+      .bind(uid, Math.max(0, (row?.rating ?? 1248) + delta), Math.max(0, (row?.rank_points ?? 0) + rankGain), now, JSON.stringify(mergedHistory), match.id));
     const quizTimeMatch = source === 'quiz_time_banner' ? 1 : 0;
-    statements.push(db.prepare(`INSERT INTO meonjeo_player_titles (user_id, matches, wins, current_streak, best_streak, quiz_time_matches) VALUES (?1, 1, ?2, ?2, ?2, ?3) ON CONFLICT(user_id) DO UPDATE SET matches = matches + 1, wins = wins + excluded.wins, current_streak = CASE WHEN excluded.wins = 1 THEN current_streak + 1 ELSE 0 END, best_streak = MAX(best_streak, CASE WHEN excluded.wins = 1 THEN current_streak + 1 ELSE best_streak END), quiz_time_matches = quiz_time_matches + excluded.quiz_time_matches, updated_at = CURRENT_TIMESTAMP`)
-      .bind(uid, won ? 1 : 0, quizTimeMatch));
+    statements.push(db.prepare(`INSERT INTO meonjeo_player_titles (user_id, matches, wins, current_streak, best_streak, quiz_time_matches)
+      SELECT ?1, 1, ?2, ?2, ?2, ?3
+      WHERE EXISTS (SELECT 1 FROM meonjeo_matches WHERE id = ?4 AND rating_applied = 0)
+      ON CONFLICT(user_id) DO UPDATE SET matches = matches + 1, wins = wins + excluded.wins, current_streak = CASE WHEN excluded.wins = 1 THEN current_streak + 1 ELSE 0 END, best_streak = MAX(best_streak, CASE WHEN excluded.wins = 1 THEN current_streak + 1 ELSE best_streak END), quiz_time_matches = quiz_time_matches + excluded.quiz_time_matches, updated_at = CURRENT_TIMESTAMP`)
+      .bind(uid, won ? 1 : 0, quizTimeMatch, match.id));
   }
   statements.push(db.prepare(`UPDATE meonjeo_matches SET rating_applied = 1, rating_delta_a = ?1, rating_delta_b = ?2, rank_gain_a = ?3, rank_gain_b = ?4 WHERE id = ?5 AND rating_applied = 0`).bind(deltaA, deltaB, rankGainA, rankGainB, match.id));
   await db.batch(statements);
-  await Promise.all(players.map(player => recordQuizTimeEvent(db, { eventId:`match-complete:${match.id}:${player.uid}`, uid:player.uid, type:'quiz_time_match_complete', source:player.source, result:tied ? 'draw' : winner === player.uid ? 'win' : 'loss' })));
+  try {
+    await Promise.all(players.map(player => recordQuizTimeEvent(db, { eventId:`match-complete:${match.id}:${player.uid}`, uid:player.uid, type:'quiz_time_match_complete', source:player.source, result:tied ? 'draw' : winner === player.uid ? 'win' : 'loss' })));
+  } catch (error) {
+    // Match settlement must not be reported as failed after its transactional
+    // rewards committed merely because optional analytics were unavailable.
+    console.error('quiz time completion analytics failed', error);
+  }
+}
+
+async function settleCompletedMatch(db: D1Database, match: MatchRow) {
+  let latest = (await loadMatch(db, match.id, match.player_a)) || match;
+  if (latest.status === 'complete' && !latest.rating_applied) {
+    await applyMatchRewards(db, latest);
+    latest = (await loadMatch(db, match.id, match.player_a)) || latest;
+  }
+  return latest;
 }
 
 async function completeForfeit(db: D1Database, match: MatchRow, loserUid: string) {
   const now = Date.now();
   const result = { kind:'forfeit', answer:'', explanation:'상대가 대전을 떠나 기권 처리되었습니다.', answerUid:loserUid };
-  const completed = await db.prepare(`UPDATE meonjeo_matches SET status = 'complete', phase = 'complete', lives_a = CASE WHEN player_a = ?1 THEN 0 ELSE lives_a END, lives_b = CASE WHEN player_b = ?1 THEN 0 ELSE lives_b END, result_json = ?2, next_question_at = NULL, decision_version = decision_version + 1, updated_at = ?3 WHERE id = ?4 AND status = 'active'`)
+  await db.prepare(`UPDATE meonjeo_matches SET status = 'complete', phase = 'complete', lives_a = CASE WHEN player_a = ?1 THEN 0 ELSE lives_a END, lives_b = CASE WHEN player_b = ?1 THEN 0 ELSE lives_b END, result_json = ?2, next_question_at = NULL, decision_version = decision_version + 1, updated_at = ?3 WHERE id = ?4 AND status = 'active'`)
     .bind(loserUid, JSON.stringify(result), now, match.id).run();
-  const completedMatch = (await loadMatch(db, match.id, match.player_a)) || match;
-  if (completed.meta.changes === 1) await applyMatchRewards(db, completedMatch);
-  return (await loadMatch(db, match.id, match.player_a)) || completedMatch;
+  return settleCompletedMatch(db, match);
 }
 
 async function advance(db: D1Database, match: MatchRow) {
   const now = Date.now();
   const qaMode = match.id.startsWith('qa-');
+  if (match.status === 'complete') return settleCompletedMatch(db, match);
   const staleA = match.last_seen_a === 0 || now - match.last_seen_a > 15000;
   const staleB = match.last_seen_b === 0 || now - match.last_seen_b > 15000;
-  if (match.status === 'active' && now - match.created_at > 15000 && (staleA || staleB)) {
-    if (staleA && staleB) {
-      await db.prepare(`UPDATE meonjeo_matches SET status = 'cancelled', phase = 'cancelled', decision_version = decision_version + 1, updated_at = ?1 WHERE id = ?2 AND status = 'active'`).bind(now, match.id).run();
-      return (await loadMatch(db, match.id, match.player_a)) || match;
-    }
-    return completeForfeit(db, match, staleA ? match.player_a : match.player_b);
-  }
   if (match.phase === 'scheduled' && now > match.buzz_deadline_at) {
     const question = currentQuestion(match);
     const result = { kind: 'no_buzz', answer: question.canonicalAnswer, explanation: question.explanation };
@@ -286,13 +299,27 @@ async function advance(db: D1Database, match: MatchRow) {
         .bind(nextIndex, crypto.randomUUID(), startAt, startAt + 300, startAt + Math.max(6000, questionRevealDurationMs(question.questionText) + 2500), now, match.id).run();
     }
   }
-  return (await loadMatch(db, match.id, match.player_a)) || match;
+  // Resolve an earned result before considering disconnect forfeits. Otherwise
+  // a player reconnecting after a terminal result could reverse the winner.
+  if (match.status === 'active' && now - match.created_at > 15000 && (staleA || staleB)) {
+    if (staleA && staleB) {
+      await db.prepare(`UPDATE meonjeo_matches SET status = 'cancelled', phase = 'cancelled', decision_version = decision_version + 1, updated_at = ?1 WHERE id = ?2 AND status = 'active'`).bind(now, match.id).run();
+      return settleCompletedMatch(db, match);
+    }
+    return completeForfeit(db, match, staleA ? match.player_a : match.player_b);
+  }
+  return settleCompletedMatch(db, match);
 }
 
 function clientSnapshot(match: MatchRow, uid: string) {
   const question = currentQuestion(match);
   const isA = uid === match.player_a;
   const result = match.result_json ? JSON.parse(match.result_json) : null;
+  const publicResult = result ? { ...result } : null;
+  if (publicResult) {
+    delete publicResult.answerId;
+    delete publicResult.questionToken;
+  }
   const ratingBefore = isA ? match.rating_a : match.rating_b;
   const ratingDeltaValue = isA ? match.rating_delta_a : match.rating_delta_b;
   const rankGain = isA ? match.rank_gain_a : match.rank_gain_b;
@@ -314,7 +341,7 @@ function clientSnapshot(match: MatchRow, uid: string) {
     myLives: isA ? match.lives_a : match.lives_b, opponentLives: isA ? match.lives_b : match.lives_a,
     myTitleId: isA ? match.title_a : match.title_b, opponentTitleId: isA ? match.title_b : match.title_a,
     myRating: ratingBefore, opponentRating: isA ? match.rating_b : match.rating_a,
-    result: result ? { ...result, answerUid: result.answerUid === uid ? 'me' : result.answerUid ? 'opponent' : null } : null,
+    result: publicResult ? { ...publicResult, answerUid: publicResult.answerUid === uid ? 'me' : publicResult.answerUid ? 'opponent' : null } : null,
     outcome: outcome === null ? null : outcome === 'draw' ? 'draw' : (outcome === 'a') === isA ? 'win' : 'loss',
     reward: match.phase === 'complete' ? { ratingBefore, ratingAfter:Math.max(0,ratingBefore+ratingDeltaValue), ratingDelta:ratingDeltaValue, rankGain } : null,
     nextQuestionAt: match.next_question_at, version: match.decision_version,
@@ -351,7 +378,7 @@ async function handleJoin(db: D1Database, uid: string, body: Record<string, unkn
 async function handleBuzz(db: D1Database, uid: string, body: Record<string, unknown>) {
   const matchId = String(body.matchId || ''); const buzzId = String(body.buzzId || ''); const token = String(body.questionToken || '');
   if (!matchId || !buzzId || buzzId.length > 100) return response({ error: 'invalid-buzz' }, 400);
-  const prior = await db.prepare(`SELECT response_json FROM meonjeo_match_events WHERE event_id = ?1 AND user_id = ?2`).bind(buzzId, uid).first<{ response_json: string }>();
+  const prior = await db.prepare(`SELECT response_json FROM meonjeo_match_events WHERE event_id = ?1 AND match_id = ?2 AND user_id = ?3 AND event_type = 'buzz'`).bind(buzzId, matchId, uid).first<{ response_json: string }>();
   if (prior) return response(JSON.parse(prior.response_json));
   let match = await loadMatch(db, matchId, uid); if (!match) return response({ error: 'match-not-found' }, 404);
   match = await advance(db, match);
@@ -364,7 +391,7 @@ async function handleBuzz(db: D1Database, uid: string, body: Record<string, unkn
     await db.prepare(`INSERT INTO meonjeo_player_titles (user_id, fast_buzz_wins) VALUES (?1, 1) ON CONFLICT(user_id) DO UPDATE SET fast_buzz_wins = fast_buzz_wins + 1, updated_at = CURRENT_TIMESTAMP`).bind(uid).run();
   }
   match = (await loadMatch(db, matchId, uid))!;
-  const payload = { accepted: won.meta.changes === 1, winner: match.buzz_winner_uid === uid ? 'me' : match.buzz_winner_uid ? 'opponent' : null, snapshot: clientSnapshot(match, uid) };
+  const payload = { accepted: match.buzz_id === buzzId && match.buzz_winner_uid === uid, winner: match.buzz_winner_uid === uid ? 'me' : match.buzz_winner_uid ? 'opponent' : null, snapshot: clientSnapshot(match, uid) };
   await db.prepare(`INSERT OR IGNORE INTO meonjeo_match_events (event_id, match_id, user_id, event_type, response_json, created_at) VALUES (?1, ?2, ?3, 'buzz', ?4, ?5)`).bind(buzzId, matchId, uid, JSON.stringify(payload), now).run();
   return response(payload);
 }
@@ -372,25 +399,32 @@ async function handleBuzz(db: D1Database, uid: string, body: Record<string, unkn
 async function handleAnswer(db: D1Database, uid: string, body: Record<string, unknown>) {
   const matchId = String(body.matchId || ''); const answerId = String(body.answerId || ''); const questionToken = String(body.questionToken || ''); const answer = String(body.answer || '').slice(0, 100);
   if (!matchId || !answerId || !questionToken) return response({ error: 'invalid-answer' }, 400);
-  const prior = await db.prepare(`SELECT response_json FROM meonjeo_match_events WHERE event_id = ?1 AND user_id = ?2`).bind(answerId, uid).first<{ response_json: string }>();
+  const prior = await db.prepare(`SELECT response_json FROM meonjeo_match_events WHERE event_id = ?1 AND match_id = ?2 AND user_id = ?3 AND event_type = 'answer'`).bind(answerId, matchId, uid).first<{ response_json: string }>();
   if (prior) return response(JSON.parse(prior.response_json));
   let match = await loadMatch(db, matchId, uid); if (!match) return response({ error: 'match-not-found' }, 404);
   match = await advance(db, match);
   if (match.question_token !== questionToken) return response({ error: 'stale-question' }, 409);
+  const existingResult = match.result_json ? JSON.parse(match.result_json) as { answerId?:string; questionToken?:string; answerUid?:string } : null;
+  if (existingResult?.answerId === answerId && existingResult.questionToken === questionToken && existingResult.answerUid === uid) {
+    const payload = { accepted: true, snapshot: clientSnapshot(match, uid) };
+    await db.prepare(`INSERT OR IGNORE INTO meonjeo_match_events (event_id, match_id, user_id, event_type, response_json, created_at) VALUES (?1, ?2, ?3, 'answer', ?4, ?5)`).bind(answerId, matchId, uid, JSON.stringify(payload), Date.now()).run();
+    return response(payload);
+  }
   if (match.phase !== 'answering' || match.buzz_winner_uid !== uid || !match.answer_deadline_at || Date.now() > match.answer_deadline_at) return response({ error: 'answer-closed' }, 409);
   const question = currentQuestion(match);
   const correct = [question.canonicalAnswer, ...(question.acceptedAliases || [])].some(value => normalize(value) === normalize(answer));
   const now = Date.now();
   const scoreA = match.score_a + (correct && uid === match.player_a ? 1 : 0); const scoreB = match.score_b + (correct && uid === match.player_b ? 1 : 0);
   const livesA = match.lives_a - (!correct && uid === match.player_a ? 1 : 0); const livesB = match.lives_b - (!correct && uid === match.player_b ? 1 : 0);
-  const resultData = { kind: correct ? 'correct' : 'wrong', answer: question.canonicalAnswer, explanation: question.explanation, answerUid: uid };
+  const resultData = { kind: correct ? 'correct' : 'wrong', answer: question.canonicalAnswer, explanation: question.explanation, answerUid: uid, answerId, questionToken };
   const updated = await db.prepare(`UPDATE meonjeo_matches SET phase = 'result', score_a = ?1, score_b = ?2, lives_a = ?3, lives_b = ?4, result_json = ?5, next_question_at = ?6, decision_version = decision_version + 1, updated_at = ?7 WHERE id = ?8 AND phase = 'answering' AND buzz_winner_uid = ?9`)
     .bind(scoreA, scoreB, livesA, livesB, JSON.stringify(resultData), now + (match.id.startsWith('qa-') ? 10 : RESULT_MS), now, matchId, uid).run();
   if (updated.meta.changes === 1 && correct) {
     await db.prepare(`INSERT INTO meonjeo_player_titles (user_id, correct_answers, history_correct) VALUES (?1, 1, ?2) ON CONFLICT(user_id) DO UPDATE SET correct_answers = correct_answers + 1, history_correct = history_correct + excluded.history_correct, updated_at = CURRENT_TIMESTAMP`).bind(uid, question.categoryKo === '한국사' ? 1 : 0).run();
   }
   match = (await loadMatch(db, matchId, uid))!;
-  const payload = { accepted: updated.meta.changes === 1, snapshot: clientSnapshot(match, uid) };
+  const appliedResult = match.result_json ? JSON.parse(match.result_json) as { answerId?:string; questionToken?:string; answerUid?:string } : null;
+  const payload = { accepted: appliedResult?.answerId === answerId && appliedResult.questionToken === questionToken && appliedResult.answerUid === uid, snapshot: clientSnapshot(match, uid) };
   await db.prepare(`INSERT OR IGNORE INTO meonjeo_match_events (event_id, match_id, user_id, event_type, response_json, created_at) VALUES (?1, ?2, ?3, 'answer', ?4, ?5)`).bind(answerId, matchId, uid, JSON.stringify(payload), now).run();
   return response(payload);
 }

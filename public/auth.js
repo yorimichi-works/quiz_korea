@@ -2,10 +2,12 @@ import { initializeApp } from 'https://www.gstatic.com/firebasejs/12.18.0/fireba
 import {
   GoogleAuthProvider,
   browserLocalPersistence,
+  deleteUser,
   getAuth,
   getIdToken,
   linkWithPopup,
   onAuthStateChanged,
+  reauthenticateWithPopup,
   setPersistence,
   signInAnonymously,
   signInWithCredential,
@@ -108,6 +110,38 @@ async function signOutToGuest() {
   }
 }
 
+async function deleteCurrentAccount() {
+  const user = auth.currentUser;
+  if (!user) throw new Error('Player session is required');
+  publish({ ...lastSession, status: 'working', errorCode: null });
+  try {
+    const removeServerData = async () => {
+      const token = await getIdToken(auth.currentUser, true);
+      const response = await fetch('/api/account', {
+        method: 'DELETE',
+        headers: { Authorization: `Bearer ${token}` },
+        cache: 'no-store',
+      });
+      if (!response.ok) throw Object.assign(new Error(`Account deletion failed (${response.status})`), { status: response.status });
+    };
+    await removeServerData();
+    try {
+      await deleteUser(auth.currentUser);
+    } catch (error) {
+      if (error?.code !== 'auth/requires-recent-login' || user.isAnonymous) throw error;
+      await reauthenticateWithPopup(user, provider);
+      await removeServerData();
+      await deleteUser(auth.currentUser);
+    }
+    await ensureGuest();
+    publish(sessionFromUser(auth.currentUser));
+    return { deleted: true };
+  } catch (error) {
+    publish({ ...sessionFromUser(auth.currentUser), status: 'error', errorCode: error?.code || 'account/delete-failed' });
+    throw error;
+  }
+}
+
 function mergeProgress(localProgress, cloudProgress) {
   const localUpdatedAt = Number(localProgress.profileUpdatedAt) || 0;
   const cloudUpdatedAt = Number(cloudProgress?.profileUpdatedAt) || 0;
@@ -170,6 +204,7 @@ globalThis.meonjeoAuth = {
   getSession: () => lastSession,
   signInWithGoogle,
   signOut: signOutToGuest,
+  deleteAccount: deleteCurrentAccount,
   syncGameData,
   getAuthToken,
   getTitles: () => playerApi('/api/titles'),
@@ -177,6 +212,7 @@ globalThis.meonjeoAuth = {
   getQuizTime: () => playerApi('/api/quiz-time'),
   trackQuizTime: (eventType, eventId) => playerApi('/api/quiz-time', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ eventType, eventId }) }),
   getLeaderboard: () => playerApi('/api/progress?action=leaderboard'),
+  submitReport: report => playerApi('/api/reports', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(report) }),
 };
 
 onAuthStateChanged(auth, user => {
