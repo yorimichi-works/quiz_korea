@@ -2,15 +2,15 @@
 
 This directory is a Trusted Web Activity wrapper for the production PWA.
 
-- Package ID candidate: `com.yorimichiworks.meonjeo`
+- Release package ID: `com.yorimichiworks.meonjeo`
 - Version: `1.0.0` / version code `1`
 - Target SDK: Android API 36
 - Minimum SDK: Android API 23
 - Launch URL: `https://meonjeo.syamo.chatgpt.site/game.html`
 - Notifications and advertising permissions: disabled
 
-The package ID is only a candidate until the Play Console app record is created.
-Confirm it before the first upload because it cannot be changed afterward.
+This package ID is the selected release identifier. Confirm it once more before
+the first Play Console upload because it cannot be changed for that app record.
 
 ## Build an unsigned verification bundle
 

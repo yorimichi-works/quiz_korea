@@ -17,6 +17,7 @@
 - 韓国語ストア掲載文、データ取扱申告の下書き
 - Google Play審査手順、Console回答案、韓国語リリースノート
 - Trusted Web ActivityのAndroidプロジェクト
+- Google Play公開用パッケージID: `com.yorimichiworks.meonjeo`
 - Android API 36 / min API 23の未署名AAB
 - 署名設定を置いた場合だけ署名済みAABを生成するビルド手順
 - Digital Asset Linksエンドポイント（Play署名証明書の設定待ち）
@@ -25,7 +26,7 @@
 
 1. Google Play Consoleのデベロッパー本人確認と登録料支払い。
 2. 公開する法的名称、住所、電話番号、サポートメールアドレスを入力する。
-3. 最終パッケージIDを決定する。候補: `com.yorimichiworks.meonjeo`。
+3. 選定済みパッケージID `com.yorimichiworks.meonjeo` を初回アップロード前に最終確認する。
 4. Androidアップロード鍵を安全な場所で作成し、別媒体へバックアップする。
 5. `npm run android:bundle -- -RequireSigned`で署名済みAABを生成し、内部テストへアップロードする。
 6. Play App Signing証明書のSHA-256をDigital Asset Linksへ設定する。

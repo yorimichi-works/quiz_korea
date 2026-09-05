@@ -54,6 +54,34 @@ test('Google Play preview assets meet mandatory dimensions', () => {
   }
 });
 
+test('Google Play listing and submission documents meet static requirements', () => {
+  const listing = read('store/google-play/listing-ko-KR.md');
+  const appName = listing.match(/## 앱 이름\s+([^\r\n]+)/)?.[1]?.trim();
+  const shortDescription = listing.match(/## 짧은 설명\s+([^\r\n]+)/)?.[1]?.trim();
+  assert.ok(appName, 'Korean app name is required');
+  assert.ok(shortDescription, 'Korean short description is required');
+  assert.ok([...appName].length <= 30, 'Play app name must be at most 30 characters');
+  assert.ok([...shortDescription].length <= 80, 'Play short description must be at most 80 characters');
+  assert.ok(listing.length <= 4_500, 'Play listing source is unexpectedly long');
+
+  const releaseNotes = read('store/google-play/release-notes-ko-KR.txt').trim();
+  assert.ok(releaseNotes.length > 0 && [...releaseNotes].length <= 500);
+
+  for (const file of [
+    'store/google-play/data-safety.md',
+    'store/google-play/play-console-answers.md',
+    'store/google-play/review-instructions.md',
+    'store/google-play/content-rating-audit.md',
+    'store/STORE_SUBMISSION_CHECKLIST.md',
+  ]) {
+    assert.equal(existsSync(new URL(`../${file}`, import.meta.url)), true, `${file} is required`);
+  }
+
+  const androidReadme = read('android/README.md');
+  assert.match(androidReadme, /Release package ID: `com\.yorimichiworks\.meonjeo`/);
+  assert.doesNotMatch(androidReadme, /Package ID candidate/);
+});
+
 test('policy, support and deletion pages are present and linked in-app', () => {
   for (const route of ['privacy', 'terms', 'support', 'account-deletion']) {
     assert.equal(existsSync(new URL(`../app/${route}/page.tsx`, import.meta.url)), true);

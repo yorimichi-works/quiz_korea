@@ -8,7 +8,7 @@
 - Free or paid: Free
 - Category: Trivia
 - Default language: Korean (ko-KR)
-- Package ID候補: `com.yorimichiworks.meonjeo`
+- Package ID: `com.yorimichiworks.meonjeo`
 - Target SDK: API 36
 - Minimum SDK: API 23
 - Ads: No
