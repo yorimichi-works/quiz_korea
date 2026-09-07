@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict';
+import { createHash } from 'node:crypto';
 import { access, readFile, stat } from 'node:fs/promises';
 import path from 'node:path';
 import test from 'node:test';
@@ -27,20 +28,27 @@ test('Android package, host, version and API levels are release-consistent', asy
 });
 
 test('release signing is opt-in and secrets are ignored', async () => {
-  const [gitignore, gradle, example, buildScript] = await Promise.all([
+  const [gitignore, gradle, example, buildScript, keyScript] = await Promise.all([
     read('.gitignore'),
     read('android/app/build.gradle'),
     read('android/keystore.properties.example'),
     read('scripts/build-android-aab.ps1'),
+    read('scripts/create-android-upload-key.ps1'),
   ]);
   assert.match(gitignore, /android\/keystore\.properties/);
   assert.match(gitignore, /android\/\*\.jks/);
+  assert.match(gitignore, /android\/upload-certificate\.pem/);
   assert.match(gradle, /hasReleaseSigning/);
   assert.match(example, /CHANGE_ME/);
   assert.match(buildScript, /hasSignatureFile/);
   assert.match(buildScript, /hasSignatureBlock/);
   assert.match(buildScript, /jarsigner\.exe/);
   assert.match(buildScript, /CHANGE_ME/);
+  assert.match(keyScript, /RandomNumberGenerator/);
+  assert.match(keyScript, /GetBytes/);
+  assert.match(keyScript, /Refusing to overwrite existing Android signing material/);
+  assert.match(keyScript, /storepass:env/);
+  assert.doesNotMatch(keyScript, /Write-Host[^\n]*\$password/);
 });
 
 test('Digital Asset Links waits for a valid Play signing fingerprint', async () => {
@@ -63,6 +71,14 @@ test('Gradle produced a non-empty Android App Bundle', async () => {
 
 test('signed release artifact contains JAR signature entries when present', async (t) => {
   const bundle = path.join(root, 'store/android/meonjeo-1.0.0-signed.aab');
+  const release = JSON.parse(await read('store/android/release-artifact.json'));
+  assert.equal(release.file, path.basename(bundle));
+  assert.equal(release.packageId, 'com.yorimichiworks.meonjeo');
+  assert.equal(release.versionName, '1.0.0');
+  assert.equal(release.versionCode, 1);
+  assert.match(release.uploadCertificateSha256, /^(?:[0-9A-F]{2}:){31}[0-9A-F]{2}$/);
+  assert.match(release.digitalAssetLinksNote, /Play app-signing certificate/);
+
   try {
     await access(bundle);
   } catch {
@@ -72,6 +88,8 @@ test('signed release artifact contains JAR signature entries when present', asyn
 
   const bytes = await readFile(bundle);
   const latin1 = bytes.toString('latin1');
+  assert.equal(bytes.length, release.sizeBytes);
+  assert.equal(createHash('sha256').update(bytes).digest('hex').toUpperCase(), release.sha256);
   assert.match(latin1, /META-INF\/[^/]+\.SF/);
   assert.match(latin1, /META-INF\/[^/]+\.(RSA|DSA|EC)/);
 });

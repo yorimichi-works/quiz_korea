@@ -17,6 +17,7 @@ android/local.properties
 android/keystore.properties
 android/*.jks
 android/*.keystore
+android/upload-certificate.pem
 android/*.aab
 android/*.apk
 store/android/*.aab

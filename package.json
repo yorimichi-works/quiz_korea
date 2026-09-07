@@ -25,6 +25,7 @@
     "simulate:matches": "node scripts/simulate-200-matches.ts",
     "simulate:questions": "node scripts/simulate-question-experience.mjs",
     "test:live-200": "node scripts/run-200-live-matches.ts",
+    "android:key:create": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/create-android-upload-key.ps1",
     "android:bundle": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/build-android-aab.ps1",
     "android:verify": "node --test scripts/android-release-readiness.test.mjs",
     "lint": "eslint . --ignore-pattern dist --ignore-pattern .next --ignore-pattern tmp"

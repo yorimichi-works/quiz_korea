@@ -1,0 +1,10 @@
+{
+  "file": "meonjeo-1.0.0-signed.aab",
+  "packageId": "com.yorimichiworks.meonjeo",
+  "versionName": "1.0.0",
+  "versionCode": 1,
+  "sizeBytes": 1208235,
+  "sha256": "0F9663CAB81DDABF1825099BBE450DF44F926940D053C3608E1F5996B3D7398C",
+  "uploadCertificateSha256": "A5:F8:47:E3:4B:D6:0F:16:A1:15:94:03:9F:23:F2:AE:07:60:5C:C6:B2:2E:17:85:6C:BD:8A:54:E9:E1:E9:49",
+  "digitalAssetLinksNote": "Use the Play app-signing certificate SHA-256 after the first Play Console upload, not this upload certificate."
+}

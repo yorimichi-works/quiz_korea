@@ -18,7 +18,9 @@
 - Google Play審査手順、Console回答案、韓国語リリースノート
 - Trusted Web ActivityのAndroidプロジェクト
 - Google Play公開用パッケージID: `com.yorimichiworks.meonjeo`
-- Android API 36 / min API 23の未署名AAB
+- Android API 36 / min API 23の署名済みAAB
+- Androidアップロード鍵（このPC内、Git除外済み）
+- AABのSHA-256・サイズ・アップロード証明書指紋のリリース記録
 - 署名設定を置いた場合だけ署名済みAABを生成するビルド手順
 - Digital Asset Linksエンドポイント（Play署名証明書の設定待ち）
 
@@ -27,8 +29,8 @@
 1. Google Play Consoleのデベロッパー本人確認と登録料支払い。
 2. 公開する法的名称、住所、電話番号、サポートメールアドレスを入力する。
 3. 選定済みパッケージID `com.yorimichiworks.meonjeo` を初回アップロード前に最終確認する。
-4. Androidアップロード鍵を安全な場所で作成し、別媒体へバックアップする。
-5. `npm run android:bundle -- -RequireSigned`で署名済みAABを生成し、内部テストへアップロードする。
+4. 作成済みの `android/upload-key.jks` と `android/keystore.properties` を暗号化した別媒体へバックアップする。
+5. 作成済みの `store/android/meonjeo-1.0.0-signed.aab` を内部テストへアップロードする。
 6. Play App Signing証明書のSHA-256をDigital Asset Linksへ設定する。
 7. Data safety、対象年齢、コンテンツレーティング、広告の有無を回答する。
 8. 実機2台でGoogle連携、対戦、バックグラウンド復帰、削除を確認する。
@@ -44,6 +46,6 @@
 ## リリース判断
 
 - Web/PWA正式β: 実機スモークテスト後に可能。
-- Google Play内部テスト: パッケージID確定とアップロード鍵作成後、すぐに署名AABを生成して申請可能。
+- Google Play内部テスト: 鍵のバックアップとPlay Consoleの所有者情報確認後、作成済み署名AABをアップロード可能。
 - Google Play本番: 内部テストとPlay Console申告完了後。
 - App Store: Apple開発者資格、iOS署名、Sign in with Apple対応後。

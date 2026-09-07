@@ -25,15 +25,18 @@ The result is copied to `store/android/meonjeo-1.0.0-unsigned.aab`.
 
 ## Create the upload key
 
-Use the JDK 17 `keytool` interactively so passwords never appear in shell history:
+Create the upload key with a cryptographically random password. The password is
+not printed or passed as a command-line value:
 
 ```powershell
-keytool -genkeypair -v -keystore android/upload-key.jks -alias meonjeo-upload -keyalg RSA -keysize 4096 -validity 10000
+npm run android:key:create
 ```
 
-Copy `keystore.properties.example` to `keystore.properties` and enter the
-passwords locally. Both files are ignored by Git. Back up the key and passwords
-outside this repository before the first Play upload.
+The script refuses to overwrite existing signing material. It creates the
+ignored files `android/upload-key.jks`, `android/keystore.properties`, and
+`android/upload-certificate.pem`. Immediately back up the JKS and properties
+files together to an encrypted location outside this repository before the
+first Play upload. Both are needed to reproduce this upload credential.
 
 Then build:
 
@@ -44,6 +47,8 @@ npm run android:bundle -- -RequireSigned
 The signed result is copied to `store/android/meonjeo-1.0.0-signed.aab`.
 The build fails unless the AAB contains a valid JAR signature when signing is
 requested.
+The current release file hash, size, and public upload-certificate fingerprint
+are recorded in `store/android/release-artifact.json`.
 
 ## Digital Asset Links
 
