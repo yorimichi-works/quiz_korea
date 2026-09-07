@@ -76,6 +76,9 @@ test('signed release artifact contains JAR signature entries when present', asyn
   assert.equal(release.packageId, 'com.yorimichiworks.meonjeo');
   assert.equal(release.versionName, '1.0.0');
   assert.equal(release.versionCode, 1);
+  assert.equal(release.bundletoolVersion, '1.18.3');
+  assert.equal(release.bundletoolValidated, true);
+  assert.match(release.bundletoolValidatedOn, /^\d{4}-\d{2}-\d{2}$/);
   assert.match(release.uploadCertificateSha256, /^(?:[0-9A-F]{2}:){31}[0-9A-F]{2}$/);
   assert.match(release.digitalAssetLinksNote, /Play app-signing certificate/);
 

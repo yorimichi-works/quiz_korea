@@ -21,6 +21,7 @@
 - Android API 36 / min API 23の署名済みAAB
 - Androidアップロード鍵（このPC内、Git除外済み）
 - AABのSHA-256・サイズ・アップロード証明書指紋のリリース記録
+- 公式bundletool 1.18.3によるAAB構造検証
 - 署名設定を置いた場合だけ署名済みAABを生成するビルド手順
 - Digital Asset Linksエンドポイント（Play署名証明書の設定待ち）
 
