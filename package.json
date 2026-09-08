@@ -28,6 +28,8 @@
     "android:key:create": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/create-android-upload-key.ps1",
     "android:bundle": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/build-android-aab.ps1",
     "android:verify": "node --test scripts/android-release-readiness.test.mjs",
+    "build:ios-assets": "node scripts/build-ios-assets.mjs",
+    "ios:verify": "node --test scripts/ios-release-readiness.test.mjs",
     "lint": "eslint . --ignore-pattern dist --ignore-pattern .next --ignore-pattern tmp"
   },
   "dependencies": {

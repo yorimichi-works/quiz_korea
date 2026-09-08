@@ -98,6 +98,7 @@ const clearOnlineTimers = () => {
 };
 const clearQuizTimeTimer = () => { if (quizTimeTimer) { clearTimeout(quizTimeTimer); quizTimeTimer = null; } };
 const escapeHtml = value => String(value ?? '').replace(/[&<>"']/g, character => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[character]));
+const nativeHaptic = style => globalThis.meonjeoNative?.haptic?.(style);
 const answerCharacters = question => Array.from(question.answers[0].normalize('NFKC').toUpperCase().replace(/[\s·.,!?！？'"“”‘’()（）\-_:：/]/g, ''));
 const settingsButton = document.querySelector('#settings');
 const countdownSound = new Audio('assets/audio/countdown.mp3');
@@ -678,6 +679,7 @@ function renderOnlineQuestion(snapshot) {
 async function submitOnlineBuzz(event) {
   event.preventDefault();
   const button = document.querySelector('#online-buzz'); if (!button || button.disabled) return;
+  nativeHaptic('medium');
   button.disabled = true; button.classList.add('is-pending');
   const status = document.querySelector('#online-buzz-status'); if (status) status.textContent = '확인 중…';
   const snapshot = state.onlineSnapshot;
@@ -761,6 +763,7 @@ function renderOnlineAnswer(snapshot) {
 
 function renderOnlineResult(snapshot) {
   const result = snapshot.result || {}; const mine = result.answerUid === 'me'; const correct = result.kind === 'correct';
+  nativeHaptic(mine ? (correct ? 'success' : 'error') : 'light');
   const title = result.kind === 'no_buzz' ? '양쪽 모두 시간 초과' : result.kind === 'answer_timeout' ? (mine ? '답변 시간이 끝났습니다' : '상대의 답변 시간이 끝났습니다') : correct ? (mine ? '정답입니다!' : '상대가 정답을 맞혔습니다') : (mine ? '오답입니다' : '상대가 틀렸습니다');
   app.innerHTML = `<div class="battle-page centered"><div class="result-card answer-result-card"><div class="result-icon ${correct ? '' : 'wrong'}">${correct ? '✓' : '×'}</div><div class="eyebrow">SERVER RESULT · ROUND ${snapshot.questionIndex + 1}</div><h2>${title}</h2><div class="result-revealed-answer"><span>정답</span><strong>${escapeHtml(result.answer || '')}</strong></div><p class="explanation">${escapeHtml(result.explanation || '')}</p><div class="result-stats"><span>내 점수 <b>${snapshot.myScore}</b></span><span>상대 점수 <b>${snapshot.opponentScore}</b></span></div><p class="result-auto-next"><b id="online-clock"></b>초 후 다음 문제 · 동기화 중</p><small class="background-sync-note">시계 보정 · 최신 스냅샷 · 연결 상태를 확인하고 있습니다</small></div></div>`;
   updateOnlineTimeline(snapshot);
@@ -783,6 +786,7 @@ function renderOnlineComplete(snapshot) {
   const tied = outcome === 'draw'; const won = outcome === 'win';
   const forfeit = snapshot.result?.kind === 'forfeit';
   const resultTitle = forfeit ? (won ? '상대가 나가 승리했습니다' : tied ? '무승부입니다' : '경기를 나가 패배했습니다') : won ? '승리했습니다!' : tied ? '무승부입니다' : '아쉽게 패배했습니다';
+  nativeHaptic(won ? 'success' : tied ? 'light' : 'error');
   const reward = snapshot.reward || { ratingBefore:state.rating, ratingAfter:state.rating, ratingDelta:0, rankPointsBefore:state.rankPoints, rankPointsAfter:state.rankPoints, rankGain:0 };
   const rankPointsBefore = Number.isFinite(Number(reward.rankPointsBefore)) ? Number(reward.rankPointsBefore) : state.rankPoints; const rankPointsAfter = Number.isFinite(Number(reward.rankPointsAfter)) ? Number(reward.rankPointsAfter) : rankPointsBefore + Number(reward.rankGain || 0);
   state.rating = Math.max(0, Number(reward.ratingAfter) || state.rating);
@@ -790,7 +794,9 @@ function renderOnlineComplete(snapshot) {
   localStorage.setItem(RATING_KEY, String(state.rating));
   localStorage.setItem(RANK_POINTS_KEY, String(state.rankPoints));
   refreshTopProfile();
-  app.innerHTML = `<div class="battle-page centered"><div class="result-card final"><div class="result-icon ${won || tied ? '' : 'wrong'}">${won ? '🏆' : tied ? '—' : '×'}</div><div class="eyebrow">LIVE MATCH COMPLETE</div><h2>${resultTitle}</h2>${forfeit ? '<p class="muted">기권으로 대전 결과가 확정되었습니다.</p>' : ''}<div class="final-score"><b>${snapshot.myScore}</b><span>—</span><b>${snapshot.opponentScore}</b></div><div class="result-progression"><div class="rating-change"><span>RATING</span><b>${Number(reward.ratingBefore).toLocaleString()} → ${Number(reward.ratingAfter).toLocaleString()}</b><strong>${reward.ratingDelta > 0 ? '+' : ''}${reward.ratingDelta}</strong></div><div class="rating-change"><span>RANK POINT</span><b>${rankPointsBefore.toLocaleString()} → ${rankPointsAfter.toLocaleString()}</b><strong>+${reward.rankGain}</strong></div></div><button class="primary" id="online-home">홈으로</button></div></div>`;
+  const shareAction = globalThis.meonjeoNative?.share ? '<button class="text-button" id="online-share" type="button">결과 공유하기</button>' : '';
+  app.innerHTML = `<div class="battle-page centered"><div class="result-card final"><div class="result-icon ${won || tied ? '' : 'wrong'}">${won ? '🏆' : tied ? '—' : '×'}</div><div class="eyebrow">LIVE MATCH COMPLETE</div><h2>${resultTitle}</h2>${forfeit ? '<p class="muted">기권으로 대전 결과가 확정되었습니다.</p>' : ''}<div class="final-score"><b>${snapshot.myScore}</b><span>—</span><b>${snapshot.opponentScore}</b></div><div class="result-progression"><div class="rating-change"><span>RATING</span><b>${Number(reward.ratingBefore).toLocaleString()} → ${Number(reward.ratingAfter).toLocaleString()}</b><strong>${reward.ratingDelta > 0 ? '+' : ''}${reward.ratingDelta}</strong></div><div class="rating-change"><span>RANK POINT</span><b>${rankPointsBefore.toLocaleString()} → ${rankPointsAfter.toLocaleString()}</b><strong>+${reward.rankGain}</strong></div></div>${shareAction}<button class="primary" id="online-home">홈으로</button></div></div>`;
+  document.querySelector('#online-share')?.addEventListener('click', () => globalThis.meonjeoNative.share({ text:`먼저! 실시간 퀴즈 ${resultTitle} · ${snapshot.myScore}-${snapshot.opponentScore}`, url:'https://meonjeo.syamo.chatgpt.site/game.html' }));
   document.querySelector('#online-home').onclick = home;
   setTimeout(() => { void syncCloudProgress(); void loadTitles({ notifyUnlock:true }); }, 350);
 }
@@ -879,6 +885,12 @@ async function syncCloudProgress({ refreshUi = false } = {}) {
 }
 
 function authErrorMessage(errorCode) {
+  if (errorCode === 'auth/native-apple-cancelled') {
+    return isJapaneseTest() ? 'Appleログインをキャンセルしました' : 'Apple 로그인을 취소했습니다';
+  }
+  if (errorCode === 'auth/native-apple-unavailable' || errorCode === 'auth/native-apple-timeout') {
+    return isJapaneseTest() ? 'Appleログインを開始できませんでした。もう一度お試しください' : 'Apple 로그인을 시작하지 못했습니다. 다시 시도해 주세요';
+  }
   if (errorCode === 'auth/popup-closed-by-user' || errorCode === 'auth/cancelled-popup-request') {
     return isJapaneseTest() ? 'Googleログインをキャンセルしました' : 'Google 로그인을 취소했습니다';
   }
@@ -888,20 +900,23 @@ function authErrorMessage(errorCode) {
   if (errorCode === 'auth/unauthorized-domain') {
     return isJapaneseTest() ? 'この公開URLはGoogleログインの許可設定が必要です' : '이 공개 URL은 Google 로그인 허용 설정이 필요합니다';
   }
-  return isJapaneseTest() ? 'Googleアカウントに接続できませんでした' : 'Google 계정에 연결하지 못했습니다';
+  return isJapaneseTest() ? 'アカウントに接続できませんでした' : '계정에 연결하지 못했습니다';
 }
 
 function accountPanelMarkup() {
   const session = state.authSession || { status: 'loading', isAnonymous: true };
   const loading = session.status === 'loading' || session.status === 'working';
-  const linked = !session.isAnonymous && session.provider === 'google';
-  const title = linked ? (session.displayName || session.email || 'Google') : (isJapaneseTest() ? 'ゲストでプレイ中' : '게스트로 플레이 중');
+  const linked = !session.isAnonymous;
+  const apple = linked && session.provider === 'apple';
+  const nativeApple = globalThis.meonjeoAuth?.isNativeIOS?.() === true;
+  const providerName = apple ? 'Apple' : 'Google';
+  const title = linked ? (session.displayName || session.email || providerName) : (isJapaneseTest() ? 'ゲストでプレイ中' : '게스트로 플레이 중');
   const syncLabel = state.cloudSyncStatus === 'syncing' ? (isJapaneseTest() ? '同期中…' : '동기화 중…') : state.cloudSyncStatus === 'synced' ? (isJapaneseTest() ? '戦績同期済み' : '전적 동기화됨') : state.cloudSyncStatus === 'error' ? (isJapaneseTest() ? '同期を再試行します' : '동기화를 다시 시도합니다') : '';
   const detail = linked
-    ? [session.email || (isJapaneseTest() ? 'Googleアカウント連携済み' : 'Google 계정 연결됨'), syncLabel].filter(Boolean).join(' · ')
-    : (isJapaneseTest() ? 'このまま遊べます · Google連携後も戦績を引き継ぎます' : '바로 플레이 가능 · Google 연결 후에도 전적이 이어집니다');
-  const avatar = linked ? escapeHtml((session.displayName || session.email || 'G').trim().charAt(0).toUpperCase()) : 'G';
-  const action = linked ? (isJapaneseTest() ? 'ログアウト' : '로그아웃') : (isJapaneseTest() ? 'Googleで続ける' : 'Google로 계속하기');
+    ? [session.email || (isJapaneseTest() ? `${providerName}アカウント連携済み` : `${providerName} 계정 연결됨`), syncLabel].filter(Boolean).join(' · ')
+    : (isJapaneseTest() ? `このまま遊べます · ${nativeApple ? 'Apple' : 'Google'}連携後も戦績を引き継ぎます` : `바로 플레이 가능 · ${nativeApple ? 'Apple' : 'Google'} 연결 후에도 전적이 이어집니다`);
+  const avatar = linked ? escapeHtml((session.displayName || session.email || (apple ? 'A' : 'G')).trim().charAt(0).toUpperCase()) : 'G';
+  const action = linked ? (isJapaneseTest() ? 'ログアウト' : '로그아웃') : nativeApple ? (isJapaneseTest() ? 'Appleで続ける' : 'Apple로 계속하기') : (isJapaneseTest() ? 'Googleで続ける' : 'Google로 계속하기');
   const error = session.status === 'error' ? `<p class="account-error">${escapeHtml(authErrorMessage(session.errorCode))}</p>` : '';
   return `<section class="account-panel" id="account-panel"><div class="account-summary"><span class="account-avatar ${linked ? 'is-linked' : ''}">${avatar}</span><span><strong>${escapeHtml(title)}</strong><small>${escapeHtml(detail)}</small></span><em>${linked ? (isJapaneseTest() ? '連携済み' : '연결됨') : 'GUEST'}</em></div><button class="account-action ${linked ? 'is-signout' : ''}" id="account-action" type="button" ${loading ? 'disabled' : ''}>${loading ? (isJapaneseTest() ? '確認中…' : '확인 중…') : action}</button>${error}</section>`;
 }
@@ -916,7 +931,10 @@ function bindAccountPanel() {
     }
     action.disabled = true;
     try {
-      if (state.authSession?.isAnonymous !== false) await globalThis.meonjeoAuth.signInWithGoogle();
+      if (state.authSession?.isAnonymous !== false) {
+        if (globalThis.meonjeoAuth.isNativeIOS?.()) await globalThis.meonjeoAuth.signInWithApple();
+        else await globalThis.meonjeoAuth.signInWithGoogle();
+      }
       else await globalThis.meonjeoAuth.signOut();
     } catch (error) {
       showToast(authErrorMessage(error?.code));
@@ -1129,6 +1147,7 @@ function battle({ resume = false } = {}) {
 
 function claimAnswer() {
   if (state.phase !== 'reading') return;
+  nativeHaptic('medium');
   state.phase = 'answering'; state.selectedChars = []; state.charIndex = 0; state.answerRemaining = state.answerSeconds;
   state.phaseStartedAt = Date.now(); state.phaseDeadline = state.phaseStartedAt + state.answerSeconds * 1000; state.answerInputUnlockedAt = state.phaseStartedAt + ANSWER_INPUT_GUARD_MS; state.answerRightLost = false; clearTimer(); persistSession();
   const buzzButton = document.querySelector('#buzz'); buzzButton.disabled = true; buzzButton.classList.add('is-pressed'); setTimeout(() => { document.querySelector('#buzzer-zone').style.display = 'none'; document.querySelector('#answer').classList.add('active','is-input-locked'); renderCandidates(); }, 120);
