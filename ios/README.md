@@ -38,3 +38,6 @@
 `.github/workflows/app-readiness.yml` はPRで105件のWeb/認証/構成試験、lint、型検査、Web buildと、macOS 26上の署名なしSimulatorコンパイルを実行します。Simulator用`.app`は14日保持のActions artifactになります。これはiPhoneに配布できるIPAではありません。認証キーや署名証明書を渡さず、Appleサービスへの提出も行いません。
 
 読み込みに失敗した時は韓国語の再試行画面を表示します。認証bridge v2はrequest IDで古い認証結果を無視し、既存v1とWebの互換も保ちます。実機試験は引き続き必要です。
+
+
+CIはiPhone Simulatorへの実インストール/起動とQAスクリーンショット取得も行います。`scripts/build-ios-unsigned-archive.sh` は実機arm64向けの署名なしArchiveを作成します。シミュレーター用`.app`と実機用未署名`.xcarchive`は別物で、いずれも提出可能な署名済みIPAではありません。起動画像は現在配信中のWebを表示しているため、サーバー変更の本番反映やAppleログイン成功を証明しません。

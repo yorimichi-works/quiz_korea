@@ -49,3 +49,16 @@ App readinessは公開リポジトリの標準`ubuntu-latest`/`macos-26`ラン�
 この成果物は未署名Simulator用アプリです。iPhone実機用IPAやApp Store提出済みビルドではありません。実際のSimulator起動・GUI操作もこのジョブでは実行していません。
 
 コード修正のWeb公開と署名済配布版の作成は別の承認・検証段階です。
+
+
+## Simulator起動の追加確認
+
+[run #3](https://github.com/yorimichi-works/quiz_korea/actions/runs/37508896834)（source `402f22a168764164f29d5158d35f581159a522a4`）は全2ジョブPASS。iPhone 17 Pro Max Simulatorへ実際にインストール・起動し、1320×2868 PNGを撮影しました。画像を目視確認し、韓国語ホーム、レーティング/ランク表示、設定、オンラインマッチとランキングの入口が表示されていることを確認しました。白画面や起動時のエラー表示はありません。
+
+- [起動画像入りartifact](https://github.com/yorimichi-works/quiz_korea/actions/runs/37508896834/artifacts/11434630370): 2,368,544 bytes
+- 配布ZIP SHA-256: `4d8a0b6340e09510db542b115c5afc478f65cf90725711f10c33d034decddaf9`
+- Simulator内のnativeコードはPR候補、Web画面は現在公開中のサービスです。API/プライバシー修正はまだ本番へ未反映です
+- ログイン、設定/対戦ボタン操作、2端末対戦、Apple再認証/削除はこの試験に含みません
+- 起動QA画像として保存。最終候補の実機試験・App Store画面一式の代用にはしません
+
+実機arm64ターゲットも`ios-device-archive`ジョブで署名なしArchiveを確認できるようにしました。結果はPRへ記録します。未署名ArchiveはiPhoneへインストールもストア提出もできません。
