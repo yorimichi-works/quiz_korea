@@ -38,11 +38,15 @@ jobs:
           persist-credentials: false
       - name: Compile without signing or credentials
         run: bash scripts/verify-ios-on-mac.sh
+      - name: Install and launch on iPhone Simulator
+        run: bash scripts/smoke-ios-simulator.sh
       - name: Package unsigned Simulator app
         run: ditto -c -k --sequesterRsrc --keepParent build/ios-simulator/Build/Products/Release-iphonesimulator/Meonjeo.app build/Meonjeo-simulator.zip
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: Meonjeo-unsigned-simulator
-          path: build/Meonjeo-simulator.zip
+          path: |
+            build/Meonjeo-simulator.zip
+            build/ios-smoke/
           if-no-files-found: error
           retention-days: 14
