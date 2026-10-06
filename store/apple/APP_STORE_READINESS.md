@@ -34,7 +34,7 @@
 | App Store Connect | 10月5日はApp IDとアプリ登録なしの確認記録。10月7日の登録状態は未確認。新規登録は行っていない |
 | Web変更 | 専用branch/Draft PRへ保存する変更。main・公開Webへ未反映 |
 | Node回帰/構成テスト | 実行結果は `VALIDATION_20261007.md` 参照 |
-| Swiftコンパイル/署名 | 署名なしSimulator CIを追加。実行結果は検証記録へ追記。署名済みArchiveは未実施 |
+| Swiftコンパイル/署名 | Xcode 26.6 / Simulator SDK 26.5でReleaseコンパイルPASS。署名済みArchiveは未実施 |
 | Firebase Apple本番設定 | 未確認。新規秘密鍵や設定変更なし |
 | 実機2台・Apple認証・失効/削除・復帰 | 未実施 |
 | App Privacyと年齢区分 | 回答案のみ。未確定/未提出 |

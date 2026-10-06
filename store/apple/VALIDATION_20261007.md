@@ -16,7 +16,7 @@
 | `bash -n scripts/verify-ios-on-mac.sh` | PASS |
 | Info.plist、entitlements、共有Schemeの構文 | PASS |
 | `git diff --check` | PASS |
-| 署名なしSimulatorコンパイル | CI追加、結果待ち |
+| 署名なしSimulatorコンパイル | PASS: Xcode 26.6 / iOS Simulator SDK 26.5 |
 | 署名済みArchive / IPA / TestFlight / 審査提出 | 未実施 |
 
 ## 試験の範囲
@@ -35,4 +35,17 @@ App readinessは公開リポジトリの標準`ubuntu-latest`/`macos-26`ラン�
 - [GitHub標準ランナーとpublic repositoryの料金](https://docs.github.com/en/actions/reference/runners/github-hosted-runners)
 - [Appleの現行SDK最低要件](https://developer.apple.com/news/upcoming-requirements/?id=04282026a)
 
-CI結果は実行後に追記します。コード修正のWeb公開と署名済配布版の作成は別の承認・検証段階です。
+## GitHub CI実測結果
+
+2026-10-07 03:03 JSTにrun #1の成功を確認しました。対象は `6058b87f302dec7391d1469768771bcb9fd99acc` とmain基点のPR検証mergeです。
+
+- [App readiness run #1](https://github.com/yorimichi-works/quiz_korea/actions/runs/37508124319): 全2ジョブ SUCCESS
+- `web-and-contracts`: 105試験、lint、型検査、Web production buildすべてPASS
+- `ios-simulator`: macOS 26.6.2 arm64、Xcode 26.6（17F113）、iOS SDK / Simulator SDK 26.5。`CODE_SIGNING_ALLOWED=NO`、Release、generic iOS Simulatorで **BUILD SUCCEEDED**
+- [Simulator artifact](https://github.com/yorimichi-works/quiz_korea/actions/runs/37508124319/artifacts/11432352914): ID `11432352914`、186,266 bytes、有効期限2026-10-20 18:02:50 UTC
+- Actions配布ZIPのSHA-256: `be3a14c3c09381b865ed7e5ad1e8692f933d2d6982d2fd663893c60b15f87f18`
+- AppIntents frameworkがないためメタデータ抽出を省略したというwarningが1件。コンパイルエラーなし
+
+この成果物は未署名Simulator用アプリです。iPhone実機用IPAやApp Store提出済みビルドではありません。実際のSimulator起動・GUI操作もこのジョブでは実行していません。
+
+コード修正のWeb公開と署名済配布版の作成は別の承認・検証段階です。
