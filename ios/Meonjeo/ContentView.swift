@@ -25,11 +25,33 @@ final class NetworkStatus: ObservableObject {
 struct ContentView: View {
     @StateObject private var network = NetworkStatus()
     @State private var isLoading = true
+    @State private var loadingError: String?
+    @State private var reloadRequest = 0
 
     var body: some View {
         ZStack(alignment: .top) {
-            GameWebView(isLoading: $isLoading)
+            GameWebView(isLoading: $isLoading, loadingError: $loadingError, reloadRequest: reloadRequest)
                 .ignoresSafeArea(.container, edges: .bottom)
+
+            if let loadingError {
+                VStack(spacing: 16) {
+                    Image(systemName: "wifi.exclamationmark")
+                        .font(.largeTitle)
+                        .accessibilityHidden(true)
+                    Text(loadingError)
+                        .multilineTextAlignment(.center)
+                    Button("다시 시도") {
+                        self.loadingError = nil
+                        isLoading = true
+                        reloadRequest += 1
+                    }
+                    .buttonStyle(.borderedProminent)
+                    .accessibilityHint("게임을 다시 불러옵니다")
+                }
+                .padding(28)
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .background(Color(uiColor: .systemBackground))
+            }
 
             if isLoading {
                 ProgressView("퀴즈를 준비하고 있습니다…")

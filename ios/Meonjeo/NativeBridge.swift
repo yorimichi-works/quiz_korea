@@ -12,7 +12,8 @@ final class NativeBridge: NSObject, WKScriptMessageHandler, ASAuthorizationContr
       const send = payload => window.webkit.messageHandlers.meonjeoNative.postMessage(payload);
       window.meonjeoNative = Object.freeze({
         platform: 'ios',
-        signInWithApple: () => send({ action: 'signInWithApple' }),
+        bridgeVersion: 2,
+        signInWithApple: requestId => send({ action: 'signInWithApple', requestId }),
         haptic: (style = 'light') => send({ action: 'haptic', style }),
         share: (payload = {}) => send({ action: 'share', payload })
       });
@@ -21,6 +22,7 @@ final class NativeBridge: NSObject, WKScriptMessageHandler, ASAuthorizationContr
 
     weak var webView: WKWebView?
     private var currentNonce: String?
+    private var currentRequestId: String?
     private var authorizationController: ASAuthorizationController?
 
     func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
@@ -33,7 +35,7 @@ final class NativeBridge: NSObject, WKScriptMessageHandler, ASAuthorizationContr
 
         switch action {
         case "signInWithApple":
-            startAppleSignIn()
+            startAppleSignIn(requestId: body["requestId"] as? String)
         case "haptic":
             performHaptic(style: body["style"] as? String ?? "light")
         case "share":
@@ -43,7 +45,12 @@ final class NativeBridge: NSObject, WKScriptMessageHandler, ASAuthorizationContr
         }
     }
 
-    private func startAppleSignIn() {
+    private func startAppleSignIn(requestId: String?) {
+        guard authorizationController == nil else {
+            sendAppleFailure(code: "auth/native-apple-request-in-progress", message: "Apple 로그인 요청이 진행 중입니다.", requestId: requestId)
+            return
+        }
+        currentRequestId = requestId
         do {
             let nonce = try randomNonceString()
             currentNonce = nonce
@@ -57,10 +64,12 @@ final class NativeBridge: NSObject, WKScriptMessageHandler, ASAuthorizationContr
             controller.performRequests()
         } catch {
             sendAppleFailure(code: "auth/native-apple-unavailable", message: "Apple 로그인을 시작할 수 없습니다.")
+            clearAuthorizationState()
         }
     }
 
     func authorizationController(controller: ASAuthorizationController, didCompleteWithAuthorization authorization: ASAuthorization) {
+        guard controller === authorizationController else { return }
         defer { clearAuthorizationState() }
         guard let credential = authorization.credential as? ASAuthorizationAppleIDCredential,
               let nonce = currentNonce,
@@ -77,6 +86,7 @@ final class NativeBridge: NSObject, WKScriptMessageHandler, ASAuthorizationContr
         sendJavaScriptCallback(
             function: "window.meonjeoAuth?.completeNativeAppleSignIn",
             payload: [
+                "requestId": currentRequestId ?? "",
                 "idToken": idToken,
                 "rawNonce": nonce,
                 "authorizationCode": authorizationCode,
@@ -87,6 +97,7 @@ final class NativeBridge: NSObject, WKScriptMessageHandler, ASAuthorizationContr
     }
 
     func authorizationController(controller: ASAuthorizationController, didCompleteWithError error: Error) {
+        guard controller === authorizationController else { return }
         defer { clearAuthorizationState() }
         let authorizationError = error as? ASAuthorizationError
         let cancelled = authorizationError?.code == .canceled
@@ -102,13 +113,14 @@ final class NativeBridge: NSObject, WKScriptMessageHandler, ASAuthorizationContr
 
     private func clearAuthorizationState() {
         currentNonce = nil
+        currentRequestId = nil
         authorizationController = nil
     }
 
-    private func sendAppleFailure(code: String, message: String) {
+    private func sendAppleFailure(code: String, message: String, requestId: String? = nil) {
         sendJavaScriptCallback(
             function: "window.meonjeoAuth?.failNativeAppleSignIn",
-            payload: ["code": code, "message": message]
+            payload: ["code": code, "message": message, "requestId": requestId ?? currentRequestId ?? ""]
         )
     }
 
@@ -117,7 +129,10 @@ final class NativeBridge: NSObject, WKScriptMessageHandler, ASAuthorizationContr
               let data = try? JSONSerialization.data(withJSONObject: payload),
               let json = String(data: data, encoding: .utf8) else { return }
         DispatchQueue.main.async { [weak self] in
-            self?.webView?.evaluateJavaScript("\(function)(\(json));")
+            guard let webView = self?.webView,
+                  webView.url?.scheme?.lowercased() == "https",
+                  webView.url?.host?.lowercased() == Self.allowedHost else { return }
+            webView.evaluateJavaScript("\(function)(\(json));")
         }
     }
 

@@ -37,6 +37,7 @@ const appleProvider = new OAuthProvider('apple.com');
 let lastSession = { status: 'loading', isAnonymous: true };
 let creatingGuest = false;
 let nativeAppleRequest = null;
+let nativeAppleRequestCounter = 0;
 
 function publish(session) {
   lastSession = session;
@@ -68,21 +69,30 @@ function nativeAppleError(code, message = '') {
 function requestNativeAppleCredential() {
   if (!isNativeIOS()) return Promise.reject(nativeAppleError('auth/native-apple-unavailable'));
   if (nativeAppleRequest) return Promise.reject(nativeAppleError('auth/native-apple-request-in-progress'));
+  const requestId = `${Date.now()}-${++nativeAppleRequestCounter}`;
+  const correlated = Number(globalThis.meonjeoNative.bridgeVersion) >= 2;
   return new Promise((resolve, reject) => {
     const timeout = setTimeout(() => {
       nativeAppleRequest = null;
       reject(nativeAppleError('auth/native-apple-timeout'));
     }, 120000);
     nativeAppleRequest = {
+      requestId,
+      correlated,
       resolve: payload => { clearTimeout(timeout); nativeAppleRequest = null; resolve(payload); },
       reject: error => { clearTimeout(timeout); nativeAppleRequest = null; reject(error); },
     };
-    globalThis.meonjeoNative.signInWithApple();
+    try {
+      globalThis.meonjeoNative.signInWithApple(requestId);
+    } catch (error) {
+      nativeAppleRequest.reject(error);
+    }
   });
 }
 
 function completeNativeAppleSignIn(payload) {
   if (!nativeAppleRequest) return;
+  if (nativeAppleRequest.correlated && payload?.requestId !== nativeAppleRequest.requestId) return;
   if (!payload?.idToken || !payload?.rawNonce) {
     nativeAppleRequest.reject(nativeAppleError('auth/native-apple-invalid-credential'));
     return;
@@ -91,6 +101,7 @@ function completeNativeAppleSignIn(payload) {
 }
 
 function failNativeAppleSignIn(payload = {}) {
+  if (nativeAppleRequest?.correlated && payload.requestId !== nativeAppleRequest.requestId) return;
   nativeAppleRequest?.reject(nativeAppleError(payload.code || 'auth/native-apple-failed', payload.message));
 }
 

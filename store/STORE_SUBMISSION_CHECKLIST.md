@@ -36,17 +36,14 @@
 7. Data safety、対象年齢、コンテンツレーティング、広告の有無を回答する。
 8. 実機2台でGoogle連携、対戦、バックグラウンド復帰、削除を確認する。
 
-## App Store申請時に人が行う作業
+## App Storeの準備・未完了事項
 
-1. Apple Developer Programへ加入し、Bundle IDと署名を作成する。
-2. iOSパッケージとApp Store Connectのアプリレコードを作成する。
-3. Google連携を提供する場合はSign in with AppleをFirebaseへ追加する。
-4. App Privacy、年齢区分、審査用連絡先、スクリーンショットを登録する。
-5. 単純なWebラッパーと判断されないよう、触覚、共有、通知など適切なネイティブ統合を行う。
+iOSプロジェクト、Apple認証ブリッジ、共有・触覚、アイコンは実装済みです。静的検証だけでは提出可能とは判断しません。
+最新の状況、Xcode 26/iOS 26 SDK要件、App Privacy、実機試験は [`apple/APP_STORE_READINESS.md`](apple/APP_STORE_READINESS.md) を参照してください。
 
 ## リリース判断
 
 - Web/PWA正式β: 実機スモークテスト後に可能。
 - Google Play内部テスト: 鍵のバックアップとPlay Consoleの所有者情報確認後、作成済み署名AABをアップロード可能。
 - Google Play本番: 内部テストとPlay Console申告完了後。
-- App Store: Apple開発者資格、iOS署名、Sign in with Apple対応後。
+- App Store: 既存登録の確認、署名済Archive、Apple認証/削除/対戦の実機試験、提出用画面と申告の確定、TestFlight確認後。
