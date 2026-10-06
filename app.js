@@ -88,7 +88,7 @@ const state = {
   locale: localStorage.getItem(TEST_LOCALE_KEY) === 'ja' ? 'ja' : 'ko',
   authSession: { status: 'loading', isAnonymous: true }, cloudSyncStatus: 'idle',
   titles: { selectedTitleId:null, unlockedTitleIds:[], stats:null }, quizTime:null, onlineSource:'rated',
-  onlinePendingBuzz:null, onlinePendingAnswer:null
+  onlinePendingBuzz:null, onlinePendingAnswer:null, onlineQuestionReveal:null
 };
 const clearTimer = () => { if (timer) { clearInterval(timer); timer = null; } };
 const clearReconnectTimer = () => { if (reconnectTimer) { clearInterval(reconnectTimer); reconnectTimer = null; } };
@@ -647,20 +647,46 @@ function updateOnlineTimeline(snapshot = state.onlineSnapshot) {
   const question = document.querySelector('#online-question');
   const clock = document.querySelector('#online-clock');
   const buzz = document.querySelector('#online-buzz');
+  const opponentProgress = document.querySelector('#online-opponent-progress');
   if (question) {
-    // The server supplies only the currently authorized prefix. Local timing
-    // may lag that prefix, but must never reveal characters beyond it.
-    const characters = questionCharacters(snapshot.question.text);
-    const count = revealedQuestionLength(characters, Math.max(0, onlineNow() - snapshot.startAt));
-    question.textContent = characters.slice(0, count).join('');
+    // The server still authorizes the prefix, while the client drains that
+    // prefix through a one-character queue so network polling never produces
+    // visible multi-character jumps.
+    const revealKey = `${snapshot.matchId}:${snapshot.questionToken}`;
+    const authorized = questionCharacters(snapshot.question.text);
+    let reveal = state.onlineQuestionReveal;
+    if (!reveal || reveal.key !== revealKey) {
+      const reconnectingMidQuestion = onlineNow() - snapshot.startAt > 750;
+      reveal = { key:revealKey, characters:reconnectingMidQuestion ? [...authorized] : [], nextAt:performance.now() };
+      state.onlineQuestionReveal = reveal;
+    }
+    let sharedLength = 0;
+    while (sharedLength < reveal.characters.length && sharedLength < authorized.length && reveal.characters[sharedLength] === authorized[sharedLength]) sharedLength += 1;
+    if (sharedLength < reveal.characters.length) {
+      reveal.characters.splice(sharedLength);
+      reveal.nextAt = performance.now();
+    }
+    const animationNow = performance.now();
+    if (authorized.length > reveal.characters.length && animationNow >= reveal.nextAt) {
+      const nextCharacter = authorized[reveal.characters.length];
+      reveal.characters.push(nextCharacter);
+      reveal.nextAt = animationNow + questionCharacterDelayMs(nextCharacter);
+    }
+    question.textContent = reveal.characters.join('');
+  }
+  if (opponentProgress) {
+    const progressCharacters = questionCharacters(snapshot.answerProgress);
+    opponentProgress.innerHTML = progressCharacters.length
+      ? progressCharacters.map(character => `<span>${escapeHtml(character)}</span>`).join('')
+      : '<i>…</i>';
   }
   if (clock) {
-    const target = snapshot.phase === 'answering' ? snapshot.answerDeadlineAt : snapshot.phase === 'result' ? snapshot.nextQuestionAt : snapshot.startAt;
+    const target = snapshot.phase === 'answering' ? snapshot.answerDeadlineAt : snapshot.phase === 'result' ? snapshot.nextQuestionAt : snapshot.phase === 'open' ? snapshot.buzzDeadlineAt : snapshot.startAt;
     const remaining = Math.max(0, Math.ceil((target - onlineNow()) / 1000));
     if (snapshot.phase === 'result' && remaining === 0) clock.parentElement.textContent = '다음 문제를 동기화하고 있습니다…';
     else clock.textContent = String(remaining);
   }
-  if (buzz && snapshot.phase === 'scheduled' && onlineNow() >= snapshot.buzzOpenAt && buzz.dataset.localOpen !== 'true') {
+  if (buzz && snapshot.phase === 'scheduled' && !snapshot.myAnswerLocked && onlineNow() >= snapshot.buzzOpenAt && buzz.dataset.localOpen !== 'true') {
     buzz.dataset.localOpen = 'true'; buzz.disabled = false; buzz.classList.remove('is-locked');
     buzz.querySelector('strong').textContent = '먼저!';
     buzz.querySelector('small').textContent = '누르면 서버에서 판정합니다';
@@ -669,11 +695,17 @@ function updateOnlineTimeline(snapshot = state.onlineSnapshot) {
 }
 
 function renderOnlineQuestion(snapshot) {
-  const open = snapshot.phase === 'open';
-  app.innerHTML = `<div class="battle-page online-battle-page"><div class="battle-head"><button class="back" id="online-leave">← 나가기</button><span class="round">ROUND ${snapshot.questionIndex + 1} / ${snapshot.roundLimit} · RTT ${state.onlineRtt || 0}ms</span></div><div class="players"><div class="player me"><div class="player-top"><span>나</span><span class="hearts">${'♥'.repeat(snapshot.myLives)}</span></div>${titleBadgeMarkup(snapshot.myTitleId,'title-badge-battle')}<div class="points">${snapshot.myScore}</div></div><div class="vs">VS</div><div class="player"><div class="player-top"><span>상대</span><span class="hearts">${'♥'.repeat(snapshot.opponentLives)}</span></div>${titleBadgeMarkup(snapshot.opponentTitleId,'title-badge-battle')}<div class="points">${snapshot.opponentScore}</div></div></div><section class="question-card"><div class="question-label">${escapeHtml(snapshot.question.category)} · SERVER SYNC</div><div class="question" id="online-question"></div><button class="buzz ${open ? '' : 'is-locked'}" id="online-buzz" type="button" ${open ? '' : 'disabled'}><strong>${open ? '먼저!' : 'READY'}</strong><small id="online-buzz-status">${open ? '누르면 서버에서 판정합니다' : `<b id="online-clock">${Math.max(0, Math.ceil((snapshot.startAt - onlineNow()) / 1000))}</b>초 후 시작`}</small></button></section></div>`;
+  const locked = Boolean(snapshot.myAnswerLocked);
+  const open = snapshot.phase === 'open' && !locked;
+  const remainingSeconds = Math.max(0, Math.ceil((snapshot.buzzDeadlineAt - onlineNow()) / 1000));
+  const buzzTitle = locked ? 'LOCKED' : open ? '먼저!' : 'READY';
+  const buzzStatus = locked ? `<b id="online-clock">${remainingSeconds}</b>초 남음 · 이 문제의 답변권을 잃었습니다` : open
+    ? `<b id="online-clock">${remainingSeconds}</b>초 남음 · ${snapshot.opponentAnswerLocked ? '상대 오답 · 지금 누르세요' : '누르면 서버에서 판정합니다'}`
+    : `<b id="online-clock">${Math.max(0, Math.ceil((snapshot.startAt - onlineNow()) / 1000))}</b>초 후 시작`;
+  app.innerHTML = `<div class="battle-page online-battle-page"><div class="battle-head"><button class="back" id="online-leave">← 나가기</button><span class="round">ROUND ${snapshot.questionIndex + 1} / ${snapshot.roundLimit} · RTT ${state.onlineRtt || 0}ms</span></div><div class="players"><div class="player me"><div class="player-top"><span>나</span><span class="hearts">${'♥'.repeat(snapshot.myLives)}</span></div>${titleBadgeMarkup(snapshot.myTitleId,'title-badge-battle')}<div class="points">${snapshot.myScore}</div></div><div class="vs">VS</div><div class="player"><div class="player-top"><span>상대</span><span class="hearts">${'♥'.repeat(snapshot.opponentLives)}</span></div>${titleBadgeMarkup(snapshot.opponentTitleId,'title-badge-battle')}<div class="points">${snapshot.opponentScore}</div></div></div><section class="question-card"><div class="question-label">${escapeHtml(snapshot.question.category)} · SERVER SYNC</div><div class="question" id="online-question"></div><button class="buzz ${open ? '' : 'is-locked'}" id="online-buzz" type="button" ${open ? '' : 'disabled'}><strong>${buzzTitle}</strong><small id="online-buzz-status">${buzzStatus}</small></button></section></div>`;
   document.querySelector('#online-leave').onclick = leaveOnlineMatch;
   const buzz = document.querySelector('#online-buzz'); if (open) buzz.addEventListener('pointerdown', submitOnlineBuzz, { once: true });
-  updateOnlineTimeline(snapshot); clearInterval(onlineTimelineTimer); onlineTimelineTimer = setInterval(() => updateOnlineTimeline(), 50);
+  updateOnlineTimeline(snapshot); clearInterval(onlineTimelineTimer); onlineTimelineTimer = setInterval(() => updateOnlineTimeline(), 25);
 }
 
 async function submitOnlineBuzz(event) {
@@ -709,7 +741,7 @@ async function submitOnlineBuzz(event) {
 
 function renderOnlineAnswer(snapshot) {
   if (snapshot.buzzWinner !== 'me') {
-    app.innerHTML = `<div class="battle-page centered"><div class="eyebrow">BUZZ AWARDED</div><h2>상대가 먼저 눌렀습니다</h2><p class="muted">상대의 답변을 기다리는 중…</p><div class="answer-deadline"><b id="online-clock"></b>초</div></div>`;
+    app.innerHTML = `<div class="battle-page centered"><div class="eyebrow">OPPONENT ANSWERING</div><h2>상대가 입력 중입니다</h2><div class="online-selected" id="online-opponent-progress" aria-live="polite"><i>…</i></div><p class="muted">오답이면 남은 시간으로 문제가 재개됩니다</p><div class="answer-deadline"><b id="online-clock"></b>초</div></div>`;
     updateOnlineTimeline(snapshot); return;
   }
   const candidates = (snapshot.answerCharacters || []).map((char, index) => `<button class="candidate" type="button" data-index="${index}" data-char="${escapeHtml(char)}" disabled>${escapeHtml(char)}</button>`).join('');
@@ -718,9 +750,14 @@ function renderOnlineAnswer(snapshot) {
   const undo = document.querySelector('#online-undo'); const retry = document.querySelector('#online-answer-retry');
   let submitting = false;
   const renderSelected = () => { selectedBox.innerHTML = selected.map(item => `<span>${escapeHtml(item.char)}</span>`).join(''); };
+  const unlockSelectedControls = () => {
+    const selectedButtons = new Set(selected.map(item => item.button));
+    buttons.forEach(candidate => { candidate.disabled = selectedButtons.has(candidate); });
+    undo.disabled = selected.length === 0;
+  };
   const sendSelectedAnswer = async event => {
     event?.preventDefault();
-    if (submitting || selected.length !== snapshot.answerLength) return;
+    if (submitting || selected.length === 0) return;
     const answer = selected.map(item => item.char).join('');
     const pending = state.onlinePendingAnswer?.matchId === snapshot.matchId
       && state.onlinePendingAnswer?.questionToken === snapshot.questionToken
@@ -732,7 +769,12 @@ function renderOnlineAnswer(snapshot) {
     try {
       const result = await globalThis.meonjeoRealtime.answer(pending);
       state.onlinePendingAnswer = null;
+      if (result.rebounded) nativeHaptic('error');
       if (result.snapshot) applyOnlineSnapshot(result.snapshot);
+      if (result.partial && state.onlineSnapshot?.matchId === snapshot.matchId && state.onlineSnapshot?.questionToken === snapshot.questionToken && state.onlineSnapshot?.phase === 'answering') {
+        submitting = false;
+        unlockSelectedControls();
+      }
     } catch (error) {
       console.error(error); submitting = false;
       const latest = state.onlineSnapshot;
@@ -745,9 +787,7 @@ function renderOnlineAnswer(snapshot) {
   };
   buttons.forEach(button => { button.onclick = async () => {
     if (button.disabled) return; button.disabled = true; selected.push({ char: button.dataset.char, button }); renderSelected();
-    if (selected.length >= snapshot.answerLength) {
-      await sendSelectedAnswer();
-    }
+    await sendSelectedAnswer();
   }; });
   undo.disabled = true;
   undo.onclick = () => { if (submitting) return; const last = selected.pop(); if (last) last.button.disabled = false; renderSelected(); };
@@ -755,8 +795,7 @@ function renderOnlineAnswer(snapshot) {
   setTimeout(() => {
     if (state.onlineSnapshot?.matchId !== snapshot.matchId || state.onlineSnapshot?.questionToken !== snapshot.questionToken || state.onlineSnapshot?.phase !== 'answering') return;
     if (submitting) return;
-    buttons.forEach(button => { button.disabled = false; });
-    undo.disabled = false;
+    unlockSelectedControls();
   }, ANSWER_INPUT_GUARD_MS);
   updateOnlineTimeline(snapshot);
 }
@@ -764,7 +803,7 @@ function renderOnlineAnswer(snapshot) {
 function renderOnlineResult(snapshot) {
   const result = snapshot.result || {}; const mine = result.answerUid === 'me'; const correct = result.kind === 'correct';
   nativeHaptic(mine ? (correct ? 'success' : 'error') : 'light');
-  const title = result.kind === 'no_buzz' ? '양쪽 모두 시간 초과' : result.kind === 'answer_timeout' ? (mine ? '답변 시간이 끝났습니다' : '상대의 답변 시간이 끝났습니다') : correct ? (mine ? '정답입니다!' : '상대가 정답을 맞혔습니다') : (mine ? '오답입니다' : '상대가 틀렸습니다');
+  const title = result.kind === 'no_buzz' ? '양쪽 모두 시간 초과' : result.kind === 'both_wrong' ? '양쪽 모두 오답입니다' : result.kind === 'answer_timeout' ? (mine ? '답변 시간이 끝났습니다' : '상대의 답변 시간이 끝났습니다') : correct ? (mine ? '정답입니다!' : '상대가 정답을 맞혔습니다') : (mine ? '오답입니다' : '상대가 틀렸습니다');
   app.innerHTML = `<div class="battle-page centered"><div class="result-card answer-result-card"><div class="result-icon ${correct ? '' : 'wrong'}">${correct ? '✓' : '×'}</div><div class="eyebrow">SERVER RESULT · ROUND ${snapshot.questionIndex + 1}</div><h2>${title}</h2><div class="result-revealed-answer"><span>정답</span><strong>${escapeHtml(result.answer || '')}</strong></div><p class="explanation">${escapeHtml(result.explanation || '')}</p><div class="result-stats"><span>내 점수 <b>${snapshot.myScore}</b></span><span>상대 점수 <b>${snapshot.opponentScore}</b></span></div><p class="result-auto-next"><b id="online-clock"></b>초 후 다음 문제 · 동기화 중</p><small class="background-sync-note">시계 보정 · 최신 스냅샷 · 연결 상태를 확인하고 있습니다</small></div></div>`;
   updateOnlineTimeline(snapshot);
   if (!state.onlineLastClockSync || Date.now() - state.onlineLastClockSync > 1500) {
@@ -832,7 +871,7 @@ async function pollOnlineSnapshot() {
   if (state.phase !== 'online-match' || !state.onlineMatchId) return;
   try {
     const result = await globalThis.meonjeoRealtime.snapshot(state.onlineMatchId); applyOnlineSnapshot(result.snapshot);
-    const delay = result.snapshot?.phase === 'result' ? 250 : result.snapshot?.phase === 'answering' ? 150 : 200;
+    const delay = result.snapshot?.phase === 'result' ? 250 : result.snapshot?.phase === 'answering' ? 150 : 100;
     onlinePollTimer = setTimeout(pollOnlineSnapshot, delay);
   } catch (error) {
     console.error(error);

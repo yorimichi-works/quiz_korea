@@ -35,7 +35,7 @@
 
 ## 自動検証
 
-`.github/workflows/app-readiness.yml` はPRで105件のWeb/認証/構成試験、lint、型検査、Web buildと、macOS 26上の署名なしSimulatorコンパイルを実行します。Simulator用`.app`は14日保持のActions artifactになります。これはiPhoneに配布できるIPAではありません。認証キーや署名証明書を渡さず、Appleサービスへの提出も行いません。
+`.github/workflows/app-readiness.yml` はPRでWeb/認証/構成試験、lint、型検査、Web buildと、macOS 26上の署名なしSimulatorコンパイルを実行します。Simulator用`.app`は14日保持のActions artifactになります。これはiPhoneに配布できるIPAではありません。認証キーや署名証明書を渡さず、Appleサービスへの提出も行いません。
 
 読み込みに失敗した時は韓国語の再試行画面を表示します。認証bridge v2はrequest IDで古い認証結果を無視し、既存v1とWebの互換も保ちます。実機試験は引き続き必要です。
 

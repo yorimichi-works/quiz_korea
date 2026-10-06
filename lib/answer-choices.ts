@@ -26,6 +26,15 @@ export function normalizedAnswerCharacters(value: string) {
   return Array.from(String(value || '').normalize('NFKC').toUpperCase().replace(STRIPPED_CHARACTERS, ''));
 }
 
+export function evaluateAnswerProgress(value: string, acceptedValues: string[]) {
+  const submitted = normalizedAnswerCharacters(value).join('');
+  if (!submitted) return 'invalid' as const;
+  const accepted = acceptedValues.map(answer => normalizedAnswerCharacters(answer).join('')).filter(Boolean);
+  if (accepted.includes(submitted)) return 'complete' as const;
+  if (accepted.some(answer => answer.startsWith(submitted))) return 'partial' as const;
+  return 'wrong' as const;
+}
+
 /** Keeps short answers snappy while giving long titles and names enough time
  * for deliberate character-tile input. */
 export function answerTimeLimitMs(value: string) {

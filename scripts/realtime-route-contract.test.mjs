@@ -5,6 +5,7 @@ import test from 'node:test';
 const route = await readFile(new URL('../app/api/realtime/route.ts', import.meta.url), 'utf8');
 const client = await readFile(new URL('../app.js', import.meta.url), 'utf8');
 const publicClient = await readFile(new URL('../public/app.js', import.meta.url), 'utf8');
+const reboundMigration = await readFile(new URL('../drizzle/0004_meonjeo_answer_rebound.sql', import.meta.url), 'utf8');
 
 test('match creation atomically rejects players who are already active', () => {
   assert.match(route, /INSERT INTO meonjeo_matches[\s\S]*?WHERE NOT EXISTS\s*\([\s\S]*?status = 'active'/);
@@ -23,6 +24,38 @@ test('answer submissions are bound to a question token and retry id', () => {
   assert.match(route, /existingResult\?\.answerId === answerId[\s\S]*?existingResult\.questionToken === questionToken/);
   assert.match(client, /questionToken:snapshot\.questionToken, answerId:/);
   assert.match(client, /onlinePendingAnswer/);
+});
+
+test('online answers are checked after every selected tile', () => {
+  assert.match(route, /evaluateAnswerProgress\(answer,/);
+  assert.match(route, /progress === 'partial'[\s\S]*?partial: true/);
+  assert.match(route, /const correct = progress === 'complete'/);
+  assert.match(client, /selected\.push[\s\S]*?await sendSelectedAnswer\(\)/);
+  assert.doesNotMatch(client, /selected\.length !== snapshot\.answerLength/);
+});
+
+test('authorized question text is drained through a one-character animation queue', () => {
+  assert.match(client, /onlineQuestionReveal/);
+  assert.match(client, /authorized\.length > reveal\.characters\.length[\s\S]*?reveal\.characters\.push\(nextCharacter\)/);
+  assert.match(client, /questionCharacterDelayMs\(nextCharacter\)/);
+});
+
+test('opponent answer progress is synchronized without exposing future question text', () => {
+  assert.match(route, /SET answer_progress = \?1/);
+  assert.match(route, /answerProgress: match\.phase === 'answering'/);
+  assert.match(route, /\['scheduled','open','answering'\]\.includes\(match\.phase\)/);
+  assert.match(client, /id="online-opponent-progress"/);
+  assert.match(client, /snapshot\.answerProgress/);
+});
+
+test('failed answers lock only that player and resume the paused timeline', () => {
+  assert.match(reboundMigration, /answer_locked_a INTEGER NOT NULL DEFAULT 0/);
+  assert.match(reboundMigration, /answer_locked_b INTEGER NOT NULL DEFAULT 0/);
+  assert.match(reboundMigration, /timeline_paused_at INTEGER/);
+  assert.match(route, /failedAnswerRebound\(/);
+  assert.match(route, /SET phase = 'open'[\s\S]*?answer_locked_a = \?4[\s\S]*?timeline_paused_at = NULL/);
+  assert.match(route, /answer_locked_a = 0\) OR \(player_b = \?1 AND answer_locked_b = 0/);
+  assert.match(client, /snapshot\.opponentAnswerLocked \? '상대 오답 · 지금 누르세요'/);
 });
 
 test('terminal results settle before disconnect forfeits and retry failed rewards', () => {

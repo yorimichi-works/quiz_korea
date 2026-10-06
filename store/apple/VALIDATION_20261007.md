@@ -62,3 +62,17 @@ App readinessは公開リポジトリの標準`ubuntu-latest`/`macos-26`ラン�
 - 起動QA画像として保存。最終候補の実機試験・App Store画面一式の代用にはしません
 
 実機arm64ターゲットも`ios-device-archive`ジョブで署名なしArchiveを確認できるようにしました。結果はPRへ記録します。未署名ArchiveはiPhoneへインストールもストア提出もできません。
+
+
+## 公開ソースとの再照合後
+
+公開版32 source `234f1540ae848786bb364015f8452d8502c7456d` の取得・照合を完了しました。公開版の回答権移行など14ファイルとpackage.jsonの更新を候補へ統合し、認証APIをService Workerの保存から除外しました。
+
+- 126/126 Node試験PASS
+- lint、TypeScript、Web production build、差分の空白検査PASS
+- 公開版185 tracked pathsをすべて保持し、公開版の主要更新10ファイルはbyte一致
+- entry HTML/SWはauth v8・shell v18と安全なキャッシュ対象へ意図的に更新
+- 未解決競合0件。最新のremote/CI結果はPRに追記
+- 新しいSimulator起動確認も引き続き現在の公開Webを表示するため、今回の未公開SW/API変更の本番試験ではない
+
+[公開ソース照合記録](SOURCE_RECONCILIATION_20261007.md)

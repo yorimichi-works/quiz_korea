@@ -79,3 +79,8 @@
 [`SIGNING_RUNBOOK.md`](SIGNING_RUNBOOK.md)に、Apple既存登録の確認、ログイン用と配信用の鍵の区別、Firebase共用時の削除の注意、署名資材、公開Webとの差分照合、IPA確認、TestFlightへの送信順をまとめました。
 
 [`ci/codemagic.yaml.example`](../../ci/codemagic.yaml.example)は未有効化の署名ビルド専用例です。実在のAPIキー名や署名資材名を設定しておらず、自動ビルド/アップロード/審査提出もありません。所有者承認と登録確認が済むまではrootの`codemagic.yaml`に移しません。
+
+
+## 公開版との整合
+
+公開版32の正規ソースを取得し、GitHub基点と三者比較しました。回答途中表示・回答権移行等の公開版だけの更新14ファイルを保持し、双方で変更されたpackage.jsonを統合しました。未解決の競合は0件です。認証キャッシュ境界とauth/shellの更新も加えた126件の回帰試験を実施しました。詳細と照合値は [`SOURCE_RECONCILIATION_20261007.md`](SOURCE_RECONCILIATION_20261007.md) を参照してください。本番公開は別承認のままです。

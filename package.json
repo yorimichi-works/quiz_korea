@@ -10,7 +10,7 @@
     "build": "vinext build",
     "build:questions": "node scripts/build-s2-question-season.mjs",
     "start": "vinext start",
-    "test:realtime": "node --test scripts/realtime-invariants.test.mjs scripts/realtime-route-contract.test.mjs scripts/realtime-settlement-sql.test.mjs",
+    "test:realtime": "node --test scripts/answer-rebound.test.mjs scripts/realtime-invariants.test.mjs scripts/realtime-route-contract.test.mjs scripts/realtime-settlement-sql.test.mjs",
     "test:product": "node --test scripts/product-simulation.test.ts",
     "test:language": "node --test scripts/question-language.test.mjs",
     "test:choices": "node --test scripts/answer-choices.test.mjs",
