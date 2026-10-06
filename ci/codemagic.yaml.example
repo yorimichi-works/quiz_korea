@@ -1,0 +1,47 @@
+# INACTIVE EXAMPLE. Do not copy to the repository root until the owner approves
+# Monjo-specific signing resources, Codemagic use, and the available build budget.
+# This builds a signed IPA only. It has no Apple API integration or publishing.
+workflows:
+  meonjeo-signed-build-only:
+    name: Meonjeo signed IPA build only
+    instance_type: mac_mini_m2
+    max_build_duration: 30
+    environment:
+      xcode: "26.6"
+      vars:
+        MEONJEO_SIGNING_APPROVED: "NO"
+        RELEASE_BUILD_NUMBER: "OWNER_CONFIRMED_INTEGER"
+      ios_signing:
+        provisioning_profiles:
+          - REPLACE_WITH_APPROVED_MEONJEO_PROFILE_REFERENCE
+        certificates:
+          - REPLACE_WITH_APPROVED_DISTRIBUTION_CERTIFICATE_REFERENCE
+    scripts:
+      - name: Verify owner-approved build inputs
+        script: |
+          set -euo pipefail
+          test "${MEONJEO_SIGNING_APPROVED:-NO}" = "YES" || {
+            echo 'Signing is not enabled for this draft.' >&2; exit 2;
+          }
+          case "${RELEASE_BUILD_NUMBER:-}" in
+            ''|*[!0-9]*|0) echo 'A confirmed, unused build number is required.' >&2; exit 2 ;;
+          esac
+          test -d ios/Meonjeo.xcodeproj
+          test "$(xcrun --sdk iphoneos --show-sdk-version | cut -d. -f1)" -ge 26
+      - name: Apply previously approved signing profiles
+        script: xcode-project use-profiles
+      - name: Set confirmed build number
+        script: |
+          set -euo pipefail
+          cd ios
+          agvtool new-version -all "$RELEASE_BUILD_NUMBER"
+      - name: Export signed IPA
+        script: |
+          xcode-project build-ipa \
+            --project "$CM_BUILD_DIR/ios/Meonjeo.xcodeproj" \
+            --scheme Meonjeo
+    artifacts:
+      - build/ios/ipa/*.ipa
+      - /tmp/xcodebuild_logs/*.log
+# No triggering, integrations, or publishing block is intentional.
+# TestFlight upload and tester access require a separate approved operation.

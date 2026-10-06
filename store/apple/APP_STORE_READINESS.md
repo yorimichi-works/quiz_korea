@@ -72,3 +72,10 @@
 - [App Privacy](https://developer.apple.com/app-store/app-privacy-details/)
 - [Screenshots](https://developer.apple.com/help/app-store-connect/reference/app-information/screenshot-specifications)
 - [App Review Guidelines](https://developer.apple.com/app-store/review/guidelines/)
+
+
+## 署名とTestFlightの具体的な実行手順
+
+[`SIGNING_RUNBOOK.md`](SIGNING_RUNBOOK.md)に、Apple既存登録の確認、ログイン用と配信用の鍵の区別、Firebase共用時の削除の注意、署名資材、公開Webとの差分照合、IPA確認、TestFlightへの送信順をまとめました。
+
+[`ci/codemagic.yaml.example`](../../ci/codemagic.yaml.example)は未有効化の署名ビルド専用例です。実在のAPIキー名や署名資材名を設定しておらず、自動ビルド/アップロード/審査提出もありません。所有者承認と登録確認が済むまではrootの`codemagic.yaml`に移しません。
