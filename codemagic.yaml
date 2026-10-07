@@ -9,7 +9,7 @@ workflows:
       xcode: "26.6"
       vars:
         APP_STORE_APP_ID: "6819903098"
-        RELEASE_BUILD_NUMBER: "1"
+        RELEASE_BUILD_NUMBER: "2"
         SIMULATOR_DEVICE_NAME: "iPhone 17 Pro"
       ios_signing:
         provisioning_profiles:
