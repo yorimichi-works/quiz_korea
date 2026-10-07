@@ -1,5 +1,6 @@
 import AuthenticationServices
 import CryptoKit
+import Foundation
 import Security
 import UIKit
 import WebKit
@@ -9,11 +10,15 @@ final class NativeBridge: NSObject, WKScriptMessageHandler, ASAuthorizationContr
     static let allowedHost = "meonjeo.syamo.chatgpt.site"
     static let bootstrapScript = #"""
     (() => {
-      const send = payload => window.webkit.messageHandlers.meonjeoNative.postMessage(payload);
+      const documentId = globalThis.crypto.randomUUID();
+      const send = payload => window.webkit.messageHandlers.meonjeoNative.postMessage({ ...payload, documentId });
       window.meonjeoNative = Object.freeze({
         platform: 'ios',
-        bridgeVersion: 2,
+        bridgeVersion: 3,
+        documentId,
         signInWithApple: requestId => send({ action: 'signInWithApple', requestId }),
+        revokeAppleToken: (requestId, firebaseIdToken, authorizationCode) =>
+          send({ action: 'revokeAppleToken', requestId, firebaseIdToken, authorizationCode }),
         haptic: (style = 'light') => send({ action: 'haptic', style }),
         share: (payload = {}) => send({ action: 'share', payload })
       });
@@ -24,6 +29,52 @@ final class NativeBridge: NSObject, WKScriptMessageHandler, ASAuthorizationContr
     private var currentNonce: String?
     private var currentRequestId: String?
     private var authorizationController: ASAuthorizationController?
+    private var appleRevocation: PendingAppleRevocation?
+
+    // Public Firebase project configuration, never supplied by the web page.
+    private static let revocationEndpoint = URL(string: "https://identitytoolkit.googleapis.com/v2/accounts:revokeToken?key=AIzaSyAFNxcPTqD8LK6IWXlygncDoaUFRAdb6sQ")!
+    private static let firebaseIOSAppID = "1:553966867727:ios:14c20adb13506901b8da7a"
+    private static let expectedBundleID = "com.yorimichiworks.meonjeo"
+    private static let revocationTimeout: TimeInterval = 35
+
+    private struct PendingAppleRevocation {
+        // A native operation ID prevents late completions from affecting a retry,
+        // even if a caller reuses a JavaScript request ID.
+        let operationID: UUID
+        let requestID: String
+        let documentID: String
+        let session: URLSession
+        let timeout: DispatchWorkItem
+    }
+
+    private enum AppleRevocationFailure {
+        case invalidRequest, inProgress, unavailable, timedOut, failed
+
+        var code: String {
+            switch self {
+            case .invalidRequest: return "auth/native-apple-revoke-invalid-request"
+            case .inProgress: return "auth/native-apple-revoke-request-in-progress"
+            case .unavailable: return "auth/native-apple-revoke-unavailable"
+            case .timedOut: return "auth/native-apple-revoke-timeout"
+            case .failed: return "auth/native-apple-revoke-failed"
+            }
+        }
+
+        var message: String {
+            switch self {
+            case .invalidRequest: return "Apple 연결 해제 요청을 확인할 수 없습니다."
+            case .inProgress: return "Apple 연결 해제 요청이 진행 중입니다."
+            case .unavailable: return "Apple 연결 해제를 시작할 수 없습니다."
+            case .timedOut: return "Apple 연결 해제 요청 시간이 초과되었습니다."
+            case .failed: return "Apple 연결 해제에 실패했습니다. 다시 시도해 주세요."
+            }
+        }
+    }
+
+    deinit {
+        appleRevocation?.timeout.cancel()
+        appleRevocation?.session.invalidateAndCancel()
+    }
 
     func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
         guard message.name == Self.handlerName,
@@ -36,6 +87,10 @@ final class NativeBridge: NSObject, WKScriptMessageHandler, ASAuthorizationContr
         switch action {
         case "signInWithApple":
             startAppleSignIn(requestId: body["requestId"] as? String)
+        case "revokeAppleToken":
+            guard message.webView === webView,
+                  [0, 443].contains(message.frameInfo.securityOrigin.port) else { return }
+            startAppleRevocation(body: body)
         case "haptic":
             performHaptic(style: body["style"] as? String ?? "light")
         case "share":
@@ -43,6 +98,121 @@ final class NativeBridge: NSObject, WKScriptMessageHandler, ASAuthorizationContr
         default:
             break
         }
+    }
+
+    private static func boundedBridgeString(_ value: Any?, maximumBytes: Int) -> String? {
+        guard let value = value as? String,
+              !value.isEmpty, value.utf8.count <= maximumBytes,
+              !value.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty,
+              value.rangeOfCharacter(from: .controlCharacters) == nil else { return nil }
+        return value
+    }
+
+    private func startAppleRevocation(body: [String: Any]) {
+        // Uncorrelatable messages are ignored rather than reflected back to JS.
+        guard let requestID = Self.boundedBridgeString(body["requestId"], maximumBytes: 128),
+              let documentID = Self.boundedBridgeString(body["documentId"], maximumBytes: 64),
+              UUID(uuidString: documentID) != nil else { return }
+
+        guard appleRevocation == nil else {
+            sendAppleRevocationFailure(.inProgress, requestID: requestID, documentID: documentID)
+            return
+        }
+        guard let firebaseIDToken = Self.boundedBridgeString(body["firebaseIdToken"], maximumBytes: 16384),
+              let authorizationCode = Self.boundedBridgeString(body["authorizationCode"], maximumBytes: 8192) else {
+            sendAppleRevocationFailure(.invalidRequest, requestID: requestID, documentID: documentID)
+            return
+        }
+        guard let bundleID = Bundle.main.bundleIdentifier,
+              bundleID == Self.expectedBundleID else {
+            sendAppleRevocationFailure(.unavailable, requestID: requestID, documentID: documentID)
+            return
+        }
+
+        // Matches the Firebase Apple SDK's RevokeTokenRequest wire body.
+        // This custom transport has not yet been validated against the live service.
+        let body: [String: String] = [
+            "providerId": "apple.com",
+            "tokenType": "3",
+            "token": authorizationCode,
+            "idToken": firebaseIDToken
+        ]
+        guard let bodyData = try? JSONSerialization.data(withJSONObject: body) else {
+            sendAppleRevocationFailure(.invalidRequest, requestID: requestID, documentID: documentID)
+            return
+        }
+        var request = URLRequest(url: Self.revocationEndpoint,
+                                 cachePolicy: .reloadIgnoringLocalCacheData,
+                                 timeoutInterval: 30)
+        request.httpMethod = "POST"
+        request.httpBody = bodyData
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.setValue("no-store", forHTTPHeaderField: "Cache-Control")
+        request.setValue(bundleID, forHTTPHeaderField: "X-Ios-Bundle-Identifier")
+        request.setValue(Self.firebaseIOSAppID, forHTTPHeaderField: "X-Firebase-GMPID")
+        // Identify our own implementation honestly; this is not FirebaseSDK.
+        request.setValue("iOS/MeonjeoNativeBridge/3", forHTTPHeaderField: "X-Client-Version")
+
+        let configuration = URLSessionConfiguration.ephemeral
+        configuration.timeoutIntervalForRequest = 30
+        configuration.timeoutIntervalForResource = Self.revocationTimeout
+        configuration.waitsForConnectivity = false
+        configuration.requestCachePolicy = .reloadIgnoringLocalCacheData
+        configuration.urlCache = nil
+        configuration.httpCookieStorage = nil
+        configuration.httpShouldSetCookies = false
+        configuration.urlCredentialStorage = nil
+        let session = URLSession(configuration: configuration,
+                                 delegate: AppleRevocationSessionDelegate(),
+                                 delegateQueue: nil)
+        let operationID = UUID()
+        let timeout = DispatchWorkItem { [weak self] in
+            self?.finishAppleRevocation(operationID: operationID, failure: .timedOut)
+        }
+        appleRevocation = PendingAppleRevocation(operationID: operationID,
+                                                 requestID: requestID,
+                                                 documentID: documentID,
+                                                 session: session,
+                                                 timeout: timeout)
+        // Tokens are used only in the in-memory request; never log or persist them.
+        let task = session.dataTask(with: request) { [weak self] _, response, error in
+            DispatchQueue.main.async { [weak self] in
+                let failure: AppleRevocationFailure?
+                if let error = error as NSError? {
+                    failure = error.domain == NSURLErrorDomain && error.code == NSURLErrorTimedOut
+                        ? .timedOut : .failed
+                } else if let response = response as? HTTPURLResponse,
+                          response.url == Self.revocationEndpoint,
+                          (200..<300).contains(response.statusCode) {
+                    failure = nil
+                } else {
+                    failure = .failed
+                }
+                self?.finishAppleRevocation(operationID: operationID, failure: failure)
+            }
+        }
+        DispatchQueue.main.asyncAfter(deadline: .now() + Self.revocationTimeout, execute: timeout)
+        task.resume()
+    }
+
+    private func finishAppleRevocation(operationID: UUID, failure: AppleRevocationFailure?) {
+        guard let pending = appleRevocation, pending.operationID == operationID else { return }
+        appleRevocation = nil
+        pending.timeout.cancel()
+        pending.session.invalidateAndCancel()
+        if let failure = failure {
+            sendAppleRevocationFailure(failure, requestID: pending.requestID, documentID: pending.documentID)
+        } else {
+            sendJavaScriptCallback(function: "window.meonjeoAuth?.completeNativeAppleRevocation",
+                                   payload: ["requestId": pending.requestID],
+                                   documentID: pending.documentID)
+        }
+    }
+
+    private func sendAppleRevocationFailure(_ failure: AppleRevocationFailure, requestID: String, documentID: String) {
+        sendJavaScriptCallback(function: "window.meonjeoAuth?.failNativeAppleRevocation",
+                               payload: ["requestId": requestID, "code": failure.code, "message": failure.message],
+                               documentID: documentID)
     }
 
     private func startAppleSignIn(requestId: String?) {
@@ -124,15 +294,25 @@ final class NativeBridge: NSObject, WKScriptMessageHandler, ASAuthorizationContr
         )
     }
 
-    private func sendJavaScriptCallback(function: String, payload: [String: Any]) {
+    private func sendJavaScriptCallback(function: String, payload: [String: Any], documentID: String? = nil) {
         guard JSONSerialization.isValidJSONObject(payload),
               let data = try? JSONSerialization.data(withJSONObject: payload),
               let json = String(data: data, encoding: .utf8) else { return }
+        let script: String
+        if let documentID = documentID {
+            guard let documentData = try? JSONSerialization.data(withJSONObject: [documentID]),
+                  let documentJSON = String(data: documentData, encoding: .utf8) else { return }
+            // A reload or same-origin navigation gets a new document ID. Never
+            // deliver an older operation's callback into that new document.
+            script = "if (window.meonjeoNative?.documentId === \(documentJSON)[0]) { \(function)(\(json)); }"
+        } else {
+            script = "\(function)(\(json));"
+        }
         DispatchQueue.main.async { [weak self] in
             guard let webView = self?.webView,
                   webView.url?.scheme?.lowercased() == "https",
                   webView.url?.host?.lowercased() == Self.allowedHost else { return }
-            webView.evaluateJavaScript("\(function)(\(json));")
+            webView.evaluateJavaScript(script)
         }
     }
 
@@ -186,5 +366,15 @@ final class NativeBridge: NSObject, WKScriptMessageHandler, ASAuthorizationContr
             }
         }
         return result
+    }
+}
+
+private final class AppleRevocationSessionDelegate: NSObject, URLSessionTaskDelegate {
+    func urlSession(_ session: URLSession, task: URLSessionTask,
+                    willPerformHTTPRedirection response: HTTPURLResponse,
+                    newRequest request: URLRequest,
+                    completionHandler: @escaping (URLRequest?) -> Void) {
+        // Never forward the one-time Apple code or Firebase token to a redirect.
+        completionHandler(nil)
     }
 }

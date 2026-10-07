@@ -64,7 +64,7 @@ test('web auth supports native Apple guest linking and deletion reauthentication
     text('public/auth.js'),
     text('public/app.js'),
   ]);
-  for (const expected of ['OAuthProvider', 'linkWithCredential', 'reauthenticateWithCredential', 'completeNativeAppleSignIn', 'mergeGuestProgress', 'accounts:revokeToken', "tokenType: 'CODE'"]) {
+  for (const expected of ['OAuthProvider', 'linkWithCredential', 'reauthenticateWithCredential', 'completeNativeAppleSignIn', 'mergeGuestProgress', 'supportsNativeAppleRevocation', 'revokeAppleToken', 'completeNativeAppleRevocation']) {
     assert.match(auth, new RegExp(expected));
   }
   assert.match(app, /Apple로 계속하기/);

@@ -11,13 +11,17 @@ mkdir -p build/ios-smoke
 xcrun simctl list devices available --json > build/ios-smoke/available-devices.json
 device=$(python3 - <<'PY'
 import json
+import os
 from pathlib import Path
 devices = json.loads(Path('build/ios-smoke/available-devices.json').read_text())['devices']
 phones = [d for runtime, values in devices.items() if 'iOS' in runtime
           for d in values if d.get('isAvailable') and d['name'].startswith('iPhone')]
+requested = os.environ.get('SIMULATOR_DEVICE_NAME')
+if requested:
+    phones = [d for d in phones if d['name'] == requested]
 phones.sort(key=lambda d: ('Pro Max' not in d['name'], d['name']))
 if not phones:
-    raise SystemExit('No available iPhone Simulator was found.')
+    raise SystemExit(f'No available iPhone Simulator matched {requested or "the iPhone family"}.')
 chosen = phones[0]
 Path('build/ios-smoke/device.json').write_text(json.dumps(chosen, indent=2))
 print(chosen['udid'])

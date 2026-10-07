@@ -4,11 +4,24 @@ import test from 'node:test';
 
 const example = readFileSync(new URL('../ci/codemagic.yaml.example', import.meta.url), 'utf8');
 
-test('Codemagic handoff is inactive and has no publishing or automatic trigger', () => {
-  assert.equal(existsSync(new URL('../codemagic.yaml', import.meta.url)), false);
+test('Codemagic signing example remains inactive and has no publishing or automatic trigger', () => {
   assert.doesNotMatch(example, /^\s+(publishing|triggering|integrations):/m);
   assert.match(example, /MEONJEO_SIGNING_APPROVED: "NO"/);
   assert.match(example, /OWNER_CONFIRMED_INTEGER/);
+});
+
+test('the approved signing workflow uses explicit resources and never submits review automatically', () => {
+  assert.equal(existsSync(new URL('../codemagic.yaml', import.meta.url)), true);
+  const active = readFileSync(new URL('../codemagic.yaml', import.meta.url), 'utf8');
+  assert.match(active, /app_store_connect: codemagic/);
+  assert.match(active, /meonjeo-app-store-profile/);
+  assert.match(active, /cirno-app-store/);
+  assert.match(active, /6819903098/);
+  assert.match(active, /validate-signed-ipa\.sh/);
+  assert.match(active, /submit_to_testflight: false/);
+  assert.match(active, /submit_to_app_store: false/);
+  assert.doesNotMatch(active, /^\s+triggering:/m);
+  assert.doesNotMatch(active, /--create|fetch-signing-files|--log-api-calls|set -x/);
 });
 
 test('Codemagic example uses explicit approved signing references without generating keys', () => {

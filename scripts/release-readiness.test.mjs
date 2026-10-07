@@ -109,7 +109,7 @@ test('reports are transmitted to a durable API with offline retry', () => {
 test('account deletion removes authentication and associated server data', () => {
   const auth = read('auth.js');
   const api = read('app/api/account/route.ts');
-  assert.match(auth, /await deleteUser\(auth\.currentUser\)/);
+  assert.match(auth, /await deleteUser\(user\)/);
   for (const table of ['meonjeo_match_events', 'meonjeo_matches', 'meonjeo_match_queue', 'meonjeo_realtime_sessions', 'meonjeo_quiz_time_events', 'meonjeo_reports', 'meonjeo_player_titles', 'meonjeo_player_progress']) {
     assert.match(api, new RegExp(`DELETE FROM ${table}`));
   }

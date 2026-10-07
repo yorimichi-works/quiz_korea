@@ -38,6 +38,9 @@ let lastSession = { status: 'loading', isAnonymous: true };
 let creatingGuest = false;
 let nativeAppleRequest = null;
 let nativeAppleRequestCounter = 0;
+let nativeAppleRevocation = null;
+let nativeAppleRevocationCounter = 0;
+let accountDeletionInProgress = false;
 
 function publish(session) {
   lastSession = session;
@@ -109,16 +112,65 @@ function firebaseAppleCredential(payload) {
   return appleProvider.credential({ idToken: payload.idToken, rawNonce: payload.rawNonce });
 }
 
-async function revokeNativeAppleToken(authorizationCode) {
-  if (!authorizationCode) throw nativeAppleError('auth/native-apple-missing-authorization-code');
-  const idToken = await getIdToken(auth.currentUser, true);
-  const response = await fetch(`https://identitytoolkit.googleapis.com/v2/accounts:revokeToken?key=${encodeURIComponent(firebaseConfig.apiKey)}`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ providerId: 'apple.com', tokenType: 'CODE', token: authorizationCode, idToken }),
-    cache: 'no-store',
+function supportsNativeAppleRevocation() {
+  return isNativeIOS() && Number(globalThis.meonjeoNative.bridgeVersion) >= 3
+    && typeof globalThis.meonjeoNative.revokeAppleToken === 'function';
+}
+
+function assertCurrentAccount(user) {
+  if (!user || auth.currentUser !== user) throw nativeAppleError('auth/account-changed');
+}
+
+function completeNativeAppleRevocation(payload = {}) {
+  if (!nativeAppleRevocation?.sent || payload.requestId !== nativeAppleRevocation.requestId) return;
+  nativeAppleRevocation.resolve();
+}
+
+function failNativeAppleRevocation(payload = {}) {
+  if (!nativeAppleRevocation?.sent || payload.requestId !== nativeAppleRevocation.requestId) return;
+  const allowedCodes = new Set([
+    'auth/native-apple-revoke-failed', 'auth/native-apple-revoke-timeout',
+    'auth/native-apple-revoke-unavailable', 'auth/native-apple-revoke-invalid-request',
+    'auth/native-apple-revoke-request-in-progress',
+  ]);
+  const code = allowedCodes.has(payload.code) ? payload.code : 'auth/native-apple-revoke-failed';
+  nativeAppleRevocation.reject(nativeAppleError(code));
+}
+
+function revokeNativeAppleToken(authorizationCode, user = auth.currentUser) {
+  if (!authorizationCode) return Promise.reject(nativeAppleError('auth/native-apple-missing-authorization-code'));
+  if (!supportsNativeAppleRevocation()) return Promise.reject(nativeAppleError('auth/native-apple-revoke-unavailable'));
+  if (nativeAppleRevocation) return Promise.reject(nativeAppleError('auth/native-apple-revoke-request-in-progress'));
+  try { assertCurrentAccount(user); } catch (error) { return Promise.reject(error); }
+  const requestId = `revoke-${Date.now()}-${++nativeAppleRevocationCounter}`;
+  return new Promise((resolve, reject) => {
+    const timeout = setTimeout(() => {
+      if (nativeAppleRevocation?.requestId === requestId) {
+        nativeAppleRevocation = null;
+        reject(nativeAppleError('auth/native-apple-revoke-timeout'));
+      }
+    }, 60000);
+    const settle = (callback, value) => {
+      if (nativeAppleRevocation?.requestId !== requestId) return;
+      clearTimeout(timeout);
+      nativeAppleRevocation = null;
+      callback(value);
+    };
+    nativeAppleRevocation = {
+      requestId, sent: false,
+      resolve: () => settle(resolve),
+      reject: error => settle(reject, error),
+    };
+    Promise.resolve().then(() => getIdToken(user, true)).then(idToken => {
+      if (nativeAppleRevocation?.requestId !== requestId) return;
+      assertCurrentAccount(user);
+      if (typeof idToken !== 'string' || !idToken) throw nativeAppleError('auth/native-apple-revoke-invalid-request');
+      nativeAppleRevocation.sent = true;
+      globalThis.meonjeoNative.revokeAppleToken(requestId, idToken, authorizationCode);
+    }).catch(error => {
+      if (nativeAppleRevocation?.requestId === requestId) nativeAppleRevocation.reject(error);
+    });
   });
-  if (!response.ok) throw nativeAppleError('auth/native-apple-revoke-failed');
 }
 
 async function ensureGuest() {
@@ -217,10 +269,14 @@ async function signOutToGuest() {
 async function deleteCurrentAccount() {
   const user = auth.currentUser;
   if (!user) throw new Error('Player session is required');
+  if (accountDeletionInProgress) throw nativeAppleError('account/delete-in-progress');
+  accountDeletionInProgress = true;
   publish({ ...lastSession, status: 'working', errorCode: null });
   try {
     const removeServerData = async () => {
-      const token = await getIdToken(auth.currentUser, true);
+      assertCurrentAccount(user);
+      const token = await getIdToken(user, true);
+      assertCurrentAccount(user);
       const response = await fetch('/api/account', {
         method: 'DELETE',
         headers: { Authorization: `Bearer ${token}` },
@@ -230,20 +286,25 @@ async function deleteCurrentAccount() {
     };
     const appleAccount = user.providerData?.some(item => item.providerId === 'apple.com');
     if (appleAccount) {
-      if (!isNativeIOS()) throw nativeAppleError('auth/native-apple-unavailable');
+      if (!supportsNativeAppleRevocation()) throw nativeAppleError('auth/native-apple-revoke-unavailable');
       const payload = await requestNativeAppleCredential();
+      assertCurrentAccount(user);
       await reauthenticateWithCredential(user, firebaseAppleCredential(payload));
-      await revokeNativeAppleToken(payload.authorizationCode);
+      assertCurrentAccount(user);
+      await revokeNativeAppleToken(payload.authorizationCode, user);
     }
     await removeServerData();
     try {
-      await deleteUser(auth.currentUser);
+      assertCurrentAccount(user);
+      await deleteUser(user);
     } catch (error) {
       if (error?.code !== 'auth/requires-recent-login' || user.isAnonymous) throw error;
       if (appleAccount) throw error;
+      assertCurrentAccount(user);
       await reauthenticateWithPopup(user, googleProvider);
       await removeServerData();
-      await deleteUser(auth.currentUser);
+      assertCurrentAccount(user);
+      await deleteUser(user);
     }
     await ensureGuest();
     publish(sessionFromUser(auth.currentUser));
@@ -251,6 +312,8 @@ async function deleteCurrentAccount() {
   } catch (error) {
     publish({ ...sessionFromUser(auth.currentUser), status: 'error', errorCode: error?.code || 'account/delete-failed' });
     throw error;
+  } finally {
+    accountDeletionInProgress = false;
   }
 }
 
@@ -318,6 +381,8 @@ globalThis.meonjeoAuth = {
   signInWithApple,
   completeNativeAppleSignIn,
   failNativeAppleSignIn,
+  completeNativeAppleRevocation,
+  failNativeAppleRevocation,
   isNativeIOS,
   signOut: signOutToGuest,
   deleteAccount: deleteCurrentAccount,
