@@ -1,8 +1,9 @@
 import { env } from 'cloudflare:workers';
 import season from '@/data/seasons/S2-2026/questions.ko.json';
+import { failedAnswerRebound } from '@/lib/answer-rebound';
 import { ratingDelta, rankPointGain } from '@/lib/rating';
 import { DEFAULT_QUIZ_TIME_CONFIG, getQuizTimeState, type QuizTimeConfig } from '@/lib/quiz-time';
-import { answerChoiceRandom, answerTimeLimitMs, createAnswerTileChoices, normalizedAnswerCharacters, normalizedAnswerTiles } from '@/lib/answer-choices';
+import { answerChoiceRandom, answerTimeLimitMs, createAnswerTileChoices, evaluateAnswerProgress, normalizedAnswerCharacters, normalizedAnswerTiles } from '@/lib/answer-choices';
 import { matchOutcome } from '@/lib/match-outcome';
 import { excludeRecentlySeenQuestionGroups, selectMatchQuestionIds } from '@/lib/question-selection';
 import { questionRevealDurationMs, revealedQuestionLength } from '@/lib/question-timing';
@@ -19,6 +20,7 @@ type MatchRow = {
   question_ids_json: string; question_index: number; question_token: string;
   start_at: number; buzz_open_at: number; buzz_deadline_at: number;
   buzz_winner_uid: string | null; buzz_id: string | null; answer_deadline_at: number | null;
+  answer_locked_a: number; answer_locked_b: number; answer_progress: string; timeline_paused_at: number | null;
   score_a: number; score_b: number; lives_a: number; lives_b: number;
   result_json: string | null; next_question_at: number | null; decision_version: number;
   last_seen_a: number; last_seen_b: number; created_at: number; rating_applied: number;
@@ -40,7 +42,7 @@ async function initializeDatabase(db: D1Database) {
   await db.batch([
     db.prepare(`CREATE TABLE IF NOT EXISTS meonjeo_player_progress (user_id TEXT PRIMARY KEY, rating INTEGER NOT NULL, rank_points INTEGER NOT NULL, profile_updated_at INTEGER NOT NULL, match_history_json TEXT NOT NULL, updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP)`),
     db.prepare(`CREATE TABLE IF NOT EXISTS meonjeo_match_queue (user_id TEXT PRIMARY KEY, joined_at INTEGER NOT NULL, source TEXT NOT NULL DEFAULT 'rated')`),
-    db.prepare(`CREATE TABLE IF NOT EXISTS meonjeo_matches (id TEXT PRIMARY KEY, player_a TEXT NOT NULL, player_b TEXT NOT NULL, status TEXT NOT NULL, phase TEXT NOT NULL, question_ids_json TEXT NOT NULL, question_index INTEGER NOT NULL, question_token TEXT NOT NULL, start_at INTEGER NOT NULL, buzz_open_at INTEGER NOT NULL, buzz_deadline_at INTEGER NOT NULL, buzz_winner_uid TEXT, buzz_id TEXT, answer_deadline_at INTEGER, score_a INTEGER NOT NULL DEFAULT 0, score_b INTEGER NOT NULL DEFAULT 0, lives_a INTEGER NOT NULL DEFAULT 5, lives_b INTEGER NOT NULL DEFAULT 5, result_json TEXT, next_question_at INTEGER, decision_version INTEGER NOT NULL DEFAULT 1, last_seen_a INTEGER NOT NULL DEFAULT 0, last_seen_b INTEGER NOT NULL DEFAULT 0, rating_applied INTEGER NOT NULL DEFAULT 0, rating_a INTEGER NOT NULL DEFAULT 1248, rating_b INTEGER NOT NULL DEFAULT 1248, title_a TEXT, title_b TEXT, source_a TEXT NOT NULL DEFAULT 'rated', source_b TEXT NOT NULL DEFAULT 'rated', queue_joined_a INTEGER NOT NULL DEFAULT 0, queue_joined_b INTEGER NOT NULL DEFAULT 0, rating_delta_a INTEGER NOT NULL DEFAULT 0, rating_delta_b INTEGER NOT NULL DEFAULT 0, rank_gain_a INTEGER NOT NULL DEFAULT 0, rank_gain_b INTEGER NOT NULL DEFAULT 0, created_at INTEGER NOT NULL, updated_at INTEGER NOT NULL)`),
+    db.prepare(`CREATE TABLE IF NOT EXISTS meonjeo_matches (id TEXT PRIMARY KEY, player_a TEXT NOT NULL, player_b TEXT NOT NULL, status TEXT NOT NULL, phase TEXT NOT NULL, question_ids_json TEXT NOT NULL, question_index INTEGER NOT NULL, question_token TEXT NOT NULL, start_at INTEGER NOT NULL, buzz_open_at INTEGER NOT NULL, buzz_deadline_at INTEGER NOT NULL, buzz_winner_uid TEXT, buzz_id TEXT, answer_deadline_at INTEGER, answer_locked_a INTEGER NOT NULL DEFAULT 0, answer_locked_b INTEGER NOT NULL DEFAULT 0, answer_progress TEXT NOT NULL DEFAULT '', timeline_paused_at INTEGER, score_a INTEGER NOT NULL DEFAULT 0, score_b INTEGER NOT NULL DEFAULT 0, lives_a INTEGER NOT NULL DEFAULT 5, lives_b INTEGER NOT NULL DEFAULT 5, result_json TEXT, next_question_at INTEGER, decision_version INTEGER NOT NULL DEFAULT 1, last_seen_a INTEGER NOT NULL DEFAULT 0, last_seen_b INTEGER NOT NULL DEFAULT 0, rating_applied INTEGER NOT NULL DEFAULT 0, rating_a INTEGER NOT NULL DEFAULT 1248, rating_b INTEGER NOT NULL DEFAULT 1248, title_a TEXT, title_b TEXT, source_a TEXT NOT NULL DEFAULT 'rated', source_b TEXT NOT NULL DEFAULT 'rated', queue_joined_a INTEGER NOT NULL DEFAULT 0, queue_joined_b INTEGER NOT NULL DEFAULT 0, rating_delta_a INTEGER NOT NULL DEFAULT 0, rating_delta_b INTEGER NOT NULL DEFAULT 0, rank_gain_a INTEGER NOT NULL DEFAULT 0, rank_gain_b INTEGER NOT NULL DEFAULT 0, created_at INTEGER NOT NULL, updated_at INTEGER NOT NULL)`),
     db.prepare(`CREATE TABLE IF NOT EXISTS meonjeo_match_events (event_id TEXT PRIMARY KEY, match_id TEXT NOT NULL, user_id TEXT NOT NULL, event_type TEXT NOT NULL, response_json TEXT NOT NULL, created_at INTEGER NOT NULL)`),
     db.prepare(`CREATE TABLE IF NOT EXISTS meonjeo_realtime_sessions (session_token TEXT PRIMARY KEY, user_id TEXT NOT NULL, expires_at INTEGER NOT NULL)`),
     db.prepare(`CREATE TABLE IF NOT EXISTS meonjeo_player_titles (user_id TEXT PRIMARY KEY, selected_title_id TEXT, matches INTEGER NOT NULL DEFAULT 0, wins INTEGER NOT NULL DEFAULT 0, current_streak INTEGER NOT NULL DEFAULT 0, best_streak INTEGER NOT NULL DEFAULT 0, correct_answers INTEGER NOT NULL DEFAULT 0, fast_buzz_wins INTEGER NOT NULL DEFAULT 0, history_correct INTEGER NOT NULL DEFAULT 0, quiz_time_matches INTEGER NOT NULL DEFAULT 0, updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP)`),
@@ -129,10 +131,6 @@ function currentQuestion(match: MatchRow): Question {
   const question = questionMap.get(ids[match.question_index]);
   if (!question) throw new Error('Match question missing');
   return question;
-}
-
-function normalize(value: string) {
-  return normalizedAnswerCharacters(value).join('');
 }
 
 function answerCharacters(question: Question, match: MatchRow, uid: string) {
@@ -260,6 +258,31 @@ async function completeForfeit(db: D1Database, match: MatchRow, loserUid: string
   return settleCompletedMatch(db, match);
 }
 
+async function resolveFailedAnswer(db: D1Database, match: MatchRow, kind: 'wrong' | 'answer_timeout', answerId?: string) {
+  const failedUid = match.buzz_winner_uid;
+  if (!failedUid) return false;
+  const now = Date.now();
+  const question = currentQuestion(match);
+  const transition = failedAnswerRebound({
+    failedPlayer: failedUid === match.player_a ? 'a' : 'b',
+    lockedA: Boolean(match.answer_locked_a), lockedB: Boolean(match.answer_locked_b),
+    timelinePausedAt: match.timeline_paused_at,
+    startAt: match.start_at, buzzOpenAt: match.buzz_open_at, buzzDeadlineAt: match.buzz_deadline_at, now,
+  });
+  const livesA = failedUid === match.player_a ? Math.max(0, match.lives_a - 1) : match.lives_a;
+  const livesB = failedUid === match.player_b ? Math.max(0, match.lives_b - 1) : match.lives_b;
+  const mustFinish = transition.bothLocked || transition.remainingMs <= 0 || livesA <= 0 || livesB <= 0;
+  if (mustFinish) {
+    const result = { kind:transition.bothLocked ? 'both_wrong' : kind, answer:question.canonicalAnswer, explanation:question.explanation, answerUid:failedUid, ...(answerId ? { answerId, questionToken:match.question_token } : {}) };
+    const updated = await db.prepare(`UPDATE meonjeo_matches SET phase = 'result', lives_a = ?1, lives_b = ?2, answer_locked_a = ?3, answer_locked_b = ?4, answer_progress = '', timeline_paused_at = NULL, result_json = ?5, next_question_at = ?6, decision_version = decision_version + 1, updated_at = ?7 WHERE id = ?8 AND phase = 'answering' AND buzz_winner_uid = ?9`)
+      .bind(livesA, livesB, Number(transition.lockedA), Number(transition.lockedB), JSON.stringify(result), now + (match.id.startsWith('qa-') ? 10 : RESULT_MS), now, match.id, failedUid).run();
+    return updated.meta.changes === 1;
+  }
+  const updated = await db.prepare(`UPDATE meonjeo_matches SET phase = 'open', start_at = ?1, buzz_open_at = ?2, buzz_deadline_at = ?3, buzz_winner_uid = NULL, buzz_id = NULL, answer_deadline_at = NULL, answer_locked_a = ?4, answer_locked_b = ?5, answer_progress = '', timeline_paused_at = NULL, lives_a = ?6, lives_b = ?7, decision_version = decision_version + 1, updated_at = ?8 WHERE id = ?9 AND phase = 'answering' AND buzz_winner_uid = ?10`)
+    .bind(transition.startAt, transition.buzzOpenAt, transition.buzzDeadlineAt, Number(transition.lockedA), Number(transition.lockedB), livesA, livesB, now, match.id, failedUid).run();
+  return updated.meta.changes === 1;
+}
+
 async function advance(db: D1Database, match: MatchRow) {
   const now = Date.now();
   const qaMode = match.id.startsWith('qa-');
@@ -279,12 +302,7 @@ async function advance(db: D1Database, match: MatchRow) {
     await db.prepare(`UPDATE meonjeo_matches SET phase = 'result', result_json = ?1, next_question_at = ?2, decision_version = decision_version + 1, updated_at = ?3 WHERE id = ?4 AND phase = 'open'`)
       .bind(JSON.stringify(result), now + (qaMode ? 10 : RESULT_MS), now, match.id).run();
   } else if (match.phase === 'answering' && match.answer_deadline_at && now > match.answer_deadline_at) {
-    const question = currentQuestion(match);
-    const result = { kind: 'answer_timeout', answer: question.canonicalAnswer, explanation: question.explanation, answerUid: match.buzz_winner_uid };
-    const livesA = match.player_a === match.buzz_winner_uid ? Math.max(0, match.lives_a - 1) : match.lives_a;
-    const livesB = match.player_b === match.buzz_winner_uid ? Math.max(0, match.lives_b - 1) : match.lives_b;
-    await db.prepare(`UPDATE meonjeo_matches SET phase = 'result', lives_a = ?1, lives_b = ?2, result_json = ?3, next_question_at = ?4, decision_version = decision_version + 1, updated_at = ?5 WHERE id = ?6 AND phase = 'answering'`)
-      .bind(livesA, livesB, JSON.stringify(result), now + (qaMode ? 10 : RESULT_MS), now, match.id).run();
+    await resolveFailedAnswer(db, match, 'answer_timeout');
   } else if (match.phase === 'result' && match.next_question_at && now >= match.next_question_at) {
     const complete = match.score_a >= WIN_SCORE || match.score_b >= WIN_SCORE || match.lives_a <= 0 || match.lives_b <= 0 || match.question_index + 1 >= (qaMode ? 1 : MAX_ROUNDS);
     if (complete) {
@@ -295,7 +313,7 @@ async function advance(db: D1Database, match: MatchRow) {
       const ids = JSON.parse(match.question_ids_json) as string[];
       const question = questionMap.get(ids[nextIndex])!;
       const startAt = now + 1800;
-      await db.prepare(`UPDATE meonjeo_matches SET phase = 'scheduled', question_index = ?1, question_token = ?2, start_at = ?3, buzz_open_at = ?4, buzz_deadline_at = ?5, buzz_winner_uid = NULL, buzz_id = NULL, answer_deadline_at = NULL, result_json = NULL, next_question_at = NULL, decision_version = decision_version + 1, updated_at = ?6 WHERE id = ?7 AND phase = 'result'`)
+      await db.prepare(`UPDATE meonjeo_matches SET phase = 'scheduled', question_index = ?1, question_token = ?2, start_at = ?3, buzz_open_at = ?4, buzz_deadline_at = ?5, buzz_winner_uid = NULL, buzz_id = NULL, answer_deadline_at = NULL, answer_locked_a = 0, answer_locked_b = 0, answer_progress = '', timeline_paused_at = NULL, result_json = NULL, next_question_at = NULL, decision_version = decision_version + 1, updated_at = ?6 WHERE id = ?7 AND phase = 'result'`)
         .bind(nextIndex, crypto.randomUUID(), startAt, startAt + 300, startAt + Math.max(6000, questionRevealDurationMs(question.questionText) + 2500), now, match.id).run();
     }
   }
@@ -324,8 +342,9 @@ function clientSnapshot(match: MatchRow, uid: string) {
   const ratingDeltaValue = isA ? match.rating_delta_a : match.rating_delta_b;
   const rankGain = isA ? match.rank_gain_a : match.rank_gain_b;
   const now = Date.now();
-  const gatedQuestionText = !match.id.startsWith('qa-') && (match.phase === 'scheduled' || match.phase === 'open')
-    ? Array.from(question.questionText).slice(0, revealedQuestionLength(question.questionText, Math.max(0, now - match.start_at))).join('')
+  const questionTimelineNow = match.phase === 'answering' && match.timeline_paused_at ? match.timeline_paused_at : now;
+  const gatedQuestionText = !match.id.startsWith('qa-') && ['scheduled','open','answering'].includes(match.phase)
+    ? Array.from(question.questionText).slice(0, revealedQuestionLength(question.questionText, Math.max(0, questionTimelineNow - match.start_at))).join('')
     : question.questionText;
   const outcome = match.status === 'complete' ? matchOutcome(match) : null;
   return {
@@ -335,6 +354,9 @@ function clientSnapshot(match: MatchRow, uid: string) {
     startAt: match.start_at, buzzOpenAt: match.buzz_open_at, buzzDeadlineAt: match.buzz_deadline_at,
     buzzWinner: match.buzz_winner_uid === uid ? 'me' : match.buzz_winner_uid ? 'opponent' : null,
     answerDeadlineAt: match.answer_deadline_at,
+    answerProgress: match.phase === 'answering' ? match.answer_progress : null,
+    myAnswerLocked: Boolean(isA ? match.answer_locked_a : match.answer_locked_b),
+    opponentAnswerLocked: Boolean(isA ? match.answer_locked_b : match.answer_locked_a),
     answerCharacters: match.phase === 'answering' && match.buzz_winner_uid === uid ? answerCharacters(question, match, uid) : null,
     answerLength: match.phase === 'answering' && match.buzz_winner_uid === uid ? normalizedAnswerTiles(question.canonicalAnswer).length : null,
     myScore: isA ? match.score_a : match.score_b, opponentScore: isA ? match.score_b : match.score_a,
@@ -384,7 +406,7 @@ async function handleBuzz(db: D1Database, uid: string, body: Record<string, unkn
   match = await advance(db, match);
   const now = Date.now();
   const question = currentQuestion(match);
-  const won = await db.prepare(`UPDATE meonjeo_matches SET phase = 'answering', buzz_winner_uid = ?1, buzz_id = ?2, answer_deadline_at = ?3, decision_version = decision_version + 1, updated_at = ?4 WHERE id = ?5 AND phase = 'open' AND question_token = ?6 AND buzz_winner_uid IS NULL AND buzz_open_at <= ?4 AND buzz_deadline_at >= ?4`)
+  const won = await db.prepare(`UPDATE meonjeo_matches SET phase = 'answering', buzz_winner_uid = ?1, buzz_id = ?2, answer_deadline_at = ?3, answer_progress = '', timeline_paused_at = ?4, decision_version = decision_version + 1, updated_at = ?4 WHERE id = ?5 AND phase = 'open' AND question_token = ?6 AND buzz_winner_uid IS NULL AND buzz_open_at <= ?4 AND buzz_deadline_at >= ?4 AND ((player_a = ?1 AND answer_locked_a = 0) OR (player_b = ?1 AND answer_locked_b = 0))`)
     .bind(uid, buzzId, now + (match.id.startsWith('qa-') ? 60000 : answerTimeLimitMs(question.canonicalAnswer)), now, matchId, token).run();
   // Cosmetic title progress gets a modest network allowance; the actual buzz winner remains fully server-authoritative.
   if (won.meta.changes === 1 && now - match.buzz_open_at <= 2000) {
@@ -412,12 +434,32 @@ async function handleAnswer(db: D1Database, uid: string, body: Record<string, un
   }
   if (match.phase !== 'answering' || match.buzz_winner_uid !== uid || !match.answer_deadline_at || Date.now() > match.answer_deadline_at) return response({ error: 'answer-closed' }, 409);
   const question = currentQuestion(match);
-  const correct = [question.canonicalAnswer, ...(question.acceptedAliases || [])].some(value => normalize(value) === normalize(answer));
+  const progress = evaluateAnswerProgress(answer, [question.canonicalAnswer, ...(question.acceptedAliases || [])]);
+  if (progress === 'invalid') return response({ error: 'invalid-answer' }, 400);
+  if (progress === 'partial') {
+    const now = Date.now();
+    const normalizedProgress = normalizedAnswerCharacters(answer).join('');
+    const updated = await db.prepare(`UPDATE meonjeo_matches SET answer_progress = ?1, updated_at = ?2 WHERE id = ?3 AND phase = 'answering' AND buzz_winner_uid = ?4 AND question_token = ?5`)
+      .bind(normalizedProgress, now, matchId, uid, questionToken).run();
+    if (updated.meta.changes !== 1) return response({ error: 'answer-closed' }, 409);
+    match = (await loadMatch(db, matchId, uid))!;
+    const payload = { accepted: true, partial: true, snapshot: clientSnapshot(match, uid) };
+    await db.prepare(`INSERT OR IGNORE INTO meonjeo_match_events (event_id, match_id, user_id, event_type, response_json, created_at) VALUES (?1, ?2, ?3, 'answer', ?4, ?5)`).bind(answerId, matchId, uid, JSON.stringify(payload), now).run();
+    return response(payload);
+  }
+  const correct = progress === 'complete';
   const now = Date.now();
+  if (!correct) {
+    await resolveFailedAnswer(db, match, 'wrong', answerId);
+    match = (await loadMatch(db, matchId, uid))!;
+    const payload = { accepted: true, rebounded:match.phase === 'open', snapshot:clientSnapshot(match, uid) };
+    await db.prepare(`INSERT OR IGNORE INTO meonjeo_match_events (event_id, match_id, user_id, event_type, response_json, created_at) VALUES (?1, ?2, ?3, 'answer', ?4, ?5)`).bind(answerId, matchId, uid, JSON.stringify(payload), now).run();
+    return response(payload);
+  }
   const scoreA = match.score_a + (correct && uid === match.player_a ? 1 : 0); const scoreB = match.score_b + (correct && uid === match.player_b ? 1 : 0);
   const livesA = match.lives_a - (!correct && uid === match.player_a ? 1 : 0); const livesB = match.lives_b - (!correct && uid === match.player_b ? 1 : 0);
   const resultData = { kind: correct ? 'correct' : 'wrong', answer: question.canonicalAnswer, explanation: question.explanation, answerUid: uid, answerId, questionToken };
-  const updated = await db.prepare(`UPDATE meonjeo_matches SET phase = 'result', score_a = ?1, score_b = ?2, lives_a = ?3, lives_b = ?4, result_json = ?5, next_question_at = ?6, decision_version = decision_version + 1, updated_at = ?7 WHERE id = ?8 AND phase = 'answering' AND buzz_winner_uid = ?9`)
+  const updated = await db.prepare(`UPDATE meonjeo_matches SET phase = 'result', score_a = ?1, score_b = ?2, lives_a = ?3, lives_b = ?4, answer_progress = '', timeline_paused_at = NULL, result_json = ?5, next_question_at = ?6, decision_version = decision_version + 1, updated_at = ?7 WHERE id = ?8 AND phase = 'answering' AND buzz_winner_uid = ?9`)
     .bind(scoreA, scoreB, livesA, livesB, JSON.stringify(resultData), now + (match.id.startsWith('qa-') ? 10 : RESULT_MS), now, matchId, uid).run();
   if (updated.meta.changes === 1 && correct) {
     await db.prepare(`INSERT INTO meonjeo_player_titles (user_id, correct_answers, history_correct) VALUES (?1, 1, ?2) ON CONFLICT(user_id) DO UPDATE SET correct_answers = correct_answers + 1, history_correct = history_correct + excluded.history_correct, updated_at = CURRENT_TIMESTAMP`).bind(uid, question.categoryKo === '한국사' ? 1 : 0).run();

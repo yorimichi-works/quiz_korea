@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
+<title>먼저! raised game buzzer</title>
+<desc>A physical raised blue push-button viewed from above and in front, with the game's white trim, yellow mounting ring and gray base. The cap, sidewall, recess and stand are distinct. The lightning is a secondary marking.</desc>
+<defs>
+ <linearGradient id="backdrop" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#fbfdff"/><stop offset="1" stop-color="#eaf1fa"/></linearGradient>
+ <linearGradient id="base-side" x1="0" y1="0" x2="1" y2="0"><stop stop-color="#c9d4e2"/><stop offset=".3" stop-color="#f2f5fa"/><stop offset=".7" stop-color="#d1dce9"/><stop offset="1" stop-color="#a4b5cc"/></linearGradient>
+ <linearGradient id="yellow-side" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#f4c23a"/><stop offset="1" stop-color="#c69116"/></linearGradient>
+ <linearGradient id="ring" x1="0" y1="0" x2=".8" y2="1"><stop stop-color="#ffe68a"/><stop offset=".55" stop-color="#ffd34a"/><stop offset="1" stop-color="#f5bd29"/></linearGradient>
+ <linearGradient id="side" x1="0" y1="0" x2="1" y2="0"><stop stop-color="#1156b8"/><stop offset=".22" stop-color="#1760cf"/><stop offset=".53" stop-color="#165ac3"/><stop offset=".86" stop-color="#0d3f9e"/><stop offset="1" stop-color="#092f79"/></linearGradient>
+ <radialGradient id="cap" cx=".30" cy=".20" r=".94"><stop stop-color="#4d95fa"/><stop offset=".4" stop-color="#3d84f0"/><stop offset=".77" stop-color="#1760cf"/><stop offset="1" stop-color="#104caf"/></radialGradient>
+ <linearGradient id="cap-edge" x1="0" y1="0" x2=".6" y2="1"><stop stop-color="#9dc8ff"/><stop offset=".45" stop-color="#4b8dec"/><stop offset="1" stop-color="#0b409b"/></linearGradient>
+ <linearGradient id="trim" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#fff"/><stop offset="1" stop-color="#eaf1fa"/></linearGradient>
+ <filter id="ground-shadow" x="-35%" y="-100%" width="170%" height="300%"><feGaussianBlur stdDeviation="24"/></filter>
+ <filter id="cap-shadow" x="-30%" y="-100%" width="160%" height="300%"><feGaussianBlur stdDeviation="10"/></filter>
+</defs>
+<!-- Square, opaque artwork. System icon rounding is intentionally not included. -->
+<path fill="url(#backdrop)" d="M0 0h1024v1024H0z"/>
+<ellipse cx="521" cy="816" rx="351" ry="60" fill="#254676" opacity=".22" filter="url(#ground-shadow)"/>
+<!-- Separate heavy base, including a visible front wall and bottom bevel. -->
+<path d="M136 613v57c0 100 168 181 376 181s376-81 376-181v-57z" fill="url(#base-side)"/>
+<path d="M144 691c26 84 179 148 368 148s342-64 368-148" fill="none" stroke="#8ea5c1" stroke-opacity=".35" stroke-width="6"/>
+<ellipse cx="512" cy="613" rx="376" ry="181" fill="#e7edf5"/>
+<!-- Yellow mounting ring. Its side and upper surface are visibly separated. -->
+<path d="M156 577v39c0 98 159 177 356 177s356-79 356-177v-39z" fill="url(#yellow-side)"/>
+<ellipse cx="512" cy="577" rx="356" ry="177" fill="url(#ring)"/>
+<path d="M174 617c36 76 174 130 338 130s302-54 338-130" fill="none" stroke="#ffe994" stroke-opacity=".65" stroke-width="4"/>
+<!-- White trim surrounds a dark recess under the moving button. -->
+<ellipse cx="512" cy="572" rx="322" ry="152" fill="url(#trim)"/>
+<ellipse cx="512" cy="563" rx="302" ry="138" fill="#183b72"/>
+<ellipse cx="513" cy="618" rx="278" ry="67" fill="#071d43" opacity=".62" filter="url(#cap-shadow)"/>
+<!-- Tall blue moving cap, raised well above the mounting ring. -->
+<path d="M221 384v120c0 96 130 174 291 174s291-78 291-174V384z" fill="url(#side)"/>
+<path d="M226 527c20 82 141 144 286 144s266-62 286-144" fill="none" stroke="#082d72" stroke-opacity=".5" stroke-width="5"/>
+<ellipse cx="512" cy="384" rx="291" ry="174" fill="url(#cap)" stroke="url(#cap-edge)" stroke-width="8"/>
+<!-- Quiet curved reflection at the back of the domed cap. -->
+<path d="M275 330c38-59 131-102 237-102 82 0 155 23 203 61" fill="none" stroke="#b6d7ff" stroke-width="8" stroke-opacity=".38" stroke-linecap="round"/>
+<!-- Small printed lightning mark; the physical button remains the subject. -->
+<path d="M523 304 451 388h59l-22 77 97-115h-60l35-46z" fill="#ffe078"/>
+</svg>

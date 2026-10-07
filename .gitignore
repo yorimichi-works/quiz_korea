@@ -12,6 +12,7 @@ Thumbs.db
 .vscode/
 dist/
 build/
+.sites-runtime/
 android/.gradle/
 android/local.properties
 android/keystore.properties

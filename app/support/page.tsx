@@ -13,6 +13,11 @@ export default function SupportPage() {
       <Link className="legal-primary" href="/game.html?support=1">앱에서 문의 보내기</Link>
       <Link className="legal-secondary" href="/account-deletion">계정 삭제 안내</Link>
     </div>
+    <LegalSection title="운영 및 연락처">
+      <p>운영: Yorimichi works</p>
+      <p>이메일 문의: <a href="mailto:info@yorimichi-works.jp">info@yorimichi-works.jp</a></p>
+      <p>앱을 열 수 없거나 계정·개인정보에 관한 문의가 있으면 이메일로 연락해 주세요.</p>
+    </LegalSection>
     <LegalSection title="문의할 때 알려주면 좋은 정보">
       <ul>
         <li>문제가 발생한 대략적인 시각과 화면</li>

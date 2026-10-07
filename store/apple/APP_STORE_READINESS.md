@@ -1,33 +1,108 @@
-# App Store申請の残作業
+# 먼저! App Store提出準備
 
-iOSネイティブプロジェクトは `ios/Meonjeo.xcodeproj` に用意済みです。Windows上で構成と素材を自動検証していますが、署名、実機確認、アーカイブはMacとApple Developerアカウントが必要です。
+## 現在の状態 — 2026-10-07 最終審査の準備
 
-## 用意済み
+**最終App Reviewは未送信です。** 広告入りの本人限定TestFlight `1.0.0 (3)` は配信済みですが、内部テスト専用のため最終審査には選びません。実機確認後に別のReleaseバイナリを作ります。
 
-- SwiftUI/WKWebViewによるiPhoneアプリ（iOS 16以降）
-- ゲスト利用と、戦績を維持したSign in with Apple統合
-- ログイン再認証を含むアプリ内アカウント削除
-- オフライン・読込表示、引っ張って更新、外部リンク分離
-- 共有シート、触覚フィードバック
-- Sign in with Apple entitlement
-- 透過なし1024px App Storeアイコン
-- 韓国語の名称、サブタイトル、説明、キーワード案
-- プライバシーポリシー、利用規約、サポート、アカウント削除URL
+- App Store Connect: `6819903098`、Bundle ID `com.yorimichiworks.meonjeo`
+- Gitの最終確認済みHEADは `45cfae8`。Web、AdTesting、Simulator、arm64 Archiveの4CIが成功。16:11 UTCの再読でも変更なし
+- 署名build 3の実ソースは `2b65007`。本人グループ1名・ビルド1件を確認。16:24 UTCにiPhone 17／iOS 26.6.2へインストール済みと再読。機能別の実機合格は未確認
+- 物理ボタンのアイコンと必要サイズのiPhoneスクリーンショットを保存済み
+- 公開Webはv37。広告ブリッジ、同意説明、privacy、認証失効前にデータを削除しない処理を反映。16:11 UTCに正規Sitesの公開成功を再確認
+- モンジョ専用のEU/US UMPメッセージは公開済み。広告用13分類のPrivacyと広告ありYes、Content Rights Yes、Marketing URLを保存・再読済み
+- 無料、中国本土・ベトナムを除く173地域選択、Mac/Vision Pro除外を再読済み。年齢は16+、韓国15+、ブラジル18+。Appleはアフガニスタン・モロッコでの販売不可を表示しており、選択数と実効配信先は同義ではない
+- `https://yorimichi-works.jp/app-ads.txt` のHTTP200と登録publisher一致を確認済み。AdMobへの公開ストア紐付け・アプリ確認はストア公開後
+- 本人PCでのFirebase Apple秘密鍵入力・保存、実機Apple認証/再認証/退会、ATT/UMP/広告とprivacyリンクの確認は未完
+- 本番広告ゲートはfalse。テスト用ゲートはtrueで、実行時のATT/UMP同意は別途必須。最新の本番preflightは意図どおりBLOCKED
+- 次の本番ビルド番号候補4は、16:25 UTCのASCで未使用（1/2/3のみ、全アップロード終了）を確認して設定。実行直前にも重複がないか確認し、workflowで検証済み番号をXcodeへ適用してから署名する
 
-## Apple Developer所有者とMacが必要な作業
+完了証跡は [`TESTFLIGHT_ADS_BUILD3_20261007.md`](TESTFLIGHT_ADS_BUILD3_20261007.md)、端末確認は [`ci/MONJO_AD_TESTING.md`](../../ci/MONJO_AD_TESTING.md) を参照。広告なしbuild 2も最終提出には使いません。mainへのマージ、最終審査送信、本体公開は行っていません。
 
-1. Apple Developer Programへ加入し、Bundle ID `com.yorimichiworks.meonjeo` とApp Store Connectレコードを作成する。
-2. Bundle IDでSign in with Appleを有効にし、XcodeでTeamを選ぶ。
-3. Firebase AuthenticationのAppleプロバイダにTeam ID、Key ID、秘密鍵、Services IDを登録する。
-4. iPhone実機でゲスト開始、Apple統合、セッション保持、ログアウト、再連携、アカウント削除、対戦を確認する。
-5. App Store用スクリーンショットとApp Privacy回答を確定する。
-6. Xcode 16以降でArchiveし、TestFlightへアップロードして審査テスト後に申請する。
+## 以下は提出準備初期の履歴
 
-## ローカル検証
+以下の未実施表記は当時の状態です。現在の完了・残件は上記を正本とします。
 
-```text
-npm run build:ios-assets
-npm run ios:verify
-```
+更新: 2026-10-07（日本時間）。基点: `1b671259d9d91f5f69f2610aac77013f393087e0`。
 
-Appleの署名サービスを通していないため、現時点では「提出可能なIPA」ではなく「Macで署名・実機確認へ進めるXcodeプロジェクト」です。
+## 結論
+
+**提出可能なIPAはまだありません。** 今回はコード/申告資料/実機手順の準備です。署名済Archive、TestFlight、実機Apple認証/削除、App Store用スクリーンショットは未実施です。最終審査提出・公開は行っていません。
+
+## 準備した内容
+
+- SwiftUI/WKWebViewのiPhoneアプリ、最低対応iOS 16、Bundle ID `com.yorimichiworks.meonjeo`
+- Appleログイン・再認証・失効付き削除、共有、触覚、ネットワーク表示、外部リンク分離は既存実装
+- Apple既存アカウントへのゲスト統合をGoogle専用APIが拒否する不整合を修正
+- 他の連携済みアカウントをゲストと誤認しない判定と13件の回帰試験を追加
+- 韓国語privacyと削除案内にApple/iOS、非公開メール、再認証/失効、業者側保管を反映
+- 既存の共有Xcode Schemeを確認し、Mac向け署名なしSimulatorビルド確認手順を追加
+- 韓国語掲載文（既存）、App Privacy回答表、審査メモ、実機/撮影計画
+- 1024×1024 RGB（透過なし）App Storeアイコンを静的確認
+
+## 今回追加した改善
+
+- 10月5日の提出準備ZIPを回収し、現行mainの182ファイルとSHA-1で照合。前回の修正15ファイルを引き継いだ
+- Apple認証要求にIDを付け、タイムアウトした古い成功/キャンセル応答が次の認証へ混ざらないようにした。旧native bridgeとの互換も維持
+- Native側で二重認証開始・古いcontroller応答を拒否し、認証結果を返す時点でもHTTPSと配信先ホストを再確認
+- 通信失敗・WebContentプロセス終了に韓国語エラーと再試行ボタンを追加。意図した読み込みキャンセルで画面を覆わない
+- GitHub ActionsにWeb品質確認とmacOS 26での署名なしSimulatorコンパイルを追加。署名・証明書作成・デプロイ・TestFlight送信は行わない
+- 105件のローカル試験、lint、型検査、Web production buildを再実行。詳細は [`VALIDATION_20261007.md`](VALIDATION_20261007.md)
+
+## 確認状況
+
+| 項目 | 状態 |
+|---|---|
+| Web本番privacy・support・game画面 | 10月5日の表示確認記録あり。10月7日はブラウザで再確認していない |
+| App Store Connect | 10月5日はApp IDとアプリ登録なしの確認記録。10月7日の登録状態は未確認。新規登録は行っていない |
+| Web変更 | 専用branch/Draft PRへ保存する変更。main・公開Webへ未反映 |
+| Node回帰/構成テスト | 実行結果は `VALIDATION_20261007.md` 参照 |
+| Swiftコンパイル/署名 | Xcode 26.6 / Simulator SDK 26.5でReleaseコンパイルPASS。署名済みArchiveは未実施 |
+| Firebase Apple本番設定 | 未確認。新規秘密鍵や設定変更なし |
+| 実機2台・Apple認証・失効/削除・復帰 | 未実施 |
+| App Privacyと年齢区分 | 回答案のみ。未確定/未提出 |
+| Store screenshots | 未撮影。既存540×1080 Web素材はiOS撮影として使用しない |
+| Archive/TestFlight/審査提出 | 未実施 |
+
+## 次の順序
+
+1. Apple DeveloperとApp Store ConnectでBundle IDの既存登録を確認し、登録先Teamを決める。重複アプリを作らない
+2. 未登録なら `com.yorimichiworks.meonjeo` のIdentifier・Sign in with Apple設定を所有者承認のもと準備し、App Storeレコードを作成する
+3. Firebase Appleの本番設定と許可ドメインを確認。キー生成/永続権限/秘密鍵入力は別途承認と安全な手順で行う
+4. branch差分レビュー後にWeb修正を公開し、公開privacy/削除案内/APIを再確認する
+5. Xcode 26以降＋iOS 26 SDK以降でSimulatorコンパイル、既存署名設定で実機ビルドする
+6. [`DEVICE_TEST_PLAN.md`](DEVICE_TEST_PLAN.md) の全項目を実機で記録。Macがなければ承認済みMacビルド環境を確保する
+7. 実際のiOSアプリから画面を撮り、[`APP_PRIVACY_WORKSHEET.md`](APP_PRIVACY_WORKSHEET.md) と年齢区分を最終確定する
+8. 署名済ArchiveをValidateし、TestFlightへアップロード、処理完了と実機インストールを確認する
+9. 最終提出は所有者の明示指示を得てから行う
+
+## 提出用候補
+
+- 名称/説明/キーワード: [`listing-ko.md`](listing-ko.md)
+- Category案: Games / Trivia。公開対象国、価格、法的名称、copyright、審査連絡先は所有者が確認
+- version: 1.0.0 / build: 1（新規登録・アップロード履歴と重複がないか確認）
+- Support: https://meonjeo.syamo.chatgpt.site/support
+- Privacy: https://meonjeo.syamo.chatgpt.site/privacy
+- 審査メモ: [`REVIEW_NOTES_DRAFT.md`](REVIEW_NOTES_DRAFT.md)
+- 暗号化: 現Info.plistは非免除暗号化false。HTTPS/Apple標準認証以外の追加がないか最終ビルドで確認
+- 年齢区分: 2,000問のキーワード監査で戦争/犯罪69、賭博言及2、規制薬物1、恐怖題材25、非性的裸体言及1。実行可能な賭博/課金/チャットはコード上なし。Apple質問票に沿って文脈を判断し、13+等を自動確定しない
+
+## 公式要件（2026-10-07日本時間に再確認）
+
+2026年4月28日以降、アップロードはXcode 26以降・iOS 26 SDK以降が必須です。最低対応OSのiOS 16は別の設定なので維持できます。
+
+- [SDK minimum requirements](https://developer.apple.com/news/upcoming-requirements/?id=04282026a)
+- [App Privacy](https://developer.apple.com/app-store/app-privacy-details/)
+- [Screenshots](https://developer.apple.com/help/app-store-connect/reference/app-information/screenshot-specifications)
+- [App Review Guidelines](https://developer.apple.com/app-store/review/guidelines/)
+
+
+## 署名とTestFlightの具体的な実行手順
+
+[`SIGNING_RUNBOOK.md`](SIGNING_RUNBOOK.md)に、Apple既存登録の確認、ログイン用と配信用の鍵の区別、Firebase共用時の削除の注意、署名資材、公開Webとの差分照合、IPA確認、TestFlightへの送信順をまとめました。
+
+[`ci/codemagic.yaml.example`](../../ci/codemagic.yaml.example)は未有効化の署名ビルド専用例です。実在のAPIキー名や署名資材名を設定しておらず、自動ビルド/アップロード/審査提出もありません。所有者承認と登録確認が済むまではrootの`codemagic.yaml`に移しません。
+
+
+## 公開版との整合
+
+公開版32の正規ソースを取得し、GitHub基点と三者比較しました。回答途中表示・回答権移行等の公開版だけの更新14ファイルを保持し、双方で変更されたpackage.jsonを統合しました。未解決の競合は0件です。認証キャッシュ境界とauth/shellの更新も加えた126件の回帰試験を実施しました。詳細と照合値は [`SOURCE_RECONCILIATION_20261007.md`](SOURCE_RECONCILIATION_20261007.md) を参照してください。本番公開は別承認のままです。

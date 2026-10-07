@@ -1,0 +1,44 @@
+{
+  "verified_utc": "2026-10-07T05:22:35Z",
+  "scope": "Internal owner-only Google test ads; production serving and final App Review remain disabled",
+  "admob_app_id": "ca-app-pub-3186852093801241~6780777097",
+  "test_unit_id": "ca-app-pub-3940256099942544/4411468910",
+  "privacy_url": "https://meonjeo.syamo.chatgpt.site/privacy",
+  "site_version": 37,
+  "site_source_commit": "d4bbeef86d870839e7f1bda8bb20132c691bab6a",
+  "site_deployment_status": "succeeded",
+  "compiled_privacy_paragraph_matches_reviewed_source": true,
+  "anonymous_public_body_check": "Unverified: HTTP403 error1010; no bypass. Installed-app policy link must be verified before production/review.",
+  "messages": [
+    {
+      "name": "Meonjeo iOS EU Consent",
+      "target": "Monjo only",
+      "language": "en",
+      "region": "EEA, UK, Switzerland",
+      "refusal": true,
+      "close_means_refuse": true,
+      "status": "published",
+      "readback_utc": "2026-10-07T05:21:02Z"
+    },
+    {
+      "name": "Meonjeo iOS US Privacy",
+      "target": "Monjo only",
+      "language": "en-US",
+      "region": "All current and future supported US states",
+      "opt_out": true,
+      "status": "published",
+      "readback_utc": "2026-10-07T05:21:53Z"
+    }
+  ],
+  "message_numeric_ids": "not exposed in ordinary UI",
+  "shared_account_settings_changed": false,
+  "propagation_notice": "Google console advises approximately one hour for message propagation; a missing form immediately after publication is inconclusive.",
+  "test_configuration_verified": true,
+  "production_configuration_verified": false,
+  "physical_device_form_and_network_verification": "pending",
+  "physical_apple_auth_and_account_revocation_verification": "pending",
+  "postpublication_detail_readback": {
+    "US": "confirmed after publication",
+    "EU": "published switch confirmed; full detail re-read timed out; pre-publication saved settings unchanged"
+  }
+}

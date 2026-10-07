@@ -5,9 +5,21 @@ import {
   answerTimeLimitMs,
   createAnswerCharacterChoices,
   createAnswerTileChoices,
+  evaluateAnswerProgress,
   normalizedAnswerCharacters,
   normalizedAnswerTiles,
 } from '../lib/answer-choices.ts';
+
+test('each answer tile can be accepted or rejected immediately', () => {
+  const answers = ['대한민국', '한국'];
+  assert.equal(evaluateAnswerProgress('대', answers), 'partial');
+  assert.equal(evaluateAnswerProgress('대한', answers), 'partial');
+  assert.equal(evaluateAnswerProgress('대한민', answers), 'partial');
+  assert.equal(evaluateAnswerProgress('대한밍', answers), 'wrong');
+  assert.equal(evaluateAnswerProgress('대한민국', answers), 'complete');
+  assert.equal(evaluateAnswerProgress('한국', answers), 'complete');
+  assert.equal(evaluateAnswerProgress(' ', answers), 'invalid');
+});
 
 function seededRandom(seed) {
   let value = seed >>> 0;

@@ -1,0 +1,67 @@
+# INACTIVE CANDIDATE: keep separate from codemagic.yaml until Git/build approval.
+# Manual only. There is no publishing block, so this proposal cannot upload to Apple.
+workflows:
+  meonjeo-ios-ad-testing:
+    name: Meonjeo internal test ads QA build
+    instance_type: mac_mini_m2
+    max_build_duration: 30
+    integrations:
+      app_store_connect: codemagic
+    environment:
+      xcode: "26.6"
+      node: "24"
+      vars:
+        APP_STORE_APP_ID: "6819903098"
+        RELEASE_BUILD_NUMBER: "OWNER_CONFIRMED_UNUSED_INTEGER"
+        ADVERTISING_BUILD_MODE: "ad-testing"
+      ios_signing:
+        provisioning_profiles:
+          - meonjeo-app-store-profile
+        certificates:
+          - cirno-app-store
+    scripts:
+      - name: Require published reviewed UMP configuration for test ads
+        script: python3 scripts/verify-advertising-release.py --mode ad-testing
+      - name: Verify independent production and test gates
+        script: node --test scripts/native-admob-configuration.test.mjs scripts/advertising-release-gate.test.mjs
+      - name: Test native configuration in all compiled modes
+        script: |
+          set -euo pipefail
+          swift test --package-path ios/AdPolicy
+          swift test --package-path ios/AdPolicy -c release
+          swift test --package-path ios/AdPolicy -c release -Xswiftc -DMONJO_AD_TESTING
+      - name: Apply approved unused build number
+        script: |
+          set -euo pipefail
+          case "${RELEASE_BUILD_NUMBER:-}" in
+            ''|*[!0-9]*) echo 'Set the approved unused numeric QA build number.' >&2; exit 2 ;;
+          esac
+          cd ios
+          agvtool new-version -all "$RELEASE_BUILD_NUMBER"
+      - name: Use existing signing assets for internal TestFlight only
+        script: |
+          xcode-project use-profiles --custom-export-options='{"testFlightInternalTestingOnly": true}'
+      - name: Build signed test ads IPA
+        script: |
+          set -euo pipefail
+          xcode-project build-ipa \
+            --project "$CM_BUILD_DIR/ios/Meonjeo.xcodeproj" \
+            --scheme Meonjeo-AdTesting \
+            --config AdTesting
+      - name: Reject a real ad unit or wrong gate in the signed IPA
+        script: bash scripts/validate-signed-ipa.sh
+    artifacts:
+      - build/ios/ipa/*.ipa
+      - build/ipa-check/validation.json
+      - /tmp/xcodebuild_logs/*.log
+
+# Only AFTER explicit approval to upload this exact internal QA build:
+# Add this block at workflow level. It uploads to App Store Connect, but does
+# not submit to external TestFlight beta review or App Store review.
+#    publishing:
+#      app_store_connect:
+#        auth: integration
+#        submit_to_testflight: false
+#        submit_to_app_store: false
+# After Apple processing, verify the build and add only an approved internal
+# tester/group. Do not reuse this test-only binary as the production release.

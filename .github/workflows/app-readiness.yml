@@ -1,0 +1,93 @@
+name: App readiness
+
+on:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: app-readiness-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  web-and-contracts:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: '24'
+          cache: npm
+      - run: npm ci --ignore-scripts
+      - run: npm run test:ci
+      - run: npm run lint
+      - run: npx tsc --noEmit --incremental false
+      - run: npm run build
+
+  ios-simulator:
+    runs-on: macos-26
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - name: Test native advertising state and consent policy
+        run: swift test --package-path ios/AdPolicy
+      - name: Compile without signing or credentials
+        run: bash scripts/verify-ios-on-mac.sh
+      - name: Install and launch on iPhone Simulator
+        run: bash scripts/smoke-ios-simulator.sh
+      - name: Package unsigned Simulator app
+        run: ditto -c -k --sequesterRsrc --keepParent build/ios-simulator/Build/Products/Release-iphonesimulator/Meonjeo.app build/Meonjeo-simulator.zip
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: Meonjeo-unsigned-simulator
+          path: |
+            build/Meonjeo-simulator.zip
+            build/ios-smoke/
+          if-no-files-found: error
+          retention-days: 14
+
+  ios-device-archive:
+    runs-on: macos-26
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - name: Archive iPhone arm64 without signing or provisioning
+        run: bash scripts/build-ios-unsigned-archive.sh
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: Meonjeo-unsigned-device-archive
+          path: build/Meonjeo-unsigned-device-archive.zip
+          if-no-files-found: error
+          retention-days: 14
+
+  ios-ad-testing:
+    runs-on: macos-26
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - name: Test three native modes and compile unsigned AdTesting Simulator and arm64 products
+        run: bash scripts/verify-ios-ad-testing-on-mac.sh
+      - name: Package unsigned AdTesting products
+        run: |
+          set -euo pipefail
+          ditto -c -k --sequesterRsrc --keepParent build/ios-ad-testing/Build/Products/AdTesting-iphonesimulator/Meonjeo.app build/Meonjeo-AdTesting-simulator.zip
+          ditto -c -k --sequesterRsrc --keepParent build/ios-ad-testing/Meonjeo-AdTesting.xcarchive build/Meonjeo-AdTesting-unsigned-device-archive.zip
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: Meonjeo-AdTesting-unsigned
+          path: |
+            build/Meonjeo-AdTesting-simulator.zip
+            build/Meonjeo-AdTesting-unsigned-device-archive.zip
+          if-no-files-found: error
+          retention-days: 14

@@ -4,6 +4,8 @@ const FIREBASE_PROJECT_ID = 'tier-online';
 export type VerifiedFirebaseUser = {
   userId: string;
   googleLinked: boolean;
+  accountLinked: boolean;
+  isAnonymous: boolean;
 };
 
 export async function verifyFirebaseToken(token: string): Promise<VerifiedFirebaseUser | null> {
@@ -20,11 +22,16 @@ export async function verifyFirebaseToken(token: string): Promise<VerifiedFireba
   try {
     const encodedPayload = token.split('.')[1]?.replace(/-/g, '+').replace(/_/g, '/') || '';
     const paddedPayload = encodedPayload.padEnd(Math.ceil(encodedPayload.length / 4) * 4, '=');
-    const tokenPayload = JSON.parse(atob(paddedPayload)) as { aud?: string };
-    if (tokenPayload.aud !== FIREBASE_PROJECT_ID) return null;
+    const tokenPayload = JSON.parse(atob(paddedPayload)) as { aud?: string; sub?: string; firebase?: { sign_in_provider?: string } };
+    if (tokenPayload.aud !== FIREBASE_PROJECT_ID || tokenPayload.sub !== user.localId) return null;
+    const providers = user.providerUserInfo?.map(provider => provider.providerId).filter(Boolean) || [];
     return {
       userId: user.localId,
-      googleLinked: Boolean(user.providerUserInfo?.some(provider => provider.providerId === 'google.com')),
+      googleLinked: providers.includes('google.com'),
+      accountLinked: providers.some(provider => provider === 'google.com' || provider === 'apple.com'),
+      // Only an explicitly anonymous, unlinked identity can donate guest progress.
+      // A non-Google account is not necessarily a guest.
+      isAnonymous: tokenPayload.firebase?.sign_in_provider === 'anonymous' && providers.length === 0,
     };
   } catch {
     return null;

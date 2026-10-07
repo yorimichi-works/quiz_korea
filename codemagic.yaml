@@ -1,0 +1,117 @@
+workflows:
+  meonjeo-ios-submission-build:
+    name: Meonjeo signed iOS build and App Store upload
+    instance_type: mac_mini_m2
+    max_build_duration: 30
+    integrations:
+      app_store_connect: codemagic
+    environment:
+      xcode: "26.6"
+      vars:
+        APP_STORE_APP_ID: "6819903098"
+        RELEASE_BUILD_NUMBER: "4"
+        SIMULATOR_DEVICE_NAME: "iPhone 17 Pro"
+      ios_signing:
+        provisioning_profiles:
+          - meonjeo-app-store-profile
+        certificates:
+          - cirno-app-store
+    scripts:
+      - name: Verify advertising consent configuration before signing
+        script: python3 scripts/verify-advertising-release.py
+      - name: Apply confirmed unused production build number
+        script: |
+          set -euo pipefail
+          case "${RELEASE_BUILD_NUMBER:-}" in
+            ''|0*|*[!0-9]*) echo 'Set a confirmed unused positive production build number.' >&2; exit 2 ;;
+          esac
+          cd ios
+          agvtool new-version -all "$RELEASE_BUILD_NUMBER"
+      - name: Apply the approved Meonjeo signing profile
+        script: xcode-project use-profiles
+      - name: Build signed App Store IPA
+        script: |
+          set -euo pipefail
+          xcode-project build-ipa \
+            --project "$CM_BUILD_DIR/ios/Meonjeo.xcodeproj" \
+            --scheme Meonjeo
+      - name: Verify the signed app and provisioning
+        script: bash scripts/validate-signed-ipa.sh
+      - name: Compile and capture the actual medium iPhone screen
+        script: |
+          set -euo pipefail
+          bash scripts/verify-ios-on-mac.sh
+          bash scripts/smoke-ios-simulator.sh
+    artifacts:
+      - build/ios/ipa/*.ipa
+      - build/ipa-check/validation.json
+      - build/ios-smoke/meonjeo-launch.png
+      - build/ios-smoke/device.json
+      - /tmp/xcodebuild_logs/*.log
+    publishing:
+      app_store_connect:
+        auth: integration
+        submit_to_testflight: false
+        submit_to_app_store: false
+# Manual build only. Uploading the binary does not submit it for review.
+# No certificate, API key, App ID, or provisioning profile is generated here.
+
+  meonjeo-ios-ad-testing:
+    name: Meonjeo internal test ads QA build
+    instance_type: mac_mini_m2
+    max_build_duration: 30
+    integrations:
+      app_store_connect: codemagic
+    environment:
+      xcode: "26.6"
+      node: "24"
+      vars:
+        APP_STORE_APP_ID: "6819903098"
+        RELEASE_BUILD_NUMBER: "3"
+        ADVERTISING_BUILD_MODE: "ad-testing"
+      ios_signing:
+        provisioning_profiles:
+          - meonjeo-app-store-profile
+        certificates:
+          - cirno-app-store
+    scripts:
+      - name: Require published reviewed UMP configuration for test ads
+        script: python3 scripts/verify-advertising-release.py --mode ad-testing
+      - name: Verify independent production and test gates
+        script: node --test scripts/native-admob-configuration.test.mjs scripts/advertising-release-gate.test.mjs
+      - name: Test native configuration in all compiled modes
+        script: |
+          set -euo pipefail
+          swift test --package-path ios/AdPolicy
+          swift test --package-path ios/AdPolicy -c release
+          swift test --package-path ios/AdPolicy -c release -Xswiftc -DMONJO_AD_TESTING
+      - name: Apply approved unused build number
+        script: |
+          set -euo pipefail
+          case "${RELEASE_BUILD_NUMBER:-}" in
+            ''|*[!0-9]*) echo 'Set the approved unused numeric QA build number.' >&2; exit 2 ;;
+          esac
+          cd ios
+          agvtool new-version -all "$RELEASE_BUILD_NUMBER"
+      - name: Use existing signing assets for internal TestFlight only
+        script: |
+          xcode-project use-profiles --custom-export-options='{"testFlightInternalTestingOnly": true}'
+      - name: Build signed test ads IPA
+        script: |
+          set -euo pipefail
+          xcode-project build-ipa \
+            --project "$CM_BUILD_DIR/ios/Meonjeo.xcodeproj" \
+            --scheme Meonjeo-AdTesting \
+            --config AdTesting
+      - name: Reject a real ad unit or wrong gate in the signed IPA
+        script: bash scripts/validate-signed-ipa.sh
+    artifacts:
+      - build/ios/ipa/*.ipa
+      - build/ipa-check/validation.json
+      - /tmp/xcodebuild_logs/*.log
+
+    publishing:
+      app_store_connect:
+        auth: integration
+        submit_to_testflight: false
+        submit_to_app_store: false

@@ -10,7 +10,7 @@
     "build": "vinext build",
     "build:questions": "node scripts/build-s2-question-season.mjs",
     "start": "vinext start",
-    "test:realtime": "node --test scripts/realtime-invariants.test.mjs scripts/realtime-route-contract.test.mjs scripts/realtime-settlement-sql.test.mjs",
+    "test:realtime": "node --test scripts/answer-rebound.test.mjs scripts/realtime-invariants.test.mjs scripts/realtime-route-contract.test.mjs scripts/realtime-settlement-sql.test.mjs",
     "test:product": "node --test scripts/product-simulation.test.ts",
     "test:language": "node --test scripts/question-language.test.mjs",
     "test:choices": "node --test scripts/answer-choices.test.mjs",
@@ -29,8 +29,10 @@
     "android:bundle": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/build-android-aab.ps1",
     "android:verify": "node --test scripts/android-release-readiness.test.mjs",
     "build:ios-assets": "node scripts/build-ios-assets.mjs",
-    "ios:verify": "node --test scripts/ios-release-readiness.test.mjs",
-    "lint": "eslint . --ignore-pattern dist --ignore-pattern .next --ignore-pattern tmp"
+    "ios:verify": "node --test scripts/ios-release-readiness.test.mjs scripts/apple-account-merge.test.mjs scripts/native-apple-request.test.mjs",
+    "lint": "eslint . --ignore-pattern dist --ignore-pattern .next --ignore-pattern tmp",
+    "test:apple-auth": "node --test scripts/apple-account-merge.test.mjs",
+    "test:ci": "node scripts/test-ci.mjs"
   },
   "dependencies": {
     "next": "16.3.4",
