@@ -26,6 +26,8 @@ The test interstitial is exactly `ca-app-pub-3940256099942544/4411468910`. Both 
 
 ## Actual device verification
 
+- Open the public privacy link from the installed app and confirm it is accessible to a normal user. The approved policy was published as Sites v37 and its compiled paragraph matched the reviewed source, but the automated anonymous-body check returned HTTP 403 / error 1010. Do not count that check as live-page verification or bypass the refused route. If an ordinary app user cannot open the policy, production ads and App Review stay blocked. Capture the exact EU/US runtime wording after publication as well as the draft-preview evidence.
+
 - Confirm developer bridge diagnostics report `adBuildMode: ad-testing`, `testAdsOnly: true`, `configurationGate: MonjoAdsTestConsentConfigurationVerified` and `configurationVerified: true`. These are status fields, not player-facing controls. A false gate must leave SDK startup and consent requests blocked.
 - From the normal menu consent boundary, test ATT allowed, denied/restricted and interrupted/background flows. Denied/restricted must leave UMP/GMA blocked while gameplay remains usable. ATT still precedes UMP, then GMA only after UMP allows requests.
 - On the owner's device in Japan, record the actual UMP result after a successful consent-information update, including whether a form and privacy-options entry point are required. An EEA-targeted form may correctly be absent there. Form absence alone cannot distinguish a valid no-form result from a blocked ATT/configuration gate, failed update or unpublished/mistargeted message. Record those statuses as well. AdTesting cannot force geography or reset UMP via launch arguments.

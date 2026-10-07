@@ -27,7 +27,7 @@
     <key>MonjoAdsConsentConfigurationVerified</key>
     <false/>
     <key>MonjoAdsTestConsentConfigurationVerified</key>
-    <false/>
+    <true/>
     <key>MonjoAdsBuildMode</key>
     <string>$(MONJO_ADS_BUILD_MODE)</string>
     <key>GADDelayAppMeasurementInit</key>
