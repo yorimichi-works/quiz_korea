@@ -1,20 +1,22 @@
 # 먼저! App Store提出準備
 
-## 現在の状態 — 2026-10-07 広告入り初回リリースへ更新
+## 現在の状態 — 2026-10-07 最終審査の準備
 
-初回リリースにAdMob広告を入れる方針になったため、**広告なしの1.0.0 (2)は最終審査へ送信しません**。広告入りbuild 3は実装・検証中です。
+**最終App Reviewは未送信です。** 広告入りの本人限定TestFlight `1.0.0 (3)` は配信済みですが、内部テスト専用のため最終審査には選びません。実機確認後に別のReleaseバイナリを作ります。
 
-- App Store Connect登録: `6819903098`、Bundle ID `com.yorimichiworks.meonjeo`
-- build 2は署名済IPA作成・Apple送信・TestFlight処理完了・掲載版への選択まで確認済み。App Review未送信
-- build 2のGit基点: `5de3b4a1a4d97be7d85a227b9f1b97d7550c1c17`。Web161テスト、Simulator、arm64 ArchiveのCI成功
-- 物理ボタンの新アイコンと実iPhone Simulatorの必須サイズ画像1枚を保存済み
-- 公開Webはv36。認証失効成功前にアカウントデータを削除しない修正と公開support窓口を反映済み
-- 広告なし版の7分類Privacyは公開済み、権利欄Yes、年齢16+／韓国15+を保存済み。広告入り版にはこの回答を流用しない
-- 無料価格、Mac/Vision Pro除外は保存表示確認済み。中国本土・ベトナムを除く173地域は確定操作済みだが、ブラウザ障害で再読未確認
-- モンジョのAdMobアプリとインタースティシャル1ユニットを作成済み。専用UMPメッセージは未公開
-- Firebase Apple秘密鍵の本人PCでの入力・保存、実機Apple認証/失効/退会、実機広告/同意の確認は未完
+- App Store Connect: `6819903098`、Bundle ID `com.yorimichiworks.meonjeo`
+- Gitの最終確認済みHEADは `45cfae8`。Web、AdTesting、Simulator、arm64 Archiveの4CIが成功。16:11 UTCの再読でも変更なし
+- 署名build 3の実ソースは `2b65007`。本人グループ1名・ビルド1件を確認。16:24 UTCにiPhone 17／iOS 26.6.2へインストール済みと再読。機能別の実機合格は未確認
+- 物理ボタンのアイコンと必要サイズのiPhoneスクリーンショットを保存済み
+- 公開Webはv37。広告ブリッジ、同意説明、privacy、認証失効前にデータを削除しない処理を反映。16:11 UTCに正規Sitesの公開成功を再確認
+- モンジョ専用のEU/US UMPメッセージは公開済み。広告用13分類のPrivacyと広告ありYes、Content Rights Yes、Marketing URLを保存・再読済み
+- 無料、中国本土・ベトナムを除く173地域選択、Mac/Vision Pro除外を再読済み。年齢は16+、韓国15+、ブラジル18+。Appleはアフガニスタン・モロッコでの販売不可を表示しており、選択数と実効配信先は同義ではない
+- `https://yorimichi-works.jp/app-ads.txt` のHTTP200と登録publisher一致を確認済み。AdMobへの公開ストア紐付け・アプリ確認はストア公開後
+- 本人PCでのFirebase Apple秘密鍵入力・保存、実機Apple認証/再認証/退会、ATT/UMP/広告とprivacyリンクの確認は未完
+- 本番広告ゲートはfalse。テスト用ゲートはtrueで、実行時のATT/UMP同意は別途必須。最新の本番preflightは意図どおりBLOCKED
+- 次の本番ビルド番号候補4は、16:25 UTCのASCで未使用（1/2/3のみ、全アップロード終了）を確認して設定。実行直前にも重複がないか確認し、workflowで検証済み番号をXcodeへ適用してから署名する
 
-広告の条件、SDK、公開前ゲートは [`ADVERTISING_RELEASE.md`](ADVERTISING_RELEASE.md) を参照。新しいデータ申告は [`ADVERTISING_PRIVACY_WORKSHEET.md`](ADVERTISING_PRIVACY_WORKSHEET.md) の確認待ちです。既存mainへのマージ、アプリ審査送信、本体公開は行っていません。
+完了証跡は [`TESTFLIGHT_ADS_BUILD3_20261007.md`](TESTFLIGHT_ADS_BUILD3_20261007.md)、端末確認は [`ci/MONJO_AD_TESTING.md`](../../ci/MONJO_AD_TESTING.md) を参照。広告なしbuild 2も最終提出には使いません。mainへのマージ、最終審査送信、本体公開は行っていません。
 
 ## 以下は提出準備初期の履歴
 

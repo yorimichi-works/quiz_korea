@@ -9,7 +9,7 @@ workflows:
       xcode: "26.6"
       vars:
         APP_STORE_APP_ID: "6819903098"
-        RELEASE_BUILD_NUMBER: "3"
+        RELEASE_BUILD_NUMBER: "4"
         SIMULATOR_DEVICE_NAME: "iPhone 17 Pro"
       ios_signing:
         provisioning_profiles:
@@ -19,6 +19,14 @@ workflows:
     scripts:
       - name: Verify advertising consent configuration before signing
         script: python3 scripts/verify-advertising-release.py
+      - name: Apply confirmed unused production build number
+        script: |
+          set -euo pipefail
+          case "${RELEASE_BUILD_NUMBER:-}" in
+            ''|0*|*[!0-9]*) echo 'Set a confirmed unused positive production build number.' >&2; exit 2 ;;
+          esac
+          cd ios
+          agvtool new-version -all "$RELEASE_BUILD_NUMBER"
       - name: Apply the approved Meonjeo signing profile
         script: xcode-project use-profiles
       - name: Build signed App Store IPA

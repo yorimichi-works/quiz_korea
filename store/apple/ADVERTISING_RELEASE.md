@@ -40,20 +40,22 @@ UMP refreshes consent information each app launch and supplies the necessary con
 
 The app provides a short Korean explanation and an advertising privacy-settings entry. Google's European consent message does not support Korean; English is the proposed fallback. The US message supports English and Spanish variants. The Korean explanation does not act as consent or replace Google's choices.
 
-## Console configuration still pending
+## Published console configuration and pending device verification
 
-At the latest check, the Monjo app has no published UMP message. Other apps' messages must not be reused or edited for it.
+The Monjo-only EU and US UMP messages were published and read back on 2026-10-07 at 05:21 UTC. The public privacy policy is Sites v37. Other apps and account-global settings were not changed. Publication is verified; the actual device forms, choices and privacy-link accessibility remain unverified.
 
-Planned app-only messages:
+Published app-only messages:
 
 1. European regulations: EEA, UK, Switzerland; English default; consent, refusal, and options available
 2. US state regulations: the applicable supported states; English default; re-entry through the app's privacy-options action
 
-The advertising privacy policy draft must be reviewed and published before linking and publishing these messages. Do not change global account data-sharing or other apps' consent configuration.
+The approved privacy policy is linked to the Monjo app. Do not change global account data-sharing or other apps' consent configuration.
 
-`MonjoAdsConsentConfigurationVerified` remains a literal `false` until the console setup is verified. Native runtime skips UMP and advertising initialization while false. `scripts/verify-advertising-release.py` also blocks the signed upload workflow, so an unconfigured candidate cannot be uploaded as the advertising release. This flag never replaces runtime consent.
+`MonjoAdsConsentConfigurationVerified` remains a literal `false` until the published configuration and required device behavior are verified for production. The separate test configuration gate is true for the owner-only AdTesting build. The selected mode never starts UMP or advertising while its own gate is false. `scripts/verify-advertising-release.py` also blocks the signed upload workflow, so an unconfigured candidate cannot be uploaded as the advertising release. This flag never replaces runtime consent.
 
 ## Store and public-site follow-through
+
+The advertising age answer, reviewed 13-category privacy disclosure, public policy, Marketing URL and public app-ads.txt were completed and read back; the following list also records their original acceptance requirements. Public store linking and actual production-ad approval remain future steps. See the build 3 checkpoint for individual evidence.
 
 - Re-evaluate the age questionnaire's advertising answer as Yes
 - Prepare and obtain confirmation of the advertising build's exact App Privacy answers; preserve build 2's history
@@ -61,7 +63,7 @@ The advertising privacy policy draft must be reviewed and published before linki
 - Verify the company site's existing `app-ads.txt` is publicly served and contains the registered publisher
 - Use a verified Developer Website / Marketing URL that allows AdMob to discover that file
 - After the store listing is public, associate the store ID with AdMob and complete its app verification/review
-- Recheck the previously confirmed 173 territories after the browser recovers; exclude China mainland and Vietnam, and keep Mac/Vision Pro distribution off
+- Preserve the verified 173 selected territories excluding China mainland and Vietnam, with Mac/Vision Pro distribution off; Apple regional age restrictions can further limit effective availability
 
 AdMob registration and app-store upload do not prove live ad approval, fill, revenue, or App Review approval.
 
