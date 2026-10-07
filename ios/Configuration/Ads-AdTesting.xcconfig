@@ -1,0 +1,7 @@
+// Dedicated signed QA build: the registered app's real UMP messages, test ads only.
+// Console verification is a separate literal Boolean in Info.plist, false by default.
+MONJO_ADMOB_APP_ID = ca-app-pub-3186852093801241~6780777097
+MONJO_INTERSTITIAL_AD_UNIT_ID = ca-app-pub-3940256099942544/4411468910
+MONJO_ADS_TRACKING_ENABLED = YES
+MONJO_ADS_BUILD_MODE = ad-testing
+SWIFT_ACTIVE_COMPILATION_CONDITIONS = $(inherited) MONJO_AD_TESTING

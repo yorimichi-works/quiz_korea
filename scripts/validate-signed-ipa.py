@@ -5,6 +5,7 @@ import json
 import os
 from pathlib import Path
 import plistlib
+import runpy
 
 root = Path('build/ipa-check')
 app = root / 'Payload/Meonjeo.app'
@@ -14,6 +15,9 @@ entitlements = plistlib.loads((root / 'entitlements.plist').read_bytes())
 expected_bundle = 'com.yorimichiworks.meonjeo'
 expected_team = '3W8HVJ3U8W'
 expected_build = os.environ['RELEASE_BUILD_NUMBER']
+advertising_mode = os.environ.get('ADVERTISING_BUILD_MODE', 'production')
+advertising = runpy.run_path('scripts/verify-advertising-release.py')
+advertising['verify_built'](info, advertising_mode)
 
 assert info['CFBundleIdentifier'] == expected_bundle, 'Wrong bundle identifier'
 assert info['CFBundleShortVersionString'] == '1.0.0', 'Wrong marketing version'
@@ -36,6 +40,9 @@ summary = {
     'team_id': expected_team,
     'version': info['CFBundleShortVersionString'],
     'build': expected_build,
+    'advertising_mode': advertising_mode,
+    'test_ads_only': advertising_mode == 'ad-testing',
+    'advertising_configuration_verified': True,
     'profile_name': profile['Name'],
     'profile_expiry': expiry.isoformat(),
     'apple_sign_in_entitlement': True,

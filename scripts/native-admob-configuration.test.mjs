@@ -10,7 +10,8 @@ const unitID = 'ca-app-pub-3186852093801241/3315999799';
 const testUnit = 'ca-app-pub-3940256099942544/4411468910';
 const validate = overrides => spawnSync('bash', ['ios/Scripts/validate-admob-config.sh'], {
   env: { ...process.env, CONFIGURATION: 'Release', MONJO_ADMOB_APP_ID: appID,
-    MONJO_INTERSTITIAL_AD_UNIT_ID: unitID, MONJO_ADS_TRACKING_ENABLED: 'YES', ...overrides },
+    MONJO_INTERSTITIAL_AD_UNIT_ID: unitID, MONJO_ADS_TRACKING_ENABLED: 'YES',
+    MONJO_ADS_BUILD_MODE: 'production', SWIFT_ACTIVE_COMPILATION_CONDITIONS: '', ...overrides },
   encoding: 'utf8',
 });
 
@@ -25,7 +26,8 @@ test('release validation accepts configured public IDs and rejects missing, dumm
 });
 
 test('debug uses registered app consent configuration and test ads; ATT gating cannot be silently disabled', () => {
-  assert.equal(validate({ CONFIGURATION: 'Debug', MONJO_INTERSTITIAL_AD_UNIT_ID: testUnit }).status, 0);
+  assert.equal(validate({ CONFIGURATION: 'Debug', MONJO_ADS_BUILD_MODE: 'debug',
+    SWIFT_ACTIVE_COMPILATION_CONDITIONS: 'DEBUG', MONJO_INTERSTITIAL_AD_UNIT_ID: testUnit }).status, 0);
   assert.notEqual(validate({ CONFIGURATION: 'Debug' }).status, 0);
   assert.notEqual(validate({ MONJO_ADS_TRACKING_ENABLED: 'NO' }).status, 0);
   const debug = read('ios/Configuration/Ads-Debug.xcconfig');
@@ -74,4 +76,37 @@ test('SDK startup is fail-closed and configures privacy before initialization', 
   const plist = read('ios/Meonjeo/Info.plist');
   assert.match(plist, /<key>MonjoAdsConsentConfigurationVerified<\/key>\s*<false\/>/);
   assert.doesNotMatch(plist, /NSAllowsArbitraryLoads/);
+});
+
+test('dedicated AdTesting compile validates test IDs and excludes all Debug consent overrides', () => {
+  const qa = { CONFIGURATION: 'AdTesting', MONJO_ADS_BUILD_MODE: 'ad-testing',
+    MONJO_INTERSTITIAL_AD_UNIT_ID: testUnit, SWIFT_ACTIVE_COMPILATION_CONDITIONS: 'MONJO_AD_TESTING' };
+  assert.equal(validate(qa).status, 0);
+  for (const altered of [
+    { MONJO_INTERSTITIAL_AD_UNIT_ID: unitID }, { MONJO_ADS_BUILD_MODE: 'production' },
+    { SWIFT_ACTIVE_COMPILATION_CONDITIONS: '' },
+    { SWIFT_ACTIVE_COMPILATION_CONDITIONS: 'MONJO_AD_TESTING DEBUG' },
+    { MONJO_ADMOB_APP_ID: 'ca-app-pub-3940256099942544~1458002511' },
+  ]) assert.notEqual(validate({ ...qa, ...altered }).status, 0);
+  for (const conditions of ['DEBUG', 'MONJO_AD_TESTING', 'DEBUG MONJO_AD_TESTING']) {
+    assert.notEqual(validate({ SWIFT_ACTIVE_COMPILATION_CONDITIONS: conditions }).status, 0);
+  }
+  assert.notEqual(validate({ MONJO_ADS_BUILD_MODE: 'ad-testing' }).status, 0);
+  assert.notEqual(validate({ CONFIGURATION: 'Unknown' }).status, 0);
+});
+
+test('AdTesting scheme, configuration and native diagnostics are separate from the production archive', () => {
+  const scheme = read('ios/Meonjeo.xcodeproj/xcshareddata/xcschemes/Meonjeo-AdTesting.xcscheme');
+  assert.equal((scheme.match(/buildConfiguration = "AdTesting"/g) || []).length, 5);
+  assert.match(read('ios/Meonjeo.xcodeproj/xcshareddata/xcschemes/Meonjeo.xcscheme'), /ArchiveAction buildConfiguration = "Release"/);
+  const config = read('ios/Configuration/Ads-AdTesting.xcconfig');
+  assert.ok(config.includes(testUnit)); assert.ok(config.includes(appID));
+  assert.doesNotMatch(config, new RegExp(unitID));
+  assert.match(config, /SWIFT_ACTIVE_COMPILATION_CONDITIONS = \$\(inherited\) MONJO_AD_TESTING/);
+  const source = read('ios/Meonjeo/AdCoordinator.swift');
+  assert.match(source, /#if DEBUG && !MONJO_AD_TESTING/);
+  assert.match(source, /"adBuildMode": buildConfiguration.mode.rawValue/);
+  assert.match(source, /"testAdsOnly": buildConfiguration.testAdsOnly/);
+  assert.match(source, /buildConfiguration.configurationVerified/);
+  assert.match(read('ios/Meonjeo.xcodeproj/project.pbxproj'), /AdBuildConfiguration.swift in Sources/);
 });

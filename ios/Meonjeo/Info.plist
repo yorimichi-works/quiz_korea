@@ -26,6 +26,10 @@
     <string>$(MONJO_ADMOB_APP_ID)</string>
     <key>MonjoAdsConsentConfigurationVerified</key>
     <false/>
+    <key>MonjoAdsTestConsentConfigurationVerified</key>
+    <false/>
+    <key>MonjoAdsBuildMode</key>
+    <string>$(MONJO_ADS_BUILD_MODE)</string>
     <key>GADDelayAppMeasurementInit</key>
     <true/>
     <key>MonjoInterstitialAdUnitID</key>

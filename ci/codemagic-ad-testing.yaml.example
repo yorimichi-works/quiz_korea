@@ -1,53 +1,6 @@
+# INACTIVE CANDIDATE: keep separate from codemagic.yaml until Git/build approval.
+# Manual only. There is no publishing block, so this proposal cannot upload to Apple.
 workflows:
-  meonjeo-ios-submission-build:
-    name: Meonjeo signed iOS build and App Store upload
-    instance_type: mac_mini_m2
-    max_build_duration: 30
-    integrations:
-      app_store_connect: codemagic
-    environment:
-      xcode: "26.6"
-      vars:
-        APP_STORE_APP_ID: "6819903098"
-        RELEASE_BUILD_NUMBER: "3"
-        SIMULATOR_DEVICE_NAME: "iPhone 17 Pro"
-      ios_signing:
-        provisioning_profiles:
-          - meonjeo-app-store-profile
-        certificates:
-          - cirno-app-store
-    scripts:
-      - name: Verify advertising consent configuration before signing
-        script: python3 scripts/verify-advertising-release.py
-      - name: Apply the approved Meonjeo signing profile
-        script: xcode-project use-profiles
-      - name: Build signed App Store IPA
-        script: |
-          set -euo pipefail
-          xcode-project build-ipa \
-            --project "$CM_BUILD_DIR/ios/Meonjeo.xcodeproj" \
-            --scheme Meonjeo
-      - name: Verify the signed app and provisioning
-        script: bash scripts/validate-signed-ipa.sh
-      - name: Compile and capture the actual medium iPhone screen
-        script: |
-          set -euo pipefail
-          bash scripts/verify-ios-on-mac.sh
-          bash scripts/smoke-ios-simulator.sh
-    artifacts:
-      - build/ios/ipa/*.ipa
-      - build/ipa-check/validation.json
-      - build/ios-smoke/meonjeo-launch.png
-      - build/ios-smoke/device.json
-      - /tmp/xcodebuild_logs/*.log
-    publishing:
-      app_store_connect:
-        auth: integration
-        submit_to_testflight: false
-        submit_to_app_store: false
-# Manual build only. Uploading the binary does not submit it for review.
-# No certificate, API key, App ID, or provisioning profile is generated here.
-
   meonjeo-ios-ad-testing:
     name: Meonjeo internal test ads QA build
     instance_type: mac_mini_m2
@@ -59,7 +12,7 @@ workflows:
       node: "24"
       vars:
         APP_STORE_APP_ID: "6819903098"
-        RELEASE_BUILD_NUMBER: "3"
+        RELEASE_BUILD_NUMBER: "OWNER_CONFIRMED_UNUSED_INTEGER"
         ADVERTISING_BUILD_MODE: "ad-testing"
       ios_signing:
         provisioning_profiles:
@@ -102,8 +55,13 @@ workflows:
       - build/ipa-check/validation.json
       - /tmp/xcodebuild_logs/*.log
 
-    publishing:
-      app_store_connect:
-        auth: integration
-        submit_to_testflight: false
-        submit_to_app_store: false
+# Only AFTER explicit approval to upload this exact internal QA build:
+# Add this block at workflow level. It uploads to App Store Connect, but does
+# not submit to external TestFlight beta review or App Store review.
+#    publishing:
+#      app_store_connect:
+#        auth: integration
+#        submit_to_testflight: false
+#        submit_to_app_store: false
+# After Apple processing, verify the build and add only an approved internal
+# tester/group. Do not reuse this test-only binary as the production release.

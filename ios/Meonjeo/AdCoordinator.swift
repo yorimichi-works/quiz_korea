@@ -47,12 +47,9 @@ final class AdCoordinator: NSObject, FullScreenContentDelegate {
     }
 
     private var now: TimeInterval { ProcessInfo.processInfo.systemUptime }
+    private let buildConfiguration = AdBuildConfiguration(info: Bundle.main.infoDictionary ?? [:])
     private var configurationVerified: Bool {
-        // Only set true after the app-scoped UMP console messages and privacy
-        // disclosures have been reviewed. A missing or string value fails closed.
-        guard let value = Bundle.main.object(forInfoDictionaryKey: "MonjoAdsConsentConfigurationVerified") as? NSNumber,
-              CFGetTypeID(value) == CFBooleanGetTypeID() else { return false }
-        return value.boolValue
+        buildConfiguration.configurationVerified
     }
     private var trackingEnabled: Bool {
         (Bundle.main.object(forInfoDictionaryKey: "MonjoAdsTrackingEnabled") as? String) == "YES"
@@ -61,9 +58,7 @@ final class AdCoordinator: NSObject, FullScreenContentDelegate {
         trackingEnabled && ATTrackingManager.trackingAuthorizationStatus == .authorized
     }
     private var adUnitID: String? {
-        guard let id = Bundle.main.object(forInfoDictionaryKey: "MonjoInterstitialAdUnitID") as? String,
-              id.range(of: #"^ca-app-pub-[0-9]{16}/[0-9]{10}$"#, options: .regularExpression) != nil else { return nil }
-        return id
+        buildConfiguration.adUnitID
     }
 
     private override init() {
@@ -100,7 +95,7 @@ final class AdCoordinator: NSObject, FullScreenContentDelegate {
         policy.consent = .updating
         // No reset, geography override, consent bypass, or test-device setting in Release.
         let parameters = RequestParameters()
-        #if DEBUG
+        #if DEBUG && !MONJO_AD_TESTING
         if ProcessInfo.processInfo.arguments.contains("-MonjoUMPDebugEEA") {
             let debug = DebugSettings()
             debug.geography = .EEA
@@ -539,6 +534,10 @@ final class AdCoordinator: NSObject, FullScreenContentDelegate {
             "presentationActive": policy.presentation != .idle,
             "canRequestAds": policy.canRequestAds,
             "configurationVerified": configurationVerified,
+            // Developer diagnostics only; no testing controls are exposed in the app UI.
+            "adBuildMode": buildConfiguration.mode.rawValue,
+            "testAdsOnly": buildConfiguration.testAdsOnly,
+            "configurationGate": buildConfiguration.gateKey,
             "privacyOptionsRequired": configurationVerified && trackingAuthorized && launchUpdateFinished
                 && ConsentInformation.shared.privacyOptionsRequirementStatus == .required,
             "phase": policy.phase.rawValue, "ready": policy.load == .ready,

@@ -68,3 +68,26 @@ jobs:
           path: build/Meonjeo-unsigned-device-archive.zip
           if-no-files-found: error
           retention-days: 14
+
+  ios-ad-testing:
+    runs-on: macos-26
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - name: Test three native modes and compile unsigned AdTesting Simulator and arm64 products
+        run: bash scripts/verify-ios-ad-testing-on-mac.sh
+      - name: Package unsigned AdTesting products
+        run: |
+          set -euo pipefail
+          ditto -c -k --sequesterRsrc --keepParent build/ios-ad-testing/Build/Products/AdTesting-iphonesimulator/Meonjeo.app build/Meonjeo-AdTesting-simulator.zip
+          ditto -c -k --sequesterRsrc --keepParent build/ios-ad-testing/Meonjeo-AdTesting.xcarchive build/Meonjeo-AdTesting-unsigned-device-archive.zip
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: Meonjeo-AdTesting-unsigned
+          path: |
+            build/Meonjeo-AdTesting-simulator.zip
+            build/Meonjeo-AdTesting-unsigned-device-archive.zip
+          if-no-files-found: error
+          retention-days: 14
