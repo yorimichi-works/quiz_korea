@@ -1,6 +1,6 @@
 # Monjo test-ad consent verification
 
-Status: local preparation only. Both console-verification flags are literal `false`; no new Git save, build service run, Apple upload or console publication is performed by these files. The production workflow in `codemagic.yaml` stays separate and blocked.
+Status on 2026-10-07: owner-only AdTesting 1.0.0 (3) was signed, uploaded, processed by Apple, and assigned to the owner-only internal TestFlight group. `MonjoAdsTestConsentConfigurationVerified` is literal `true` after the Monjo-only EU/US message publication check; `MonjoAdsConsentConfigurationVerified` remains literal `false`. The production workflow stays blocked. Physical installation, consent signals, privacy-link accessibility, Apple sign-in and account-revocation checks are still pending. See `store/apple/TESTFLIGHT_ADS_BUILD3_20261007.md` for the verified checkpoint; the workflow example remains an inactive template.
 
 ## Build separation
 
