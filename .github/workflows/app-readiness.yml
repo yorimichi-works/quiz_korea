@@ -36,6 +36,8 @@ jobs:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
         with:
           persist-credentials: false
+      - name: Test native advertising state and consent policy
+        run: swift test --package-path ios/AdPolicy
       - name: Compile without signing or credentials
         run: bash scripts/verify-ios-on-mac.sh
       - name: Install and launch on iPhone Simulator

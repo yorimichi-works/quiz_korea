@@ -16,10 +16,6 @@
       "git_blob_sha1": "6d43195af7bf2ea208bc8077abab1210d5a4e724"
     },
     {
-      "path": "app.js",
-      "git_blob_sha1": "36648b9b0ef180a545f383bce031ad399a15dd84"
-    },
-    {
       "path": "app/api/realtime/route.ts",
       "git_blob_sha1": "e015b12e84fd54221efaf038772892d1347a7030"
     },
@@ -34,10 +30,6 @@
     {
       "path": "lib/answer-rebound.ts",
       "git_blob_sha1": "26b8afe21ea57542a11366c24243575658b965b5"
-    },
-    {
-      "path": "public/app.js",
-      "git_blob_sha1": "36648b9b0ef180a545f383bce031ad399a15dd84"
     },
     {
       "path": "scripts/answer-choices.test.mjs",
@@ -252,5 +244,28 @@
     "public/sw.js"
   ],
   "unresolved_conflicts": [],
-  "production_changed": false
+  "production_changed": false,
+  "reviewed_successors": [
+    {
+      "path": "app.js",
+      "deployed_git_blob_sha1": "36648b9b0ef180a545f383bce031ad399a15dd84",
+      "reviewed_git_blob_sha1": "51ca79becb42cf895683bf707f47e404aef5b3d9",
+      "reviewed_change": "2026-10-07 initial AdMob release: completed-match lifecycle, stale async guards, single application of rewards, normal-result exit advertising, consent recovery, and local ad-history deletion. Existing gameplay rules and server implementation retained.",
+      "behavioral_tests": [
+        "scripts/native-ads-navigation.test.mjs",
+        "scripts/online-navigation-lifecycle.test.mjs"
+      ]
+    },
+    {
+      "path": "public/app.js",
+      "deployed_git_blob_sha1": "36648b9b0ef180a545f383bce031ad399a15dd84",
+      "reviewed_git_blob_sha1": "51ca79becb42cf895683bf707f47e404aef5b3d9",
+      "reviewed_change": "2026-10-07 initial AdMob release: completed-match lifecycle, stale async guards, single application of rewards, normal-result exit advertising, consent recovery, and local ad-history deletion. Existing gameplay rules and server implementation retained.",
+      "behavioral_tests": [
+        "scripts/native-ads-navigation.test.mjs",
+        "scripts/online-navigation-lifecycle.test.mjs"
+      ]
+    }
+  ],
+  "advertising_candidate_baseline": "5de3b4a1a4d97be7d85a227b9f1b97d7550c1c17"
 }

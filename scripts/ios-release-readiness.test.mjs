@@ -9,7 +9,7 @@ test('Xcode project has the expected iPhone target configuration (not signing ev
   for (const expected of [
     'com.yorimichiworks.meonjeo',
     'MARKETING_VERSION = 1.0.0',
-    'CURRENT_PROJECT_VERSION = 2',
+    'CURRENT_PROJECT_VERSION = 3',
     'IPHONEOS_DEPLOYMENT_TARGET = 16.0',
     'TARGETED_DEVICE_FAMILY = 1',
     'CODE_SIGN_ENTITLEMENTS = Meonjeo/Meonjeo.entitlements',

@@ -15,7 +15,7 @@ function harness({ response = new Response('network'), offline = false, quotaFai
     caches: {
       open: async () => ({ addAll: async () => {}, put: async (...args) => { if (quotaFailure) throw new Error('quota'); stored.push(args); } }),
       match: async () => cached,
-      keys: async () => ['meonjeo-shell-v17', 'meonjeo-shell-v18', 'meonjeo-shell-v19', 'unrelated-app-cache'],
+      keys: async () => ['meonjeo-shell-v17', 'meonjeo-shell-v18', 'meonjeo-shell-v19', 'meonjeo-shell-v20', 'unrelated-app-cache'],
       delete: async key => { deleted.push(key); return true; },
     },
   });
@@ -75,17 +75,18 @@ test('activation removes legacy app caches and preserves unrelated caches', asyn
   const h = harness(); let pending;
   h.handlers.get('activate')({ waitUntil: promise => { pending = promise; } });
   await pending;
-  assert.deepEqual(h.deleted, ['meonjeo-shell-v17', 'meonjeo-shell-v18']);
+  assert.deepEqual(h.deleted, ['meonjeo-shell-v17', 'meonjeo-shell-v18', 'meonjeo-shell-v19']);
 });
 
 test('entry pages and both service workers point at the revised auth shell', () => {
   assert.equal(source, readFileSync(new URL('../public/sw.js', import.meta.url), 'utf8'));
-  assert.match(source, /meonjeo-shell-v19/);
+  assert.match(source, /meonjeo-shell-v20/);
   assert.match(source, /auth\.js\?v=9/);
   for (const path of ['index.html', 'public/game.html']) {
     const html = readFileSync(new URL(`../${path}`, import.meta.url), 'utf8');
     assert.match(html, /auth\.js\?v=9/);
-    assert.match(html, /app\.js\?v=16/);
-    assert.match(html, /sw\.js\?v=19/);
+    assert.match(html, /ads\.js\?v=1/);
+    assert.match(html, /app\.js\?v=17/);
+    assert.match(html, /sw\.js\?v=20/);
   }
 });

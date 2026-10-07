@@ -2,6 +2,7 @@ import SwiftUI
 import UIKit
 import WebKit
 
+@MainActor
 struct GameWebView: UIViewRepresentable {
     static let gameURL = URL(string: "https://meonjeo.syamo.chatgpt.site/game.html")!
 
@@ -18,7 +19,7 @@ struct GameWebView: UIViewRepresentable {
         contentController.add(context.coordinator.bridge, name: NativeBridge.handlerName)
         contentController.addUserScript(
             WKUserScript(
-                source: NativeBridge.bootstrapScript,
+                source: context.coordinator.bridge.bootstrapScriptForNavigation,
                 injectionTime: .atDocumentStart,
                 forMainFrameOnly: true
             )
@@ -46,6 +47,7 @@ struct GameWebView: UIViewRepresentable {
 
         context.coordinator.webView = webView
         context.coordinator.bridge.webView = webView
+        context.coordinator.bridge.activate()
         webView.load(URLRequest(url: Self.gameURL, cachePolicy: .reloadRevalidatingCacheData))
         return webView
     }
@@ -57,17 +59,20 @@ struct GameWebView: UIViewRepresentable {
     }
 
     static func dismantleUIView(_ webView: WKWebView, coordinator: Coordinator) {
+        coordinator.bridge.documentDidNavigate()
         webView.configuration.userContentController.removeScriptMessageHandler(forName: NativeBridge.handlerName)
         coordinator.bridge.webView = nil
         coordinator.webView = nil
     }
 
+    @MainActor
     final class Coordinator: NSObject, WKNavigationDelegate, WKUIDelegate {
         fileprivate weak var webView: WKWebView?
         fileprivate let bridge = NativeBridge()
         private var isLoading: Binding<Bool>
         private var loadingError: Binding<String?>
         fileprivate var lastReloadRequest: Int
+        private var activeNavigation: WKNavigation?
 
         init(isLoading: Binding<Bool>, loadingError: Binding<String?>, reloadRequest: Int) {
             self.isLoading = isLoading
@@ -80,24 +85,40 @@ struct GameWebView: UIViewRepresentable {
         }
 
         func webView(_ webView: WKWebView, didStartProvisionalNavigation navigation: WKNavigation!) {
+            activeNavigation = navigation
+            bridge.documentDidNavigate()
             loadingError.wrappedValue = nil
             isLoading.wrappedValue = true
         }
 
         func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
+            guard navigation === activeNavigation else { return }
+            activeNavigation = nil
             isLoading.wrappedValue = false
             webView.scrollView.refreshControl?.endRefreshing()
         }
 
+        func webView(_ webView: WKWebView, didCommit navigation: WKNavigation!) {
+            guard navigation === activeNavigation else { return }
+            bridge.documentDidCommit()
+        }
+
         func webView(_ webView: WKWebView, didFail navigation: WKNavigation!, withError error: Error) {
+            guard navigation === activeNavigation else { return }
+            activeNavigation = nil
+            bridge.documentNavigationDidFail()
             showLoadFailure(webView, error: error)
         }
 
         func webView(_ webView: WKWebView, didFailProvisionalNavigation navigation: WKNavigation!, withError error: Error) {
+            guard navigation === activeNavigation else { return }
+            activeNavigation = nil
+            bridge.documentNavigationDidFail()
             showLoadFailure(webView, error: error)
         }
 
         func webViewWebContentProcessDidTerminate(_ webView: WKWebView) {
+            bridge.documentDidNavigate()
             isLoading.wrappedValue = false
             webView.scrollView.refreshControl?.endRefreshing()
             loadingError.wrappedValue = "게임 화면을 다시 불러와 주세요."
@@ -107,7 +128,11 @@ struct GameWebView: UIViewRepresentable {
             // Redirects and a newer navigation cancel older loads; do not cover
             // the new page with an error for an intentionally cancelled request.
             let navigationError = error as NSError
-            guard !(navigationError.domain == NSURLErrorDomain && navigationError.code == NSURLErrorCancelled) else { return }
+            guard !(navigationError.domain == NSURLErrorDomain && navigationError.code == NSURLErrorCancelled) else {
+                isLoading.wrappedValue = false
+                webView.scrollView.refreshControl?.endRefreshing()
+                return
+            }
             loadingError.wrappedValue = "게임을 불러오지 못했습니다. 연결을 확인하고 다시 시도해 주세요."
             isLoading.wrappedValue = false
             webView.scrollView.refreshControl?.endRefreshing()
@@ -125,6 +150,7 @@ struct GameWebView: UIViewRepresentable {
             }
 
             if Self.isAllowedMainFrameURL(url) {
+                bridge.prepareBootstrapForNavigation(in: webView)
                 decisionHandler(.allow)
                 return
             }
@@ -154,6 +180,7 @@ struct GameWebView: UIViewRepresentable {
         private static func isAllowedMainFrameURL(_ url: URL) -> Bool {
             if url.scheme == "about" { return true }
             return url.scheme?.lowercased() == "https" && url.host?.lowercased() == NativeBridge.allowedHost
+                && (url.port == nil || url.port == 443)
         }
     }
 }

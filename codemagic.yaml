@@ -9,7 +9,7 @@ workflows:
       xcode: "26.6"
       vars:
         APP_STORE_APP_ID: "6819903098"
-        RELEASE_BUILD_NUMBER: "2"
+        RELEASE_BUILD_NUMBER: "3"
         SIMULATOR_DEVICE_NAME: "iPhone 17 Pro"
       ios_signing:
         provisioning_profiles:
@@ -17,6 +17,8 @@ workflows:
         certificates:
           - cirno-app-store
     scripts:
+      - name: Verify advertising consent configuration before signing
+        script: python3 scripts/verify-advertising-release.py
       - name: Apply the approved Meonjeo signing profile
         script: xcode-project use-profiles
       - name: Build signed App Store IPA

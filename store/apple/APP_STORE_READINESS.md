@@ -1,5 +1,25 @@
 # 먼저! App Store提出準備
 
+## 現在の状態 — 2026-10-07 広告入り初回リリースへ更新
+
+初回リリースにAdMob広告を入れる方針になったため、**広告なしの1.0.0 (2)は最終審査へ送信しません**。広告入りbuild 3は実装・検証中です。
+
+- App Store Connect登録: `6819903098`、Bundle ID `com.yorimichiworks.meonjeo`
+- build 2は署名済IPA作成・Apple送信・TestFlight処理完了・掲載版への選択まで確認済み。App Review未送信
+- build 2のGit基点: `5de3b4a1a4d97be7d85a227b9f1b97d7550c1c17`。Web161テスト、Simulator、arm64 ArchiveのCI成功
+- 物理ボタンの新アイコンと実iPhone Simulatorの必須サイズ画像1枚を保存済み
+- 公開Webはv36。認証失効成功前にアカウントデータを削除しない修正と公開support窓口を反映済み
+- 広告なし版の7分類Privacyは公開済み、権利欄Yes、年齢16+／韓国15+を保存済み。広告入り版にはこの回答を流用しない
+- 無料価格、Mac/Vision Pro除外は保存表示確認済み。中国本土・ベトナムを除く173地域は確定操作済みだが、ブラウザ障害で再読未確認
+- モンジョのAdMobアプリとインタースティシャル1ユニットを作成済み。専用UMPメッセージは未公開
+- Firebase Apple秘密鍵の本人PCでの入力・保存、実機Apple認証/失効/退会、実機広告/同意の確認は未完
+
+広告の条件、SDK、公開前ゲートは [`ADVERTISING_RELEASE.md`](ADVERTISING_RELEASE.md) を参照。新しいデータ申告は [`ADVERTISING_PRIVACY_WORKSHEET.md`](ADVERTISING_PRIVACY_WORKSHEET.md) の確認待ちです。既存mainへのマージ、アプリ審査送信、本体公開は行っていません。
+
+## 以下は提出準備初期の履歴
+
+以下の未実施表記は当時の状態です。現在の完了・残件は上記を正本とします。
+
 更新: 2026-10-07（日本時間）。基点: `1b671259d9d91f5f69f2610aac77013f393087e0`。
 
 ## 結論

@@ -76,9 +76,9 @@ test('a synchronous bridge failure clears the pending request and timeout', asyn
   await assert.rejects(h.context.requestNativeAppleCredential(), /bridge unavailable/);
 });
 
-test('v3 native callbacks are tied to the active controller and trusted destination', () => {
+test('v4 native callbacks are tied to the active controller and trusted destination', () => {
   const swift = readFileSync(new URL('../ios/Meonjeo/NativeBridge.swift', import.meta.url), 'utf8');
-  assert.match(swift, /bridgeVersion: 3/);
+  assert.match(swift, /bridgeVersion: 4/);
   assert.match(swift, /guard authorizationController == nil/);
   assert.equal(swift.match(/guard controller === authorizationController/g)?.length, 2);
   assert.match(swift, /webView\.url\?\.host\?\.lowercased\(\) == Self\.allowedHost/);

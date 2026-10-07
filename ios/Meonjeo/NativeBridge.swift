@@ -5,7 +5,8 @@ import Security
 import UIKit
 import WebKit
 
-final class NativeBridge: NSObject, WKScriptMessageHandler, ASAuthorizationControllerDelegate, ASAuthorizationControllerPresentationContextProviding {
+@MainActor
+final class NativeBridge: NSObject, WKScriptMessageHandler, ASAuthorizationControllerDelegate, ASAuthorizationControllerPresentationContextProviding, AdCoordinatorDelegate {
     static let handlerName = "meonjeoNative"
     static let allowedHost = "meonjeo.syamo.chatgpt.site"
     static let bootstrapScript = #"""
@@ -14,8 +15,13 @@ final class NativeBridge: NSObject, WKScriptMessageHandler, ASAuthorizationContr
       const send = payload => window.webkit.messageHandlers.meonjeoNative.postMessage({ ...payload, documentId });
       window.meonjeoNative = Object.freeze({
         platform: 'ios',
-        bridgeVersion: 3,
+        bridgeVersion: 4,
         documentId,
+        ads: Object.freeze({
+          version: 1,
+          initialPresentationState: 'unknown',
+          request: (requestId, operation, payload = {}) => send({ action: 'ads', requestId, operation, payload })
+        }),
         signInWithApple: requestId => send({ action: 'signInWithApple', requestId }),
         revokeAppleToken: (requestId, firebaseIdToken, authorizationCode) =>
           send({ action: 'revokeAppleToken', requestId, firebaseIdToken, authorizationCode }),
@@ -30,6 +36,75 @@ final class NativeBridge: NSObject, WKScriptMessageHandler, ASAuthorizationContr
     private var currentRequestId: String?
     private var authorizationController: ASAuthorizationController?
     private var appleRevocation: PendingAppleRevocation?
+    private var navigationGeneration = 0
+    private var navigationInFlight = true
+    private var hasCommittedDocument = false
+    private var sharePresentationActive = false
+
+    var bootstrapScriptForNavigation: String {
+        // Only a fresh WKWebView can assert clean bootstrap synchronously.
+        // Later documents stay conservative; their status handshake reconciles
+        // any old sheet, including same-document and cancelled navigations.
+        let busy = hasCommittedDocument || AdCoordinator.shared.blocksExternalPresentation || hasExternalPresentation
+            || UIApplication.shared.connectedScenes.compactMap { $0 as? UIWindowScene }
+                .flatMap { $0.windows }.contains { $0.rootViewController?.presentedViewController != nil }
+        return Self.bootstrapScript.replacingOccurrences(
+            of: "initialPresentationState: 'unknown'",
+            with: "initialPresentationState: '\(busy ? "unknown" : "idle")'")
+    }
+
+    func prepareBootstrapForNavigation(in webView: WKWebView) {
+        let controller = webView.configuration.userContentController
+        let otherScripts = controller.userScripts.filter { !$0.source.contains("initialPresentationState:") }
+        controller.removeAllUserScripts()
+        otherScripts.forEach { controller.addUserScript($0) }
+        controller.addUserScript(WKUserScript(source: bootstrapScriptForNavigation,
+                                             injectionTime: .atDocumentStart, forMainFrameOnly: true))
+    }
+
+    func activate() {
+        AdCoordinator.shared.delegate = self
+        AdCoordinator.shared.beginLaunch()
+    }
+
+    func documentDidNavigate() {
+        navigationInFlight = true
+        navigationGeneration += 1
+        AdCoordinator.shared.documentDidNavigate()
+    }
+
+    func documentDidCommit() {
+        // The old document remains live during a provisional load. Reset at the
+        // commit boundary too so it cannot bind the new document's policy state.
+        navigationGeneration += 1
+        navigationInFlight = false
+        hasCommittedDocument = true
+        AdCoordinator.shared.documentDidNavigate()
+    }
+
+    func documentNavigationDidFail() {
+        // Called only for the latest navigation. The previously committed page
+        // may still be visible and must be able to reconcile a native sheet.
+        navigationGeneration += 1
+        navigationInFlight = false
+        AdCoordinator.shared.documentDidNavigate()
+    }
+
+    var hasExternalPresentation: Bool {
+        authorizationController != nil || sharePresentationActive
+            || webView?.window?.rootViewController?.presentedViewController != nil
+    }
+
+    func adPresenter() -> UIViewController? {
+        guard let root = webView?.window?.rootViewController,
+              root.viewIfLoaded?.window != nil else { return nil }
+        return root
+    }
+
+    func deliverAdResult(_ result: [String: Any], documentID: String) {
+        sendJavaScriptCallback(function: "window.meonjeoAds?.receiveNativeResult",
+                               payload: result, documentID: documentID)
+    }
 
     // Public Firebase project configuration, never supplied by the web page.
     private static let revocationEndpoint = URL(string: "https://identitytoolkit.googleapis.com/v2/accounts:revokeToken?key=AIzaSyAFNxcPTqD8LK6IWXlygncDoaUFRAdb6sQ")!
@@ -85,6 +160,10 @@ final class NativeBridge: NSObject, WKScriptMessageHandler, ASAuthorizationContr
               let action = body["action"] as? String else { return }
 
         switch action {
+        case "ads":
+            guard message.webView === webView,
+                  [0, 443].contains(message.frameInfo.securityOrigin.port) else { return }
+            receiveAdRequest(body)
         case "signInWithApple":
             startAppleSignIn(requestId: body["requestId"] as? String)
         case "revokeAppleToken":
@@ -97,6 +176,33 @@ final class NativeBridge: NSObject, WKScriptMessageHandler, ASAuthorizationContr
             presentShareSheet(payload: body["payload"] as? [String: Any] ?? [:])
         default:
             break
+        }
+    }
+
+    private func receiveAdRequest(_ body: [String: Any]) {
+        guard !navigationInFlight,
+              let requestID = Self.boundedBridgeString(body["requestId"], maximumBytes: 128),
+              let documentID = Self.boundedBridgeString(body["documentId"], maximumBytes: 64),
+              UUID(uuidString: documentID) != nil,
+              let operation = Self.boundedBridgeString(body["operation"], maximumBytes: 32),
+              let payload = body["payload"] as? [String: Any],
+              JSONSerialization.isValidJSONObject(body),
+              let serialized = try? JSONSerialization.data(withJSONObject: body),
+              serialized.count <= 2048,
+              let webView else { return }
+        let expectedNavigation = navigationGeneration
+        // Main-frame origin alone cannot distinguish two documents at the same
+        // origin. Verify the currently executing bootstrap ID before accepting.
+        webView.evaluateJavaScript("window.meonjeoNative?.documentId") { [weak self, weak webView] value, error in
+            guard let self, let webView, self.webView === webView,
+                  !self.navigationInFlight,
+                  self.navigationGeneration == expectedNavigation,
+                  error == nil, value as? String == documentID,
+                  webView.url?.scheme?.lowercased() == "https",
+                  webView.url?.host?.lowercased() == Self.allowedHost,
+                  webView.url?.port == nil || webView.url?.port == 443 else { return }
+            AdCoordinator.shared.handle(requestID: requestID, documentID: documentID,
+                                        operation: operation, payload: payload)
         }
     }
 
@@ -220,6 +326,11 @@ final class NativeBridge: NSObject, WKScriptMessageHandler, ASAuthorizationContr
             sendAppleFailure(code: "auth/native-apple-request-in-progress", message: "Apple 로그인 요청이 진행 중입니다.", requestId: requestId)
             return
         }
+        guard !AdCoordinator.shared.blocksExternalPresentation, !hasExternalPresentation,
+              UIApplication.shared.applicationState == .active else {
+            sendAppleFailure(code: "auth/native-presentation-busy", message: "열려 있는 화면을 닫은 뒤 다시 시도해 주세요.", requestId: requestId)
+            return
+        }
         currentRequestId = requestId
         do {
             let nonce = try randomNonceString()
@@ -335,11 +446,15 @@ final class NativeBridge: NSObject, WKScriptMessageHandler, ASAuthorizationContr
         guard !items.isEmpty else { return }
 
         DispatchQueue.main.async { [weak self] in
-            guard let root = self?.webView?.window?.rootViewController else { return }
-            var presenter = root
-            while let presented = presenter.presentedViewController { presenter = presented }
+            guard let self, !AdCoordinator.shared.blocksExternalPresentation,
+                  !self.hasExternalPresentation, UIApplication.shared.applicationState == .active,
+                  let presenter = self.webView?.window?.rootViewController else { return }
             let controller = UIActivityViewController(activityItems: items, applicationActivities: nil)
-            controller.popoverPresentationController?.sourceView = self?.webView
+            self.sharePresentationActive = true
+            controller.completionWithItemsHandler = { [weak self] _, _, _, _ in
+                self?.sharePresentationActive = false
+            }
+            controller.popoverPresentationController?.sourceView = self.webView
             presenter.present(controller, animated: true)
         }
     }
