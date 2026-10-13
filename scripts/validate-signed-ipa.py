@@ -6,6 +6,7 @@ import os
 from pathlib import Path
 import plistlib
 import runpy
+import subprocess
 
 root = Path('build/ipa-check')
 app = root / 'Payload/Meonjeo.app'
@@ -35,11 +36,14 @@ for source in (profile['Entitlements'], entitlements):
     assert source.get('get-task-allow') is False, 'Debugging must be disabled in distribution'
 
 ipa = Path(os.environ['MEONJEO_IPA'])
+source_commit = subprocess.run(['git', 'rev-parse', 'HEAD'], check=True,
+                             capture_output=True, text=True).stdout.strip()
 summary = {
     'bundle_id': expected_bundle,
     'team_id': expected_team,
     'version': info['CFBundleShortVersionString'],
     'build': expected_build,
+    'source_commit': source_commit,
     'advertising_mode': advertising_mode,
     'test_ads_only': advertising_mode == 'ad-testing',
     'advertising_configuration_verified': True,
