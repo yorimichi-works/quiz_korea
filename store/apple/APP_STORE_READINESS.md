@@ -1,3 +1,5 @@
+> 2026-10-13 latest: production configuration review now permits the authorized signed Release build. See [PRODUCTION_BUILD_DECISION_20261013.json](PRODUCTION_BUILD_DECISION_20261013.json) for owner reports, 51 passing local checks, the enabled configuration gate and explicitly unverified cases. Older blocked-state notes below are historical. No new IPA, review submission or release is claimed.
+
 # 먼저! App Store提出準備
 
 2026-10-13更新: ユーザー提示の審査結果は **1.0.0 (2) / Guideline 5.1.2(i)** です。以下の10月7日記録は履歴であり、現在の提出状態の証明ではありません。広告あり方針を維持し、[今回の調査・提出ビルド照合手順](REVIEW_REJECTION_20261013.md)に従って、署名済IPAと実際のASC選択を一致させてください。build 2と広告入り候補を同一視しません。

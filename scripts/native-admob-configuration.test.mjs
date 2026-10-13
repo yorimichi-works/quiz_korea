@@ -75,7 +75,7 @@ test('SDK startup is fail-closed and configures privacy before initialization', 
   assert.match(source, /trackingEnabled && ATTrackingManager\.trackingAuthorizationStatus == \.authorized/);
   assert.doesNotMatch(source, /tagForChildDirectedTreatment|tagForUnderAgeOfConsent|isTaggedForUnderAgeOfConsent\s*=/);
   const plist = read('ios/Meonjeo/Info.plist');
-  assert.match(plist, /<key>MonjoAdsConsentConfigurationVerified<\/key>\s*<false\/>/);
+  assert.match(plist, /<key>MonjoAdsConsentConfigurationVerified<\/key>\s*<true\/>/);
   assert.doesNotMatch(plist, /NSAllowsArbitraryLoads/);
 });
 

@@ -92,11 +92,7 @@ test('expanded signed bundle must independently match the selected mode, IDs and
   }
 });
 
-test('checked-in production is blocked and test preflight follows its separate explicit Boolean record', () => {
-  blocked(spawnSync(python, ['scripts/verify-advertising-release.py'], { encoding: 'utf8' }));
-  const source = read('ios/Meonjeo/Info.plist');
-  const match = source.match(/<key>MonjoAdsTestConsentConfigurationVerified<\/key>\s*<(true|false)\/>/);
-  assert.ok(match, 'The test gate must be a literal Boolean');
-  const result = spawnSync(python, ['scripts/verify-advertising-release.py', '--mode', 'ad-testing'], { encoding: 'utf8' });
-  (match[1] === 'true' ? accepted : blocked)(result);
+test('reviewed production candidate passes while its source cannot be uploaded as AdTesting', () => {
+  accepted(spawnSync(python, ['scripts/verify-advertising-release.py'], { encoding: 'utf8' }));
+  blocked(spawnSync(python, ['scripts/verify-advertising-release.py', '--mode', 'ad-testing'], { encoding: 'utf8' }));
 });

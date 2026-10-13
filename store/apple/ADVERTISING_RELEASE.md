@@ -1,5 +1,7 @@
 # Monjo initial advertising release
 
+2026-10-13 production-candidate update: the production configuration gate is now true on the reviewed basis in [PRODUCTION_BUILD_DECISION_20261013.json](PRODUCTION_BUILD_DECISION_20261013.json). The owner reports test-ad display with tracking on and playable behavior after tracking was turned off and the app restarted. Device observations not actually made remain null in that record. This permits the authorized production build; it does not mark the full acceptance matrix below complete.
+
 Status: implementation candidate, not submitted for review. The earlier 1.0.0 (2) binary and its saved privacy answers describe the version without advertising. The first public release now requires advertising, so build 2 is not the final submission candidate.
 
 ## Existing design and chosen scope
@@ -51,7 +53,7 @@ Published app-only messages:
 
 The approved privacy policy is linked to the Monjo app. Do not change global account data-sharing or other apps' consent configuration.
 
-`MonjoAdsConsentConfigurationVerified` remains a literal `false` until the published configuration and required device behavior are verified for production. The separate test configuration gate is true for the owner-only AdTesting build. The selected mode never starts UMP or advertising while its own gate is false. `scripts/verify-advertising-release.py` also blocks the signed upload workflow, so an unconfigured candidate cannot be uploaded as the advertising release. This flag never replaces runtime consent.
+`MonjoAdsConsentConfigurationVerified` was false for the owner-only AdTesting phase. The 2026-10-13 production configuration review now enables it using the published app-specific configuration, targeted owner device reports and the reviewed ATT/UMP startup guards; see the decision record for exact evidence and remaining unknowns. The flag records this configuration decision, not a claim that all physical-device, regional or network acceptance tests passed. The selected mode never starts UMP or advertising while its own gate is false, and `scripts/verify-advertising-release.py` blocks signing/upload without that record. The flag never replaces runtime consent. The final production source intentionally cannot also pass AdTesting upload preflight; use existing build 3 or the retained pre-transition SHA for test-ad checks.
 
 ## Store and public-site follow-through
 

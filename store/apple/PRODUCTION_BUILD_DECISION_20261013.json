@@ -1,0 +1,56 @@
+{
+  "date": "2026-10-13",
+  "decision": "Proceed with one production signed build and Apple upload using the existing workflow; App Review selection and final release remain separate operations.",
+  "authorization": "The owner authorized production build and App Review submission tonight. The parent operator exclusively starts CI and performs the ASC operations. Manual release is retained.",
+  "reviewed_source_before_gate_change": "882b9bf864f61c40a76b91c79058729f91bf9489",
+  "production_configuration_verified": true,
+  "verification_scope": "Exact registered app/unit and pinned SDK configuration; previously published app-specific UMP messages; existing ATT-before-UMP/GMA guards; targeted owner device reports. This is a configuration review for building the production candidate, not certification that every device, region, network or release acceptance case passed.",
+  "console_evidence": {
+    "record": "AD_TEST_CONSENT_VERIFICATION_20261007.json",
+    "eu_us_messages": "Published and read back for Monjo only on 2026-10-07; no new console change by this task.",
+    "production_ids": "Exact registered production app and interstitial identifiers already in Ads-Release.xcconfig.",
+    "current_console_reinspection": false
+  },
+  "device_evidence": {
+    "provenance": "Parent-forwarded owner answers; no independent device inspection by this task.",
+    "build_context": "Parent ASC readback identifies installed TestFlight 1.0.0 (3), iPhone 17/iOS 26.6.2.",
+    "tracking_switch_on": "Owner reported ON.",
+    "ad_visible_when_on": "Owner answered that an ad is displayed.",
+    "google_test_ad_label": "Owner confirmed the test-ad label.",
+    "tracking_off_terminate_relaunch_playable": "Owner answered playable after being asked to turn tracking off, terminate and reopen.",
+    "ad_absence_when_off": null,
+    "fresh_att_prompt_observed": null,
+    "ump_form_observed": null,
+    "in_app_privacy_policy_opened": null,
+    "ipad_first_launch_observed": null,
+    "network_capture_verified": null
+  },
+  "implementation_review": {
+    "native_consent_algorithm_changed": false,
+    "runtime_configuration_change": "Info.plist production configuration gate false -> true; runtime authorization and consent checks unchanged.",
+    "att_denied_restricted": "beginAuthorizedPreparation finishes with tracking-not-authorized. beginLaunch, startSDKAndLoad and loadAd each require trackingAuthorized; refreshConsent short-circuits before UMP reads when ATT is not authorized.",
+    "pending_and_revoked": "ATT callback, resumed preparation, asynchronous form/load and privacy-options paths recheck authorization. Consent withdrawal clears cached ads and invalidates the ownership of outstanding load results; this does not prove cancellation of a network request already in flight. Eligibility requires current consent.",
+    "existing_tests": "Native policy tests reject SDK start with trackingAuthorized=false and after consent withdrawal; JS bridge behavior tests return play after denied ATT. Local native source contracts and fixture checks are distinct from prior macOS Swift tests.",
+    "test_to_production_difference": "Native consent algorithm matches recorded build3; only the production configuration gate changes, selecting existing Release production IDs. Runtime ATT and UMP conditions remain mandatory.",
+    "limits": "Code and mocks support expected denied behavior but do not prove zero observed device/network traffic. No new SDK behavior is inferred solely from the SDK name."
+  },
+  "build_blockers_to_check_by_parent": [
+    "Confirm RELEASE_BUILD_NUMBER=4 remains unused in ASC; choose a fresh number if necessary.",
+    "Use the final committed SHA on the existing branch and dispatch meonjeo-ios-submission-build once, within the current free quota and MYTYPE priority.",
+    "Use the existing signing integration/profile/certificate only. The build itself must pass signing, expanded-bundle validation and simulator compilation."
+  ],
+  "pending_before_final_review": [
+    "Inspect the final IPA and generated validation receipt; match exact source/version/build and non-internal production mode to fresh ASC selection.",
+    "Retain Advertising Yes and Device ID tracking Yes unless actual evidence requires a separately reviewed change.",
+    "Check the actual in-app privacy link and reviewer first-run route; iPad presentation, regional UMP outcomes and denied-ad absence are unverified observations, not claimed successes.",
+    "An automated public-page read failed in this investigation; that does not establish whether the installed-app link works."
+  ],
+  "qa_reuse": "Keep installed internal build3 or pre-transition SHA 882b9bf864f61c40a76b91c79058729f91bf9489 for test-ad checks. The production SHA intentionally fails AdTesting upload preflight because its production gate is true.",
+  "local_validation": {
+    "tests": "51 passed, 0 failed: release gate 6, native configuration/bridge 7, exact IPA/selection 17, advertising navigation 21.",
+    "production_preflight": "PASS after the recorded gate transition.",
+    "negative_gates": "Missing/false/string/numeric gate, wrong ID/unit/mode, internal-only build and incorrect source/IPA fixtures remain enforced.",
+    "swift_xcode": "Not rerun on Windows. Existing native policy tests were inspected; the previously recorded macOS pass is historical. The forthcoming signed workflow must compile and validate the new candidate."
+  },
+  "actions_not_performed_by_this_task": ["CI dispatch", "new signing credentials", "secret transport", "privacy disclosure change", "review submission", "main merge", "public release"]
+}

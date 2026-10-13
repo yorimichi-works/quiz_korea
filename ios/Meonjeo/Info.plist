@@ -25,7 +25,7 @@
     <key>GADApplicationIdentifier</key>
     <string>$(MONJO_ADMOB_APP_ID)</string>
     <key>MonjoAdsConsentConfigurationVerified</key>
-    <false/>
+    <true/>
     <key>MonjoAdsTestConsentConfigurationVerified</key>
     <true/>
     <key>MonjoAdsBuildMode</key>
