@@ -70,3 +70,19 @@ Use Google test ads for ad interaction tests. Debug forced-region tests and unfo
 - Existing selected native configuration/bridge contracts: 4/4 pass. The first local run encountered a CRLF-sensitive existing extraction regex; normalizing this isolated checkout's `NativeBridge.swift` to its Git blob LF restored the test, with no native semantic diff.
 - Internal-test configuration preflight passes. Production preflight remains deliberately `BLOCKED` because its evidence gate is false.
 - No native behavior, production gate, advertising identifiers, privacy answers or release selection was changed. No CI/signing/build/upload/reply/submission/main merge/public deployment was started.
+
+## 2026-10-13 evening follow-up
+
+The owner authorized a production build and App Review submission tonight, with CI dispatch assigned to the parent operator. This updates the earlier preparation-only authorization; it does not establish a test result. Manual release remains the requested publication mode.
+
+The parent reports that TestFlight build `1.0.0 (3)` is installed and has eight sessions. The owner reports that this app appears in iPhone Settings > Tracking and its switch is on. Record this as the owner's current permission setting, not proof that a fresh ATT prompt was observed. Prompt presentation, denied/restricted behavior, SDK/network ordering, regional UMP behavior, in-app privacy-link access and iPad acceptance remain unverified.
+
+The committed native and relevant Web sources still match build 3's recorded source `2b65007fcce47eed2acef2e04a3bfb067c4bebe3`. The existing internal build can therefore test the same consent implementation without another QA signing run. Its test ad unit and internal-only export make it unsuitable for App Review. The currently hosted Web revision is not independently verified by this local investigation.
+
+Full local advertising checks now pass: **51/51**, consisting of 6 release-gate cases, 7 native configuration/bridge contracts, 17 review-selection cases and 21 navigation cases. Test-runner-only changes support the Windows Python command and Git Bash, and normalize checkout line endings before testing. No native or Web runtime source changed. These results are static/fixture/bridge tests, not a substitute for physical-device or network results.
+
+The internal-test preflight passes. Production preflight still exits 2 because `MonjoAdsConsentConfigurationVerified` is false. Starting the production workflow at this state would stop before signing. The already published console settings alone do not satisfy the existing production record, which also requires device behavior to be reviewed.
+
+To minimize work before a production candidate, use the already installed build 3 for the outstanding consent checks: confirm the installed identity and a working in-app privacy link, observe the authorized UMP/test-ad path, and observe a denied/restricted path that remains playable without advertising initialization. Keep the broader matrix above as pending review coverage, particularly first-run presentation on iPad, rather than claiming these cases passed. No additional QA CI is needed for these observations.
+
+After that evidence is reviewed, change the production gate with a recorded basis, update only the baseline expectations that currently require it to be false, and rerun the existing local tests. Keep all negative fixture tests. Use `meonjeo-ios-submission-build`, scheme `Meonjeo`, configuration `Release`; recheck that its configured build number `4` is unused. Pin the resulting new commit, dispatch once through the parent operator, and retain the signed IPA and validation receipt. Match the actual ASC selection before submitting. No production-ready SHA is asserted while the preflight is blocked.

@@ -4,11 +4,12 @@ import { spawnSync } from 'node:child_process';
 import test from 'node:test';
 import vm from 'node:vm';
 
-const read = path => readFileSync(path, 'utf8');
+const read = path => readFileSync(path, 'utf8').replace(/\r\n/g, '\n');
 const appID = 'ca-app-pub-3186852093801241~6780777097';
 const unitID = 'ca-app-pub-3186852093801241/3315999799';
 const testUnit = 'ca-app-pub-3940256099942544/4411468910';
-const validate = overrides => spawnSync('bash', ['ios/Scripts/validate-admob-config.sh'], {
+const validate = overrides => spawnSync(process.env.BASH || 'bash', ['-s'], {
+  input: read('ios/Scripts/validate-admob-config.sh'),
   env: { ...process.env, CONFIGURATION: 'Release', MONJO_ADMOB_APP_ID: appID,
     MONJO_INTERSTITIAL_AD_UNIT_ID: unitID, MONJO_ADS_TRACKING_ENABLED: 'YES',
     MONJO_ADS_BUILD_MODE: 'production', SWIFT_ACTIVE_COMPILATION_CONDITIONS: '', ...overrides },

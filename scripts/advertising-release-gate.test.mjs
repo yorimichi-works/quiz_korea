@@ -6,6 +6,7 @@ import { join } from 'node:path';
 import { spawnSync } from 'node:child_process';
 
 const read = path => readFileSync(path, 'utf8');
+const python = process.env.PYTHON || (process.platform === 'win32' ? 'python' : 'python3');
 const productionGate = 'MonjoAdsConsentConfigurationVerified';
 const testGate = 'MonjoAdsTestConsentConfigurationVerified';
 const appID = 'ca-app-pub-3186852093801241~6780777097';
@@ -34,7 +35,7 @@ function runGate({ mode = 'production', production = '<false/>', testing = '<fal
       writeFileSync(builtPath, built);
       args.push('--built-plist', builtPath);
     }
-    return spawnSync('python3', args, { encoding: 'utf8' });
+    return spawnSync(python, args, { encoding: 'utf8' });
   } finally {
     rmSync(directory, { recursive: true, force: true });
   }
@@ -92,10 +93,10 @@ test('expanded signed bundle must independently match the selected mode, IDs and
 });
 
 test('checked-in production is blocked and test preflight follows its separate explicit Boolean record', () => {
-  blocked(spawnSync('python3', ['scripts/verify-advertising-release.py'], { encoding: 'utf8' }));
+  blocked(spawnSync(python, ['scripts/verify-advertising-release.py'], { encoding: 'utf8' }));
   const source = read('ios/Meonjeo/Info.plist');
   const match = source.match(/<key>MonjoAdsTestConsentConfigurationVerified<\/key>\s*<(true|false)\/>/);
   assert.ok(match, 'The test gate must be a literal Boolean');
-  const result = spawnSync('python3', ['scripts/verify-advertising-release.py', '--mode', 'ad-testing'], { encoding: 'utf8' });
+  const result = spawnSync(python, ['scripts/verify-advertising-release.py', '--mode', 'ad-testing'], { encoding: 'utf8' });
   (match[1] === 'true' ? accepted : blocked)(result);
 });
